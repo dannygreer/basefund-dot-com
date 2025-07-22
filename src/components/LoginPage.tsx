@@ -31,7 +31,11 @@ const LoginPage = () => {
           </h2>
           
           <p className="text-white/90 mb-8 leading-relaxed">
-            It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.
+            Wire transfers, capital transactions, and fund movements are uninsured and unprotected, putting institutions at risk of fraud, financial loss, and compliance failures. Until now.
+          </p>
+          
+          <p className="text-white/90 mb-8 leading-relaxed">
+            Trust Basefund to secure your transactions through robust identity verification, bank account validation, and insurance protection.
           </p>
           
           <div className="bg-white/10 rounded-lg p-6 backdrop-blur-sm">
