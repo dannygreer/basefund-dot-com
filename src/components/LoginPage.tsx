@@ -26,8 +26,8 @@ const LoginPage = () => {
         <div className="max-w-md">
           <img src="/lovable-uploads/0df6207d-c067-4c95-b089-f3b6b2bb1c42.png" alt="BaseFund" className="h-8 mb-8" />
           
-          <h2 className="text-3xl font-normal mb-6 leading-tight">
-            We're here to help you level up.
+          <h2 className="text-3xl font-black mb-6 leading-tight">
+            Secure and insure your money in motion.
           </h2>
           
           <p className="text-white/90 mb-8 leading-relaxed">
