@@ -76,7 +76,7 @@ const LoginPage = () => {
                 </div>
                 
                 <div className="text-left">
-                  <a href="#" className="text-accent text-sm underline hover:text-accent/80">
+                  <a href="#" className="text-sm underline" style={{ color: '#145DD0' }}>
                     Forgot password?
                   </a>
                 </div>
@@ -89,7 +89,7 @@ const LoginPage = () => {
               </form>
               
               <div className="text-center mt-6">
-                <button onClick={toggleForm} className="text-accent text-sm underline hover:text-accent/80">
+                <button onClick={toggleForm} className="text-sm underline" style={{ color: '#145DD0' }}>
                   Don't have an account? Click here to register.
                 </button>
               </div>
@@ -128,7 +128,7 @@ const LoginPage = () => {
                           <span className="w-4 h-4 rounded-full bg-muted text-muted-foreground text-xs flex items-center justify-center cursor-help">?</span>
                         </TooltipTrigger>
                         <TooltipContent className="max-w-xs">
-                          <p>Your team name should be unique from your organization name. As an example, this may be your location or the name of a working group.</p>
+                          <p style={{ color: '#145DD0' }}>Your team name should be unique from your organization name. As an example, this may be your location or the name of a working group.</p>
                         </TooltipContent>
                       </Tooltip>
                     </label>
@@ -220,9 +220,9 @@ const LoginPage = () => {
                 
                 <div className="text-sm text-muted-foreground mt-4">
                   By signing up you agree to the{' '}
-                  <a href="#" className="text-accent underline hover:text-accent/80">Privacy</a>
+                  <a href="#" className="underline" style={{ color: '#145DD0' }}>Privacy</a>
                   {' '}and{' '}
-                  <a href="#" className="text-accent underline hover:text-accent/80">Terms</a>
+                  <a href="#" className="underline" style={{ color: '#145DD0' }}>Terms</a>
                   {' '}policies.
                 </div>
                 
@@ -234,7 +234,7 @@ const LoginPage = () => {
               </form>
               
               <div className="text-center mt-6">
-                <button onClick={toggleForm} className="text-accent text-sm underline hover:text-accent/80">
+                <button onClick={toggleForm} className="text-sm underline" style={{ color: '#145DD0' }}>
                   Already have an account? Sign in here.
                 </button>
               </div>
