@@ -26,7 +26,7 @@ const LoginPage = () => {
         <div className="max-w-md mx-auto">
           <img src="/lovable-uploads/0df6207d-c067-4c95-b089-f3b6b2bb1c42.png" alt="BaseFund" className="h-8 mb-8" />
           
-          <h2 className="text-3xl font-black mb-6 leading-tight">
+          <h2 className="text-[42px] font-black mb-6 leading-tight">
             Secure and insure your money in motion.
           </h2>
           
