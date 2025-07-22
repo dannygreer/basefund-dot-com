@@ -17,7 +17,7 @@ const LoginPage = () => {
   return <TooltipProvider>
     <div className="min-h-screen bg-light-gray flex flex-col md:flex-row">
       {/* Left Side - Blue Section */}
-      <div className="md:flex-1 p-6 md:p-12 flex flex-col justify-center text-white relative order-1 md:order-none h-40 md:h-auto" style={{
+      <div className="md:flex-1 p-6 md:p-12 flex flex-col justify-center text-white relative order-1 md:order-none py-8 md:h-auto" style={{
         background: 'linear-gradient(180deg, #145DD0 0%, #145DD0 70%, #28A4DD 100%)'
       }}>
         <div className="max-w-md mx-auto">
@@ -35,7 +35,7 @@ const LoginPage = () => {
             href="https://basefund.io" 
             target="_blank" 
             rel="noopener noreferrer"
-            className="inline-block mt-4 px-6 py-2 bg-white/90 rounded-lg font-medium transition-colors hover:bg-white md:hidden" 
+            className="block text-center mt-4 px-6 py-2 bg-white/90 rounded-lg font-medium transition-colors hover:bg-white md:hidden w-fit mx-auto" 
             style={{ color: '#145DD0' }}
           >
             LEARN MORE
