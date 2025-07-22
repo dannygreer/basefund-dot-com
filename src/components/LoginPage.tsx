@@ -15,9 +15,9 @@ const LoginPage = () => {
   const isSignInComplete = email.trim() !== '' && password.trim() !== '';
   const isSignUpPasswordStarted = signUpPassword.trim() !== '';
   return <TooltipProvider>
-    <div className="min-h-screen bg-light-gray flex">
+    <div className="min-h-screen bg-light-gray flex flex-col md:flex-row">
       {/* Left Side - Blue Section */}
-      <div className="flex-1 p-12 flex flex-col justify-center text-white relative" style={{
+      <div className="flex-1 p-6 md:p-12 flex flex-col justify-center text-white relative order-1 md:order-none" style={{
         background: 'linear-gradient(180deg, #145DD0 0%, #145DD0 70%, #28A4DD 100%)'
       }}>
         <div className="max-w-md mx-auto">
@@ -28,9 +28,9 @@ const LoginPage = () => {
           </h2>
           
           
-          <p className="text-white/90 mb-8 leading-relaxed font-bold">Secure your transactions through robust identity verification, bank account validation, and insurance protection.</p>
+          <p className="text-white/90 mb-8 leading-relaxed font-bold hidden md:block">Secure your transactions through robust identity verification, bank account validation, and insurance protection.</p>
           
-          <div className="bg-white/10 rounded-lg p-6 backdrop-blur-sm mt-12">
+          <div className="bg-white/10 rounded-lg p-6 backdrop-blur-sm mt-12 hidden md:block">
             <h3 className="text-xl font-bold text-white mb-4 leading-tight">
               Trusted by thousands of financial leaders and the world's leading banks.
             </h3>
@@ -53,7 +53,7 @@ const LoginPage = () => {
       </div>
 
       {/* Right Side - Form Section */}
-      <div className="flex-1 bg-white flex items-center justify-center p-12">
+      <div className="flex-1 bg-white flex items-center justify-center p-6 md:p-12 order-2 md:order-none">
         <div className="w-full max-w-md">
 
           {!isSignUp ? (/* Sign In Form */
