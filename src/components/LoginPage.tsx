@@ -2,10 +2,14 @@ import { useState } from 'react';
 
 const LoginPage = () => {
   const [isSignUp, setIsSignUp] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   const toggleForm = () => {
     setIsSignUp(!isSignUp);
   };
+
+  const isSignInComplete = email.trim() !== '' && password.trim() !== '';
 
   return (
     <div className="min-h-screen bg-light-gray flex">
@@ -58,6 +62,8 @@ const LoginPage = () => {
                     type="email" 
                     className="form-field"
                     placeholder="Enter your email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                   />
                 </div>
                 
@@ -69,6 +75,8 @@ const LoginPage = () => {
                     type="password" 
                     className="form-field"
                     placeholder="Enter your password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
                   />
                 </div>
                 
@@ -78,7 +86,15 @@ const LoginPage = () => {
                   </a>
                 </div>
                 
-                <button type="submit" className="btn-primary">
+                <button 
+                  type="submit" 
+                  className={`w-full py-3 px-4 rounded-lg font-medium transition-colors ${
+                    isSignInComplete 
+                      ? 'text-white' 
+                      : 'bg-secondary text-secondary-foreground hover:bg-secondary/80'
+                  }`}
+                  style={isSignInComplete ? { backgroundColor: '#145DD0' } : {}}
+                >
                   Sign In
                 </button>
               </form>
