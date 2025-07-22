@@ -18,7 +18,7 @@ const LoginPage = () => {
     <div className="min-h-screen bg-light-gray flex">
       {/* Left Side - Blue Section */}
       <div className="flex-1 p-12 flex flex-col justify-center text-white relative" style={{
-        backgroundColor: '#145DD0'
+        background: 'linear-gradient(180deg, #145DD0 0%, #145DD0 70%, #28A4DD 100%)'
       }}>
         <div className="max-w-md mx-auto">
           <img src="/lovable-uploads/0df6207d-c067-4c95-b089-f3b6b2bb1c42.png" alt="BaseFund" className="h-8 mb-8" />
