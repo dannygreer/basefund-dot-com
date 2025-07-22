@@ -43,11 +43,6 @@ const LoginPage = () => {
       {/* Right Side - Form Section */}
       <div className="flex-1 bg-white flex items-center justify-center p-12">
         <div className="w-full max-w-md">
-          {/* Logo */}
-          <div className="text-center mb-8">
-            <div className="w-12 h-12 bg-primary mx-auto mb-4 rounded"></div>
-            <span className="text-sm text-muted-foreground">BaseFund</span>
-          </div>
 
           {!isSignUp ? (
             /* Sign In Form */
