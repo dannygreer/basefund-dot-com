@@ -31,6 +31,16 @@ const LoginPage = () => {
           
           <p className="text-white/90 mb-8 leading-relaxed font-bold hidden md:block">Secure your transactions through robust identity verification, bank account validation, and insurance protection.</p>
           
+          <a 
+            href="https://basefund.io" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="inline-block mt-4 px-6 py-2 bg-white/90 rounded-lg font-medium transition-colors hover:bg-white md:hidden" 
+            style={{ color: '#145DD0' }}
+          >
+            LEARN MORE
+          </a>
+          
           <div className="bg-white/10 rounded-lg p-6 backdrop-blur-sm mt-12 hidden md:block">
             <h3 className="text-xl font-bold text-white mb-4 leading-tight">
               Trusted by thousands of financial leaders and the world's leading banks.
