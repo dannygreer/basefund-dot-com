@@ -136,12 +136,12 @@ const LoginPage = () => {
                     <label className="block text-sm font-medium text-foreground mb-2">
                       Team Name <span className="required-asterisk">*</span>
                     </label>
-                    <p className="text-xs text-muted-foreground mb-2">(Not the same as your organization name)</p>
                     <input 
                       type="text" 
                       className="form-field"
                       placeholder="Team name"
                     />
+                    <p className="text-xs text-muted-foreground mt-1">Not the same as your org name</p>
                   </div>
                 </div>
                 
