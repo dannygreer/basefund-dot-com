@@ -134,8 +134,9 @@ const LoginPage = () => {
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-foreground mb-2">
-                      Team Name (Not the same as your organization name) <span className="required-asterisk">*</span>
+                      Team Name <span className="required-asterisk">*</span>
                     </label>
+                    <p className="text-xs text-muted-foreground mb-2">(Not the same as your organization name)</p>
                     <input 
                       type="text" 
                       className="form-field"
