@@ -35,7 +35,7 @@ const LoginPage = () => {
           </p>
           
           <div className="bg-white/10 rounded-lg p-6 backdrop-blur-sm">
-            <h3 className="text-xl font-bold text-white mb-4 leading-relaxed">
+            <h3 className="text-xl font-bold text-white mb-4 leading-tight">
               Trusted by thousands of financial leaders and the world's leading banks.
             </h3>
             
