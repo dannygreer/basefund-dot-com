@@ -14,7 +14,7 @@ const LoginPage = () => {
   return (
     <div className="min-h-screen bg-light-gray flex">
       {/* Left Side - Blue Section */}
-      <div className="flex-1 tech-gradient p-12 flex flex-col justify-center text-white relative">
+      <div className="flex-1 p-12 flex flex-col justify-center text-white relative" style={{ backgroundColor: '#145DD0' }}>
         <div className="max-w-md">
           <h1 className="text-2xl font-light tracking-wider mb-8">TECHAUTH</h1>
           
