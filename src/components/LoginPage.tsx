@@ -19,7 +19,7 @@ const LoginPage = () => {
       {/* Left Side - Blue Section */}
       <div className="md:flex-1 py-16 px-6 md:p-12 flex flex-col justify-center text-white relative order-1 md:order-none md:h-auto" style={{
         background: 'linear-gradient(180deg, #145DD0 0%, #145DD0 70%, #28A4DD 100%)',
-        height: window.innerWidth < 768 ? '144px' : 'auto'
+        height: window.innerWidth < 768 ? '158px' : 'auto'
       }}>
         <div className="max-w-md mx-auto md:my-0 flex flex-col justify-center items-center md:items-start h-full">
           <img src="/lovable-uploads/0df6207d-c067-4c95-b089-f3b6b2bb1c42.png" alt="BaseFund" className="h-6 md:h-8 mb-8 mx-auto md:mx-0 mt-5 md:mt-0" />
