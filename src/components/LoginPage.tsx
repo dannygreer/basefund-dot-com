@@ -5,12 +5,28 @@ const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [signUpPassword, setSignUpPassword] = useState('');
+  const [showConfirmation, setShowConfirmation] = useState(false);
   const toggleForm = () => {
     setIsSignUp(!isSignUp);
     // Reset passwords when switching forms
     setEmail('');
     setPassword('');
     setSignUpPassword('');
+    setShowConfirmation(false);
+  };
+
+  const handleSignIn = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (isSignInComplete) {
+      window.open('https://basefund.com/', '_self');
+    }
+  };
+
+  const handleSignUp = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (isSignUpPasswordStarted) {
+      setShowConfirmation(true);
+    }
   };
   const isSignInComplete = email.trim() !== '' && password.trim() !== '';
   const isSignUpPasswordStarted = signUpPassword.trim() !== '';
@@ -67,11 +83,27 @@ const LoginPage = () => {
       <div className="flex-1 bg-white flex items-start md:items-center justify-center p-6 md:p-12 order-2 md:order-none pt-8 md:pt-12">
         <div className="w-full max-w-md">
 
-          {!isSignUp ? (/* Sign In Form */
+          {showConfirmation ? (
+            <div className="text-center">
+              <h2 className="text-2xl font-medium mb-8">Thank You!</h2>
+              <p className="text-lg leading-relaxed mb-8">
+                Thank you for your interest in Basefund. We're getting your account setup and someone from our team will be back in touch soon!
+              </p>
+              <button 
+                onClick={() => setShowConfirmation(false)}
+                className="text-sm underline" 
+                style={{ color: '#145DD0' }}
+              >
+                Back to forms
+              </button>
+            </div>
+          ) : (
+
+          !isSignUp ? (/* Sign In Form */
           <div>
               <h2 className="text-2xl font-medium text-center mb-8">Sign In</h2>
               
-              <form className="space-y-6">
+              <form className="space-y-6" onSubmit={handleSignIn}>
                 <div>
                   <label className="block text-sm font-medium text-foreground mb-2">
                     Email <span className="required-asterisk">*</span>
@@ -95,7 +127,7 @@ const LoginPage = () => {
                 <button type="submit" className={`w-full py-3 px-4 rounded-lg font-medium transition-colors ${isSignInComplete ? 'text-white' : 'bg-secondary text-secondary-foreground hover:bg-secondary/80'}`} style={isSignInComplete ? {
                 backgroundColor: '#145DD0'
               } : {}}>
-                  Sign In
+                  SIGN IN
                 </button>
               </form>
               
@@ -108,7 +140,7 @@ const LoginPage = () => {
           <div>
               <h2 className="text-2xl font-medium text-center mb-8">Sign Up</h2>
               
-              <form className="space-y-4">
+              <form className="space-y-4" onSubmit={handleSignUp}>
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm font-medium text-foreground mb-2">
@@ -249,7 +281,8 @@ const LoginPage = () => {
                   Already have an account? Sign in here.
                 </button>
               </div>
-            </div>)}
+            </div>)
+          )}
         </div>
       </div>
     </div>
