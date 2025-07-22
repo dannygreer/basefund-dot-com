@@ -33,7 +33,7 @@ const LoginPage = () => {
           
           <p className="text-white/90 mb-8 leading-relaxed font-bold">Secure your transactions through robust identity verification, bank account validation, and insurance protection.</p>
           
-          <div className="bg-white/10 rounded-lg p-6 backdrop-blur-sm">
+          <div className="bg-white/10 rounded-lg p-6 backdrop-blur-sm mt-12">
             <h3 className="text-xl font-bold text-white mb-4 leading-tight">
               Trusted by thousands of financial leaders and the world's leading banks.
             </h3>
