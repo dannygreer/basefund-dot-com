@@ -35,19 +35,13 @@ const LoginPage = () => {
           </p>
           
           <div className="bg-white/10 rounded-lg p-6 backdrop-blur-sm">
-            <p className="text-white/90 text-sm leading-relaxed mb-4">
-              There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form
-            </p>
+            <h3 className="text-xl font-bold text-white mb-4 leading-relaxed">
+              Trusted by thousands of financial leaders and the world's leading banks.
+            </h3>
             
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
-                <span className="text-white font-medium">T</span>
-              </div>
-              <div>
-                <div className="text-white font-medium">Timson K</div>
-                <div className="text-white/70 text-sm">Freelancer</div>
-              </div>
-            </div>
+            <p className="text-white/90 text-sm leading-relaxed">
+              Basefund is managing over $200 billion in payments and securely closing billions each month.
+            </p>
           </div>
         </div>
       </div>
