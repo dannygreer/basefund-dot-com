@@ -17,7 +17,7 @@ const LoginPage = () => {
   return <TooltipProvider>
     <div className="min-h-screen bg-light-gray flex flex-col md:flex-row">
       {/* Left Side - Blue Section */}
-      <div className="flex-1 p-6 md:p-12 flex flex-col justify-center text-white relative order-1 md:order-none h-48 md:h-auto" style={{
+      <div className="flex-1 p-6 md:p-12 flex flex-col justify-center text-white relative order-1 md:order-none h-40 md:h-auto" style={{
         background: 'linear-gradient(180deg, #145DD0 0%, #145DD0 70%, #28A4DD 100%)'
       }}>
         <div className="max-w-md mx-auto">
