@@ -1,12 +1,10 @@
 import { useState } from 'react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-
 const LoginPage = () => {
   const [isSignUp, setIsSignUp] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [signUpPassword, setSignUpPassword] = useState('');
-
   const toggleForm = () => {
     setIsSignUp(!isSignUp);
     // Reset passwords when switching forms
@@ -14,15 +12,14 @@ const LoginPage = () => {
     setPassword('');
     setSignUpPassword('');
   };
-
   const isSignInComplete = email.trim() !== '' && password.trim() !== '';
   const isSignUpPasswordStarted = signUpPassword.trim() !== '';
-
-  return (
-    <TooltipProvider>
+  return <TooltipProvider>
     <div className="min-h-screen bg-light-gray flex">
       {/* Left Side - Blue Section */}
-      <div className="flex-1 p-12 flex flex-col justify-center text-white relative" style={{ backgroundColor: '#145DD0' }}>
+      <div className="flex-1 p-12 flex flex-col justify-center text-white relative" style={{
+        backgroundColor: '#145DD0'
+      }}>
         <div className="max-w-md mx-auto">
           <img src="/lovable-uploads/0df6207d-c067-4c95-b089-f3b6b2bb1c42.png" alt="BaseFund" className="h-8 mb-8" />
           
@@ -54,9 +51,8 @@ const LoginPage = () => {
       <div className="flex-1 bg-white flex items-center justify-center p-12">
         <div className="w-full max-w-md">
 
-          {!isSignUp ? (
-            /* Sign In Form */
-            <div>
+          {!isSignUp ? (/* Sign In Form */
+          <div>
               <h2 className="text-2xl font-medium text-center mb-8">Sign In</h2>
               
               <form className="space-y-6">
@@ -64,26 +60,14 @@ const LoginPage = () => {
                   <label className="block text-sm font-medium text-foreground mb-2">
                     Email <span className="required-asterisk">*</span>
                   </label>
-                  <input 
-                    type="email" 
-                    className="form-field"
-                    placeholder="Enter your email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                  />
+                  <input type="email" className="form-field" placeholder="Enter your email" value={email} onChange={e => setEmail(e.target.value)} />
                 </div>
                 
                 <div>
                   <label className="block text-sm font-medium text-foreground mb-2">
                     Password <span className="required-asterisk">*</span>
                   </label>
-                  <input 
-                    type="password" 
-                    className="form-field"
-                    placeholder="Enter your password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                  />
+                  <input type="password" className="form-field" placeholder="Enter your password" value={password} onChange={e => setPassword(e.target.value)} />
                 </div>
                 
                 <div className="text-left">
@@ -92,31 +76,20 @@ const LoginPage = () => {
                   </a>
                 </div>
                 
-                <button 
-                  type="submit" 
-                  className={`w-full py-3 px-4 rounded-lg font-medium transition-colors ${
-                    isSignInComplete 
-                      ? 'text-white' 
-                      : 'bg-secondary text-secondary-foreground hover:bg-secondary/80'
-                  }`}
-                  style={isSignInComplete ? { backgroundColor: '#145DD0' } : {}}
-                >
+                <button type="submit" className={`w-full py-3 px-4 rounded-lg font-medium transition-colors ${isSignInComplete ? 'text-white' : 'bg-secondary text-secondary-foreground hover:bg-secondary/80'}`} style={isSignInComplete ? {
+                backgroundColor: '#145DD0'
+              } : {}}>
                   Sign In
                 </button>
               </form>
               
               <div className="text-center mt-6">
-                <button 
-                  onClick={toggleForm}
-                  className="text-accent text-sm underline hover:text-accent/80"
-                >
+                <button onClick={toggleForm} className="text-accent text-sm underline hover:text-accent/80">
                   Don't have an account? Click here to register.
                 </button>
               </div>
-            </div>
-          ) : (
-            /* Sign Up Form */
-            <div>
+            </div>) : (/* Sign Up Form */
+          <div>
               <h2 className="text-2xl font-medium text-center mb-8">Sign Up</h2>
               
               <form className="space-y-4">
@@ -125,21 +98,13 @@ const LoginPage = () => {
                     <label className="block text-sm font-medium text-foreground mb-2">
                       First Name <span className="required-asterisk">*</span>
                     </label>
-                    <input 
-                      type="text" 
-                      className="form-field"
-                      placeholder="First name"
-                    />
+                    <input type="text" className="form-field" placeholder="First name" />
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-foreground mb-2">
                       Last Name <span className="required-asterisk">*</span>
                     </label>
-                    <input 
-                      type="text" 
-                      className="form-field"
-                      placeholder="Last name"
-                    />
+                    <input type="text" className="form-field" placeholder="Last name" />
                   </div>
                 </div>
                 
@@ -148,11 +113,7 @@ const LoginPage = () => {
                     <label className="block text-sm font-medium text-foreground mb-2">
                       Organization Name <span className="required-asterisk">*</span>
                     </label>
-                    <input 
-                      type="text" 
-                      className="form-field"
-                      placeholder="Organization name"
-                    />
+                    <input type="text" className="form-field" placeholder="Organization name" />
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-foreground mb-2 flex items-center gap-2">
@@ -166,11 +127,7 @@ const LoginPage = () => {
                         </TooltipContent>
                       </Tooltip>
                     </label>
-                    <input 
-                      type="text" 
-                      className="form-field"
-                      placeholder="Team name"
-                    />
+                    <input type="text" className="form-field" placeholder="Team name" />
                   </div>
                 </div>
                 
@@ -179,20 +136,13 @@ const LoginPage = () => {
                     <label className="block text-sm font-medium text-foreground mb-2">
                       City <span className="required-asterisk">*</span>
                     </label>
-                    <input 
-                      type="text" 
-                      className="form-field"
-                      placeholder="City"
-                    />
+                    <input type="text" className="form-field" placeholder="City" />
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-foreground mb-2">
                       State <span className="required-asterisk">*</span>
                     </label>
-                    <select 
-                      className="form-field"
-                      defaultValue=""
-                    >
+                    <select className="form-field" defaultValue="">
                       <option value="" disabled>Select state</option>
                       <option value="AL">Alabama</option>
                       <option value="AK">Alaska</option>
@@ -253,24 +203,14 @@ const LoginPage = () => {
                   <label className="block text-sm font-medium text-foreground mb-2">
                     Email <span className="required-asterisk">*</span>
                   </label>
-                  <input 
-                    type="email" 
-                    className="form-field"
-                    placeholder="Enter your email"
-                  />
+                  <input type="email" className="form-field" placeholder="Enter your email" />
                 </div>
                 
                 <div>
                   <label className="block text-sm font-medium text-foreground mb-2">
                     Password <span className="required-asterisk">*</span>
                   </label>
-                  <input 
-                    type="password" 
-                    className="form-field"
-                    placeholder="Create a password"
-                    value={signUpPassword}
-                    onChange={(e) => setSignUpPassword(e.target.value)}
-                  />
+                  <input type="password" className="form-field" placeholder="Create a password" value={signUpPassword} onChange={e => setSignUpPassword(e.target.value)} />
                 </div>
                 
                 <div className="text-sm text-muted-foreground mt-4">
@@ -281,34 +221,22 @@ const LoginPage = () => {
                   {' '}policies.
                 </div>
                 
-                <button 
-                  type="submit" 
-                  className={`w-full py-3 px-4 rounded-lg font-medium transition-colors mt-6 ${
-                    isSignUpPasswordStarted 
-                      ? 'text-white' 
-                      : 'bg-secondary text-secondary-foreground hover:bg-secondary/80'
-                  }`}
-                  style={isSignUpPasswordStarted ? { backgroundColor: '#145DD0' } : {}}
-                >
+                <button type="submit" className={`w-full py-3 px-4 rounded-lg font-medium transition-colors mt-6 ${isSignUpPasswordStarted ? 'text-white' : 'bg-secondary text-secondary-foreground hover:bg-secondary/80'}`} style={isSignUpPasswordStarted ? {
+                backgroundColor: '#145DD0'
+              } : {}}>
                   LET'S DO IT
                 </button>
               </form>
               
               <div className="text-center mt-6">
-                <button 
-                  onClick={toggleForm}
-                  className="text-accent text-sm underline hover:text-accent/80"
-                >
+                <button onClick={toggleForm} className="text-accent text-sm underline hover:text-accent/80">
                   Already have an account? Sign in here.
                 </button>
               </div>
-            </div>
-          )}
+            </div>)}
         </div>
       </div>
     </div>
-    </TooltipProvider>
-  );
+    </TooltipProvider>;
 };
-
 export default LoginPage;
