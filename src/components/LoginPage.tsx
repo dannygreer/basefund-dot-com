@@ -38,7 +38,7 @@ const LoginPage = () => {
               Trusted by thousands of financial leaders and the world's leading banks.
             </h3>
             
-            <p className="text-white/90 text-sm leading-relaxed">
+            <p className="text-white/90 leading-relaxed">
               Basefund is managing over $200 billion in payments and securely closing billions each month.
             </p>
           </div>
