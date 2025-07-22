@@ -27,9 +27,6 @@ const LoginPage = () => {
             Secure and insure your money in motion.
           </h2>
           
-          <p className="text-white/90 mb-8 leading-relaxed">
-            Wire transfers, capital transactions, and fund movements are uninsured and unprotected, putting institutions at risk of fraud, financial loss, and compliance failures. <span className="font-bold">Until now.</span>
-          </p>
           
           <p className="text-white/90 mb-8 leading-relaxed font-bold">Secure your transactions through robust identity verification, bank account validation, and insurance protection.</p>
           
