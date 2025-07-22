@@ -21,9 +21,9 @@ const LoginPage = () => {
         background: 'linear-gradient(180deg, #145DD0 0%, #145DD0 70%, #28A4DD 100%)'
       }}>
         <div className="max-w-md mx-auto">
-          <img src="/lovable-uploads/0df6207d-c067-4c95-b089-f3b6b2bb1c42.png" alt="BaseFund" className="h-8 mb-8 mx-auto md:mx-0" />
+          <img src="/lovable-uploads/0df6207d-c067-4c95-b089-f3b6b2bb1c42.png" alt="BaseFund" className="h-6 md:h-8 mb-8 mx-auto md:mx-0" />
           
-          <h2 className="text-[42px] font-black mb-6 leading-tight text-center md:text-left">
+          <h2 className="text-[21px] md:text-[42px] font-black mb-6 leading-tight text-center md:text-left">
             <span className="md:hidden">Secure and insure<br />your money in motion.</span>
             <span className="hidden md:inline">Secure and insure your money in motion.</span>
           </h2>
