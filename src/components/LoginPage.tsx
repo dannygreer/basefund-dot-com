@@ -24,7 +24,7 @@ const LoginPage = () => {
       {/* Left Side - Blue Section */}
       <div className="flex-1 p-12 flex flex-col justify-center text-white relative" style={{ backgroundColor: '#145DD0' }}>
         <div className="max-w-md">
-          <h1 className="text-2xl font-light tracking-wider mb-8">TECHAUTH</h1>
+          <img src="/lovable-uploads/0df6207d-c067-4c95-b089-f3b6b2bb1c42.png" alt="BaseFund" className="h-8 mb-8" />
           
           <h2 className="text-3xl font-normal mb-6 leading-tight">
             We're here to help you level up.
