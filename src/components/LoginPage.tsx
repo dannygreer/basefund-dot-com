@@ -41,6 +41,16 @@ const LoginPage = () => {
             <p className="text-white/90 leading-relaxed">
               Basefund is managing over $200 billion in payments and securely closing billions each month.
             </p>
+            
+            <a 
+              href="https://basefund.io" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="inline-block mt-4 px-6 py-2 bg-white/90 rounded-lg font-medium transition-colors hover:bg-white" 
+              style={{ color: '#145DD0' }}
+            >
+              LEARN MORE
+            </a>
           </div>
         </div>
       </div>
