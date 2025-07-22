@@ -87,15 +87,8 @@ const LoginPage = () => {
             <div className="text-center">
               <h2 className="text-2xl font-medium mb-8">Thank You!</h2>
               <p className="text-lg leading-relaxed mb-8">
-                Thank you for your interest in Basefund. We're getting your account setup and someone from our team will be back in touch soon!
+                We appreciate your interest in Basefund. We're getting your account setup and someone from our team will be back in touch soon!
               </p>
-              <button 
-                onClick={() => setShowConfirmation(false)}
-                className="text-sm underline" 
-                style={{ color: '#145DD0' }}
-              >
-                Back to forms
-              </button>
             </div>
           ) : (
 
