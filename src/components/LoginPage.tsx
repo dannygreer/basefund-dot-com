@@ -54,7 +54,7 @@ const LoginPage = () => {
       </div>
 
       {/* Right Side - Form Section */}
-      <div className="flex-1 bg-white flex items-start justify-center p-6 md:p-12 order-2 md:order-none pt-8 md:pt-12">
+      <div className="flex-1 bg-white flex items-start md:items-center justify-center p-6 md:p-12 order-2 md:order-none pt-8 md:pt-12">
         <div className="w-full max-w-md">
 
           {!isSignUp ? (/* Sign In Form */
