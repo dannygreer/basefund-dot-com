@@ -17,10 +17,10 @@ const LoginPage = () => {
   return <TooltipProvider>
     <div className="min-h-screen bg-light-gray flex flex-col md:flex-row">
       {/* Left Side - Blue Section */}
-      <div className="md:flex-1 py-16 px-6 md:p-12 flex flex-col justify-center text-white relative order-1 md:order-none h-40 md:h-auto" style={{
+      <div className="md:flex-1 py-16 px-6 md:p-12 flex flex-col justify-center text-white relative order-1 md:order-none h-50 md:h-auto" style={{
         background: 'linear-gradient(180deg, #145DD0 0%, #145DD0 70%, #28A4DD 100%)'
       }}>
-        <div className="max-w-md mx-auto my-5 md:my-0">
+        <div className="max-w-md mx-auto md:my-0 flex flex-col justify-center items-center md:items-start h-full">
           <img src="/lovable-uploads/0df6207d-c067-4c95-b089-f3b6b2bb1c42.png" alt="BaseFund" className="h-6 md:h-8 mb-8 mx-auto md:mx-0 mt-5 md:mt-0" />
           
           <h2 className="text-[26px] md:text-[32px] lg:text-[42px] font-black mb-6 leading-tight text-center md:text-left">
