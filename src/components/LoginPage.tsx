@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
 const LoginPage = () => {
   const [isSignUp, setIsSignUp] = useState(false);
@@ -18,6 +19,7 @@ const LoginPage = () => {
   const isSignUpPasswordStarted = signUpPassword.trim() !== '';
 
   return (
+    <TooltipProvider>
     <div className="min-h-screen bg-light-gray flex">
       {/* Left Side - Blue Section */}
       <div className="flex-1 p-12 flex flex-col justify-center text-white relative" style={{ backgroundColor: '#145DD0' }}>
@@ -155,15 +157,22 @@ const LoginPage = () => {
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-foreground mb-2">
+                    <label className="block text-sm font-medium text-foreground mb-2 flex items-center gap-2">
                       Team Name <span className="required-asterisk">*</span>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <span className="w-4 h-4 rounded-full bg-muted text-muted-foreground text-xs flex items-center justify-center cursor-help">?</span>
+                        </TooltipTrigger>
+                        <TooltipContent className="max-w-xs">
+                          <p>Your team name should be unique from your organization name. As an example, this may be your location or the name of a working group.</p>
+                        </TooltipContent>
+                      </Tooltip>
                     </label>
                     <input 
                       type="text" 
                       className="form-field"
                       placeholder="Team name"
                     />
-                    <p className="text-xs text-muted-foreground mt-1">Not the same as your org name</p>
                   </div>
                 </div>
                 
@@ -300,6 +309,7 @@ const LoginPage = () => {
         </div>
       </div>
     </div>
+    </TooltipProvider>
   );
 };
 
