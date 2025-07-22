@@ -29,7 +29,7 @@ const LoginPage = () => {
           </h2>
           
           
-          <p className="text-white/90 mb-8 leading-relaxed font-semibold hidden md:block text-[18px]">Secure your transactions through robust identity verification, bank account validation, and insurance protection.</p>
+          <p className="text-white/90 mb-8 leading-relaxed font-medium hidden md:block text-[16px]">Secure your transactions through robust identity verification, bank account validation, and insurance protection.</p>
           
           <a 
             href="https://basefund.io" 
