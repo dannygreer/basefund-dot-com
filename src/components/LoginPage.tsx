@@ -4,12 +4,18 @@ const LoginPage = () => {
   const [isSignUp, setIsSignUp] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [signUpPassword, setSignUpPassword] = useState('');
 
   const toggleForm = () => {
     setIsSignUp(!isSignUp);
+    // Reset passwords when switching forms
+    setEmail('');
+    setPassword('');
+    setSignUpPassword('');
   };
 
   const isSignInComplete = email.trim() !== '' && password.trim() !== '';
+  const isSignUpPasswordStarted = signUpPassword.trim() !== '';
 
   return (
     <div className="min-h-screen bg-light-gray flex">
@@ -255,6 +261,8 @@ const LoginPage = () => {
                     type="password" 
                     className="form-field"
                     placeholder="Create a password"
+                    value={signUpPassword}
+                    onChange={(e) => setSignUpPassword(e.target.value)}
                   />
                 </div>
                 
@@ -266,7 +274,15 @@ const LoginPage = () => {
                   {' '}policies.
                 </div>
                 
-                <button type="submit" className="btn-primary mt-6 bg-accent text-accent-foreground hover:bg-accent/90">
+                <button 
+                  type="submit" 
+                  className={`w-full py-3 px-4 rounded-lg font-medium transition-colors mt-6 ${
+                    isSignUpPasswordStarted 
+                      ? 'text-white' 
+                      : 'bg-secondary text-secondary-foreground hover:bg-secondary/80'
+                  }`}
+                  style={isSignUpPasswordStarted ? { backgroundColor: '#145DD0' } : {}}
+                >
                   LET'S DO IT
                 </button>
               </form>
