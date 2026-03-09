@@ -42,7 +42,7 @@
 <body class="bg-white text-gray-800 antialiased overflow-x-hidden font-sans">
 
   <section class="relative overflow-hidden">
-    <div class="mesh-hero noise">
+    <div class="mesh-hero noise overflow-hidden">
       <nav class="relative z-50">
         <div class="max-w-7xl mx-auto px-6 lg:px-8 flex items-center justify-between h-[72px]">
           <a href="/book" class="flex items-center">
@@ -51,17 +51,15 @@
           <a href="/book#resources" class="text-sm font-semibold text-white/90 hover:text-white transition-colors">← Back to Book Resources</a>
         </div>
       </nav>
-      <div class="max-w-4xl mx-auto px-6 lg:px-8 py-20 lg:py-28">
+      <div class="max-w-4xl mx-auto px-6 lg:px-8 py-20 lg:py-28 relative">
+        <img src="../shapes/19.svg" alt="" class="absolute left-0 lg:left-8 top-1/2 -translate-y-1/2 w-[280px] lg:w-[360px] h-auto brightness-0 invert opacity-[0.06] pointer-events-none select-none">
         <div class="r inline-flex items-center gap-2 bg-white/15 rounded-full px-4 py-1.5 mb-6">
           <span class="text-xs text-white font-semibold uppercase tracking-[.15em]">Chapter 12: Payment Rails</span>
         </div>
-        <div class="r rd1 flex items-start gap-5 mb-4">
-          <img src="../shapes/19.svg" alt="" class="w-10 h-10 lg:w-12 lg:h-12 brightness-0 invert mt-1 shrink-0 opacity-50">
-          <h1 class="font-heading text-4xl sm:text-5xl lg:text-[56px] leading-[1.15] font-bold tracking-tight text-white">
-            Rail Selection Calculator
-          </h1>
-        </div>
-        <p class="r rd2 text-xl font-heading text-white/70 mb-6">Interactive Web Calculator · Web-based calculator with recommendation engine + PDF export</p>
+        <h1 class="r rd1 font-heading text-4xl sm:text-5xl lg:text-[56px] leading-[1.15] font-bold tracking-tight text-white mb-4">
+          Rail Selection Calculator
+        </h1>
+        <p class="r rd2 text-xl font-heading text-white/70 mb-6">Interactive Web Calculator<br>Web-based calculator with recommendation engine + PDF export</p>
         <p class="r rd3 text-xl text-white/90 leading-relaxed mb-10 max-w-2xl font-heading italic">
           "Stop choosing payment rails at the last minute. Start choosing them by design."
         </p>
