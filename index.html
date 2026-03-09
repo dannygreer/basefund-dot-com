@@ -30,14 +30,22 @@
   </script>
   <style>
     *,*::before,*::after{box-sizing:border-box}
+    .noise{position:relative;isolation:isolate}
+    .noise::after{content:'';position:absolute;inset:0;z-index:1;pointer-events:none;opacity:.06;mix-blend-mode:overlay;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-repeat:repeat;background-size:256px 256px}
     .r{opacity:0;transform:translateY(24px);transition:opacity .8s cubic-bezier(.16,1,.3,1),transform .8s cubic-bezier(.16,1,.3,1)}
     .r.v{opacity:1;transform:translateY(0)}
     .rd1{transition-delay:.1s}.rd2{transition-delay:.2s}.rd3{transition-delay:.3s}.rd4{transition-delay:.4s}.rd5{transition-delay:.5s}
+    .r.slow{transition-duration:1.4s}.sd1{transition-delay:.3s}.sd2{transition-delay:.6s}.sd3{transition-delay:.9s}.sd4{transition-delay:1.2s}
 
-    .nav{background:rgba(255,255,255,.92);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid rgba(0,0,0,.06)}
+    /* Chapter card styles */
+    .ch-card{transition:box-shadow .3s}
+    .ch-card:hover{box-shadow:0 4px 20px rgba(20,93,208,.08)}
+
+    .nav{background:transparent;border-bottom:none}
     .mm{max-height:0;overflow:hidden;transition:max-height .4s cubic-bezier(.16,1,.3,1)}.mm.open{max-height:500px}
 
     @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}.float{animation:float 6s ease-in-out infinite}
+    @keyframes nudge{0%,70%,100%{transform:translateY(0)}80%{transform:translateY(3px)}90%{transform:translateY(-1px)}}.nudge{animation:nudge 3s ease-in-out infinite}
 
     /* Tag styles */
     .tag-download{background:#E8F0FE;color:#145DD0;border:1px solid #CDDCF5}
@@ -74,11 +82,11 @@
     /* Mesh gradient backgrounds */
     .mesh-hero{
       background:
-        radial-gradient(ellipse 70% 60% at 0% 100%, rgba(0,244,224,.18) 0%, transparent 55%),
-        radial-gradient(ellipse 50% 50% at 80% 0%, rgba(20,93,208,.2) 0%, transparent 50%),
-        radial-gradient(ellipse 60% 60% at 100% 80%, rgba(40,164,221,.15) 0%, transparent 55%),
-        radial-gradient(ellipse 40% 40% at 30% 30%, rgba(20,93,208,.12) 0%, transparent 45%),
-        linear-gradient(135deg, #EBF1FF 0%, #F5F8FF 40%, #E8F6F6 100%);
+        radial-gradient(ellipse 80% 70% at 0% 100%, rgba(0,244,224,.25) 0%, transparent 55%),
+        radial-gradient(ellipse 60% 60% at 85% 0%, rgba(40,164,221,.4) 0%, transparent 50%),
+        radial-gradient(ellipse 70% 60% at 100% 80%, rgba(40,164,221,.3) 0%, transparent 55%),
+        radial-gradient(ellipse 50% 50% at 30% 20%, rgba(20,93,208,.35) 0%, transparent 45%),
+        linear-gradient(135deg, #145DD0 0%, #1a6ae0 30%, #28A4DD 70%, #145DD0 100%);
     }
     .mesh-about{
       background:
@@ -87,10 +95,7 @@
         white;
     }
     .mesh-chapters{
-      background:
-        radial-gradient(ellipse 60% 50% at 0% 50%, rgba(20,93,208,.04) 0%, transparent 55%),
-        radial-gradient(ellipse 50% 40% at 100% 80%, rgba(0,244,224,.05) 0%, transparent 50%),
-        white;
+      background:white;
     }
     .mesh-resources{
       background:
@@ -100,10 +105,11 @@
     }
     .mesh-blue{
       background:
-        radial-gradient(ellipse 60% 50% at 0% 0%, rgba(0,244,224,.15) 0%, transparent 55%),
-        radial-gradient(ellipse 50% 50% at 100% 100%, rgba(40,164,221,.2) 0%, transparent 50%),
-        radial-gradient(ellipse 40% 40% at 50% 50%, rgba(0,244,224,.08) 0%, transparent 45%),
-        #145DD0;
+        radial-gradient(ellipse 70% 60% at 100% 0%, rgba(0,244,224,.25) 0%, transparent 55%),
+        radial-gradient(ellipse 60% 70% at 0% 80%, rgba(40,164,221,.4) 0%, transparent 50%),
+        radial-gradient(ellipse 50% 50% at 70% 100%, rgba(40,164,221,.3) 0%, transparent 55%),
+        radial-gradient(ellipse 45% 45% at 20% 30%, rgba(20,93,208,.35) 0%, transparent 45%),
+        linear-gradient(315deg, #145DD0 0%, #1a6ae0 30%, #28A4DD 70%, #145DD0 100%);
     }
     .mesh-who{
       background:
@@ -115,52 +121,51 @@
 </head>
 <body class="bg-white text-gray-800 antialiased overflow-x-hidden font-sans">
 
-  <!-- Nav -->
-  <nav class="nav fixed top-0 inset-x-0 z-50">
-    <div class="max-w-7xl mx-auto px-6 lg:px-8 flex items-center justify-between h-[72px]">
-      <a href="/" class="flex items-center">
-        <img src="basefund-logo.svg" alt="Basefund" class="h-8">
-      </a>
-      <a href="#get-the-book" class="hidden lg:inline-block btn-primary bg-brand-blue hover:bg-brand-dark text-white text-sm font-semibold font-heading px-6 py-2.5 rounded-full">GET STARTED</a>
-      <button id="mt" class="lg:hidden p-2 text-gray-500" aria-label="Menu">
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 9h16.5m-16.5 6.75h16.5"/></svg>
-      </button>
-    </div>
-    <div id="mm" class="mm lg:hidden px-6 pb-4">
-      <div class="flex flex-col gap-1 pt-2 border-t border-gray-100">
-        <a href="#get-the-book" class="bg-brand-blue text-white text-sm font-semibold font-heading px-5 py-3 rounded-full text-center mt-2">GET STARTED</a>
-      </div>
-    </div>
-  </nav>
-
   <!-- HERO -->
-  <section class="relative pt-[72px] overflow-hidden">
-    <div class="mesh-hero">
-      <div class="max-w-7xl mx-auto px-6 lg:px-8 grid lg:grid-cols-2 gap-12 lg:gap-20 items-center py-20 lg:py-28">
+  <section class="relative overflow-hidden">
+    <div class="mesh-hero noise">
+      <!-- Nav -->
+      <nav class="nav relative z-50">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8 flex items-center justify-between h-[72px]">
+          <a href="/" class="flex items-center">
+            <img src="basefund-logo.svg" alt="Basefund" class="h-8 brightness-0 invert">
+          </a>
+          <a href="#get-the-book" class="hidden lg:inline-block btn-primary bg-white hover:bg-gray-100 text-gray-900 text-sm font-extrabold font-heading px-6 py-2.5 rounded-full">GET STARTED</a>
+          <button id="mt" class="lg:hidden p-2 text-white" aria-label="Menu">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 9h16.5m-16.5 6.75h16.5"/></svg>
+          </button>
+        </div>
+        <div id="mm" class="mm lg:hidden px-6 pb-4">
+          <div class="flex flex-col gap-1 pt-2 border-t border-white/10">
+            <a href="#get-the-book" class="bg-white text-brand-blue text-sm font-extrabold font-heading px-5 py-3 rounded-full text-center mt-2">GET STARTED</a>
+          </div>
+        </div>
+      </nav>
+      <div class="max-w-7xl mx-auto px-6 lg:px-8 grid lg:grid-cols-[3fr_2fr] gap-12 lg:gap-16 items-center py-20 lg:py-28">
         <!-- Left -->
         <div>
-          <div class="r inline-flex items-center gap-2.5 bg-brand-light rounded-full px-5 py-2 mb-8">
-            <svg class="w-4 h-4 text-brand-blue" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25"/></svg>
-            <span class="text-xs text-brand-blue font-semibold uppercase tracking-[.15em]">A Must-Read for Anyone That Works with Money</span>
+          <div class="r inline-flex items-center gap-2.5 bg-white/15 rounded-full px-5 py-2 mb-8">
+            <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25"/></svg>
+            <span class="text-xs text-white font-semibold uppercase tracking-[.15em]">A Must-Read for Anyone That Works with Money</span>
           </div>
 
-          <h1 class="r rd1 font-heading text-4xl sm:text-5xl lg:text-[56px] leading-[1.15] font-bold tracking-tight text-gray-900 mb-4">
+          <h1 class="r rd1 font-heading text-4xl sm:text-5xl lg:text-[56px] leading-[1.15] font-bold tracking-tight text-white mb-4">
             When Money Moves
           </h1>
-          <p class="r rd2 text-xl lg:text-2xl font-heading text-gray-500 mb-6">
-            The Secure Transactions Framework<br>for Modern Finance
+          <p class="r rd2 text-xl lg:text-2xl font-heading text-white/70 mb-6">
+            The Secure Transactions Framework for Modern Finance
           </p>
 
-          <p class="r rd3 text-lg text-gray-500 leading-relaxed mb-8 max-w-lg">
-            The definitive guide to eliminating risk in high-value money movement. Includes <span class="text-gray-800 font-semibold">21 practical tools</span> — printable worksheets, interactive assessments, and templates.
+          <p class="r rd3 text-lg text-white/80 leading-relaxed mb-8">
+            The definitive guide to eliminating risk in high-value money movement.<br class="hidden lg:block"> A 150+ page book with <span class="text-white font-semibold">21 practical tools</span> — printable worksheets, interactive assessments, and templates.
           </p>
 
           <!-- Email form — Get the Hardback -->
           <div class="r rd4 mb-6">
-            <p class="text-sm font-semibold text-gray-700 mb-3">Get a physical copy:</p>
+            <p class="text-sm font-semibold text-white/80 mb-3">Get a physical copy:</p>
             <form class="flex flex-col sm:flex-row gap-3" onsubmit="event.preventDefault()">
-              <input type="email" placeholder="Enter your work email" class="flex-1 bg-white border border-gray-200 rounded-lg px-5 py-3.5 text-base text-gray-800 placeholder:text-gray-400 focus:outline-none focus:border-brand-blue focus:ring-2 focus:ring-brand-blue/10 transition-all">
-              <button type="submit" class="btn-primary bg-brand-blue text-white font-semibold text-base px-7 py-3.5 rounded-lg shrink-0">
+              <input type="email" placeholder="Enter your work email" class="flex-1 bg-white/10 border border-white/20 rounded-lg px-5 py-3.5 text-base text-white placeholder:text-white/50 focus:outline-none focus:border-white/40 focus:ring-2 focus:ring-white/10 transition-all">
+              <button type="submit" class="btn-primary bg-white text-brand-blue font-semibold text-base px-7 py-3.5 rounded-lg shrink-0 hover:bg-gray-100">
                 Request Copy
               </button>
             </form>
@@ -168,13 +173,13 @@
 
           <!-- Secondary CTAs -->
           <div class="r rd5 flex flex-wrap items-center gap-4">
-            <a href="#get-the-book" class="inline-flex items-center gap-2 text-sm font-semibold text-brand-blue hover:text-brand-dark transition-colors">
+            <a href="#get-the-book" class="inline-flex items-center gap-2 text-sm font-semibold text-white/90 hover:text-white transition-colors">
               <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25"/></svg>
               Read the Digital Book
             </a>
-            <span class="text-gray-300">|</span>
-            <a href="#downloads" class="inline-flex items-center gap-2 text-sm font-semibold text-brand-blue hover:text-brand-dark transition-colors">
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"/></svg>
+            <span class="text-white/30">|</span>
+            <a href="#downloads" class="inline-flex items-center gap-2 text-sm font-semibold text-white/90 hover:text-white transition-colors">
+              <svg class="w-4 h-4 nudge" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"/></svg>
               Browse Resources
             </a>
           </div>
@@ -203,7 +208,7 @@
               Every year, organizations lose billions to transaction fraud, errors, and process breakdowns — not because they lack technology, but because they lack a framework. <em class="font-heading text-gray-800">When Money Moves</em> changes that.
             </p>
             <p>
-              Written by Robert White, founder of Basefund, this book distills years of experience securing high-value transactions into a repeatable, implementable system. Whether you're moving funds via wire, ACH, check, or digital rails, the Secure Transactions Framework gives you the structure to eliminate risk at every stage.
+              Written by Robert White, founder of Basefund, this book distills years of experience securing high-value transactions into a repeatable, implementable system. Whether you're moving funds via wire, ACH, check, or digital rails, <strong class="text-gray-800">the Secure Transactions Framework gives you the structure to eliminate risk at every stage.</strong>
             </p>
             <p>
               This isn't theory. Every chapter pairs real-world case studies with hands-on tools you can deploy immediately — scorecards, checklists, audit templates, and interactive diagnostics that turn the framework into action.
@@ -259,9 +264,6 @@
               </a>
             </div>
 
-            <div class="mt-6 pt-5 border-t border-gray-200 text-center">
-              <p class="text-xs text-gray-400">Free for everyone — no account required</p>
-            </div>
           </div>
         </div>
       </div>
@@ -269,40 +271,49 @@
   </section>
 
   <!-- VISION -->
-  <section class="py-24 lg:py-32 mesh-blue">
+  <section class="py-24 lg:py-32 mesh-blue noise">
     <div class="max-w-7xl mx-auto px-6 lg:px-8 grid lg:grid-cols-2 gap-16 lg:gap-20 items-center">
       <!-- Left — History cards (compact vertical) -->
       <div class="flex flex-col items-center">
         <!-- Era 1 -->
-        <div class="r flex gap-5 items-center bg-white rounded-2xl p-4 shadow-lg w-full">
-          <div class="shrink-0 w-32 h-24 rounded-lg overflow-hidden">
+        <div class="r slow flex gap-6 items-stretch bg-white/12 backdrop-blur-md rounded-2xl overflow-hidden shadow-lg w-full border border-white/20">
+          <div class="shrink-0 w-40 min-h-[160px]">
             <img src="history-1.jpg" alt="1800s banking" class="w-full h-full object-cover">
           </div>
-          <p class="text-gray-600 leading-relaxed" style="font-size:0.875rem">
-            In the 1800s, your banker knew your family. Trust was earned face-to-face. Money moved slowly — and that friction was its own kind of security.
-          </p>
+          <div class="py-5 pr-5 flex flex-col justify-center">
+            <span class="text-[11px] font-semibold text-white/50 uppercase tracking-[.2em] mb-1.5">01 — The 1800s</span>
+            <p class="font-heading text-white leading-relaxed text-base">
+              In the 1800s, your banker knew your family. Trust was earned face-to-face. Money moved slowly — and that friction was its own kind of security.
+            </p>
+          </div>
         </div>
         <!-- Dotted line -->
-        <div class="r rd1 h-10 border-l-2 border-dashed border-white/40"></div>
+        <div class="r slow sd1 h-10 border-l-2 border-dashed border-white/30"></div>
         <!-- Era 2 -->
-        <div class="r rd2 flex gap-5 items-center bg-white rounded-2xl p-4 shadow-lg w-full">
-          <div class="shrink-0 w-32 h-24 rounded-lg overflow-hidden">
+        <div class="r slow sd2 flex gap-6 items-stretch bg-white/12 backdrop-blur-md rounded-2xl overflow-hidden shadow-lg w-full border border-white/20">
+          <div class="shrink-0 w-40 min-h-[160px]">
             <img src="history-3.jpg" alt="Wire transfers and SWIFT" class="w-full h-full object-cover">
           </div>
-          <p class="text-gray-600 leading-relaxed" style="font-size:0.875rem">
-            Then came the telegraph. Then wire transfers. Then SWIFT. Each innovation solved a problem and created a new one.
-          </p>
+          <div class="py-5 pr-5 flex flex-col justify-center">
+            <span class="text-[11px] font-semibold text-white/50 uppercase tracking-[.2em] mb-1.5">02 — The Wire Age</span>
+            <p class="font-heading text-white leading-relaxed text-base">
+              Then came the telegraph. Then wire transfers. Then SWIFT. Each innovation solved a problem and created a new one.
+            </p>
+          </div>
         </div>
         <!-- Dotted line -->
-        <div class="r rd3 h-10 border-l-2 border-dashed border-white/40"></div>
+        <div class="r slow sd3 h-10 border-l-2 border-dashed border-white/30"></div>
         <!-- Era 3 -->
-        <div class="r rd4 flex gap-5 items-center bg-white rounded-2xl p-4 shadow-lg w-full">
-          <div class="shrink-0 w-32 h-24 rounded-lg overflow-hidden">
+        <div class="r slow sd4 flex gap-6 items-stretch bg-white/12 backdrop-blur-md rounded-2xl overflow-hidden shadow-lg w-full border border-white/20">
+          <div class="shrink-0 w-40 min-h-[160px]">
             <img src="history-2.jpg" alt="Digital era — speed and anonymity" class="w-full h-full object-cover">
           </div>
-          <p class="text-gray-600 leading-relaxed" style="font-size:0.875rem">
-            Speed increased. Visibility decreased. We lost the ability to tell a trusted partner from someone pretending to be one.
-          </p>
+          <div class="py-5 pr-5 flex flex-col justify-center">
+            <span class="text-[11px] font-semibold text-white/50 uppercase tracking-[.2em] mb-1.5">03 — The Digital Era</span>
+            <p class="font-heading text-white leading-relaxed text-base">
+              Speed increased. Visibility decreased. We lost the ability to tell a trusted partner from someone pretending to be one.
+            </p>
+          </div>
         </div>
       </div>
       <!-- Right — Text -->
@@ -319,7 +330,7 @@
   </section>
 
   <!-- WHO IT'S FOR -->
-  <section class="py-24 lg:py-32 mesh-who border-y border-gray-100">
+  <section class="py-24 lg:py-32 mesh-who noise border-y border-gray-100">
     <div class="max-w-6xl mx-auto px-6 lg:px-8">
       <div class="text-center mb-16">
         <p class="r text-xs text-brand-blue uppercase tracking-[.2em] mb-4 font-semibold">Who It's For</p>
@@ -365,7 +376,7 @@
   </section>
 
   <!-- CHAPTER OVERVIEW — Sticky Scroll -->
-  <section class="mesh-chapters">
+  <section class="mesh-chapters noise">
     <div class="max-w-7xl mx-auto px-6 lg:px-8">
       <div class="lg:grid lg:grid-cols-2 lg:gap-20">
         <!-- Left — Sticky heading -->
@@ -381,16 +392,25 @@
             <!-- Part indicators -->
             <div class="r rd3 flex flex-col gap-3 mt-10">
               <div class="chapter-indicator flex items-center gap-3 text-sm" data-part="1">
-                <div class="w-8 h-0.5 bg-gray-300 rounded-full transition-all duration-500 indicator-bar"></div>
-                <span class="text-gray-400 transition-colors duration-500">Part One</span>
+                <div class="w-8 h-0.5 bg-gray-300 rounded-full transition-all duration-500 indicator-bar shrink-0"></div>
+                <div>
+                  <span class="text-gray-400 transition-colors duration-500 block">Part One</span>
+                  <span class="text-[11px] text-gray-300 transition-colors duration-500 indicator-sub block mt-0.5">How Modern Transactions Work</span>
+                </div>
               </div>
               <div class="chapter-indicator flex items-center gap-3 text-sm" data-part="2">
-                <div class="w-8 h-0.5 bg-gray-300 rounded-full transition-all duration-500 indicator-bar"></div>
-                <span class="text-gray-400 transition-colors duration-500">Part Two</span>
+                <div class="w-8 h-0.5 bg-gray-300 rounded-full transition-all duration-500 indicator-bar shrink-0"></div>
+                <div>
+                  <span class="text-gray-400 transition-colors duration-500 block">Part Two</span>
+                  <span class="text-[11px] text-gray-300 transition-colors duration-500 indicator-sub block mt-0.5">The Secure Transactions Framework</span>
+                </div>
               </div>
               <div class="chapter-indicator flex items-center gap-3 text-sm" data-part="3">
-                <div class="w-8 h-0.5 bg-gray-300 rounded-full transition-all duration-500 indicator-bar"></div>
-                <span class="text-gray-400 transition-colors duration-500">Part Three</span>
+                <div class="w-8 h-0.5 bg-gray-300 rounded-full transition-all duration-500 indicator-bar shrink-0"></div>
+                <div>
+                  <span class="text-gray-400 transition-colors duration-500 block">Part Three</span>
+                  <span class="text-[11px] text-gray-300 transition-colors duration-500 indicator-sub block mt-0.5">Building for What's Next</span>
+                </div>
               </div>
             </div>
           </div>
@@ -402,17 +422,17 @@
           <div class="chapter-part" data-part="1">
             <h3 class="font-heading text-sm font-bold text-brand-blue uppercase tracking-[.15em] mb-6">Part One: How Modern Transactions Work</h3>
             <div class="flex flex-col gap-4">
-              <div class="bg-white rounded-xl p-6 border border-gray-100 shadow-sm">
+              <div class="ch-card bg-white rounded-xl p-6 border border-gray-100 shadow-sm">
                 <p class="text-xs font-semibold text-brand-blue mb-2">Chapter 1</p>
                 <h4 class="font-heading font-bold text-gray-900 mb-1">The Transaction Breakdown</h4>
                 <p class="text-sm text-gray-500">Money moves in the present tense.</p>
               </div>
-              <div class="bg-white rounded-xl p-6 border border-gray-100 shadow-sm">
+              <div class="ch-card bg-white rounded-xl p-6 border border-gray-100 shadow-sm">
                 <p class="text-xs font-semibold text-brand-blue mb-2">Chapter 2</p>
                 <h4 class="font-heading font-bold text-gray-900 mb-1">The Great Disconnection</h4>
                 <p class="text-sm text-gray-500">Fragmentation hides what connection reveals.</p>
               </div>
-              <div class="bg-white rounded-xl p-6 border border-gray-100 shadow-sm">
+              <div class="ch-card bg-white rounded-xl p-6 border border-gray-100 shadow-sm">
                 <p class="text-xs font-semibold text-brand-blue mb-2">Chapter 3</p>
                 <h4 class="font-heading font-bold text-gray-900 mb-1">Framing the Framework</h4>
                 <p class="text-sm text-gray-500">Money only becomes dangerous once it starts moving.</p>
@@ -426,17 +446,17 @@
 
             <p class="text-xs font-semibold text-gray-400 uppercase tracking-[.15em] mb-3">Decisions</p>
             <div class="flex flex-col gap-4 mb-8">
-              <div class="bg-white rounded-xl p-6 border border-gray-100 shadow-sm">
+              <div class="ch-card bg-white rounded-xl p-6 border border-gray-100 shadow-sm">
                 <p class="text-xs font-semibold text-brand-blue mb-2">Chapter 4</p>
                 <h4 class="font-heading font-bold text-gray-900 mb-1">Classification</h4>
                 <p class="text-sm text-gray-500">Different transactions behave differently — and must be treated differently.</p>
               </div>
-              <div class="bg-white rounded-xl p-6 border border-gray-100 shadow-sm">
+              <div class="ch-card bg-white rounded-xl p-6 border border-gray-100 shadow-sm">
                 <p class="text-xs font-semibold text-brand-blue mb-2">Chapter 5</p>
                 <h4 class="font-heading font-bold text-gray-900 mb-1">Connected Transactions</h4>
                 <p class="text-sm text-gray-500">A transaction is only as strong as its weakest dependency.</p>
               </div>
-              <div class="bg-white rounded-xl p-6 border border-gray-100 shadow-sm">
+              <div class="ch-card bg-white rounded-xl p-6 border border-gray-100 shadow-sm">
                 <p class="text-xs font-semibold text-brand-blue mb-2">Chapter 6</p>
                 <h4 class="font-heading font-bold text-gray-900 mb-1">Transaction Stages</h4>
                 <p class="text-sm text-gray-500">Security isn't a moment — it's a sequence.</p>
@@ -445,17 +465,17 @@
 
             <p class="text-xs font-semibold text-gray-400 uppercase tracking-[.15em] mb-3">Governance</p>
             <div class="flex flex-col gap-4 mb-8">
-              <div class="bg-white rounded-xl p-6 border border-gray-100 shadow-sm">
+              <div class="ch-card bg-white rounded-xl p-6 border border-gray-100 shadow-sm">
                 <p class="text-xs font-semibold text-brand-blue mb-2">Chapter 7</p>
                 <h4 class="font-heading font-bold text-gray-900 mb-1">Organizations</h4>
                 <p class="text-sm text-gray-500">How internal authority is structured and enforced.</p>
               </div>
-              <div class="bg-white rounded-xl p-6 border border-gray-100 shadow-sm">
+              <div class="ch-card bg-white rounded-xl p-6 border border-gray-100 shadow-sm">
                 <p class="text-xs font-semibold text-brand-blue mb-2">Chapter 8</p>
                 <h4 class="font-heading font-bold text-gray-900 mb-1">Contacts</h4>
                 <p class="text-sm text-gray-500">Who is outside your organization, and how are they recognized?</p>
               </div>
-              <div class="bg-white rounded-xl p-6 border border-gray-100 shadow-sm">
+              <div class="ch-card bg-white rounded-xl p-6 border border-gray-100 shadow-sm">
                 <p class="text-xs font-semibold text-brand-blue mb-2">Chapter 9</p>
                 <h4 class="font-heading font-bold text-gray-900 mb-1">Participants</h4>
                 <p class="text-sm text-gray-500">Who is involved in a transaction, and how?</p>
@@ -464,22 +484,22 @@
 
             <p class="text-xs font-semibold text-gray-400 uppercase tracking-[.15em] mb-3">Integrity</p>
             <div class="flex flex-col gap-4">
-              <div class="bg-white rounded-xl p-6 border border-gray-100 shadow-sm">
+              <div class="ch-card bg-white rounded-xl p-6 border border-gray-100 shadow-sm">
                 <p class="text-xs font-semibold text-brand-blue mb-2">Chapter 10</p>
                 <h4 class="font-heading font-bold text-gray-900 mb-1">Verification</h4>
                 <p class="text-sm text-gray-500">Proof outlasts every impression.</p>
               </div>
-              <div class="bg-white rounded-xl p-6 border border-gray-100 shadow-sm">
+              <div class="ch-card bg-white rounded-xl p-6 border border-gray-100 shadow-sm">
                 <p class="text-xs font-semibold text-brand-blue mb-2">Chapter 11</p>
                 <h4 class="font-heading font-bold text-gray-900 mb-1">Information</h4>
                 <p class="text-sm text-gray-500">Bringing data under the same control plane.</p>
               </div>
-              <div class="bg-white rounded-xl p-6 border border-gray-100 shadow-sm">
+              <div class="ch-card bg-white rounded-xl p-6 border border-gray-100 shadow-sm">
                 <p class="text-xs font-semibold text-brand-blue mb-2">Chapter 12</p>
                 <h4 class="font-heading font-bold text-gray-900 mb-1">Payment Rails</h4>
                 <p class="text-sm text-gray-500">The rail you choose is the risk you accept.</p>
               </div>
-              <div class="bg-white rounded-xl p-6 border border-gray-100 shadow-sm">
+              <div class="ch-card bg-white rounded-xl p-6 border border-gray-100 shadow-sm">
                 <p class="text-xs font-semibold text-brand-blue mb-2">Chapter 13</p>
                 <h4 class="font-heading font-bold text-gray-900 mb-1">Transaction Insurance</h4>
                 <p class="text-sm text-gray-500">Insurance doesn't prevent fraud — it proves you tried to prevent it.</p>
@@ -491,12 +511,12 @@
           <div class="chapter-part" data-part="3">
             <h3 class="font-heading text-sm font-bold text-brand-blue uppercase tracking-[.15em] mb-6">Part Three: Building for What's Next</h3>
             <div class="flex flex-col gap-4">
-              <div class="bg-white rounded-xl p-6 border border-gray-100 shadow-sm">
+              <div class="ch-card bg-white rounded-xl p-6 border border-gray-100 shadow-sm">
                 <p class="text-xs font-semibold text-brand-blue mb-2">Chapter 14</p>
                 <h4 class="font-heading font-bold text-gray-900 mb-1">Future-Proofing Your Transactions</h4>
                 <p class="text-sm text-gray-500">Technology amplifies what structure protects.</p>
               </div>
-              <div class="bg-white rounded-xl p-6 border border-gray-100 shadow-sm">
+              <div class="ch-card bg-white rounded-xl p-6 border border-gray-100 shadow-sm">
                 <p class="text-xs font-semibold text-brand-blue mb-2">Chapter 15</p>
                 <h4 class="font-heading font-bold text-gray-900 mb-1">Implementation and Next Steps</h4>
                 <p class="text-sm text-gray-500">Structure enables speed.</p>
@@ -827,7 +847,7 @@
   </section>
 
   <!-- CTA / GET THE BOOK -->
-  <section id="get-the-book" class="py-28 lg:py-36 mesh-blue relative overflow-hidden">
+  <section id="get-the-book" class="py-28 lg:py-36 mesh-blue noise relative overflow-hidden">
     <div class="absolute top-0 right-0 w-[500px] h-[500px] rounded-full bg-white/[.04]" style="transform:translate(30%,-40%)"></div>
     <div class="absolute bottom-0 left-0 w-[400px] h-[400px] rounded-full bg-white/[.03]" style="transform:translate(-30%,40%)"></div>
 
@@ -836,7 +856,7 @@
         Get the book.<br>
         <span class="text-blue-200">Secure your transactions.</span>
       </h2>
-      <p class="r rd1 text-lg text-blue-100/70 max-w-xl mx-auto mb-10 leading-relaxed">
+      <p class="r rd1 text-lg text-white max-w-xl mx-auto mb-10 leading-relaxed">
         The complete Secure Transactions Framework — plus all 21 tools, worksheets, and interactive assessments. Completely free.
       </p>
 
@@ -844,31 +864,17 @@
         <form class="flex flex-col sm:flex-row gap-3 mb-4" onsubmit="event.preventDefault()">
           <input type="email" placeholder="Enter your work email" class="flex-1 bg-white/10 border border-white/20 rounded-lg px-6 py-4 text-base text-white placeholder:text-blue-200/40 focus:outline-none focus:border-white/40 focus:bg-white/15 transition-all">
           <button type="submit" class="bg-white text-brand-blue font-bold text-base px-8 py-4 rounded-lg hover:bg-blue-50 transition-all shrink-0">
-            Get Access
+            Request Copy
           </button>
         </form>
-        <p class="r rd3 text-xs text-blue-200/50">No credit card required. Instant access to all resources.</p>
+        <p class="r rd3 text-xs text-blue-200/50">We will never share or sell your personal information.</p>
       </div>
     </div>
   </section>
 
   <!-- FOOTER -->
-  <footer class="border-t border-gray-100 pt-16 pb-10 bg-white">
-    <div class="max-w-6xl mx-auto px-6 lg:px-8">
-      <div class="flex flex-col sm:flex-row justify-between items-center gap-6">
-        <div class="flex items-center gap-2.5">
-          <svg width="22" height="22" viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#145DD0"/><path d="M8 10h8c3.3 0 6 2.7 6 6s-2.7 6-6 6h-3v-4h3c1.1 0 2-.9 2-2s-.9-2-2-2H12v8H8V10z" fill="white"/></svg>
-          <span class="text-sm font-bold text-gray-700 tracking-tight">BASEFUND</span>
-        </div>
-        <div class="flex items-center gap-6 text-sm text-gray-400">
-          <a href="https://basefund.com" class="hover:text-brand-blue transition-colors">basefund.com</a>
-          <a href="https://basefund.com/blog" class="hover:text-brand-blue transition-colors">Blog</a>
-          <a href="https://basefund.com/terms" class="hover:text-brand-blue transition-colors">Terms</a>
-          <a href="https://trust.basefund.io" class="hover:text-brand-blue transition-colors">Privacy</a>
-        </div>
-        <p class="text-xs text-gray-300">&copy; 2026 Basefund</p>
-      </div>
-    </div>
+  <footer class="border-t border-gray-100 py-8 bg-white">
+    <p class="text-sm text-gray-400 text-center">&copy; 2026 &middot; Basefund</p>
   </footer>
 
   <script>
@@ -889,12 +895,15 @@
             indicators.forEach(function(ind){
               var bar=ind.querySelector('.indicator-bar');
               var span=ind.querySelector('span');
+              var sub=ind.querySelector('.indicator-sub');
               if(ind.dataset.part===p){
                 bar.style.width='48px';bar.style.background='#145DD0';
                 span.style.color='#145DD0';span.style.fontWeight='600';
+                if(sub){sub.style.color='#145DD0';sub.style.opacity='0.6';}
               }else{
                 bar.style.width='32px';bar.style.background='#D1D5DB';
                 span.style.color='#9CA3AF';span.style.fontWeight='400';
+                if(sub){sub.style.color='#D1D5DB';sub.style.opacity='1';}
               }
             });
           }
