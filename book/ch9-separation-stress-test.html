@@ -148,22 +148,517 @@
     </div>
   </section>
 
+
   <section id="try-it" class="py-20 bg-white">
-    <div class="max-w-4xl mx-auto px-6 lg:px-8">
+    <div class="max-w-5xl mx-auto px-6 lg:px-8">
       <p class="r text-xs text-brand-blue uppercase tracking-[.2em] mb-3 font-semibold">Try It Now</p>
-      <h2 class="r rd1 font-heading text-3xl lg:text-4xl font-bold text-gray-900 mb-4">Take the stress test</h2>
-      <p class="r rd2 text-base text-gray-500 mb-8">Take the diagnostic for free. Enter your email to download the full report.</p>
-      <div class="r rd3 bg-brand-light/40 border border-brand-light rounded-2xl p-8 max-w-lg">
-        <div class="flex items-center gap-3 mb-4">
-          <div class="w-10 h-10 rounded-full bg-brand-blue/10 flex items-center justify-center">
-            <svg class="w-5 h-5 text-brand-blue" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z"/></svg>
-          </div>
-          <p class="font-semibold text-gray-800">Interactive tool coming soon</p>
-        </div>
-        <p class="text-sm text-gray-500 leading-relaxed">The Separation of Duties Stress Test is being prepared. Check back soon.</p>
+<!-- BEGIN EMBED -->
+
+<style>
+  #sod-test .sod-fade { animation: sodFade 0.5s ease forwards; }
+  @keyframes sodFade { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:translateY(0); } }
+
+  #sod-test .sod-option {
+    transition: all 0.2s;
+    border: 2px solid #E5E7EB;
+    cursor: pointer;
+  }
+  #sod-test .sod-option:hover:not(.locked) { border-color: #145DD0; background: #F4F8FF; transform: translateY(-1px); }
+  #sod-test .sod-option.selected-a { border-color: #059669; background: #ECFDF5; }
+  #sod-test .sod-option.selected-b { border-color: #D97706; background: #FFFBEB; }
+  #sod-test .sod-option.selected-c { border-color: #DC2626; background: #FEF2F2; }
+  #sod-test .sod-option.locked { cursor: default; opacity: 0.5; }
+  #sod-test .sod-option.locked.selected-a,
+  #sod-test .sod-option.locked.selected-b,
+  #sod-test .sod-option.locked.selected-c { opacity: 1; }
+
+  #sod-test .radar-line { transition: all 0.8s cubic-bezier(.16,1,.3,1); }
+</style>
+
+<section id="sod-test" class="py-20 bg-gray-50">
+  <div class="max-w-4xl mx-auto px-6 lg:px-8">
+    <div id="sod-root"></div>
+  </div>
+</section>
+
+<script>
+(function() {
+  const QUESTIONS = [
+    {
+      id: 1, title: "The Friday Deadline",
+      scenario: "A payment of $180,000 is due on Friday. The designated approver is traveling internationally and unreachable. The person who initiated the payment also has approval access \u2018in case of emergency.\u2019 What happens?",
+      pressureType: "time",
+      options: [
+        { grade: "a", text: "The payment waits until the approver is reachable, or a designated backup approver (who was NOT the initiator) handles it.", feedback: "Strong separation. You have a backup approver who is independent of the initiator, and urgency doesn\u2019t override controls." },
+        { grade: "b", text: "The initiator approves their own payment but documents the exception and notifies the approver afterward.", feedback: "Partial separation. The exception was documented, but the fundamental control \u2014 someone independent reviewing the payment \u2014 was bypassed. Documented exceptions that happen regularly aren\u2019t exceptions; they\u2019re your real process." },
+        { grade: "c", text: "The initiator approves it. It\u2019s urgent, they have access, and the approver will see it when they\u2019re back.", feedback: "No separation. When one person can initiate and approve, the control exists on paper only. This is exactly the scenario fraud exploits." },
+      ]
+    },
+    {
+      id: 2, title: "The Email Wire Change",
+      scenario: "A vendor sends updated wire instructions via email. The person who receives the email is also the person who enters payment details into the system. How long before the update is verified through a separate channel?",
+      pressureType: "convenience",
+      options: [
+        { grade: "a", text: "Immediately \u2014 our process requires a different person to verify wire changes through a pre-established callback number before any update is entered.", feedback: "Strong separation. The person entering data is not the same person who verifies it, and verification uses a separate channel." },
+        { grade: "b", text: "The same person calls the vendor to confirm, then enters the update. Verification happens, but it\u2019s the same person doing both.", feedback: "Partial separation. Verification occurred, but the same person who received the change also verified and entered it. If the email was a social engineering attack, the attacker could manipulate the callback too." },
+        { grade: "c", text: "The person updates the system based on the email. It came from a known contact.", feedback: "No separation. Wire instruction changes are the #1 vector for business email compromise fraud. Acting on emailed wire changes without independent verification is a critical vulnerability." },
+      ]
+    },
+    {
+      id: 3, title: "The Executive Override",
+      scenario: "A senior executive asks for an urgent payment of $95,000 to a new vendor. The request goes directly to the person who controls the bank portal. What happens next?",
+      pressureType: "authority",
+      options: [
+        { grade: "a", text: "The payment goes through the normal process: initiation by one person, approval by another, and release by a third \u2014 regardless of who requested it.", feedback: "Strong separation. Authority doesn\u2019t override process, even when it comes from the top." },
+        { grade: "b", text: "The payment is processed quickly but the bank portal operator asks for email confirmation from the executive first.", feedback: "Partial separation. Email confirmation from the requestor isn\u2019t independent verification. The executive\u2019s request and \u2018confirmation\u2019 are the same input from the same source." },
+        { grade: "c", text: "The executive is the boss. The payment gets processed immediately.", feedback: "No separation. This is the most common pattern in internal fraud and social engineering attacks. Authority pressure collapses controls." },
+      ]
+    },
+    {
+      id: 4, title: "The New Employee",
+      scenario: "A new finance team member joins. On their second day, they need to process a routine vendor payment. What access do they have?",
+      pressureType: "process",
+      options: [
+        { grade: "a", text: "They can initiate payments in the system, but approval and release require different people. Their permissions match their role exactly.", feedback: "Strong separation. Role-based access is configured before the person starts, and it matches their responsibilities \u2014 nothing more." },
+        { grade: "b", text: "They inherit the same access as the person they replaced, which includes some permissions beyond what they need for their specific role.", feedback: "Partial separation. Permission inheritance is one of the most common ways separation of duties erodes over time. Each role change should trigger a permission review." },
+        { grade: "c", text: "They get broad access so they can \u2018learn the system,\u2019 with the plan to restrict it later.", feedback: "No separation. \u2018Broad access now, restrict later\u2019 is the opposite of least-privilege. It never gets restricted." },
+      ]
+    },
+    {
+      id: 5, title: "The Month-End Rush",
+      scenario: "It\u2019s month-end. There are 47 payments to process. The normal approval workflow requires a manager to review each one, but the manager is also processing their own payments to meet the deadline. What happens?",
+      pressureType: "time",
+      options: [
+        { grade: "a", text: "The manager\u2019s payments are approved by a different manager. No one approves their own transactions, even during high-volume periods.", feedback: "Strong separation. Volume pressure doesn\u2019t change who can approve what." },
+        { grade: "b", text: "The manager batch-approves everything, including their own payments, but flags them for retroactive review.", feedback: "Partial separation. Retroactive review is not a control \u2014 it\u2019s damage assessment. If something was wrong, the money has already moved." },
+        { grade: "c", text: "Everyone processes and approves their own items to get through the volume. We\u2019ll reconcile next week.", feedback: "No separation. Month-end is when controls matter most, because it\u2019s when errors and fraud are most likely to be buried in volume." },
+      ]
+    },
+    {
+      id: 6, title: "The System Glitch",
+      scenario: "Your payment system is down. A critical $500,000 wire must go out today or the organization faces a penalty. Someone suggests calling the bank directly to initiate the wire by phone. What happens?",
+      pressureType: "time",
+      options: [
+        { grade: "a", text: "The wire is initiated by phone, but requires callbacks from the bank to two separate authorized signers before it releases.", feedback: "Strong separation. Out-of-system processes maintain the same separation as in-system processes." },
+        { grade: "b", text: "One authorized person calls the bank and instructs the wire. Another person is CC\u2019d on the confirmation email.", feedback: "Partial separation. Being CC\u2019d is not the same as independently authorizing. The second person is a witness, not a control." },
+        { grade: "c", text: "Whoever can get the bank on the phone handles it. We\u2019ll document it after.", feedback: "No separation. System outages are exactly when controls get bypassed \u2014 and when organizations are most vulnerable." },
+      ]
+    },
+    {
+      id: 7, title: "The Trusted Vendor",
+      scenario: "A vendor your organization has worked with for 8 years sends their regular monthly invoice. It\u2019s $2,000 more than usual, with a note saying rates increased. What\u2019s the process?",
+      pressureType: "convenience",
+      options: [
+        { grade: "a", text: "The increase triggers a review by someone other than the person who processes the regular payment. The rate change is verified against the contract.", feedback: "Strong separation. Even trusted, routine payments get independent review when something changes." },
+        { grade: "b", text: "The person who processes the payment notices the increase, checks the note, and processes it. It\u2019s only $2,000.", feedback: "Partial separation. The same person who noticed the change also decided to accept it. \u2018It\u2019s only $2,000\u2019 is exactly the reasoning that fraud exploits \u2014 start small, escalate." },
+        { grade: "c", text: "Auto-pay handles it. Someone will notice the change in the monthly reconciliation.", feedback: "No separation. Auto-pay without change detection means no one is reviewing until after the money has moved." },
+      ]
+    },
+    {
+      id: 8, title: "The Departing Employee",
+      scenario: "Your controller gives two weeks\u2019 notice. During their notice period, they still have full system access including payment initiation, approval, and bank portal access. What happens?",
+      pressureType: "convenience",
+      options: [
+        { grade: "a", text: "Approval and release access is revoked immediately. They can still initiate and document, but another person must approve and release during the transition.", feedback: "Strong separation. Departure triggers an immediate access review. The risk profile changes the moment someone announces they\u2019re leaving." },
+        { grade: "b", text: "Access stays the same during the notice period because we need them to finish their work and train their replacement.", feedback: "Partial separation. Operational convenience is overriding a real security concern. A departing employee with full access is a textbook risk scenario." },
+        { grade: "c", text: "Nothing changes. They\u2019re a trusted employee \u2014 why would we restrict them?", feedback: "No separation. Trust is not a control. Many fraud cases involve departing employees who exploited unchanged access during notice periods." },
+      ]
+    },
+    {
+      id: 9, title: "The Board Request",
+      scenario: "A board member emails the finance team directly asking for a $50,000 donation to a charity they\u2019re personally involved with. They say the board already approved it in the last meeting. What happens?",
+      pressureType: "authority",
+      options: [
+        { grade: "a", text: "The request is routed through the normal process: verified against board minutes, initiated by one person, approved by another, released by a third.", feedback: "Strong separation. Board authority is verified through documentation, not email claims. The process doesn\u2019t change based on who\u2019s asking." },
+        { grade: "b", text: "The finance team processes it based on the board member\u2019s email but checks the minutes afterward.", feedback: "Partial separation. Processing before verification means the control is retrospective, not preventive." },
+        { grade: "c", text: "A board member asked for it \u2014 it gets done.", feedback: "No separation. Impersonating or co-opting authority figures is a primary social engineering tactic. Every request needs independent verification regardless of source." },
+      ]
+    },
+    {
+      id: 10, title: "The Quiet Afternoon",
+      scenario: "It\u2019s a quiet Tuesday. Only one finance team member is in the office. A routine payment needs to go out. The system allows them to initiate, approve, and release it. What happens?",
+      pressureType: "convenience",
+      options: [
+        { grade: "a", text: "The payment waits until a second authorized person is available, or is approved remotely by an authorized team member.", feedback: "Strong separation. Staffing levels don\u2019t change control requirements." },
+        { grade: "b", text: "They process it because the system allows it, but mark it for review when someone else is in.", feedback: "Partial separation. If the system allows one person to handle all three steps, the technical control doesn\u2019t exist \u2014 only the policy does." },
+        { grade: "c", text: "They handle it. The system allows it and it\u2019s routine.", feedback: "No separation. If your system allows one person to initiate, approve, and release, you don\u2019t have separation of duties \u2014 you have a suggestion." },
+      ]
+    },
+  ];
+
+  const PRESSURE_TYPES = {
+    time: { label: "Time Pressure", questions: [1, 5, 6], color: "#DC2626", icon: '<svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>' },
+    authority: { label: "Authority Pressure", questions: [3, 9], color: "#7C3AED", icon: '<svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 5.25a3 3 0 013 3m3 0a6 6 0 01-7.029 5.912c-.563-.097-1.159.026-1.563.43L10.5 17.25H8.25v2.25H6v2.25H2.25v-2.818c0-.597.237-1.17.659-1.591l6.499-6.499c.404-.404.527-1 .43-1.563A6 6 0 1121.75 8.25z"/></svg>' },
+    convenience: { label: "Convenience / Trust", questions: [2, 7, 8, 10], color: "#D97706", icon: '<svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z"/></svg>' },
+    process: { label: "Process Gaps", questions: [4], color: "#0891B2", icon: '<svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M11.42 15.17l-5.1-5.1a1.5 1.5 0 010-2.12l.88-.88a1.5 1.5 0 012.12 0L12 9.75l5.25-5.25a1.5 1.5 0 012.12 0l.88.88a1.5 1.5 0 010 2.12l-5.1 5.1"/></svg>' },
+  };
+
+  let state = { screen: "welcome", current: 0, answers: {}, showFeedback: false, emailSubmitted: false };
+  const root = document.getElementById("sod-root");
+
+  function render() {
+    switch (state.screen) {
+      case "welcome": renderWelcome(); break;
+      case "quiz": renderQuiz(); break;
+      case "results": renderResults(); break;
+    }
+  }
+
+  // ── WELCOME ───────────────────────────────────────────────────────
+  function renderWelcome() {
+    root.innerHTML = `
+      <div class="text-center mb-10">
+        <p class="text-xs text-brand-blue uppercase tracking-[.2em] mb-3 font-semibold">Interactive Diagnostic</p>
+        <h2 class="font-heading text-3xl lg:text-4xl font-bold text-gray-900 mb-4">Separation of Duties Stress Test</h2>
+        <p class="text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed">
+          Your separation of duties looks great on paper. Does it survive Friday at 4pm?
+        </p>
       </div>
+      <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-8 md:p-10 max-w-2xl mx-auto sod-fade">
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-8">
+          ${Object.entries(PRESSURE_TYPES).map(([k, v]) => `
+            <div class="text-center p-3 rounded-xl bg-gray-50 border border-gray-100">
+              <div class="inline-flex items-center justify-center w-9 h-9 rounded-lg mb-1.5" style="background:${v.color}15;color:${v.color}">${v.icon}</div>
+              <p class="text-[11px] font-semibold text-gray-700">${v.label}</p>
+            </div>
+          `).join("")}
+        </div>
+        <p class="text-sm text-gray-500 text-center mb-6">10 scenarios &middot; 3 response levels each &middot; ~8 minutes</p>
+        <div class="text-center">
+          <button onclick="SOD.start()" class="btn-primary bg-brand-blue hover:bg-brand-dark text-white text-base font-bold px-10 py-4 rounded-full inline-flex items-center gap-2">
+            Start the Stress Test
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>
+          </button>
+        </div>
+      </div>
+    `;
+  }
+
+  // ── QUIZ ──────────────────────────────────────────────────────────
+  function renderQuiz() {
+    const q = QUESTIONS[state.current];
+    const answered = Object.keys(state.answers).length;
+    const progress = ((answered + (state.showFeedback ? 0 : 0)) / QUESTIONS.length) * 100;
+    const pt = PRESSURE_TYPES[q.pressureType];
+    const sel = state.answers[q.id];
+
+    root.innerHTML = `
+      <div class="max-w-3xl mx-auto">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-sm font-medium text-gray-500">Question ${state.current + 1} of ${QUESTIONS.length}</span>
+          <span class="text-sm font-medium text-gray-500">${answered} answered</span>
+        </div>
+        <div class="h-2 bg-gray-200 rounded-full overflow-hidden mb-8">
+          <div class="h-full bg-brand-blue rounded-full transition-all duration-500" style="width:${((state.current + (state.showFeedback ? 1 : 0)) / QUESTIONS.length) * 100}%"></div>
+        </div>
+
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-8 sod-fade">
+          <div class="flex items-center gap-2 mb-4">
+            <span class="inline-flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-full" style="background:${pt.color}15;color:${pt.color}">${pt.icon} ${pt.label}</span>
+          </div>
+          <h3 class="font-heading font-bold text-xl text-gray-900 mb-3">${q.title}</h3>
+          <p class="text-gray-700 leading-relaxed mb-8">${q.scenario}</p>
+
+          <div class="space-y-3">
+            ${q.options.map(o => {
+              let cls = "sod-option";
+              if (state.showFeedback) cls += " locked";
+              if (sel === o.grade) cls += ` selected-${o.grade}`;
+              const gradeLabel = o.grade === "a" ? "Strong" : o.grade === "b" ? "Partial" : "None";
+              const gradeColor = o.grade === "a" ? "#059669" : o.grade === "b" ? "#D97706" : "#DC2626";
+              return `
+                <button class="${cls} rounded-xl p-5 text-left w-full flex items-start gap-4" onclick="SOD.answer(${q.id},'${o.grade}')" ${state.showFeedback ? 'disabled' : ''}>
+                  <span class="shrink-0 w-8 h-8 rounded-full border-2 flex items-center justify-center text-xs font-bold mt-0.5" style="border-color:${gradeColor};color:${gradeColor};${sel === o.grade ? `background:${gradeColor};color:white` : ''}">${o.grade.toUpperCase()}</span>
+                  <div>
+                    <p class="text-sm text-gray-800 leading-relaxed">${o.text}</p>
+                    ${state.showFeedback && sel === o.grade ? `
+                      <div class="mt-3 pt-3 border-t border-gray-100">
+                        <p class="text-xs font-semibold uppercase tracking-wider mb-1" style="color:${gradeColor}">${gradeLabel} Separation</p>
+                        <p class="text-sm text-gray-600 leading-relaxed">${o.feedback}</p>
+                      </div>
+                    ` : ''}
+                  </div>
+                </button>
+              `;
+            }).join("")}
+          </div>
+
+          ${state.showFeedback ? `
+            <div class="mt-8 text-center sod-fade" style="animation-delay:.15s">
+              <button onclick="SOD.next()" class="btn-primary bg-brand-blue hover:bg-brand-dark text-white font-bold px-8 py-3.5 rounded-full inline-flex items-center gap-2">
+                ${state.current < QUESTIONS.length - 1 ? 'Next Scenario' : 'See Results'}
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>
+              </button>
+            </div>
+          ` : ''}
+        </div>
+      </div>
+    `;
+  }
+
+  // ── RESULTS ───────────────────────────────────────────────────────
+  function renderResults() {
+    const { score, band, bandDesc, bandColor } = calcScore();
+
+    // Pressure profile
+    const pressureScores = {};
+    Object.entries(PRESSURE_TYPES).forEach(([key, pt]) => {
+      let total = 0, max = pt.questions.length * 3;
+      pt.questions.forEach(qId => {
+        const g = state.answers[qId];
+        total += g === "a" ? 3 : g === "b" ? 2 : 1;
+      });
+      pressureScores[key] = { pct: Math.round((total / max) * 100), ...pt };
+    });
+
+    // Question breakdown
+    const aCount = Object.values(state.answers).filter(g => g === "a").length;
+    const bCount = Object.values(state.answers).filter(g => g === "b").length;
+    const cCount = Object.values(state.answers).filter(g => g === "c").length;
+
+    root.innerHTML = `
+      <div class="max-w-3xl mx-auto space-y-8">
+        <!-- Score -->
+        <div class="text-center sod-fade">
+          <div class="inline-flex items-center justify-center w-24 h-24 rounded-full mb-4" style="background:${bandColor}15">
+            <span class="text-4xl font-bold" style="color:${bandColor}">${score}</span>
+          </div>
+          <p class="text-gray-500 text-lg mb-1">out of 30</p>
+          <h2 class="font-heading text-3xl font-bold text-gray-900 mb-2">${band}</h2>
+          <p class="text-gray-600 max-w-lg mx-auto">${bandDesc}</p>
+        </div>
+
+        <!-- Answer breakdown -->
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-8 sod-fade" style="animation-delay:.1s">
+          <h3 class="font-heading font-semibold text-lg text-gray-900 mb-6">Response Breakdown</h3>
+          <div class="grid grid-cols-3 gap-4">
+            <div class="text-center p-4 rounded-xl bg-emerald-50 border border-emerald-200">
+              <p class="text-3xl font-bold text-emerald-600">${aCount}</p>
+              <p class="text-xs text-emerald-700 font-medium mt-1">Strong (A)</p>
+            </div>
+            <div class="text-center p-4 rounded-xl bg-amber-50 border border-amber-200">
+              <p class="text-3xl font-bold text-amber-600">${bCount}</p>
+              <p class="text-xs text-amber-700 font-medium mt-1">Partial (B)</p>
+            </div>
+            <div class="text-center p-4 rounded-xl bg-red-50 border border-red-200">
+              <p class="text-3xl font-bold text-red-600">${cCount}</p>
+              <p class="text-xs text-red-700 font-medium mt-1">None (C)</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pressure Profile -->
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-8 sod-fade" style="animation-delay:.15s">
+          <h3 class="font-heading font-semibold text-lg text-gray-900 mb-2">Pressure Profile</h3>
+          <p class="text-sm text-gray-500 mb-6">Which types of pressure cause the most control breakdown?</p>
+
+          <!-- Radar chart using SVG -->
+          <div class="flex justify-center mb-6">
+            <svg viewBox="0 0 300 300" class="w-full max-w-xs">
+              <!-- Grid -->
+              ${[25, 50, 75, 100].map(pct => {
+                const r = (pct / 100) * 110;
+                return `<circle cx="150" cy="150" r="${r}" fill="none" stroke="#E5E7EB" stroke-width="1"/>`;
+              }).join("")}
+              <!-- Axes + labels -->
+              ${Object.entries(pressureScores).map(([k, v], i, arr) => {
+                const angle = (i / arr.length) * Math.PI * 2 - Math.PI / 2;
+                const lx = 150 + Math.cos(angle) * 130;
+                const ly = 150 + Math.sin(angle) * 130;
+                const ex = 150 + Math.cos(angle) * 110;
+                const ey = 150 + Math.sin(angle) * 110;
+                return `
+                  <line x1="150" y1="150" x2="${ex}" y2="${ey}" stroke="#E5E7EB" stroke-width="1"/>
+                  <text x="${lx}" y="${ly}" text-anchor="middle" dominant-baseline="middle" class="text-[10px] font-semibold" fill="${v.color}">${v.label}</text>
+                  <text x="${lx}" y="${ly + 13}" text-anchor="middle" class="text-[11px] font-bold" fill="${v.color}">${v.pct}%</text>
+                `;
+              }).join("")}
+              <!-- Data polygon -->
+              <polygon class="radar-line" points="${Object.values(pressureScores).map((v, i, arr) => {
+                const angle = (i / arr.length) * Math.PI * 2 - Math.PI / 2;
+                const r = (v.pct / 100) * 110;
+                return `${150 + Math.cos(angle) * r},${150 + Math.sin(angle) * r}`;
+              }).join(" ")}" fill="rgba(20,93,208,0.15)" stroke="#145DD0" stroke-width="2"/>
+              <!-- Data points -->
+              ${Object.values(pressureScores).map((v, i, arr) => {
+                const angle = (i / arr.length) * Math.PI * 2 - Math.PI / 2;
+                const r = (v.pct / 100) * 110;
+                return `<circle cx="${150 + Math.cos(angle) * r}" cy="${150 + Math.sin(angle) * r}" r="4" fill="${v.color}" stroke="white" stroke-width="2"/>`;
+              }).join("")}
+            </svg>
+          </div>
+
+          <!-- Bars -->
+          <div class="space-y-4">
+            ${Object.entries(pressureScores).map(([k, v]) => `
+              <div>
+                <div class="flex items-center justify-between mb-1">
+                  <div class="flex items-center gap-2">
+                    <span style="color:${v.color}">${v.icon}</span>
+                    <span class="text-sm font-medium text-gray-900">${v.label}</span>
+                  </div>
+                  <span class="text-sm font-bold" style="color:${v.color}">${v.pct}%</span>
+                </div>
+                <div class="h-3 bg-gray-100 rounded-full overflow-hidden">
+                  <div class="h-full rounded-full transition-all duration-700" style="width:${v.pct}%;background:${v.color}"></div>
+                </div>
+              </div>
+            `).join("")}
+          </div>
+        </div>
+
+        <!-- Per-question review -->
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-8 sod-fade" style="animation-delay:.2s">
+          <h3 class="font-heading font-semibold text-lg text-gray-900 mb-4">Scenario Review</h3>
+          <div class="space-y-3">
+            ${QUESTIONS.map(q => {
+              const g = state.answers[q.id];
+              const gColor = g === "a" ? "#059669" : g === "b" ? "#D97706" : "#DC2626";
+              const gLabel = g === "a" ? "Strong" : g === "b" ? "Partial" : "None";
+              return `
+                <div class="flex items-center gap-3 py-2 border-b border-gray-50">
+                  <span class="shrink-0 w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold text-white" style="background:${gColor}">${g.toUpperCase()}</span>
+                  <div class="flex-1 min-w-0">
+                    <p class="text-sm font-medium text-gray-900 truncate">${q.title}</p>
+                  </div>
+                  <span class="text-xs font-semibold" style="color:${gColor}">${gLabel}</span>
+                </div>
+              `;
+            }).join("")}
+          </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="flex flex-col sm:flex-row items-center gap-4 justify-center sod-fade" style="animation-delay:.25s">
+          <button onclick="SOD.downloadPDF()" class="btn-primary bg-brand-blue hover:bg-brand-dark text-white font-bold px-8 py-3.5 rounded-full inline-flex items-center gap-2">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12M12 16.5V3"/></svg>
+            Download Report (PDF)
+          </button>
+          <button onclick="SOD.retake()" class="font-semibold text-gray-500 hover:text-brand-blue px-6 py-3.5 rounded-full border border-gray-200 hover:border-brand-blue transition-all">Retake</button>
+        </div>
+
+        <!-- Email -->
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-8 sod-fade" style="animation-delay:.3s">
+          ${state.emailSubmitted ? `
+            <div class="text-center py-4">
+              <svg class="w-10 h-10 text-emerald-500 mx-auto mb-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+              <p class="font-semibold text-gray-900">Results saved!</p>
+            </div>
+          ` : `
+            <h3 class="font-heading font-semibold text-lg text-gray-900 mb-2">Save Your Results</h3>
+            <p class="text-sm text-gray-500 mb-6">Get the full stress test report sent to your inbox.</p>
+            <form onsubmit="SOD.submitEmail(event)" class="space-y-4">
+              <div class="grid sm:grid-cols-3 gap-4">
+                <div><label class="block text-xs font-medium text-gray-700 mb-1">Email <span class="text-red-400">*</span></label><input type="email" name="email" required class="w-full px-4 py-2.5 rounded-lg border border-gray-200 focus:border-brand-blue focus:ring-2 focus:ring-brand-blue/20 outline-none text-sm" placeholder="you@company.com"></div>
+                <div><label class="block text-xs font-medium text-gray-700 mb-1">Name</label><input type="text" name="name" class="w-full px-4 py-2.5 rounded-lg border border-gray-200 focus:border-brand-blue focus:ring-2 focus:ring-brand-blue/20 outline-none text-sm" placeholder="Optional"></div>
+                <div><label class="block text-xs font-medium text-gray-700 mb-1">Organization</label><input type="text" name="org" class="w-full px-4 py-2.5 rounded-lg border border-gray-200 focus:border-brand-blue focus:ring-2 focus:ring-brand-blue/20 outline-none text-sm" placeholder="Optional"></div>
+              </div>
+              <button type="submit" class="btn-primary bg-gray-900 hover:bg-gray-800 text-white font-semibold px-6 py-2.5 rounded-full text-sm">Save Results</button>
+            </form>
+          `}
+        </div>
+      </div>
+    `;
+  }
+
+  // ── SCORING ───────────────────────────────────────────────────────
+  function calcScore() {
+    let score = 0;
+    Object.values(state.answers).forEach(g => { score += g === "a" ? 3 : g === "b" ? 2 : 1; });
+    let band, bandDesc, bandColor;
+    if (score >= 25) { band = "Strong Separation"; bandDesc = "Your organization maintains separation of duties under pressure. Controls exist in both policy and practice."; bandColor = "#059669"; }
+    else if (score >= 18) { band = "Partial Separation"; bandDesc = "Controls exist on paper, but real-world pressure regularly causes them to bend. The gap between policy and practice is where risk lives."; bandColor = "#D97706"; }
+    else if (score >= 10) { band = "Weak Separation"; bandDesc = "Separation of duties is more aspiration than practice. Boundaries routinely collapse under time pressure, authority pressure, or convenience."; bandColor = "#DC2626"; }
+    else { band = "No Real Separation"; bandDesc = "Transaction controls are essentially absent in practice. Any determined bad actor \u2014 internal or external \u2014 would find minimal resistance."; bandColor = "#DC2626"; }
+    return { score, band, bandDesc, bandColor };
+  }
+
+  // ── ACTIONS ───────────────────────────────────────────────────────
+  function scrollTop() { document.getElementById("sod-test").scrollIntoView({ behavior: "smooth", block: "start" }); }
+
+  window.SOD = {
+    start: () => { state = { screen: "quiz", current: 0, answers: {}, showFeedback: false, emailSubmitted: false }; scrollTop(); render(); },
+    answer: (qId, grade) => { if (state.showFeedback) return; state.answers[qId] = grade; state.showFeedback = true; render(); },
+    next: () => {
+      if (state.current < QUESTIONS.length - 1) { state.current++; state.showFeedback = false; scrollTop(); setTimeout(render, 200); }
+      else { state.screen = "results"; scrollTop(); setTimeout(render, 200); }
+    },
+    retake: () => { state = { screen: "welcome", current: 0, answers: {}, showFeedback: false, emailSubmitted: false }; scrollTop(); render(); },
+    submitEmail: e => {
+      e.preventDefault();
+      const form = e.target;
+      const data = { email: form.email.value, name: form.name.value, org: form.org.value, ...calcScore(), answers: state.answers, timestamp: new Date().toISOString(), source: "ch9-separation-stress-test" };
+      try { const l = JSON.parse(localStorage.getItem("wmm_leads") || "[]"); l.push(data); localStorage.setItem("wmm_leads", JSON.stringify(l)); } catch (_) {}
+      if (window.LEADS_WEBHOOK_URL) fetch(window.LEADS_WEBHOOK_URL, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(data) }).catch(() => {});
+      state.emailSubmitted = true; render();
+    },
+    downloadPDF: () => {
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF({ orientation: "portrait", unit: "mm", format: "letter" });
+      const W = 216, H = 279, BLUE = [20, 93, 208];
+      const { score, band, bandColor } = calcScore();
+
+      doc.setFillColor(...BLUE); doc.rect(0, 0, W, 22, "F");
+      doc.setTextColor(255,255,255); doc.setFont("helvetica","bold"); doc.setFontSize(13);
+      doc.text("Separation of Duties Stress Test", 12, 14);
+      doc.setFontSize(8); doc.setFont("helvetica","normal");
+      doc.text("When Money Moves | Chapter 9: Participants", W-12, 14, { align: "right" });
+
+      let y = 34;
+      doc.setTextColor(31,41,55); doc.setFont("helvetica","bold"); doc.setFontSize(18);
+      doc.text(`Score: ${score}/30`, 12, y);
+      doc.setFontSize(11); doc.setTextColor(...hexToRgb(bandColor));
+      doc.text(band, 12, y + 8); y += 20;
+
+      // Pressure profile
+      doc.setTextColor(31,41,55); doc.setFont("helvetica","bold"); doc.setFontSize(11);
+      doc.text("Pressure Profile", 12, y); y += 7;
+      Object.entries(PRESSURE_TYPES).forEach(([k, pt]) => {
+        let total = 0, max = pt.questions.length * 3;
+        pt.questions.forEach(qId => { const g = state.answers[qId]; total += g==="a"?3:g==="b"?2:1; });
+        const pct = Math.round((total/max)*100);
+        doc.setFont("helvetica","normal"); doc.setFontSize(8); doc.setTextColor(55,65,81);
+        doc.text(`${pt.label}: ${pct}%`, 12, y);
+        doc.setFillColor(229,231,235); doc.roundedRect(70, y-3, 80, 4, 2, 2, "F");
+        doc.setFillColor(...hexToRgb(pt.color)); doc.roundedRect(70, y-3, 80*pct/100, 4, 2, 2, "F");
+        y += 7;
+      });
+      y += 5;
+
+      // Scenarios
+      doc.setFont("helvetica","bold"); doc.setFontSize(11); doc.setTextColor(31,41,55);
+      doc.text("Scenario Review", 12, y); y += 7;
+      QUESTIONS.forEach(q => {
+        if (y > H - 25) { doc.addPage(); y = 20; }
+        const g = state.answers[q.id];
+        const gColor = g==="a"?[5,150,105]:g==="b"?[217,119,6]:[220,38,38];
+        const gLabel = g==="a"?"Strong":g==="b"?"Partial":"None";
+        doc.setFont("helvetica","bold"); doc.setFontSize(8); doc.setTextColor(...gColor);
+        doc.text(`[${g.toUpperCase()}] ${gLabel}`, 12, y);
+        doc.setFont("helvetica","normal"); doc.setTextColor(55,65,81);
+        doc.text(q.title, 50, y);
+        y += 5;
+      });
+
+      doc.setFillColor(...BLUE); doc.rect(0, H-12, W, 12, "F");
+      doc.setTextColor(255,255,255); doc.setFont("helvetica","normal"); doc.setFontSize(6);
+      doc.text("Separation of duties only works when the system enforces it. Basefund ensures no single participant can move a transaction from initiation to release.", 12, H-6);
+      doc.setFont("helvetica","bold"); doc.text("basefund.com", W-12, H-6, { align: "right" });
+
+      doc.save("separation-of-duties-stress-test.pdf");
+    },
+  };
+
+  function hexToRgb(hex) { const r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16); return [r,g,b]; }
+
+  render();
+})();
+</script>
+
+<!-- END EMBED -->
     </div>
   </section>
+
 
   <section class="py-16 bg-gray-50 border-t border-gray-100">
     <div class="max-w-4xl mx-auto px-6 lg:px-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
