@@ -163,8 +163,8 @@
     <div class="relative z-10 max-w-2xl mx-auto px-6 lg:px-8 text-center">
       <h2 class="r font-heading text-2xl lg:text-3xl font-bold text-white mb-3">Get the printable version</h2>
       <p class="r rd1 text-white/70 mb-8">Enter your work email to download the PDF and editable DOCX.</p>
-      <form class="r rd2 flex flex-col sm:flex-row gap-3 max-w-lg mx-auto" onsubmit="event.preventDefault()">
-        <input type="email" placeholder="Enter your work email" class="flex-1 bg-white/95 border border-white/20 rounded-lg px-5 py-3.5 text-base text-gray-800 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-white/30 transition-all">
+      <form class="r rd2 flex flex-col sm:flex-row gap-3 max-w-lg mx-auto" data-asset="ch7-conductor-role" onsubmit="handleDownload(event)">
+        <input type="email" placeholder="Enter your work email" required class="flex-1 bg-white/95 border border-white/20 rounded-lg px-5 py-3.5 text-base text-gray-800 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-white/30 transition-all">
         <button type="submit" class="bg-white hover:bg-white/90 text-brand-blue font-bold text-base px-7 py-3.5 rounded-lg shrink-0 transition-colors">Download</button>
       </form>
       <p class="r rd3 text-xs text-white/50 mt-4">We will never share or sell your personal information.</p>
@@ -190,6 +190,40 @@
   <script>
     const o=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('v')})},{threshold:.06,rootMargin:'0px 0px -30px 0px'});
     document.querySelectorAll('.r').forEach(e=>o.observe(e));
+  </script>
+  <script>
+async function handleDownload(e) {
+  e.preventDefault();
+  const form = e.target;
+  const btn = form.querySelector('button');
+  const email = form.querySelector('input[type="email"]').value;
+  const asset = form.dataset.asset;
+
+  btn.disabled = true;
+  btn.textContent = 'Sending...';
+
+  try {
+    const res = await fetch('/api/download', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, asset_slug: asset }),
+    });
+    const data = await res.json();
+
+    if (data.success) {
+      btn.textContent = 'Check your email!';
+      btn.classList.remove('text-brand-blue');
+      btn.classList.add('text-green-600');
+      window.open(data.download_url, '_blank');
+    } else {
+      btn.textContent = 'Error — try again';
+      btn.disabled = false;
+    }
+  } catch (err) {
+    btn.textContent = 'Error — try again';
+    btn.disabled = false;
+  }
+}
   </script>
 </body>
 </html>
