@@ -70,6 +70,18 @@
     </div>
   </section>
 
+  <!-- Asset Preview -->
+  <section class="py-16 bg-white">
+    <div class="max-w-4xl mx-auto px-6 lg:px-8">
+      <div class="r rounded-2xl overflow-hidden border border-gray-200 shadow-lg bg-gray-50 flex items-center justify-center" style="min-height:400px">
+        <div class="text-center p-8">
+          <svg class="w-16 h-16 text-gray-300 mx-auto mb-4" fill="none" stroke="currentColor" stroke-width="1" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"/></svg>
+          <p class="text-sm text-gray-400 font-medium">Asset preview coming soon</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <section class="py-20 bg-white">
     <div class="max-w-4xl mx-auto px-6 lg:px-8">
       <p class="r text-xs text-brand-blue uppercase tracking-[.2em] mb-3 font-semibold">What You'll Get</p>
@@ -148,20 +160,16 @@
     </div>
   </section>
 
+  <!-- Download -->
   <section id="download" class="py-20 bg-white">
-    <div class="max-w-4xl mx-auto px-6 lg:px-8">
-      <p class="r text-xs text-brand-blue uppercase tracking-[.2em] mb-3 font-semibold">Download</p>
-      <h2 class="r rd1 font-heading text-3xl lg:text-4xl font-bold text-gray-900 mb-4">Get the portfolio builder</h2>
-      <p class="r rd2 text-base text-gray-500 mb-8">Format: Editable Word document (.docx) + print-ready PDF. Enter your email to download the worksheet and reference card.</p>
-      <div class="r rd3 max-w-md">
-        <form class="flex flex-col gap-3" onsubmit="event.preventDefault()">
-          <input type="email" placeholder="Enter your work email" class="w-full border border-gray-200 rounded-lg px-5 py-3.5 text-base text-gray-800 placeholder:text-gray-400 focus:outline-none focus:border-brand-blue focus:ring-2 focus:ring-brand-light transition-all">
-          <button type="submit" class="btn-primary bg-brand-blue text-white font-bold text-base px-7 py-3.5 rounded-lg">
-            Download the Portfolio Builder
-          </button>
-        </form>
-        <p class="text-xs text-gray-400 mt-3">We will never share or sell your personal information.</p>
-      </div>
+    <div class="max-w-2xl mx-auto px-6 lg:px-8 text-center">
+      <h2 class="r font-heading text-2xl lg:text-3xl font-bold text-gray-900 mb-3">Get the printable version</h2>
+      <p class="r rd1 text-gray-500 mb-8">Enter your work email to download the PDF and editable DOCX.</p>
+      <form class="r rd2 flex flex-col sm:flex-row gap-3 max-w-lg mx-auto" onsubmit="event.preventDefault()">
+        <input type="email" placeholder="Enter your work email" class="flex-1 bg-white border border-gray-200 rounded-lg px-5 py-3.5 text-base text-gray-800 placeholder:text-gray-400 focus:outline-none focus:border-brand-blue focus:ring-2 focus:ring-brand-blue/10 transition-all">
+        <button type="submit" class="bg-brand-blue hover:bg-brand-dark text-white font-semibold text-base px-7 py-3.5 rounded-lg shrink-0 transition-colors">Download</button>
+      </form>
+      <p class="r rd3 text-xs text-gray-400 mt-4">We will never share or sell your personal information.</p>
     </div>
   </section>
 

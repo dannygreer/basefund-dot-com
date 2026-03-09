@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rail Selection Calculator — Preview</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.2/jspdf.umd.min.js"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: { blue: '#145DD0', dark: '#0F4AA3', light: '#E8F0FE', lighter: '#F4F8FF' },
+            gray: { 50: '#F9FAFB', 100: '#F3F4F6', 200: '#E5E7EB', 300: '#D1D5DB', 400: '#9CA3AF', 500: '#6B7280', 600: '#4B5563', 700: '#374151', 800: '#1F2937', 900: '#111827' },
+          },
+          fontFamily: {
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+            heading: ['Lora', 'Georgia', 'serif'],
+          },
+        },
+      },
+    }
+  </script>
+  <style>
+    .btn-primary{transition:all .3s ease}
+    .btn-primary:hover{box-shadow:0 4px 20px rgba(20,93,208,.3);transform:translateY(-1px)}
+  </style>
+</head>
+<body class="bg-white text-gray-800 antialiased font-sans">
+
+<!-- BEGIN EMBED -->
+
+<style>
+  #rail-calc .rc-fade { animation: rcFade 0.5s ease forwards; }
+  @keyframes rcFade { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:translateY(0); } }
+
+  #rail-calc .rc-radio {
+    transition: all 0.15s;
+    border: 2px solid #E5E7EB;
+    cursor: pointer;
+  }
+  #rail-calc .rc-radio:hover { border-color: #D1D5DB; background: #F9FAFB; }
+  #rail-calc .rc-radio.selected { border-color: #145DD0; background: #E8F0FE; }
+
+  #rail-calc .rc-bar-fill { transition: width 0.8s cubic-bezier(.16,1,.3,1); }
+</style>
+
+<section id="rail-calc" class="py-20 bg-gray-50">
+  <div class="max-w-4xl mx-auto px-6 lg:px-8">
+    <div id="rc-root"></div>
+  </div>
+</section>
+
+<script>
+(function() {
+  // ── SCORING MATRIX ────────────────────────────────────────────────
+  const RAILS = [
+    { id: "wire", name: "Wire Transfer", icon: "\u26A1", color: "#DC2626", desc: "Immediate, irrevocable, high-value" },
+    { id: "ach", name: "ACH (Standard)", icon: "\u23F3", color: "#145DD0", desc: "1-2 day settlement, recoverable window" },
+    { id: "sameday", name: "Same-Day ACH", icon: "\u23F1", color: "#0891B2", desc: "Same-day settlement, limited recovery" },
+    { id: "rtp", name: "RTP / FedNow", icon: "\u2197", color: "#7C3AED", desc: "Instant, irrevocable, real-time" },
+    { id: "check", name: "Check", icon: "\u2709", color: "#6B7280", desc: "Slow, physical, float period" },
+  ];
+
+  const MATRIX = {
+    type: {
+      "one-time":  { wire: 3, ach: 2, sameday: 3, rtp: 2, check: 1 },
+      "ongoing":   { wire: 1, ach: 4, sameday: 3, rtp: 3, check: 1 },
+      "transfer":  { wire: 2, ach: 3, sameday: 3, rtp: 4, check: 0 },
+      "closing":   { wire: 4, ach: 0, sameday: 1, rtp: 1, check: 0 },
+    },
+    amount: {
+      "under10k":  { wire: 1, ach: 4, sameday: 3, rtp: 4, check: 2 },
+      "10k-100k":  { wire: 3, ach: 3, sameday: 3, rtp: 3, check: 1 },
+      "100k-1m":   { wire: 4, ach: 2, sameday: 2, rtp: 1, check: 0 },
+      "over1m":    { wire: 4, ach: 0, sameday: 0, rtp: 0, check: 0 },
+    },
+    verification: {
+      "new":          { wire: 0, ach: 3, sameday: 2, rtp: 0, check: 2 },
+      "established":  { wire: 2, ach: 3, sameday: 3, rtp: 2, check: 1 },
+      "verified":     { wire: 4, ach: 3, sameday: 4, rtp: 4, check: 2 },
+    },
+    timing: {
+      "none":     { wire: 2, ach: 4, sameday: 3, rtp: 2, check: 2 },
+      "soft":     { wire: 3, ach: 2, sameday: 4, rtp: 3, check: 0 },
+      "hard":     { wire: 4, ach: 0, sameday: 3, rtp: 4, check: 0 },
+    },
+    reversibility: {
+      "recoverable":   { wire: 0, ach: 4, sameday: 3, rtp: 0, check: 3 },
+      "acceptable":    { wire: 3, ach: 3, sameday: 3, rtp: 3, check: 1 },
+      "preferred":     { wire: 4, ach: 1, sameday: 2, rtp: 4, check: 0 },
+    },
+  };
+
+  // Security dimension profiles per rail
+  const SECURITY = {
+    wire:    { verification: 20, intervention: 10, recovery: 10, evidence: 90 },
+    ach:     { verification: 90, intervention: 80, recovery: 85, evidence: 70 },
+    sameday: { verification: 60, intervention: 50, recovery: 60, evidence: 70 },
+    rtp:     { verification: 10, intervention: 5,  recovery: 10, evidence: 85 },
+    check:   { verification: 95, intervention: 70, recovery: 50, evidence: 40 },
+  };
+
+  const FIELDS = [
+    {
+      key: "type", title: "Transaction Type", options: [
+        { value: "one-time", label: "One-Time", desc: "A single occurrence payment to this recipient" },
+        { value: "ongoing", label: "Ongoing", desc: "A recurring payment under an existing agreement" },
+        { value: "transfer", label: "Transfer", desc: "Funds moving between your own accounts" },
+        { value: "closing", label: "Closing", desc: "Final settlement of a multi-step transaction" },
+      ]
+    },
+    {
+      key: "amount", title: "Dollar Amount", options: [
+        { value: "under10k", label: "Under $10,000" },
+        { value: "10k-100k", label: "$10,000 \u2013 $100,000" },
+        { value: "100k-1m", label: "$100,000 \u2013 $1,000,000" },
+        { value: "over1m", label: "Over $1,000,000" },
+      ]
+    },
+    {
+      key: "verification", title: "Recipient Verification", options: [
+        { value: "new", label: "New relationship", desc: "Never transacted with this party before" },
+        { value: "established", label: "Established, not recent", desc: "Prior transactions exist but 6+ months since verification" },
+        { value: "verified", label: "Fully verified", desc: "Identity confirmed, account validated within last 6 months" },
+      ]
+    },
+    {
+      key: "timing", title: "Time Sensitivity", options: [
+        { value: "none", label: "No deadline", desc: "Can be processed at any time" },
+        { value: "soft", label: "Soft deadline", desc: "Preferred by a certain date but flexibility exists" },
+        { value: "hard", label: "Hard deadline today", desc: "Must settle by end of business today" },
+      ]
+    },
+    {
+      key: "account", title: "Source Account", options: [
+        { value: "vault", label: "Core operating account (vault)", desc: "Your main account that must be protected" },
+        { value: "transaction", label: "Transaction layer account", desc: "A designated account for outbound payments" },
+        { value: "escrow", label: "Escrow or trust account", desc: "Funds held by a third party" },
+      ]
+    },
+    {
+      key: "reversibility", title: "Reversibility Preference", options: [
+        { value: "recoverable", label: "Must be recoverable", desc: "Need ability to recall or reverse" },
+        { value: "acceptable", label: "Finality acceptable", desc: "Comfortable with irrevocable if verified" },
+        { value: "preferred", label: "Finality preferred", desc: "Need certainty payment cannot be reversed" },
+      ]
+    },
+  ];
+
+  let state = { screen: "form", inputs: {}, emailSubmitted: false };
+  const root = document.getElementById("rc-root");
+
+  function render() {
+    if (state.screen === "form") renderForm();
+    else renderResults();
+  }
+
+  // ── FORM ──────────────────────────────────────────────────────────
+  function renderForm() {
+    const allFilled = FIELDS.every(f => state.inputs[f.key]);
+
+    root.innerHTML = `
+      <div class="text-center mb-10">
+        <p class="text-xs text-brand-blue uppercase tracking-[.2em] mb-3 font-semibold">Interactive Calculator</p>
+        <h2 class="font-heading text-3xl lg:text-4xl font-bold text-gray-900 mb-4">Rail Selection Calculator</h2>
+        <p class="text-lg text-gray-600 max-w-2xl mx-auto">Enter your transaction details and get a security-first payment rail recommendation.</p>
+      </div>
+
+      <div class="max-w-3xl mx-auto space-y-8">
+        ${FIELDS.map((f, fi) => `
+          <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 rc-fade" style="animation-delay:${fi * 0.05}s">
+            <h3 class="font-semibold text-gray-900 mb-4">${f.title}</h3>
+            <div class="${f.options.length <= 3 ? 'space-y-2' : 'grid sm:grid-cols-2 gap-2'}">
+              ${f.options.map(o => `
+                <button class="rc-radio rounded-xl p-4 text-left w-full ${state.inputs[f.key] === o.value ? 'selected' : ''}" onclick="RC.set('${f.key}','${o.value}')">
+                  <div class="flex items-start gap-3">
+                    <span class="shrink-0 w-5 h-5 rounded-full border-2 flex items-center justify-center mt-0.5 ${state.inputs[f.key] === o.value ? 'border-brand-blue bg-brand-blue' : 'border-gray-300'}">
+                      ${state.inputs[f.key] === o.value ? '<svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>' : ''}
+                    </span>
+                    <div>
+                      <p class="text-sm font-medium ${state.inputs[f.key] === o.value ? 'text-brand-blue' : 'text-gray-900'}">${o.label}</p>
+                      ${o.desc ? `<p class="text-xs text-gray-400 mt-0.5">${o.desc}</p>` : ''}
+                    </div>
+                  </div>
+                </button>
+              `).join("")}
+            </div>
+          </div>
+        `).join("")}
+
+        <div class="text-center pt-4">
+          ${allFilled ? `
+            <button onclick="RC.calculate()" class="btn-primary bg-brand-blue hover:bg-brand-dark text-white text-base font-bold px-10 py-4 rounded-full inline-flex items-center gap-2">
+              Get Recommendation
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>
+            </button>
+          ` : `
+            <p class="text-sm text-gray-400">Complete all fields to get your recommendation</p>
+          `}
+        </div>
+      </div>
+    `;
+  }
+
+  // ── RESULTS ───────────────────────────────────────────────────────
+  function renderResults() {
+    const result = calculate();
+
+    root.innerHTML = `
+      <div class="max-w-3xl mx-auto space-y-8">
+        <!-- Recommendation -->
+        <div class="text-center rc-fade">
+          <p class="text-xs text-brand-blue uppercase tracking-[.2em] mb-3 font-semibold">Recommended Rail</p>
+        </div>
+
+        ${result.blocked ? `
+          <div class="bg-red-50 rounded-2xl border-2 border-red-200 p-8 text-center rc-fade">
+            <svg class="w-12 h-12 text-red-500 mx-auto mb-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z"/></svg>
+            <h2 class="font-heading text-2xl font-bold text-red-800 mb-3">Action Required Before Proceeding</h2>
+            <p class="text-red-700 leading-relaxed max-w-lg mx-auto">${result.blocked}</p>
+          </div>
+        ` : `
+          <div class="bg-white rounded-2xl shadow-lg border-2 p-8 text-center rc-fade" style="border-color:${result.recommended.color}">
+            <span class="text-5xl mb-4 block">${result.recommended.icon}</span>
+            <h2 class="font-heading text-3xl font-bold text-gray-900 mb-2">${result.recommended.name}</h2>
+            <p class="text-sm text-gray-500 mb-3">${result.recommended.desc}</p>
+            <span class="inline-flex items-center gap-1.5 text-xs font-bold px-3 py-1 rounded-full ${result.confidence === 'Strong' ? 'bg-emerald-100 text-emerald-700' : result.confidence === 'Moderate' ? 'bg-amber-100 text-amber-700' : 'bg-gray-100 text-gray-600'}">${result.confidence} Confidence</span>
+            <p class="text-gray-600 mt-4 max-w-lg mx-auto">${result.explanation}</p>
+          </div>
+        `}
+
+        <!-- Warnings -->
+        ${result.warnings.length > 0 ? `
+          <div class="space-y-3 rc-fade" style="animation-delay:.1s">
+            ${result.warnings.map(w => `
+              <div class="rounded-xl border border-amber-200 bg-amber-50 p-5 flex items-start gap-3">
+                <svg class="w-5 h-5 text-amber-500 shrink-0 mt-0.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z"/></svg>
+                <p class="text-sm text-amber-800">${w}</p>
+              </div>
+            `).join("")}
+          </div>
+        ` : ''}
+
+        <!-- Risk Profile -->
+        ${!result.blocked ? `
+          <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-8 rc-fade" style="animation-delay:.15s">
+            <h3 class="font-heading font-semibold text-lg text-gray-900 mb-6">Security Profile: ${result.recommended.name}</h3>
+            <div class="space-y-5">
+              ${[
+                { key: "verification", label: "Verification Time Available", desc: "Time to verify before finality" },
+                { key: "intervention", label: "Intervention Opportunity", desc: "Ability to stop or recall after sending" },
+                { key: "recovery", label: "Recovery Options", desc: "What\u2019s possible if fraud occurs" },
+                { key: "evidence", label: "Evidence Quality", desc: "Strength of audit trail" },
+              ].map(dim => {
+                const val = SECURITY[result.recommended.id][dim.key];
+                const barColor = val >= 70 ? "#059669" : val >= 40 ? "#D97706" : "#DC2626";
+                return `
+                  <div>
+                    <div class="flex items-center justify-between mb-1">
+                      <div>
+                        <span class="text-sm font-medium text-gray-900">${dim.label}</span>
+                        <span class="text-xs text-gray-400 ml-2">${dim.desc}</span>
+                      </div>
+                      <span class="text-sm font-bold" style="color:${barColor}">${val >= 70 ? 'Strong' : val >= 40 ? 'Moderate' : 'Weak'}</span>
+                    </div>
+                    <div class="h-3 bg-gray-100 rounded-full overflow-hidden">
+                      <div class="rc-bar-fill h-full rounded-full" style="width:${val}%;background:${barColor}"></div>
+                    </div>
+                  </div>
+                `;
+              }).join("")}
+            </div>
+          </div>
+        ` : ''}
+
+        <!-- Comparison Table -->
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 overflow-x-auto rc-fade" style="animation-delay:.2s">
+          <h3 class="font-heading font-semibold text-lg text-gray-900 mb-4">All Rails Compared</h3>
+          <table class="w-full text-sm">
+            <thead>
+              <tr>
+                <th class="text-left py-2 px-3 text-xs text-gray-500 font-medium">Rail</th>
+                <th class="text-center py-2 px-3 text-xs text-gray-500 font-medium">Score</th>
+                <th class="text-center py-2 px-3 text-xs text-gray-500 font-medium">Verification</th>
+                <th class="text-center py-2 px-3 text-xs text-gray-500 font-medium">Intervention</th>
+                <th class="text-center py-2 px-3 text-xs text-gray-500 font-medium">Recovery</th>
+                <th class="text-center py-2 px-3 text-xs text-gray-500 font-medium">Evidence</th>
+                <th class="text-center py-2 px-3 text-xs text-gray-500 font-medium">Fit</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${result.scores.map((rs, i) => {
+                const rail = RAILS.find(r => r.id === rs.id);
+                const isRec = !result.blocked && result.recommended.id === rs.id;
+                const sec = SECURITY[rs.id];
+                const dimBadge = v => v >= 70 ? '<span class="text-xs font-medium text-emerald-600">Strong</span>' : v >= 40 ? '<span class="text-xs font-medium text-amber-600">Mod</span>' : '<span class="text-xs font-medium text-red-600">Weak</span>';
+                return `
+                  <tr class="border-t border-gray-100 ${isRec ? 'bg-brand-lighter' : ''} ${rs.disqualified ? 'opacity-40' : ''}">
+                    <td class="py-3 px-3">
+                      <div class="flex items-center gap-2">
+                        <span class="text-lg">${rail.icon}</span>
+                        <div>
+                          <p class="font-medium text-gray-900">${rail.name}</p>
+                          ${isRec ? '<span class="text-[10px] font-bold text-brand-blue uppercase">Recommended</span>' : ''}
+                          ${rs.disqualified ? '<span class="text-[10px] font-bold text-red-500 uppercase">Blocked</span>' : ''}
+                        </div>
+                      </div>
+                    </td>
+                    <td class="py-3 px-3 text-center"><span class="text-lg font-bold ${isRec ? 'text-brand-blue' : 'text-gray-700'}">${rs.score}</span></td>
+                    <td class="py-3 px-3 text-center">${dimBadge(sec.verification)}</td>
+                    <td class="py-3 px-3 text-center">${dimBadge(sec.intervention)}</td>
+                    <td class="py-3 px-3 text-center">${dimBadge(sec.recovery)}</td>
+                    <td class="py-3 px-3 text-center">${dimBadge(sec.evidence)}</td>
+                    <td class="py-3 px-3 text-center">
+                      <div class="w-16 h-2 bg-gray-100 rounded-full overflow-hidden mx-auto">
+                        <div class="h-full rounded-full" style="width:${(rs.score / result.maxScore) * 100}%;background:${rail.color}"></div>
+                      </div>
+                    </td>
+                  </tr>
+                `;
+              }).join("")}
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Actions -->
+        <div class="flex flex-col sm:flex-row items-center gap-4 justify-center rc-fade" style="animation-delay:.25s">
+          <button onclick="RC.downloadPDF()" class="btn-primary bg-brand-blue hover:bg-brand-dark text-white font-bold px-8 py-3.5 rounded-full inline-flex items-center gap-2">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12M12 16.5V3"/></svg>
+            Download Analysis (PDF)
+          </button>
+          <button onclick="RC.reset()" class="font-semibold text-gray-500 hover:text-brand-blue px-6 py-3.5 rounded-full border border-gray-200 hover:border-brand-blue transition-all">&larr; New Calculation</button>
+        </div>
+
+        <!-- Email -->
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-8 rc-fade" style="animation-delay:.3s">
+          ${state.emailSubmitted ? `
+            <div class="text-center py-4">
+              <svg class="w-10 h-10 text-emerald-500 mx-auto mb-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+              <p class="font-semibold text-gray-900">Results saved!</p>
+            </div>
+          ` : `
+            <h3 class="font-heading font-semibold text-lg text-gray-900 mb-2">Save Your Analysis</h3>
+            <p class="text-sm text-gray-500 mb-6">Get the full rail analysis sent to your inbox.</p>
+            <form onsubmit="RC.submitEmail(event)" class="space-y-4">
+              <div class="grid sm:grid-cols-3 gap-4">
+                <div><label class="block text-xs font-medium text-gray-700 mb-1">Email <span class="text-red-400">*</span></label><input type="email" name="email" required class="w-full px-4 py-2.5 rounded-lg border border-gray-200 focus:border-brand-blue focus:ring-2 focus:ring-brand-blue/20 outline-none text-sm" placeholder="you@company.com"></div>
+                <div><label class="block text-xs font-medium text-gray-700 mb-1">Name</label><input type="text" name="name" class="w-full px-4 py-2.5 rounded-lg border border-gray-200 focus:border-brand-blue focus:ring-2 focus:ring-brand-blue/20 outline-none text-sm" placeholder="Optional"></div>
+                <div><label class="block text-xs font-medium text-gray-700 mb-1">Organization</label><input type="text" name="org" class="w-full px-4 py-2.5 rounded-lg border border-gray-200 focus:border-brand-blue focus:ring-2 focus:ring-brand-blue/20 outline-none text-sm" placeholder="Optional"></div>
+              </div>
+              <button type="submit" class="btn-primary bg-gray-900 hover:bg-gray-800 text-white font-semibold px-6 py-2.5 rounded-full text-sm">Save Analysis</button>
+            </form>
+          `}
+        </div>
+      </div>
+    `;
+  }
+
+  // ── CALCULATOR ────────────────────────────────────────────────────
+  function calculate() {
+    const inp = state.inputs;
+    const warnings = [];
+    let blocked = null;
+
+    // Score each rail
+    const scores = RAILS.map(rail => {
+      let score = 0;
+      if (MATRIX.type[inp.type]) score += MATRIX.type[inp.type][rail.id];
+      if (MATRIX.amount[inp.amount]) score += MATRIX.amount[inp.amount][rail.id];
+      if (MATRIX.verification[inp.verification]) score += MATRIX.verification[inp.verification][rail.id];
+      if (MATRIX.timing[inp.timing]) score += MATRIX.timing[inp.timing][rail.id];
+      if (MATRIX.reversibility[inp.reversibility]) score += MATRIX.reversibility[inp.reversibility][rail.id];
+      return { id: rail.id, score, disqualified: false };
+    });
+
+    // OVERRIDE RULES
+    // 1. New relationship + >$100K: never Wire or RTP
+    if (inp.verification === "new" && (inp.amount === "100k-1m" || inp.amount === "over1m")) {
+      scores.find(s => s.id === "wire").disqualified = true;
+      scores.find(s => s.id === "rtp").disqualified = true;
+      warnings.push("For new, high-value relationships, use a rail with a recovery window. Verify through micro-deposits first.");
+    }
+
+    // 2. Vault account warning
+    if (inp.account === "vault") {
+      warnings.push("You indicated this is going directly from a vault account. Consider routing through a transaction layer account before sending externally.");
+    }
+
+    // 3. >$1M + not fully verified: block instant/irrevocable
+    if (inp.amount === "over1m" && inp.verification !== "verified") {
+      scores.forEach(s => { if (["wire", "rtp"].includes(s.id)) s.disqualified = true; });
+      blocked = "Verify the recipient fully before proceeding with a payment of this size. For payments over $1M to recipients who are not fully verified, all instant and irrevocable rails are blocked.";
+    }
+
+    // Sort by score descending
+    scores.sort((a, b) => b.score - a.score);
+    const maxScore = scores[0].score;
+
+    // Find recommended (highest non-disqualified)
+    const rec = scores.find(s => !s.disqualified);
+    const recommended = rec ? RAILS.find(r => r.id === rec.id) : null;
+
+    // Confidence
+    const eligible = scores.filter(s => !s.disqualified);
+    let confidence = "Strong";
+    if (eligible.length >= 2 && eligible[0].score - eligible[1].score <= 1) confidence = "Marginal";
+    else if (eligible.length >= 2 && eligible[0].score - eligible[1].score <= 3) confidence = "Moderate";
+
+    // Explanation
+    let explanation = "";
+    if (recommended) {
+      const reasons = [];
+      if (inp.type === "closing") reasons.push("closing transactions require settlement certainty");
+      else if (inp.type === "ongoing") reasons.push("recurring payments benefit from established processing");
+      if (inp.amount === "over1m" || inp.amount === "100k-1m") reasons.push("high-value transactions need strong audit trails");
+      if (inp.verification === "new") reasons.push("new relationships require recovery windows");
+      if (inp.timing === "hard") reasons.push("same-day settlement is required");
+      if (inp.reversibility === "recoverable") reasons.push("recoverability is a priority");
+      explanation = `${recommended.name} scores highest for this transaction${reasons.length ? " because " + reasons.slice(0, 2).join(" and ") : ""}.`;
+    }
+
+    return { scores, recommended, blocked, warnings, confidence, explanation, maxScore };
+  }
+
+  // ── ACTIONS ───────────────────────────────────────────────────────
+  function scrollTop() { document.getElementById("rail-calc").scrollIntoView({ behavior: "smooth", block: "start" }); }
+
+  window.RC = {
+    set: (key, val) => { state.inputs[key] = val; render(); },
+    calculate: () => { state.screen = "results"; scrollTop(); setTimeout(render, 200); },
+    reset: () => { state = { screen: "form", inputs: {}, emailSubmitted: false }; scrollTop(); render(); },
+    submitEmail: e => {
+      e.preventDefault();
+      const form = e.target;
+      const result = calculate();
+      const data = { email: form.email.value, name: form.name.value, org: form.org.value, inputs: state.inputs, recommendation: result.recommended?.name, score: result.scores, warnings: result.warnings, timestamp: new Date().toISOString(), source: "ch12-rail-calculator" };
+      try { const l = JSON.parse(localStorage.getItem("wmm_leads") || "[]"); l.push(data); localStorage.setItem("wmm_leads", JSON.stringify(l)); } catch (_) {}
+      if (window.LEADS_WEBHOOK_URL) fetch(window.LEADS_WEBHOOK_URL, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(data) }).catch(() => {});
+      state.emailSubmitted = true; render();
+    },
+    downloadPDF: () => {
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF({ orientation: "portrait", unit: "mm", format: "letter" });
+      const W = 216, H = 279, BLUE = [20, 93, 208];
+      const result = calculate();
+
+      // Header
+      doc.setFillColor(...BLUE); doc.rect(0, 0, W, 22, "F");
+      doc.setTextColor(255,255,255); doc.setFont("helvetica","bold"); doc.setFontSize(13);
+      doc.text("Rail Selection Analysis", 12, 14);
+      doc.setFontSize(8); doc.setFont("helvetica","normal");
+      doc.text("When Money Moves | Chapter 12: Payment Rails", W-12, 14, { align: "right" });
+
+      let y = 32;
+
+      // Inputs summary
+      doc.setTextColor(107,114,128); doc.setFontSize(8);
+      const inp = state.inputs;
+      doc.text(`Type: ${inp.type} | Amount: ${inp.amount} | Verification: ${inp.verification} | Timing: ${inp.timing} | Account: ${inp.account} | Reversibility: ${inp.reversibility}`, 12, y);
+      y += 10;
+
+      // Recommendation
+      if (result.blocked) {
+        doc.setTextColor(220,38,38); doc.setFont("helvetica","bold"); doc.setFontSize(12);
+        doc.text("ACTION REQUIRED", 12, y); y += 6;
+        doc.setFont("helvetica","normal"); doc.setFontSize(9); doc.setTextColor(55,65,81);
+        const lines = doc.splitTextToSize(result.blocked, W - 24);
+        doc.text(lines, 12, y); y += lines.length * 4 + 6;
+      } else if (result.recommended) {
+        doc.setTextColor(31,41,55); doc.setFont("helvetica","bold"); doc.setFontSize(16);
+        doc.text("Recommended: " + result.recommended.name, 12, y); y += 7;
+        doc.setFontSize(9); doc.setFont("helvetica","normal"); doc.setTextColor(107,114,128);
+        doc.text(result.confidence + " Confidence \u2014 " + result.explanation, 12, y); y += 10;
+
+        // Security profile
+        doc.setFont("helvetica","bold"); doc.setFontSize(10); doc.setTextColor(31,41,55);
+        doc.text("Security Profile", 12, y); y += 6;
+        const sec = SECURITY[result.recommended.id];
+        ["Verification Time", "Intervention", "Recovery", "Evidence"].forEach((dim, i) => {
+          const val = [sec.verification, sec.intervention, sec.recovery, sec.evidence][i];
+          const label = val >= 70 ? "Strong" : val >= 40 ? "Moderate" : "Weak";
+          doc.setFont("helvetica","normal"); doc.setFontSize(8); doc.setTextColor(55,65,81);
+          doc.text(dim + ": " + label + " (" + val + "%)", 12, y);
+          doc.setFillColor(229,231,235); doc.roundedRect(80, y-3, 60, 4, 2, 2, "F");
+          const c = val >= 70 ? [5,150,105] : val >= 40 ? [217,119,6] : [220,38,38];
+          doc.setFillColor(...c); doc.roundedRect(80, y-3, 60*val/100, 4, 2, 2, "F");
+          y += 6;
+        });
+        y += 4;
+      }
+
+      // Warnings
+      if (result.warnings.length > 0) {
+        doc.setFont("helvetica","bold"); doc.setFontSize(10); doc.setTextColor(217,119,6);
+        doc.text("Warnings", 12, y); y += 6;
+        doc.setFont("helvetica","normal"); doc.setFontSize(8); doc.setTextColor(55,65,81);
+        result.warnings.forEach(w => {
+          const lines = doc.splitTextToSize("\u26A0 " + w, W - 24);
+          doc.text(lines, 12, y); y += lines.length * 4 + 2;
+        });
+        y += 4;
+      }
+
+      // Comparison table
+      doc.setFont("helvetica","bold"); doc.setFontSize(10); doc.setTextColor(31,41,55);
+      doc.text("All Rails Compared", 12, y); y += 6;
+      doc.setFontSize(7); doc.setFont("helvetica","bold"); doc.setTextColor(107,114,128);
+      const cols = [12, 60, 85, 110, 135, 160, 185];
+      ["Rail", "Score", "Verification", "Intervention", "Recovery", "Evidence", "Status"].forEach((h, i) => doc.text(h, cols[i], y));
+      y += 2; doc.setDrawColor(229,231,235); doc.line(12, y, W-12, y); y += 4;
+
+      doc.setFont("helvetica","normal"); doc.setFontSize(8);
+      result.scores.forEach(rs => {
+        const rail = RAILS.find(r => r.id === rs.id);
+        const sec = SECURITY[rs.id];
+        const dimLabel = v => v >= 70 ? "Strong" : v >= 40 ? "Mod" : "Weak";
+        doc.setTextColor(rs.disqualified ? 180 : 55, rs.disqualified ? 180 : 65, rs.disqualified ? 180 : 81);
+        doc.text(rail.name, cols[0], y);
+        doc.text(String(rs.score), cols[1], y);
+        doc.text(dimLabel(sec.verification), cols[2], y);
+        doc.text(dimLabel(sec.intervention), cols[3], y);
+        doc.text(dimLabel(sec.recovery), cols[4], y);
+        doc.text(dimLabel(sec.evidence), cols[5], y);
+        doc.text(rs.disqualified ? "Blocked" : (!result.blocked && result.recommended.id === rs.id ? "REC" : ""), cols[6], y);
+        y += 5;
+      });
+
+      // Footer
+      doc.setFillColor(...BLUE); doc.rect(0, H-12, W, 12, "F");
+      doc.setTextColor(255,255,255); doc.setFont("helvetica","normal"); doc.setFontSize(6);
+      doc.text("In Basefund, rail selection is part of transaction design \u2014 not a last-minute logistics decision.", 12, H-6);
+      doc.setFont("helvetica","bold"); doc.text("basefund.com", W-12, H-6, { align: "right" });
+
+      doc.save("rail-selection-analysis.pdf");
+    },
+  };
+
+  render();
+})();
+</script>
+
+<!-- END EMBED -->
+
+</body>
+</html>
