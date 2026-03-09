@@ -36,6 +36,7 @@
     .mesh-blue{background:radial-gradient(ellipse 70% 60% at 100% 0%, rgba(0,244,224,.25) 0%, transparent 55%),radial-gradient(ellipse 60% 70% at 0% 80%, rgba(40,164,221,.4) 0%, transparent 50%),radial-gradient(ellipse 50% 50% at 70% 100%, rgba(40,164,221,.3) 0%, transparent 55%),radial-gradient(ellipse 45% 45% at 20% 30%, rgba(20,93,208,.35) 0%, transparent 45%),linear-gradient(315deg, #145DD0 0%, #1a6ae0 30%, #28A4DD 70%, #145DD0 100%)}
     .btn-primary{transition:all .3s ease}
     .btn-primary:hover{box-shadow:0 4px 20px rgba(20,93,208,.3);transform:translateY(-1px)}
+    @keyframes arrow-nudge{0%,70%,100%{transform:translateX(0)}80%{transform:translateX(4px)}90%{transform:translateX(-1px)}}.arrow-nudge{animation:arrow-nudge 2s ease-in-out infinite}
   </style>
 </head>
 <body class="bg-white text-gray-800 antialiased overflow-x-hidden font-sans">
@@ -62,8 +63,8 @@
           "See exactly how money moves through your transactions."
         </p>
         <div class="r rd4">
-          <a href="#try-it" class="btn-primary inline-block bg-white text-brand-blue font-bold text-base px-8 py-4 rounded-lg">
-            Open the Tool
+          <a href="#try-it" class="btn-primary inline-flex items-center gap-3 bg-white text-brand-blue font-bold text-base px-8 py-4 rounded-lg">
+            Open the Tool <svg class="w-5 h-5 arrow-nudge" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"/></svg>
           </a>
         </div>
       </div>
