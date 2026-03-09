@@ -1,27 +1,757 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>TechAuth - Login</title>
-    <meta name="description" content="TechAuth Login Portal" />
-    <meta name="author" content="TechAuth" />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Basefund | Secure & Insure Your Money in Motion</title>
+  <meta name="description" content="Basefund secures and insures high-value transactions. Eliminate wire fraud, protect every closing, and gain complete visibility over your money in motion.">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            bg: { 900: '#040714', 800: '#080C1A', 700: '#0C1224', 600: '#111830' },
+            accent: { blue: '#145DD0', light: '#145DD0', teal: '#00F4E3', cyan: '#28A4DD', glow: '#1a3a8a' },
+            muted: { 500: '#3A4058', 400: '#505874', 300: '#7B8299', 200: '#A0A7BA' },
+          },
+          fontFamily: {
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+            serif: ['Instrument Serif', 'Georgia', 'serif'],
+          },
+        },
+      },
+    }
+  </script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
 
-    <meta property="og:title" content="fdba08cc-df83-4da9-ae16-a50f6f61b701" />
-    <meta property="og:description" content="Lovable Generated Project" />
-    <meta property="og:type" content="website" />
-    <meta property="og:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
+    /* Reveal */
+    .r { opacity:0; transform:translateY(28px); transition: opacity 0.9s cubic-bezier(.16,1,.3,1), transform 0.9s cubic-bezier(.16,1,.3,1); }
+    .r.v { opacity:1; transform:translateY(0); }
+    .rd1{transition-delay:.1s}.rd2{transition-delay:.2s}.rd3{transition-delay:.3s}.rd4{transition-delay:.4s}.rd5{transition-delay:.5s}
 
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:site" content="@lovable_dev" />
-    <meta name="twitter:image" content="https://lovable.dev/opengraph-image-p98pqg.png" />
-  </head>
+    /* Grain */
+    .grain{position:relative}
+    .grain::before{content:'';position:absolute;inset:0;z-index:1;pointer-events:none;opacity:0.025;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
 
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+    /* Orb */
+    @keyframes orb{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(25px,-18px) scale(1.04)}66%{transform:translate(-18px,12px) scale(.96)}}
+    .orb{animation:orb 14s ease-in-out infinite;filter:blur(100px)}
+
+    /* Float */
+    @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+    .float{animation:float 6s ease-in-out infinite}
+    .float-d1{animation-delay:-2s}.float-d2{animation-delay:-4s}
+
+    /* Pulse glow */
+    @keyframes pulse-glow{0%,100%{opacity:.4;transform:scale(1)}50%{opacity:.8;transform:scale(1.05)}}
+    .pulse-glow{animation:pulse-glow 3s ease-in-out infinite}
+
+    /* Rotate slow */
+    @keyframes spin-slow{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+    .spin-slow{animation:spin-slow 30s linear infinite}
+
+    /* Shimmer line */
+    @keyframes shimmer-line{0%{transform:translateX(-100%)}100%{transform:translateX(200%)}}
+
+    /* Glass nav */
+    .nav{background:rgba(4,7,20,0.6);backdrop-filter:blur(28px);-webkit-backdrop-filter:blur(28px);border-bottom:1px solid rgba(255,255,255,0.04)}
+
+    /* Gradient text */
+    .tg{background:linear-gradient(135deg,#145DD0,#00F4E3);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+    .tw{background:linear-gradient(180deg,#fff 30%,#7B8299 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+
+    /* Glow button */
+    .btn-g{position:relative;transition:all .4s ease}
+    .btn-g::before{content:'';position:absolute;inset:-1px;border-radius:inherit;padding:1px;background:linear-gradient(135deg,rgba(61,119,247,.5),rgba(0,244,227,.3));-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none;opacity:0;transition:opacity .4s ease}
+    .btn-g:hover::before{opacity:1}
+    .btn-g:hover{box-shadow:0 0 50px rgba(61,119,247,.2),0 0 100px rgba(61,119,247,.08);transform:translateY(-1px)}
+
+    /* Bento */
+    .bento{background:linear-gradient(180deg,rgba(255,255,255,0.035) 0%,rgba(255,255,255,0.008) 100%);border:1px solid rgba(255,255,255,0.06);transition:all .5s cubic-bezier(.16,1,.3,1);position:relative;overflow:hidden}
+    .bento::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(61,119,247,.3),transparent);opacity:0;transition:opacity .5s ease}
+    .bento:hover{border-color:rgba(61,119,247,.15);transform:translateY(-3px)}
+    .bento:hover::before{opacity:1}
+    .bento-glow::after{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(ellipse at 50% 0%,rgba(61,119,247,.06) 0%,transparent 60%);pointer-events:none}
+
+    /* Scroll indicator */
+    @keyframes sd{0%,100%{opacity:0;transform:translateY(0)}50%{opacity:1;transform:translateY(10px)}}
+    .si{animation:sd 2.5s ease-in-out infinite}
+
+    .hrg{height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.06),transparent)}
+    .sn{font-family:'Instrument Serif',Georgia,serif;font-style:italic}
+    .mm{max-height:0;overflow:hidden;transition:max-height .4s cubic-bezier(.16,1,.3,1)}.mm.open{max-height:400px}
+    .deco-text{font-family:'Instrument Serif',Georgia,serif;font-size:clamp(80px,12vw,160px);line-height:1;-webkit-text-stroke:1px rgba(61,119,247,.08);-webkit-text-fill-color:transparent;user-select:none}
+    .stat-divider{width:1px;background:linear-gradient(180deg,transparent,rgba(255,255,255,.08),transparent)}
+    .qm{font-family:'Instrument Serif',Georgia,serif;font-size:160px;line-height:0.6;background:linear-gradient(180deg,rgba(61,119,247,.25),transparent);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+    .cta-glow{background:radial-gradient(ellipse 60% 50% at 50% 50%,rgba(61,119,247,.1) 0%,transparent 70%)}
+
+    /* Animated ring graphic */
+    .ring-graphic{position:relative;width:100%;aspect-ratio:1;max-width:400px}
+    .ring{border-radius:50%;position:absolute;border:1px solid rgba(61,119,247,.1)}
+    .ring-1{inset:0;animation:spin-slow 25s linear infinite}
+    .ring-2{inset:12%;animation:spin-slow 35s linear infinite reverse}
+    .ring-3{inset:24%;animation:spin-slow 20s linear infinite}
+    .ring .dot{position:absolute;width:8px;height:8px;border-radius:50%;background:#145DD0;box-shadow:0 0 12px rgba(61,119,247,.6)}
+
+    /* Shield graphic */
+    @keyframes shield-pulse{0%,100%{filter:drop-shadow(0 0 20px rgba(61,119,247,.2))}50%{filter:drop-shadow(0 0 40px rgba(61,119,247,.4))}}
+    .shield-pulse{animation:shield-pulse 3s ease-in-out infinite}
+
+    /* Connection lines */
+    @keyframes dash{to{stroke-dashoffset:0}}
+    .anim-dash{stroke-dasharray:8 4;stroke-dashoffset:24;animation:dash 2s linear infinite}
+  </style>
+</head>
+<body class="bg-bg-900 text-white antialiased overflow-x-hidden font-sans">
+
+  <!-- Nav -->
+  <nav class="nav fixed top-0 inset-x-0 z-50">
+    <div class="max-w-7xl mx-auto px-6 lg:px-8 flex items-center justify-between h-[72px]">
+      <a href="/" class="flex items-center gap-2.5">
+        <svg width="30" height="30" viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#145DD0"/><path d="M8 10h8c3.3 0 6 2.7 6 6s-2.7 6-6 6h-3v-4h3c1.1 0 2-.9 2-2s-.9-2-2-2H12v8H8V10z" fill="white"/></svg>
+        <span class="text-base font-semibold tracking-tight text-white/80">BASEFUND</span>
+      </a>
+      <div class="hidden lg:flex items-center gap-8">
+        <a href="#platform" class="text-sm text-white/35 hover:text-white/70 transition-colors tracking-wide uppercase">Platform</a>
+        <a href="#process" class="text-sm text-white/35 hover:text-white/70 transition-colors tracking-wide uppercase">Process</a>
+        <a href="#solutions" class="text-sm text-white/35 hover:text-white/70 transition-colors tracking-wide uppercase">Solutions</a>
+        <a href="/pricing" class="text-sm text-white/35 hover:text-white/70 transition-colors tracking-wide uppercase">Pricing</a>
+      </div>
+      <div class="hidden lg:flex items-center gap-5">
+        <a href="https://app.basefund.com/" class="text-sm text-white/40 hover:text-white/80 transition-colors">Log In</a>
+        <a href="/get-started" class="btn-g bg-accent-blue/90 hover:bg-accent-blue text-white text-sm font-medium px-6 py-2.5 rounded-full">Get Started</a>
+      </div>
+      <button id="mt" class="lg:hidden p-2 text-white/50" aria-label="Menu">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 9h16.5m-16.5 6.75h16.5"/></svg>
+      </button>
+    </div>
+    <div id="mm" class="mm lg:hidden px-6 pb-4">
+      <div class="flex flex-col gap-1 pt-2 border-t border-white/5">
+        <a href="#platform" class="text-sm text-white/40 py-3 uppercase tracking-wide">Platform</a>
+        <a href="#process" class="text-sm text-white/40 py-3 uppercase tracking-wide">Process</a>
+        <a href="#solutions" class="text-sm text-white/40 py-3 uppercase tracking-wide">Solutions</a>
+        <a href="/pricing" class="text-sm text-white/40 py-3 uppercase tracking-wide">Pricing</a>
+        <a href="/get-started" class="bg-accent-blue text-white text-sm font-medium px-5 py-3 rounded-full text-center mt-2">Get Started</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="relative min-h-screen flex items-center justify-center pt-[72px] grain overflow-hidden">
+    <div class="orb absolute top-[20%] left-[30%] w-[600px] h-[600px] rounded-full bg-accent-blue/[.08]"></div>
+    <div class="orb absolute bottom-[10%] right-[20%] w-[400px] h-[400px] rounded-full bg-accent-teal/[.05]" style="animation-delay:-5s"></div>
+    <div class="absolute top-0 inset-x-0 h-[700px] bg-gradient-to-b from-accent-blue/[.05] to-transparent"></div>
+    <div class="absolute bottom-0 inset-x-0 h-48 bg-gradient-to-t from-bg-900 to-transparent z-10"></div>
+
+    <div class="relative z-10 max-w-7xl mx-auto px-6 lg:px-8 grid lg:grid-cols-2 gap-16 items-center py-24 lg:py-32">
+      <!-- Left copy -->
+      <div>
+        <div class="r inline-flex items-center gap-2.5 border border-white/[.07] bg-white/[.02] rounded-full px-5 py-2 mb-8">
+          <span class="w-2 h-2 rounded-full bg-accent-teal shadow-[0_0_10px_rgba(0,244,227,.6)]"></span>
+          <span class="text-xs text-white/40 uppercase tracking-[.2em]">Managing $200B+ in secure payments</span>
+        </div>
+
+        <h1 class="r rd1 font-serif text-5xl sm:text-6xl lg:text-[80px] leading-[1.05] tracking-tight mb-8">
+          <span class="tw">Secure & insure your</span><br>
+          <em class="tg">money in motion</em>
+        </h1>
+
+        <p class="r rd2 text-lg lg:text-xl text-muted-200 max-w-xl leading-relaxed mb-10">
+          Banks move money. People coordinate capital. Both need
+          <span class="text-white font-medium">Secure Transactions</span>
+          to protect their customers, clients, and funds.
+        </p>
+
+        <div class="r rd3 flex flex-col sm:flex-row gap-4 mb-12">
+          <a href="/get-started" class="btn-g inline-flex items-center justify-center gap-2.5 bg-accent-blue text-white text-base font-medium px-8 py-4 rounded-full">
+            Start Securing Transactions
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12h15m0 0l-6.75-6.75M19.5 12l-6.75 6.75"/></svg>
+          </a>
+          <a href="#" class="inline-flex items-center justify-center gap-2 border border-white/[.08] hover:border-white/15 text-white/50 hover:text-white/80 text-base font-medium px-8 py-4 rounded-full transition-all">
+            Schedule a Demo
+          </a>
+        </div>
+
+        <!-- Micro social proof -->
+        <div class="r rd4 flex items-center gap-4">
+          <div class="flex -space-x-2">
+            <div class="w-10 h-10 rounded-full bg-accent-blue/20 border-2 border-bg-900 flex items-center justify-center text-xs font-bold text-accent-blue">AF</div>
+            <div class="w-10 h-10 rounded-full bg-accent-teal/20 border-2 border-bg-900 flex items-center justify-center text-xs font-bold text-accent-teal">JM</div>
+            <div class="w-10 h-10 rounded-full bg-purple-500/20 border-2 border-bg-900 flex items-center justify-center text-xs font-bold text-purple-400">SR</div>
+          </div>
+          <p class="text-sm text-muted-300">Trusted by <span class="text-white font-medium">thousands</span> of financial leaders</p>
+        </div>
+      </div>
+
+      <!-- Right — animated ring graphic + floating cards -->
+      <div class="relative hidden lg:flex items-center justify-center">
+        <!-- Rotating rings -->
+        <div class="ring-graphic mx-auto">
+          <div class="ring ring-1"><div class="dot" style="top:0;left:50%;transform:translate(-50%,-50%)"></div></div>
+          <div class="ring ring-2" style="border-color:rgba(0,244,227,.1)"><div class="dot" style="bottom:0;left:50%;transform:translate(-50%,50%);background:#00F4E3;box-shadow:0 0 12px rgba(0,244,227,.6)"></div></div>
+          <div class="ring ring-3"><div class="dot" style="top:50%;right:0;transform:translate(50%,-50%)"></div></div>
+          <!-- Center shield -->
+          <div class="absolute inset-[30%] flex items-center justify-center">
+            <svg class="w-24 h-24 text-accent-blue shield-pulse" fill="none" stroke="currentColor" stroke-width="1" viewBox="0 0 24 24">
+              <path d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z"/>
+            </svg>
+          </div>
+        </div>
+
+        <!-- Floating card: Transaction -->
+        <div class="float absolute top-8 -right-4 bento rounded-2xl p-5 w-64 z-20">
+          <div class="flex items-center gap-3 mb-3">
+            <div class="w-8 h-8 rounded-lg bg-accent-blue/15 flex items-center justify-center"><svg class="w-4 h-4 text-accent-blue" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18.75a60.07 60.07 0 0115.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 013 6h-.75m0 0v-.375c0-.621.504-1.125 1.125-1.125H20.25M2.25 6v9m18-10.5v.75c0 .414.336.75.75.75h.75m-1.5-1.5h.375c.621 0 1.125.504 1.125 1.125v9.75c0 .621-.504 1.125-1.125 1.125h-.375m1.5-1.5H21a.75.75 0 00-.75.75v.75m0 0H3.75m0 0h-.375a1.125 1.125 0 01-1.125-1.125V15m1.5 1.5v-.75A.75.75 0 003 15h-.75M15 10.5a3 3 0 11-6 0 3 3 0 016 0zm3 0h.008v.008H18V10.5zm-12 0h.008v.008H6V10.5z"/></svg></div>
+            <div>
+              <p class="text-sm font-medium text-white/80">$4.25M Transfer</p>
+              <p class="text-xs text-white/30">Municipal Bond Closing</p>
+            </div>
+          </div>
+          <div class="flex gap-1">
+            <div class="flex-1 h-1 rounded-full bg-accent-blue"></div>
+            <div class="flex-1 h-1 rounded-full bg-accent-blue"></div>
+            <div class="flex-1 h-1 rounded-full bg-accent-blue"></div>
+            <div class="flex-1 h-1 rounded-full bg-white/[.06]"></div>
+          </div>
+        </div>
+
+        <!-- Floating card: Security -->
+        <div class="float float-d1 absolute bottom-16 -left-8 bento rounded-2xl p-5 w-56 z-20">
+          <p class="text-xs text-white/30 uppercase tracking-[.15em] mb-2">Security Score</p>
+          <div class="flex items-end gap-1.5 mb-3">
+            <span class="text-3xl font-serif tg">98</span>
+            <span class="text-white/20 text-sm mb-0.5">/100</span>
+          </div>
+          <div class="h-1.5 bg-white/[.04] rounded-full overflow-hidden">
+            <div class="h-full w-[98%] rounded-full bg-gradient-to-r from-accent-blue to-accent-teal"></div>
+          </div>
+        </div>
+
+        <!-- Floating card: Insurance -->
+        <div class="float float-d2 absolute bottom-4 right-8 bento rounded-xl p-4 z-20">
+          <div class="flex items-center gap-2.5">
+            <span class="w-2.5 h-2.5 rounded-full bg-accent-teal shadow-[0_0_8px_rgba(0,244,227,.5)]"></span>
+            <span class="text-sm font-medium text-accent-teal">Insurance Active</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRODUCT PREVIEW — Bento -->
+  <section class="relative z-20 pb-20">
+    <div class="max-w-6xl mx-auto px-6 lg:px-8">
+      <div class="r bento bento-glow rounded-3xl p-6 lg:p-10">
+        <div class="relative z-10 grid lg:grid-cols-12 gap-6">
+          <!-- Main Dashboard -->
+          <div class="lg:col-span-8 bg-bg-800/80 rounded-2xl p-6 lg:p-8 border border-white/[.04]">
+            <div class="flex items-center justify-between mb-8">
+              <div>
+                <p class="text-xs text-white/30 uppercase tracking-[.2em] mb-1">Active Transaction</p>
+                <p class="text-4xl lg:text-5xl font-serif">$4,250,000</p>
+              </div>
+              <div class="flex items-center gap-2 bg-emerald-500/10 border border-emerald-500/15 text-emerald-400 px-4 py-2 rounded-full text-sm font-medium">
+                <span class="w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,.5)] pulse-glow"></span>
+                Secured & Insured
+              </div>
+            </div>
+            <div class="flex gap-1.5 mb-4">
+              <div class="flex-1 h-1.5 rounded-full bg-accent-blue relative overflow-hidden"><div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent" style="animation:shimmer-line 2s ease-in-out infinite"></div></div>
+              <div class="flex-1 h-1.5 rounded-full bg-accent-blue"></div>
+              <div class="flex-1 h-1.5 rounded-full bg-accent-blue"></div>
+              <div class="flex-1 h-1.5 rounded-full bg-white/[.06]"></div>
+            </div>
+            <div class="flex justify-between text-xs text-white/30 mb-8 uppercase tracking-[.15em]">
+              <span class="text-accent-blue/80">Flow of Funds</span>
+              <span class="text-accent-blue/80">Participants</span>
+              <span class="text-accent-blue/80">Verification</span>
+              <span>Finalization</span>
+            </div>
+            <div class="space-y-3">
+              <div class="flex items-center justify-between p-4 bg-white/[.015] rounded-xl border border-white/[.04] hover:border-white/[.08] transition-colors">
+                <div class="flex items-center gap-4">
+                  <div class="w-10 h-10 bg-accent-blue/10 rounded-lg flex items-center justify-center"><svg class="w-5 h-5 text-accent-blue" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 21v-8.25M15.75 21v-8.25M8.25 21v-8.25M3 9l9-6 9 6m-1.5 12V10.332A48.36 48.36 0 0012 9.75c-2.551 0-5.056.2-7.5.582V21M3 21h18"/></svg></div>
+                  <div><p class="text-base font-medium text-white/80">First National Bank</p><p class="text-xs text-white/30">Sending Institution</p></div>
+                </div>
+                <span class="text-xs text-emerald-400 font-medium flex items-center gap-1.5"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>Verified</span>
+              </div>
+              <div class="flex items-center justify-between p-4 bg-white/[.015] rounded-xl border border-white/[.04] hover:border-white/[.08] transition-colors">
+                <div class="flex items-center gap-4">
+                  <div class="w-10 h-10 bg-accent-teal/10 rounded-lg flex items-center justify-center"><svg class="w-5 h-5 text-accent-teal" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z"/></svg></div>
+                  <div><p class="text-base font-medium text-white/80">Masterson Advisors</p><p class="text-xs text-white/30">Transaction Coordinator</p></div>
+                </div>
+                <span class="text-xs text-emerald-400 font-medium flex items-center gap-1.5"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>Verified</span>
+              </div>
+              <div class="flex items-center justify-between p-4 bg-white/[.015] rounded-xl border border-white/[.04] hover:border-white/[.08] transition-colors">
+                <div class="flex items-center gap-4">
+                  <div class="w-10 h-10 bg-purple-500/10 rounded-lg flex items-center justify-center"><svg class="w-5 h-5 text-purple-400" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"/></svg></div>
+                  <div><p class="text-base font-medium text-white/80">Sarah Chen, Esq.</p><p class="text-xs text-white/30">Receiving Attorney</p></div>
+                </div>
+                <span class="text-xs text-amber-400 font-medium flex items-center gap-1.5"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>Pending</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Side -->
+          <div class="lg:col-span-4 grid gap-4">
+            <div class="bg-bg-800/80 rounded-2xl p-6 border border-white/[.04]">
+              <p class="text-xs text-white/30 uppercase tracking-[.2em] mb-3">Security Score</p>
+              <div class="flex items-end gap-2 mb-4">
+                <span class="text-5xl font-serif tg">98</span>
+                <span class="text-white/20 text-base mb-1">/100</span>
+              </div>
+              <div class="h-2 bg-white/[.04] rounded-full overflow-hidden">
+                <div class="h-full w-[98%] rounded-full bg-gradient-to-r from-accent-blue to-accent-teal"></div>
+              </div>
+            </div>
+            <div class="bg-bg-800/80 rounded-2xl p-6 border border-white/[.04]">
+              <p class="text-xs text-white/30 uppercase tracking-[.2em] mb-4">Insurance</p>
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-lg bg-accent-teal/10 flex items-center justify-center"><svg class="w-5 h-5 text-accent-teal" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div>
+                <div>
+                  <p class="text-base font-medium text-emerald-400">Active Coverage</p>
+                  <p class="text-xs text-white/30">Full protection enabled</p>
+                </div>
+              </div>
+            </div>
+            <div class="bg-bg-800/80 rounded-2xl p-6 border border-white/[.04]">
+              <p class="text-xs text-white/30 uppercase tracking-[.2em] mb-3">Documents</p>
+              <div class="flex items-center justify-between">
+                <div class="flex items-end gap-2">
+                  <span class="text-4xl font-serif">12</span>
+                  <span class="text-white/20 text-base mb-1">attached</span>
+                </div>
+                <span class="text-xs text-emerald-400 bg-emerald-400/10 px-3 py-1.5 rounded-lg font-medium">All verified</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STATS -->
+  <section class="py-24 lg:py-32 relative overflow-hidden" style="background: linear-gradient(135deg, #0d3a8a 0%, #145DD0 50%, #1048a8 100%)">
+    <div class="absolute inset-0 opacity-[0.03]" style="background-image:url(&quot;data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E&quot;)"></div>
+    <div class="relative z-10 max-w-6xl mx-auto px-6 lg:px-8">
+      <p class="r text-center text-xs text-white/50 uppercase tracking-[.25em] mb-16">Trusted by the world's leading financial institutions</p>
+      <div class="r rd1 flex flex-col lg:flex-row items-center justify-between gap-12 lg:gap-0">
+        <div class="text-center lg:text-left flex-1">
+          <p class="font-serif text-6xl lg:text-7xl text-white mb-2">$200B<span class="text-accent-teal">+</span></p>
+          <p class="text-sm text-white/50 uppercase tracking-[.15em]">Payments managed</p>
+        </div>
+        <div class="hidden lg:block self-stretch" style="width:1px;background:linear-gradient(180deg,transparent,rgba(255,255,255,.15),transparent)"></div>
+        <div class="text-center flex-1">
+          <p class="font-serif text-6xl lg:text-7xl text-white mb-2">99.9<span class="text-accent-teal">%</span></p>
+          <p class="text-sm text-white/50 uppercase tracking-[.15em]">Security uptime</p>
+        </div>
+        <div class="hidden lg:block self-stretch" style="width:1px;background:linear-gradient(180deg,transparent,rgba(255,255,255,.15),transparent)"></div>
+        <div class="text-center flex-1">
+          <p class="font-serif text-6xl lg:text-7xl text-white mb-2">$0</p>
+          <p class="text-sm text-white/50 uppercase tracking-[.15em]">Client fraud losses</p>
+        </div>
+        <div class="hidden lg:block self-stretch" style="width:1px;background:linear-gradient(180deg,transparent,rgba(255,255,255,.15),transparent)"></div>
+        <div class="text-center lg:text-right flex-1">
+          <p class="font-serif text-6xl lg:text-7xl text-accent-teal mb-2">24/7</p>
+          <p class="text-sm text-white/50 uppercase tracking-[.15em]">Active monitoring</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROBLEM -->
+  <section class="py-24 lg:py-32 relative grain overflow-hidden">
+    <div class="orb absolute -top-40 right-0 w-[500px] h-[500px] bg-red-500/[.04] rounded-full"></div>
+    <div class="relative z-10 max-w-6xl mx-auto px-6 lg:px-8">
+      <div class="grid lg:grid-cols-2 gap-16 lg:gap-24 items-center">
+        <div>
+          <p class="r text-xs text-accent-blue uppercase tracking-[.2em] mb-6">The Problem</p>
+          <h2 class="r font-serif text-5xl lg:text-[64px] leading-[1.08] mb-8">
+            <span class="tw">Your money moves.</span><br>
+            <span class="text-muted-500">Your security doesn't.</span>
+          </h2>
+          <p class="r rd1 text-lg text-muted-200 leading-relaxed mb-10">
+            Funds have FDIC protection when stored — but once they leave the bank, they're neither secure nor insured. Wire transfers and high-value fund movements remain completely exposed.
+          </p>
+          <!-- Connection diagram -->
+          <div class="r rd2">
+            <svg class="w-full max-w-sm" viewBox="0 0 320 80" fill="none">
+              <rect x="0" y="20" width="80" height="40" rx="8" fill="rgba(61,119,247,.1)" stroke="rgba(61,119,247,.2)" stroke-width="1"/>
+              <text x="40" y="44" text-anchor="middle" fill="rgba(255,255,255,.5)" font-size="10" font-family="Inter">Bank</text>
+              <line x1="80" y1="40" x2="120" y2="40" stroke="rgba(61,119,247,.3)" stroke-width="1" class="anim-dash"/>
+              <rect x="120" y="15" width="80" height="50" rx="8" fill="rgba(255,255,255,.02)" stroke="rgba(255,255,255,.06)" stroke-width="1" stroke-dasharray="4 2"/>
+              <text x="160" y="38" text-anchor="middle" fill="rgba(255,255,255,.3)" font-size="9" font-family="Inter">UNPROTECTED</text>
+              <text x="160" y="52" text-anchor="middle" fill="rgba(239,68,68,.5)" font-size="9" font-family="Inter">ZONE</text>
+              <line x1="200" y1="40" x2="240" y2="40" stroke="rgba(239,68,68,.3)" stroke-width="1" class="anim-dash"/>
+              <rect x="240" y="20" width="80" height="40" rx="8" fill="rgba(239,68,68,.05)" stroke="rgba(239,68,68,.15)" stroke-width="1"/>
+              <text x="280" y="44" text-anchor="middle" fill="rgba(255,255,255,.5)" font-size="10" font-family="Inter">Recipient</text>
+            </svg>
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+          <div class="r bento rounded-2xl p-8 col-span-2">
+            <p class="font-serif text-6xl text-red-400/80 mb-3">$3B<span class="text-red-400/30">+</span></p>
+            <p class="text-base font-medium text-white/70 mb-2">Lost annually to BEC fraud</p>
+            <p class="text-sm text-muted-400 leading-relaxed">Business email compromise attacks targeting wire transfers via email.</p>
+          </div>
+          <div class="r rd1 bento rounded-2xl p-6">
+            <p class="font-serif text-5xl text-amber-400/80 mb-3">50<span class="text-amber-400/30">%</span></p>
+            <p class="text-sm font-medium text-white/70 mb-1">Claims denied</p>
+            <p class="text-xs text-muted-400">Security gaps leave institutions exposed.</p>
+          </div>
+          <div class="r rd2 bento rounded-2xl p-6">
+            <p class="font-serif text-5xl text-white/50 mb-3">Zero</p>
+            <p class="text-sm font-medium text-white/70 mb-1">Visibility</p>
+            <p class="text-xs text-muted-400">No tracking once money leaves the bank.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PLATFORM / FEATURES -->
+  <section id="platform" class="py-24 lg:py-32 relative">
+    <div class="max-w-6xl mx-auto px-6 lg:px-8">
+      <div class="text-center mb-20">
+        <p class="r text-xs text-accent-blue uppercase tracking-[.2em] mb-6">The Platform</p>
+        <h2 class="r font-serif text-5xl lg:text-[64px] leading-tight tw">
+          Everything you need to<br>fortify every transaction.
+        </h2>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+        <!-- Large card with embedded visual -->
+        <div class="r md:col-span-2 bento bento-glow rounded-2xl p-8 lg:p-10">
+          <div class="relative z-10 grid md:grid-cols-2 gap-10 items-center">
+            <div>
+              <div class="w-12 h-12 rounded-xl bg-accent-blue/10 flex items-center justify-center mb-6">
+                <svg class="w-6 h-6 text-accent-blue" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M7.5 21L3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5"/></svg>
+              </div>
+              <h3 class="text-2xl font-serif text-white mb-4">Multi-Directional Banking</h3>
+              <p class="text-base text-muted-300 leading-relaxed">Control money in and money out with built-in security. Not just payments — complete transaction management.</p>
+            </div>
+            <div class="bg-bg-800 rounded-xl p-6 border border-white/[.04]">
+              <div class="flex items-center justify-between mb-5">
+                <p class="text-xs text-white/30 uppercase tracking-[.15em]">Fund Flow</p>
+                <span class="text-xs text-emerald-400 flex items-center gap-1.5"><span class="w-1.5 h-1.5 rounded-full bg-emerald-400 pulse-glow"></span>Live</span>
+              </div>
+              <div class="space-y-4">
+                <div class="flex items-center justify-between"><span class="text-sm text-white/50">Incoming</span><span class="text-base font-medium text-emerald-400">+$2,150,000</span></div>
+                <div class="h-px bg-white/[.04]"></div>
+                <div class="flex items-center justify-between"><span class="text-sm text-white/50">Outgoing</span><span class="text-base font-medium text-accent-blue">-$1,850,000</span></div>
+                <div class="h-px bg-white/[.04]"></div>
+                <div class="flex items-center justify-between"><span class="text-sm text-white/50">Escrow Hold</span><span class="text-base font-medium text-white/60">$250,000</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Insurance with visual -->
+        <div class="r rd1 bento rounded-2xl p-8 flex flex-col">
+          <div class="w-12 h-12 rounded-xl bg-accent-teal/10 flex items-center justify-center mb-6">
+            <svg class="w-6 h-6 text-accent-teal" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z"/></svg>
+          </div>
+          <h3 class="text-xl font-serif text-white mb-3">Transaction Insurance</h3>
+          <p class="text-sm text-muted-300 leading-relaxed mb-6 flex-1">Purpose-built insurance that travels with your transaction — not just your bank account.</p>
+          <!-- Mini shield illustration -->
+          <div class="flex items-center justify-center py-4">
+            <svg class="w-20 h-20" viewBox="0 0 80 80" fill="none">
+              <path d="M40 8L12 22v18c0 16.6 11.9 32.1 28 36 16.1-3.9 28-19.4 28-36V22L40 8z" fill="rgba(0,244,227,.05)" stroke="rgba(0,244,227,.2)" stroke-width="1"/>
+              <path d="M32 40l6 6 12-12" stroke="#00F4E3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+        </div>
+
+        <!-- Multi-Participant with avatar visual -->
+        <div class="r bento rounded-2xl p-8">
+          <div class="w-12 h-12 rounded-xl bg-accent-blue/10 flex items-center justify-center mb-6">
+            <svg class="w-6 h-6 text-accent-blue" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197m0 0A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.058 2.772m0 0a3 3 0 00-4.681 2.72 8.986 8.986 0 003.74.477m.94-3.197a5.971 5.971 0 00-.94 3.197M15 6.75a3 3 0 11-6 0 3 3 0 016 0zm6 3a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0zm-13.5 0a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z"/></svg>
+          </div>
+          <h3 class="text-xl font-serif text-white mb-3">Multi-Participant</h3>
+          <p class="text-sm text-muted-300 leading-relaxed mb-6">Bring unlimited people, institutions, and transfers into a single secure transaction.</p>
+          <!-- Avatar stack illustration -->
+          <div class="flex items-center -space-x-3">
+            <div class="w-10 h-10 rounded-full bg-accent-blue/20 border-2 border-bg-900 flex items-center justify-center text-xs font-bold text-accent-blue">FN</div>
+            <div class="w-10 h-10 rounded-full bg-accent-teal/20 border-2 border-bg-900 flex items-center justify-center text-xs font-bold text-accent-teal">MA</div>
+            <div class="w-10 h-10 rounded-full bg-purple-500/20 border-2 border-bg-900 flex items-center justify-center text-xs font-bold text-purple-400">SC</div>
+            <div class="w-10 h-10 rounded-full bg-white/[.06] border-2 border-bg-900 flex items-center justify-center text-xs font-medium text-white/40">+5</div>
+          </div>
+        </div>
+
+        <!-- Document Center -->
+        <div class="r rd1 bento rounded-2xl p-8">
+          <div class="w-12 h-12 rounded-xl bg-accent-blue/10 flex items-center justify-center mb-6">
+            <svg class="w-6 h-6 text-accent-blue" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"/></svg>
+          </div>
+          <h3 class="text-xl font-serif text-white mb-3">Document Center</h3>
+          <p class="text-sm text-muted-300 leading-relaxed mb-6">Attach, require, and manage all documentation within the secure transaction.</p>
+          <!-- Doc stack visual -->
+          <div class="space-y-2">
+            <div class="flex items-center gap-3 p-2.5 bg-white/[.02] rounded-lg border border-white/[.04]">
+              <svg class="w-4 h-4 text-accent-blue/60" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"/></svg>
+              <span class="text-xs text-white/40">Wire_Instructions.pdf</span>
+              <svg class="w-3.5 h-3.5 text-emerald-400 ml-auto" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+            </div>
+            <div class="flex items-center gap-3 p-2.5 bg-white/[.02] rounded-lg border border-white/[.04]">
+              <svg class="w-4 h-4 text-accent-blue/60" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"/></svg>
+              <span class="text-xs text-white/40">Closing_Agreement.pdf</span>
+              <svg class="w-3.5 h-3.5 text-emerald-400 ml-auto" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+            </div>
+          </div>
+        </div>
+
+        <!-- Contact Management -->
+        <div class="r rd2 bento rounded-2xl p-8">
+          <div class="w-12 h-12 rounded-xl bg-accent-blue/10 flex items-center justify-center mb-6">
+            <svg class="w-6 h-6 text-accent-blue" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z"/></svg>
+          </div>
+          <h3 class="text-xl font-serif text-white mb-3">Contact Management</h3>
+          <p class="text-sm text-muted-300 leading-relaxed mb-6">Build your secure network of verified transaction participants.</p>
+          <!-- Network graphic -->
+          <svg class="w-full max-w-[160px]" viewBox="0 0 160 80" fill="none">
+            <circle cx="80" cy="40" r="12" fill="rgba(61,119,247,.15)" stroke="rgba(61,119,247,.3)" stroke-width="1"/>
+            <circle cx="30" cy="20" r="8" fill="rgba(0,244,227,.1)" stroke="rgba(0,244,227,.2)" stroke-width="1"/>
+            <circle cx="130" cy="20" r="8" fill="rgba(0,244,227,.1)" stroke="rgba(0,244,227,.2)" stroke-width="1"/>
+            <circle cx="30" cy="60" r="8" fill="rgba(168,85,247,.1)" stroke="rgba(168,85,247,.2)" stroke-width="1"/>
+            <circle cx="130" cy="60" r="8" fill="rgba(168,85,247,.1)" stroke="rgba(168,85,247,.2)" stroke-width="1"/>
+            <line x1="38" y1="24" x2="68" y2="36" stroke="rgba(255,255,255,.06)" stroke-width="1" class="anim-dash"/>
+            <line x1="122" y1="24" x2="92" y2="36" stroke="rgba(255,255,255,.06)" stroke-width="1" class="anim-dash"/>
+            <line x1="38" y1="56" x2="68" y2="44" stroke="rgba(255,255,255,.06)" stroke-width="1" class="anim-dash"/>
+            <line x1="122" y1="56" x2="92" y2="44" stroke="rgba(255,255,255,.06)" stroke-width="1" class="anim-dash"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROCESS -->
+  <section id="process" class="py-24 lg:py-32 relative grain overflow-hidden">
+    <div class="orb absolute bottom-0 left-1/3 w-[500px] h-[500px] bg-accent-blue/[.04] rounded-full"></div>
+    <div class="relative z-10 max-w-5xl mx-auto px-6 lg:px-8">
+      <div class="text-center mb-24">
+        <p class="r text-xs text-accent-blue uppercase tracking-[.2em] mb-6">The Process</p>
+        <h2 class="r font-serif text-5xl lg:text-[64px] leading-tight tw">
+          From setup to secured<br>in five steps.
+        </h2>
+      </div>
+
+      <div class="space-y-0">
+        <div class="r flex gap-8 lg:gap-16 items-start py-14 border-t border-white/[.04]">
+          <span class="sn text-7xl lg:text-8xl text-accent-blue/15 shrink-0 w-24 lg:w-32 text-right">01</span>
+          <div>
+            <h3 class="text-2xl font-serif text-white mb-3">Get Access</h3>
+            <p class="text-base text-muted-300 leading-relaxed max-w-lg">Securely onboard your organization with enterprise-grade security — MFA, SOC 2, bank-grade encryption from day one.</p>
+          </div>
+        </div>
+        <div class="r flex gap-8 lg:gap-16 items-start py-14 border-t border-white/[.04]">
+          <span class="sn text-7xl lg:text-8xl text-accent-blue/15 shrink-0 w-24 lg:w-32 text-right">02</span>
+          <div>
+            <h3 class="text-2xl font-serif text-white mb-3">Create Teams</h3>
+            <p class="text-base text-muted-300 leading-relaxed max-w-lg">Structure your account to mirror your existing entity — departments, divisions, or deal teams.</p>
+          </div>
+        </div>
+        <div class="r flex gap-8 lg:gap-16 items-start py-14 border-t border-white/[.04]">
+          <span class="sn text-7xl lg:text-8xl text-accent-blue/15 shrink-0 w-24 lg:w-32 text-right">03</span>
+          <div>
+            <h3 class="text-2xl font-serif text-white mb-3">Assign Roles & Permissions</h3>
+            <p class="text-base text-muted-300 leading-relaxed max-w-lg">Granular access control — admin, coordinator, participant. Each role sees only what they need.</p>
+          </div>
+        </div>
+        <div class="r flex gap-8 lg:gap-16 items-start py-14 border-t border-white/[.04]">
+          <span class="sn text-7xl lg:text-8xl text-accent-blue/15 shrink-0 w-24 lg:w-32 text-right">04</span>
+          <div>
+            <h3 class="text-2xl font-serif text-white mb-3">Setup Transactions</h3>
+            <p class="text-base text-muted-300 leading-relaxed max-w-lg">Configure workflows, add participants, attach documents, set verification requirements.</p>
+          </div>
+        </div>
+        <div class="r flex gap-8 lg:gap-16 items-start py-14 border-t border-b border-white/[.04]">
+          <span class="sn text-7xl lg:text-8xl tg shrink-0 w-24 lg:w-32 text-right">05</span>
+          <div>
+            <h3 class="text-2xl font-serif text-white mb-3">Deploy Secure Transactions</h3>
+            <p class="text-base text-muted-300 leading-relaxed max-w-lg">Every transaction is verified, insured, and executed with maximum security. Full visibility, full protection.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHO IT'S FOR -->
+  <section id="solutions" class="py-24 lg:py-32">
+    <div class="max-w-6xl mx-auto px-6 lg:px-8">
+      <div class="text-center mb-20">
+        <p class="r text-xs text-accent-blue uppercase tracking-[.2em] mb-6">Built For</p>
+        <h2 class="r font-serif text-5xl lg:text-[64px] leading-tight tw">
+          Purpose-built for those<br>who move capital.
+        </h2>
+      </div>
+
+      <div class="grid lg:grid-cols-3 gap-5">
+        <div class="r bento rounded-2xl p-10">
+          <!-- Illustration -->
+          <svg class="w-16 h-16 mb-6" viewBox="0 0 64 64" fill="none">
+            <rect x="8" y="16" width="48" height="36" rx="4" fill="rgba(61,119,247,.06)" stroke="rgba(61,119,247,.2)" stroke-width="1"/>
+            <path d="M16 36l8-8 6 4 10-10 8 6" stroke="#145DD0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <p class="text-xs text-accent-blue uppercase tracking-[.2em] mb-4">Capital Markets</p>
+          <h3 class="font-serif text-2xl text-white mb-4">Supercharge your deal flow</h3>
+          <p class="text-sm text-muted-300 leading-relaxed mb-8">Manage transactions on behalf of clients or investors with complete security.</p>
+          <div class="space-y-3 text-sm text-muted-200">
+            <div class="flex items-center gap-3"><span class="w-1.5 h-1.5 rounded-full bg-accent-blue/50"></span>Municipal & Corporate Finance</div>
+            <div class="flex items-center gap-3"><span class="w-1.5 h-1.5 rounded-full bg-accent-blue/50"></span>Venture Capital</div>
+            <div class="flex items-center gap-3"><span class="w-1.5 h-1.5 rounded-full bg-accent-blue/50"></span>Wealth Management</div>
+          </div>
+        </div>
+
+        <div class="r rd1 rounded-2xl p-10 relative overflow-hidden" style="background:linear-gradient(180deg,rgba(61,119,247,.1) 0%,rgba(4,7,20,.95) 100%);border:1px solid rgba(61,119,247,.12)">
+          <div class="absolute top-0 left-1/2 -translate-x-1/2 w-48 h-px bg-gradient-to-r from-transparent via-accent-blue/40 to-transparent"></div>
+          <svg class="w-16 h-16 mb-6" viewBox="0 0 64 64" fill="none">
+            <rect x="12" y="8" width="40" height="48" rx="4" fill="rgba(0,244,227,.04)" stroke="rgba(0,244,227,.15)" stroke-width="1"/>
+            <path d="M32 16v8M32 32v8M24 28h16" stroke="#00F4E3" stroke-width="1.5" stroke-linecap="round"/>
+            <circle cx="32" cy="44" r="4" fill="rgba(0,244,227,.15)" stroke="rgba(0,244,227,.3)" stroke-width="1"/>
+          </svg>
+          <p class="text-xs text-accent-teal uppercase tracking-[.2em] mb-4">Banking</p>
+          <h3 class="font-serif text-2xl text-white mb-4">Take control of wire ops</h3>
+          <p class="text-sm text-muted-200 leading-relaxed mb-8">Manage transactions on behalf of bank customers to prevent wire fraud.</p>
+          <div class="space-y-3 text-sm text-white/60">
+            <div class="flex items-center gap-3"><span class="w-1.5 h-1.5 rounded-full bg-accent-teal/50"></span>Banks</div>
+            <div class="flex items-center gap-3"><span class="w-1.5 h-1.5 rounded-full bg-accent-teal/50"></span>Corporate Trust</div>
+            <div class="flex items-center gap-3"><span class="w-1.5 h-1.5 rounded-full bg-accent-teal/50"></span>Custodians</div>
+          </div>
+        </div>
+
+        <div class="r rd2 bento rounded-2xl p-10">
+          <svg class="w-16 h-16 mb-6" viewBox="0 0 64 64" fill="none">
+            <rect x="4" y="20" width="24" height="32" rx="3" fill="rgba(61,119,247,.06)" stroke="rgba(61,119,247,.15)" stroke-width="1"/>
+            <rect x="36" y="20" width="24" height="32" rx="3" fill="rgba(61,119,247,.06)" stroke="rgba(61,119,247,.15)" stroke-width="1"/>
+            <path d="M28 36h8" stroke="rgba(61,119,247,.3)" stroke-width="1" stroke-dasharray="2 2"/>
+            <rect x="20" y="12" width="24" height="8" rx="2" fill="rgba(61,119,247,.08)" stroke="rgba(61,119,247,.2)" stroke-width="1"/>
+          </svg>
+          <p class="text-xs text-accent-blue uppercase tracking-[.2em] mb-4">B2B</p>
+          <h3 class="font-serif text-2xl text-white mb-4">Processing power for your org</h3>
+          <p class="text-sm text-muted-300 leading-relaxed mb-8">Manage transactions for your own entity with enterprise-grade security.</p>
+          <div class="space-y-3 text-sm text-muted-200">
+            <div class="flex items-center gap-3"><span class="w-1.5 h-1.5 rounded-full bg-accent-blue/50"></span>Municipalities</div>
+            <div class="flex items-center gap-3"><span class="w-1.5 h-1.5 rounded-full bg-accent-blue/50"></span>Corporations</div>
+            <div class="flex items-center gap-3"><span class="w-1.5 h-1.5 rounded-full bg-accent-blue/50"></span>Businesses</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIAL -->
+  <section class="py-24 lg:py-32 relative grain overflow-hidden">
+    <div class="orb absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-accent-blue/[.04] rounded-full"></div>
+    <div class="relative z-10 max-w-4xl mx-auto px-6 lg:px-8 text-center">
+      <div class="r">
+        <div class="qm mb-4">"</div>
+        <blockquote class="font-serif text-3xl lg:text-[42px] text-white/85 leading-[1.35] mb-12 -mt-12 lg:-mt-16">
+          Basefund has become a trusted part of our workflow. Every participant knows the funds are
+          <em class="text-accent-blue not-italic">verified</em>,
+          <em class="text-accent-blue not-italic">insured</em>, and
+          <em class="text-accent-blue not-italic">transparent</em>
+          — and that peace of mind is invaluable.
+        </blockquote>
+        <div class="hrg max-w-12 mx-auto mb-8"></div>
+        <p class="text-base font-medium text-white/70">Austin Ficken</p>
+        <p class="text-sm text-muted-400 mt-1">Assistant Vice President, Masterson Advisors</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="py-32 lg:py-44 relative overflow-hidden" style="background: linear-gradient(180deg, #040714 0%, #0d3a8a 30%, #145DD0 55%, #0d3a8a 80%, #040714 100%)">
+    <div class="absolute inset-0 opacity-[0.03]" style="background-image:url(&quot;data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E&quot;)"></div>
+    <div class="orb absolute top-1/3 left-1/4 w-[500px] h-[500px] bg-white/[.04] rounded-full"></div>
+    <div class="orb absolute bottom-1/3 right-1/4 w-[400px] h-[400px] bg-accent-teal/[.06] rounded-full" style="animation-delay:-7s"></div>
+
+    <div class="relative z-10 max-w-4xl mx-auto px-6 lg:px-8 text-center">
+      <h2 class="r font-serif text-5xl lg:text-[80px] leading-[1.05] tracking-tight mb-8 text-white">
+        Ready to secure your<br>
+        <em class="text-accent-teal">money in motion?</em>
+      </h2>
+      <p class="r rd1 text-lg text-white/60 max-w-xl mx-auto mb-12 leading-relaxed">
+        Join thousands of financial leaders who trust Basefund to protect every transaction.
+      </p>
+      <div class="r rd2 flex flex-col sm:flex-row gap-4 justify-center mb-10">
+        <a href="/get-started" class="btn-g inline-flex items-center justify-center gap-2.5 bg-white text-accent-blue text-base font-semibold px-10 py-4 rounded-full hover:bg-white/90 transition-all">
+          Get Started Free
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12h15m0 0l-6.75-6.75M19.5 12l-6.75 6.75"/></svg>
+        </a>
+        <a href="#" class="inline-flex items-center justify-center gap-2 border border-white/20 hover:border-white/40 text-white/70 hover:text-white text-base font-medium px-10 py-4 rounded-full transition-all">
+          Schedule a Demo
+        </a>
+      </div>
+      <p class="r rd3 text-xs text-white/40 uppercase tracking-[.2em]">No credit card required · SOC 2 compliant · Bank-grade encryption</p>
+    </div>
+  </section>
+
+  <!-- DECORATIVE TEXT -->
+  <div class="overflow-hidden py-8 opacity-40">
+    <p class="deco-text whitespace-nowrap text-center">BASEFUND</p>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-white/[.04] pt-20 pb-10">
+    <div class="max-w-6xl mx-auto px-6 lg:px-8">
+      <div class="grid grid-cols-2 lg:grid-cols-5 gap-10 mb-20">
+        <div class="col-span-2">
+          <a href="/" class="flex items-center gap-2 mb-5">
+            <svg width="24" height="24" viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#145DD0"/><path d="M8 10h8c3.3 0 6 2.7 6 6s-2.7 6-6 6h-3v-4h3c1.1 0 2-.9 2-2s-.9-2-2-2H12v8H8V10z" fill="white"/></svg>
+            <span class="text-sm font-semibold text-white/60 tracking-tight">BASEFUND</span>
+          </a>
+          <p class="text-sm text-muted-400 leading-relaxed max-w-xs mb-6">Secure your money in motion. Eliminate risk and protect every transaction.</p>
+          <a href="https://linkedin.com/company/basefund" class="inline-flex w-9 h-9 bg-white/[.03] hover:bg-white/[.06] rounded-lg items-center justify-center transition-colors" aria-label="LinkedIn">
+            <svg class="w-4 h-4 text-white/30" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+          </a>
+        </div>
+        <div>
+          <h4 class="text-xs text-white/20 uppercase tracking-[.15em] mb-5">Product</h4>
+          <div class="space-y-3">
+            <a href="/secure-transactions" class="block text-sm text-muted-400 hover:text-white/70 transition-colors">Secure Transactions</a>
+            <a href="/insurance" class="block text-sm text-muted-400 hover:text-white/70 transition-colors">Transaction Insurance</a>
+            <a href="/pricing" class="block text-sm text-muted-400 hover:text-white/70 transition-colors">Pricing</a>
+            <a href="/changelog" class="block text-sm text-muted-400 hover:text-white/70 transition-colors">Changelog</a>
+          </div>
+        </div>
+        <div>
+          <h4 class="text-xs text-white/20 uppercase tracking-[.15em] mb-5">Resources</h4>
+          <div class="space-y-3">
+            <a href="/framework" class="block text-sm text-muted-400 hover:text-white/70 transition-colors">Framework</a>
+            <a href="/about" class="block text-sm text-muted-400 hover:text-white/70 transition-colors">About</a>
+            <a href="/blog" class="block text-sm text-muted-400 hover:text-white/70 transition-colors">Blog</a>
+            <a href="https://help.basefund.io/en/" class="block text-sm text-muted-400 hover:text-white/70 transition-colors">Help Center</a>
+          </div>
+        </div>
+        <div>
+          <h4 class="text-xs text-white/20 uppercase tracking-[.15em] mb-5">Legal</h4>
+          <div class="space-y-3">
+            <a href="/terms" class="block text-sm text-muted-400 hover:text-white/70 transition-colors">Terms & Conditions</a>
+            <a href="https://trust.basefund.io/" class="block text-sm text-muted-400 hover:text-white/70 transition-colors">Data Privacy</a>
+          </div>
+        </div>
+      </div>
+      <div class="hrg mb-8"></div>
+      <div class="flex flex-col sm:flex-row justify-between items-center gap-4">
+        <p class="text-xs text-muted-500">&copy; 2026 Basefund. All rights reserved.</p>
+        <div class="flex items-center gap-6">
+          <a href="https://app.basefund.com/" class="text-xs text-muted-400 hover:text-white/70 transition-colors">Log In</a>
+          <a href="/get-started" class="text-xs text-accent-blue hover:text-blue-300 transition-colors">Get Started</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const o=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('v')})},{threshold:.06,rootMargin:'0px 0px -30px 0px'});
+    document.querySelectorAll('.r').forEach(e=>o.observe(e));
+    document.getElementById('mt').addEventListener('click',()=>document.getElementById('mm').classList.toggle('open'));
+    document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click',function(e){e.preventDefault();const t=document.querySelector(this.getAttribute('href'));if(t)t.scrollIntoView({behavior:'smooth',block:'start'});document.getElementById('mm').classList.remove('open')})});
+  </script>
+</body>
 </html>
