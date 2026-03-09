@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Funds Flow Diagramming Tool — Preview</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.2/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: { blue: '#145DD0', dark: '#0F4AA3', light: '#E8F0FE', lighter: '#F4F8FF' },
+            gray: { 50: '#F9FAFB', 100: '#F3F4F6', 200: '#E5E7EB', 300: '#D1D5DB', 400: '#9CA3AF', 500: '#6B7280', 600: '#4B5563', 700: '#374151', 800: '#1F2937', 900: '#111827' },
+          },
+          fontFamily: {
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+            heading: ['Lora', 'Georgia', 'serif'],
+          },
+        },
+      },
+    }
+  </script>
+  <style>
+    .btn-primary{transition:all .3s ease}
+    .btn-primary:hover{box-shadow:0 4px 20px rgba(20,93,208,.3);transform:translateY(-1px)}
+  </style>
+</head>
+<body class="bg-white text-gray-800 antialiased font-sans">
+
+<!-- BEGIN EMBED -->
+
+<style>
+  #ff-tool * { box-sizing: border-box; }
+
+  /* Canvas */
+  #ff-canvas-wrap {
+    position: relative;
+    overflow: hidden;
+    background: #FAFBFC;
+    background-image: radial-gradient(circle, #E5E7EB 1px, transparent 1px);
+    background-size: 20px 20px;
+    cursor: grab;
+    user-select: none;
+  }
+  #ff-canvas-wrap.grabbing { cursor: grabbing; }
+  #ff-canvas-wrap.connecting { cursor: crosshair; }
+
+  /* Nodes */
+  .ff-node {
+    position: absolute;
+    min-width: 180px;
+    background: white;
+    border: 2px solid #E5E7EB;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,.06);
+    cursor: move;
+    z-index: 10;
+    transition: box-shadow 0.2s;
+  }
+  .ff-node:hover, .ff-node.selected {
+    box-shadow: 0 4px 20px rgba(20,93,208,.15);
+  }
+  .ff-node.selected {
+    border-color: #145DD0;
+  }
+  .ff-node .ff-node-type-bar {
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 5px;
+    border-radius: 12px 0 0 12px;
+  }
+  .ff-node .ff-handle {
+    position: absolute;
+    width: 14px; height: 14px;
+    background: white;
+    border: 2px solid #9CA3AF;
+    border-radius: 50%;
+    cursor: crosshair;
+    z-index: 20;
+    transition: all 0.15s;
+  }
+  .ff-node .ff-handle:hover {
+    background: #145DD0;
+    border-color: #145DD0;
+    transform: scale(1.3);
+  }
+  .ff-node .ff-handle-out { right: -7px; top: 50%; margin-top: -7px; }
+  .ff-node .ff-handle-in { left: -7px; top: 50%; margin-top: -7px; }
+
+  /* Edge labels */
+  .ff-edge-label {
+    position: absolute;
+    background: white;
+    border: 1px solid #E5E7EB;
+    border-radius: 6px;
+    padding: 3px 8px;
+    font-size: 11px;
+    color: #374151;
+    pointer-events: all;
+    cursor: pointer;
+    z-index: 5;
+    white-space: nowrap;
+    box-shadow: 0 1px 4px rgba(0,0,0,.06);
+    transition: border-color 0.2s;
+  }
+  .ff-edge-label:hover, .ff-edge-label.selected {
+    border-color: #145DD0;
+  }
+
+  /* Panel */
+  #ff-panel {
+    transition: opacity 0.2s;
+  }
+  #ff-panel input, #ff-panel select {
+    font-size: 13px;
+  }
+
+  /* Toolbar buttons */
+  .ff-toolbar-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 14px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    border: 1px solid #E5E7EB;
+    background: white;
+    color: #374151;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .ff-toolbar-btn:hover {
+    border-color: #145DD0;
+    color: #145DD0;
+    background: #F4F8FF;
+  }
+  .ff-toolbar-btn.primary {
+    background: #145DD0;
+    border-color: #145DD0;
+    color: white;
+  }
+  .ff-toolbar-btn.primary:hover {
+    background: #0F4AA3;
+  }
+
+  /* Zoom controls */
+  .ff-zoom-btn {
+    width: 32px; height: 32px;
+    display: flex; align-items: center; justify-content: center;
+    border: 1px solid #E5E7EB;
+    background: white;
+    border-radius: 8px;
+    cursor: pointer;
+    color: #6B7280;
+    font-size: 16px;
+    transition: all 0.15s;
+  }
+  .ff-zoom-btn:hover { border-color: #145DD0; color: #145DD0; }
+</style>
+
+<section id="ff-tool" class="py-12 bg-gray-50">
+  <div class="max-w-[1200px] mx-auto px-4 lg:px-6">
+    <div class="text-center mb-6">
+      <p class="text-xs text-brand-blue uppercase tracking-[.2em] mb-2 font-semibold">Interactive Tool</p>
+      <h2 class="font-heading text-3xl lg:text-4xl font-bold text-gray-900 mb-3">Funds Flow Diagramming Tool</h2>
+      <p class="text-gray-600 max-w-2xl mx-auto">Map how money moves between parties. Add nodes, connect with flows, and export a professional diagram.</p>
+    </div>
+
+    <!-- Toolbar -->
+    <div class="flex flex-wrap items-center gap-2 mb-3" id="ff-toolbar">
+      <button class="ff-toolbar-btn primary" onclick="FF.addNode()">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg>
+        Add Party
+      </button>
+      <div class="relative">
+        <button class="ff-toolbar-btn" onclick="FF.toggleTemplates()">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zm0 9.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6z"/></svg>
+          Templates
+          <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"/></svg>
+        </button>
+        <div id="ff-template-menu" class="hidden absolute top-full left-0 mt-1 bg-white border border-gray-200 rounded-xl shadow-lg z-50 w-64 py-1">
+          <button class="w-full text-left px-4 py-2.5 text-sm hover:bg-gray-50 transition-colors" onclick="FF.loadTemplate('realestate')">
+            <span class="font-medium text-gray-900">Real Estate Closing</span>
+            <span class="block text-xs text-gray-400 mt-0.5">6 parties, 6 flows</span>
+          </button>
+          <button class="w-full text-left px-4 py-2.5 text-sm hover:bg-gray-50 transition-colors" onclick="FF.loadTemplate('bond')">
+            <span class="font-medium text-gray-900">Bond Issuance</span>
+            <span class="block text-xs text-gray-400 mt-0.5">4 parties, 4 flows</span>
+          </button>
+          <button class="w-full text-left px-4 py-2.5 text-sm hover:bg-gray-50 transition-colors" onclick="FF.loadTemplate('vendor')">
+            <span class="font-medium text-gray-900">Vendor Payment</span>
+            <span class="block text-xs text-gray-400 mt-0.5">2 parties, 1 flow</span>
+          </button>
+          <button class="w-full text-left px-4 py-2.5 text-sm hover:bg-gray-50 transition-colors" onclick="FF.loadTemplate('capitalcall')">
+            <span class="font-medium text-gray-900">Multi-Party Capital Call</span>
+            <span class="block text-xs text-gray-400 mt-0.5">5 parties, 5 flows</span>
+          </button>
+        </div>
+      </div>
+      <button class="ff-toolbar-btn" onclick="FF.autoLayout()">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25H12"/></svg>
+        Auto-Layout
+      </button>
+      <div class="flex-1"></div>
+      <button class="ff-toolbar-btn" onclick="FF.undo()" title="Undo (Ctrl+Z)">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 15L3 9m0 0l6-6M3 9h12a6 6 0 010 12h-3"/></svg>
+      </button>
+      <button class="ff-toolbar-btn" onclick="FF.redo()" title="Redo (Ctrl+Shift+Z)">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 15l6-6m0 0l-6-6m6 6H9a6 6 0 000 12h3"/></svg>
+      </button>
+      <button class="ff-toolbar-btn" onclick="FF.deleteSelected()" title="Delete selected">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"/></svg>
+      </button>
+      <span class="text-gray-300">|</span>
+      <button class="ff-toolbar-btn primary" onclick="FF.exportPDF()">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12M12 16.5V3"/></svg>
+        Export PDF
+      </button>
+    </div>
+
+    <!-- Main canvas area -->
+    <div class="flex gap-0 rounded-xl border border-gray-200 overflow-hidden bg-white shadow-sm" style="height: 560px;">
+      <!-- Canvas -->
+      <div class="flex-1 relative" id="ff-canvas-wrap">
+        <svg id="ff-svg" class="absolute inset-0 w-full h-full" style="z-index:1;pointer-events:none;"></svg>
+        <div id="ff-nodes" class="absolute inset-0" style="z-index:2;"></div>
+        <div id="ff-edge-labels" class="absolute inset-0" style="z-index:3;pointer-events:none;"></div>
+
+        <!-- Empty state -->
+        <div id="ff-empty" class="absolute inset-0 flex items-center justify-center z-30 pointer-events-none">
+          <div class="text-center">
+            <svg class="w-12 h-12 text-gray-300 mx-auto mb-3" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M7.5 21L3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5"/></svg>
+            <p class="text-gray-400 font-medium">Start by adding parties or choosing a template</p>
+          </div>
+        </div>
+
+        <!-- Zoom controls -->
+        <div class="absolute bottom-3 left-3 flex gap-1 z-30">
+          <button class="ff-zoom-btn" onclick="FF.zoomIn()">+</button>
+          <button class="ff-zoom-btn" onclick="FF.zoomOut()">&minus;</button>
+          <button class="ff-zoom-btn" onclick="FF.zoomFit()" title="Fit to view" style="font-size:12px;">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3.75v4.5m0-4.5h4.5m-4.5 0L9 9M3.75 20.25v-4.5m0 4.5h4.5m-4.5 0L9 15M20.25 3.75h-4.5m4.5 0v4.5m0-4.5L15 9m5.25 11.25h-4.5m4.5 0v-4.5m0 4.5L15 15"/></svg>
+          </button>
+        </div>
+        <div class="absolute bottom-3 right-3 text-xs text-gray-400 z-30" id="ff-zoom-level">100%</div>
+      </div>
+
+      <!-- Properties Panel -->
+      <div id="ff-panel" class="w-[280px] border-l border-gray-200 bg-white overflow-y-auto shrink-0 hidden lg:block">
+        <div id="ff-panel-content" class="p-5">
+          <div class="text-center py-10">
+            <svg class="w-10 h-10 text-gray-300 mx-auto mb-2" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.042 21.672L13.684 16.6m0 0l-2.51 2.225.569-9.47 5.227 7.917-3.286-.672zm-7.518-.267A8.25 8.25 0 1120.25 10.5M8.288 14.212A5.25 5.25 0 1117.25 10.5"/></svg>
+            <p class="text-sm text-gray-400">Select a node or connection to edit its properties</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Transaction name for export -->
+    <div class="mt-3 flex items-center gap-3">
+      <label class="text-xs text-gray-500 font-medium shrink-0">Diagram Title:</label>
+      <input id="ff-diagram-title" type="text" value="Untitled Transaction" class="text-sm border border-gray-200 rounded-lg px-3 py-1.5 flex-1 max-w-xs focus:border-brand-blue focus:ring-2 focus:ring-brand-blue/20 outline-none">
+      <button class="text-xs text-gray-400 hover:text-brand-blue transition-colors" onclick="FF.saveDiagram()">Save</button>
+      <button class="text-xs text-gray-400 hover:text-brand-blue transition-colors" onclick="FF.loadDiagram()">Load</button>
+    </div>
+  </div>
+</section>
+
+<script>
+(function() {
+  const PARTY_TYPES = [
+    { value: "sender", label: "Sender", color: "#145DD0" },
+    { value: "intermediary", label: "Intermediary", color: "#6B7280" },
+    { value: "receiver", label: "Receiver", color: "#059669" },
+    { value: "escrow", label: "Escrow Agent", color: "#D97706" },
+    { value: "trustee", label: "Trustee", color: "#D97706" },
+    { value: "other", label: "Other", color: "#9CA3AF" },
+  ];
+  const RAILS = ["Wire", "ACH", "Same-Day ACH", "RTP/FedNow", "Check", "Other"];
+  const typeColor = v => (PARTY_TYPES.find(t => t.value === v) || PARTY_TYPES[5]).color;
+
+  // ── STATE ─────────────────────────────────────────────────────────
+  let nodes = [];
+  let edges = [];
+  let selected = null; // { type: 'node'|'edge', id }
+  let nextId = 1;
+  let pan = { x: 0, y: 0 };
+  let zoom = 1;
+  let dragState = null;
+  let connectState = null;
+  let history = [];
+  let historyIdx = -1;
+
+  const canvasWrap = document.getElementById("ff-canvas-wrap");
+  const svgEl = document.getElementById("ff-svg");
+  const nodesEl = document.getElementById("ff-nodes");
+  const labelsEl = document.getElementById("ff-edge-labels");
+  const emptyEl = document.getElementById("ff-empty");
+  const panelEl = document.getElementById("ff-panel-content");
+
+  // ── HISTORY ───────────────────────────────────────────────────────
+  function pushHistory() {
+    const snap = JSON.stringify({ nodes, edges, nextId });
+    history = history.slice(0, historyIdx + 1);
+    history.push(snap);
+    historyIdx = history.length - 1;
+    if (history.length > 50) { history.shift(); historyIdx--; }
+  }
+
+  function restoreHistory(idx) {
+    const snap = JSON.parse(history[idx]);
+    nodes = snap.nodes; edges = snap.edges; nextId = snap.nextId;
+    selected = null;
+    render();
+  }
+
+  // ── RENDER ────────────────────────────────────────────────────────
+  function render() {
+    renderNodes();
+    renderEdges();
+    renderPanel();
+    emptyEl.style.display = nodes.length === 0 ? "flex" : "none";
+    document.getElementById("ff-zoom-level").textContent = Math.round(zoom * 100) + "%";
+    autoSave();
+  }
+
+  function renderNodes() {
+    nodesEl.innerHTML = "";
+    nodes.forEach(n => {
+      const el = document.createElement("div");
+      el.className = "ff-node" + (selected && selected.type === "node" && selected.id === n.id ? " selected" : "");
+      el.style.left = (n.x * zoom + pan.x) + "px";
+      el.style.top = (n.y * zoom + pan.y) + "px";
+      el.style.transform = `scale(${zoom})`;
+      el.style.transformOrigin = "top left";
+      el.dataset.id = n.id;
+
+      el.innerHTML = `
+        <div class="ff-node-type-bar" style="background:${typeColor(n.type)}"></div>
+        <div class="p-4 pl-5">
+          <div class="font-semibold text-sm text-gray-900 truncate">${n.name || "Unnamed Party"}</div>
+          <div class="text-xs mt-0.5" style="color:${typeColor(n.type)}">${(PARTY_TYPES.find(t=>t.value===n.type)||{}).label||"Other"}</div>
+        </div>
+        <div class="ff-handle ff-handle-in" data-handle="in" data-node="${n.id}"></div>
+        <div class="ff-handle ff-handle-out" data-handle="out" data-node="${n.id}"></div>
+      `;
+
+      // Node drag
+      el.addEventListener("mousedown", e => {
+        if (e.target.classList.contains("ff-handle")) return;
+        e.stopPropagation();
+        selected = { type: "node", id: n.id };
+        dragState = { nodeId: n.id, startX: e.clientX, startY: e.clientY, origX: n.x, origY: n.y };
+        render();
+      });
+
+      // Handle drag (connect)
+      el.querySelectorAll(".ff-handle").forEach(h => {
+        h.addEventListener("mousedown", e => {
+          e.stopPropagation();
+          e.preventDefault();
+          const rect = canvasWrap.getBoundingClientRect();
+          connectState = {
+            fromNode: parseInt(h.dataset.node),
+            fromHandle: h.dataset.handle,
+            startX: (e.clientX - rect.left - pan.x) / zoom,
+            startY: (e.clientY - rect.top - pan.y) / zoom,
+            curX: (e.clientX - rect.left - pan.x) / zoom,
+            curY: (e.clientY - rect.top - pan.y) / zoom,
+          };
+          canvasWrap.classList.add("connecting");
+        });
+      });
+
+      nodesEl.appendChild(el);
+    });
+  }
+
+  function getNodeCenter(n, handle) {
+    const w = 180, h = 60;
+    if (handle === "out") return { x: n.x + w, y: n.y + h / 2 };
+    return { x: n.x, y: n.y + h / 2 };
+  }
+
+  function renderEdges() {
+    let svgContent = "";
+    labelsEl.innerHTML = "";
+
+    edges.forEach(e => {
+      const fromN = nodes.find(n => n.id === e.from);
+      const toN = nodes.find(n => n.id === e.to);
+      if (!fromN || !toN) return;
+
+      const p1 = getNodeCenter(fromN, "out");
+      const p2 = getNodeCenter(toN, "in");
+      const dx = Math.abs(p2.x - p1.x) * 0.5;
+      const path = `M ${p1.x * zoom + pan.x} ${p1.y * zoom + pan.y} C ${(p1.x + dx) * zoom + pan.x} ${p1.y * zoom + pan.y}, ${(p2.x - dx) * zoom + pan.x} ${p2.y * zoom + pan.y}, ${p2.x * zoom + pan.x} ${p2.y * zoom + pan.y}`;
+
+      const isSelected = selected && selected.type === "edge" && selected.id === e.id;
+      const color = isSelected ? "#145DD0" : "#9CA3AF";
+
+      // Arrow marker
+      svgContent += `
+        <defs><marker id="ah-${e.id}" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="${color}"/></marker></defs>
+        <path d="${path}" stroke="${color}" stroke-width="${isSelected ? 2.5 : 2}" fill="none" marker-end="url(#ah-${e.id})" style="pointer-events:stroke;cursor:pointer;" data-edge="${e.id}"/>
+      `;
+
+      // Label
+      const mx = ((p1.x + p2.x) / 2) * zoom + pan.x;
+      const my = ((p1.y + p2.y) / 2) * zoom + pan.y;
+      const labelText = [e.amount, e.timing].filter(Boolean).join(" · ") || "Click to edit";
+      const label = document.createElement("div");
+      label.className = "ff-edge-label" + (isSelected ? " selected" : "");
+      label.style.left = mx + "px";
+      label.style.top = (my - 14) + "px";
+      label.style.transform = "translate(-50%, -50%)";
+      label.style.pointerEvents = "all";
+      label.textContent = labelText;
+      label.addEventListener("mousedown", ev => {
+        ev.stopPropagation();
+        selected = { type: "edge", id: e.id };
+        render();
+      });
+      labelsEl.appendChild(label);
+    });
+
+    svgEl.innerHTML = svgContent;
+    svgEl.style.pointerEvents = "none";
+
+    // Make SVG paths clickable
+    svgEl.querySelectorAll("path[data-edge]").forEach(p => {
+      p.style.pointerEvents = "stroke";
+      p.addEventListener("mousedown", ev => {
+        ev.stopPropagation();
+        selected = { type: "edge", id: parseInt(p.dataset.edge) };
+        render();
+      });
+    });
+  }
+
+  function renderPanel() {
+    if (!selected) {
+      panelEl.innerHTML = `<div class="text-center py-10"><svg class="w-10 h-10 text-gray-300 mx-auto mb-2" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.042 21.672L13.684 16.6m0 0l-2.51 2.225.569-9.47 5.227 7.917-3.286-.672zm-7.518-.267A8.25 8.25 0 1120.25 10.5M8.288 14.212A5.25 5.25 0 1117.25 10.5"/></svg><p class="text-sm text-gray-400">Select a node or connection to edit its properties</p></div>`;
+      return;
+    }
+
+    if (selected.type === "node") {
+      const n = nodes.find(x => x.id === selected.id);
+      if (!n) return;
+      panelEl.innerHTML = `
+        <h4 class="text-xs text-gray-400 font-semibold uppercase tracking-wider mb-4">Party Properties</h4>
+        <div class="space-y-4">
+          <div>
+            <label class="block text-xs font-medium text-gray-600 mb-1">Name</label>
+            <input type="text" value="${n.name}" class="w-full border border-gray-200 rounded-lg px-3 py-2 focus:border-brand-blue focus:ring-2 focus:ring-brand-blue/20 outline-none" onchange="FF.updateNode(${n.id},'name',this.value)">
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-gray-600 mb-1">Type</label>
+            <select class="w-full border border-gray-200 rounded-lg px-3 py-2 focus:border-brand-blue outline-none" onchange="FF.updateNode(${n.id},'type',this.value)">
+              ${PARTY_TYPES.map(t => `<option value="${t.value}" ${n.type===t.value?'selected':''}>${t.label}</option>`).join("")}
+            </select>
+          </div>
+          <button class="w-full text-xs text-red-500 hover:text-red-700 py-2 border border-red-200 rounded-lg hover:bg-red-50 transition-colors" onclick="FF.removeNode(${n.id})">Remove Party</button>
+        </div>
+      `;
+    } else if (selected.type === "edge") {
+      const e = edges.find(x => x.id === selected.id);
+      if (!e) return;
+      const fromN = nodes.find(x => x.id === e.from);
+      const toN = nodes.find(x => x.id === e.to);
+      panelEl.innerHTML = `
+        <h4 class="text-xs text-gray-400 font-semibold uppercase tracking-wider mb-2">Flow Properties</h4>
+        <p class="text-xs text-gray-500 mb-4">${fromN?fromN.name:'?'} &rarr; ${toN?toN.name:'?'}</p>
+        <div class="space-y-4">
+          <div>
+            <label class="block text-xs font-medium text-gray-600 mb-1">Amount</label>
+            <input type="text" value="${e.amount||''}" placeholder="e.g. $340,000" class="w-full border border-gray-200 rounded-lg px-3 py-2 focus:border-brand-blue focus:ring-2 focus:ring-brand-blue/20 outline-none" onchange="FF.updateEdge(${e.id},'amount',this.value)">
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-gray-600 mb-1">Timing</label>
+            <input type="text" value="${e.timing||''}" placeholder="e.g. At closing" class="w-full border border-gray-200 rounded-lg px-3 py-2 focus:border-brand-blue focus:ring-2 focus:ring-brand-blue/20 outline-none" onchange="FF.updateEdge(${e.id},'timing',this.value)">
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-gray-600 mb-1">Condition</label>
+            <input type="text" value="${e.condition||''}" placeholder="e.g. After inspection" class="w-full border border-gray-200 rounded-lg px-3 py-2 focus:border-brand-blue focus:ring-2 focus:ring-brand-blue/20 outline-none" onchange="FF.updateEdge(${e.id},'condition',this.value)">
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-gray-600 mb-1">Payment Rail</label>
+            <select class="w-full border border-gray-200 rounded-lg px-3 py-2 focus:border-brand-blue outline-none" onchange="FF.updateEdge(${e.id},'rail',this.value)">
+              <option value="">Select...</option>
+              ${RAILS.map(r => `<option value="${r}" ${e.rail===r?'selected':''}>${r}</option>`).join("")}
+            </select>
+          </div>
+          <button class="w-full text-xs text-red-500 hover:text-red-700 py-2 border border-red-200 rounded-lg hover:bg-red-50 transition-colors" onclick="FF.removeEdge(${e.id})">Remove Flow</button>
+        </div>
+      `;
+    }
+  }
+
+  // ── NODE/EDGE OPS ─────────────────────────────────────────────────
+  function addNode(name, type, x, y) {
+    pushHistory();
+    const id = nextId++;
+    nodes.push({ id, name: name || "New Party", type: type || "sender", x: x ?? 100 + nodes.length * 50, y: y ?? 100 + nodes.length * 40 });
+    selected = { type: "node", id };
+    render();
+    return id;
+  }
+
+  function addEdge(from, to, props = {}) {
+    if (from === to) return;
+    if (edges.find(e => e.from === from && e.to === to)) return;
+    pushHistory();
+    const id = nextId++;
+    edges.push({ id, from, to, amount: props.amount || "", timing: props.timing || "", condition: props.condition || "", rail: props.rail || "" });
+    selected = { type: "edge", id };
+    render();
+  }
+
+  // ── MOUSE EVENTS ──────────────────────────────────────────────────
+  let panStart = null;
+
+  canvasWrap.addEventListener("mousedown", e => {
+    if (e.target === canvasWrap || e.target === svgEl || e.target === nodesEl || e.target === labelsEl || e.target === emptyEl || e.target.closest("#ff-empty")) {
+      selected = null;
+      panStart = { x: e.clientX - pan.x, y: e.clientY - pan.y };
+      canvasWrap.classList.add("grabbing");
+      render();
+    }
+  });
+
+  canvasWrap.addEventListener("dblclick", e => {
+    if (e.target === canvasWrap || e.target === nodesEl || e.target.closest("#ff-empty")) {
+      const rect = canvasWrap.getBoundingClientRect();
+      const x = (e.clientX - rect.left - pan.x) / zoom;
+      const y = (e.clientY - rect.top - pan.y) / zoom;
+      addNode("New Party", "sender", x, y);
+    }
+  });
+
+  window.addEventListener("mousemove", e => {
+    // Pan
+    if (panStart && !dragState && !connectState) {
+      pan.x = e.clientX - panStart.x;
+      pan.y = e.clientY - panStart.y;
+      render();
+    }
+    // Node drag
+    if (dragState) {
+      const n = nodes.find(x => x.id === dragState.nodeId);
+      if (n) {
+        n.x = dragState.origX + (e.clientX - dragState.startX) / zoom;
+        n.y = dragState.origY + (e.clientY - dragState.startY) / zoom;
+        render();
+      }
+    }
+    // Connect drag
+    if (connectState) {
+      const rect = canvasWrap.getBoundingClientRect();
+      connectState.curX = (e.clientX - rect.left - pan.x) / zoom;
+      connectState.curY = (e.clientY - rect.top - pan.y) / zoom;
+      // Draw temp line
+      const fromN = nodes.find(n => n.id === connectState.fromNode);
+      if (fromN) {
+        const p1 = getNodeCenter(fromN, connectState.fromHandle);
+        const p2 = { x: connectState.curX, y: connectState.curY };
+        const dx = Math.abs(p2.x - p1.x) * 0.5;
+        const tempPath = `M ${p1.x * zoom + pan.x} ${p1.y * zoom + pan.y} C ${(p1.x + dx) * zoom + pan.x} ${p1.y * zoom + pan.y}, ${(p2.x - dx) * zoom + pan.x} ${p2.y * zoom + pan.y}, ${p2.x * zoom + pan.x} ${p2.y * zoom + pan.y}`;
+        renderEdges();
+        const extra = document.createElementNS("http://www.w3.org/2000/svg", "path");
+        extra.setAttribute("d", tempPath);
+        extra.setAttribute("stroke", "#145DD0");
+        extra.setAttribute("stroke-width", "2");
+        extra.setAttribute("stroke-dasharray", "6 4");
+        extra.setAttribute("fill", "none");
+        svgEl.appendChild(extra);
+      }
+    }
+  });
+
+  window.addEventListener("mouseup", e => {
+    if (dragState) {
+      pushHistory();
+      dragState = null;
+    }
+    if (panStart) {
+      panStart = null;
+      canvasWrap.classList.remove("grabbing");
+    }
+    if (connectState) {
+      canvasWrap.classList.remove("connecting");
+      // Find target node
+      const rect = canvasWrap.getBoundingClientRect();
+      const mx = (e.clientX - rect.left - pan.x) / zoom;
+      const my = (e.clientY - rect.top - pan.y) / zoom;
+      const target = nodes.find(n => mx >= n.x - 10 && mx <= n.x + 190 && my >= n.y - 10 && my <= n.y + 70);
+      if (target && target.id !== connectState.fromNode) {
+        if (connectState.fromHandle === "out") {
+          addEdge(connectState.fromNode, target.id);
+        } else {
+          addEdge(target.id, connectState.fromNode);
+        }
+      }
+      connectState = null;
+      render();
+    }
+  });
+
+  // Zoom
+  canvasWrap.addEventListener("wheel", e => {
+    e.preventDefault();
+    const delta = e.deltaY > 0 ? -0.08 : 0.08;
+    zoom = Math.max(0.3, Math.min(2, zoom + delta));
+    render();
+  }, { passive: false });
+
+  // Keyboard
+  window.addEventListener("keydown", e => {
+    if (e.target.tagName === "INPUT" || e.target.tagName === "SELECT" || e.target.tagName === "TEXTAREA") return;
+    if ((e.key === "Delete" || e.key === "Backspace") && selected) {
+      e.preventDefault();
+      FF.deleteSelected();
+    }
+    if (e.key === "z" && (e.ctrlKey || e.metaKey) && !e.shiftKey) { e.preventDefault(); FF.undo(); }
+    if (e.key === "z" && (e.ctrlKey || e.metaKey) && e.shiftKey) { e.preventDefault(); FF.redo(); }
+  });
+
+  // ── TEMPLATES ─────────────────────────────────────────────────────
+  const TEMPLATES = {
+    realestate: () => {
+      nodes = []; edges = []; nextId = 1; selected = null;
+      const buyer = addNodeRaw("Buyer", "sender", 60, 60);
+      const lender = addNodeRaw("Lender", "sender", 60, 200);
+      const escrow = addNodeRaw("Escrow Agent", "escrow", 340, 130);
+      const title = addNodeRaw("Title Company", "intermediary", 620, 40);
+      const county = addNodeRaw("County Recorder", "receiver", 620, 160);
+      const seller = addNodeRaw("Seller", "receiver", 620, 280);
+      addEdgeRaw(buyer, escrow, { amount: "$X", timing: "Earnest money, T-30 days" });
+      addEdgeRaw(lender, escrow, { amount: "$Z", timing: "Loan proceeds, day of closing" });
+      addEdgeRaw(escrow, title, { amount: "$A", timing: "Title insurance premium" });
+      addEdgeRaw(escrow, county, { amount: "$B", timing: "Recording fees" });
+      addEdgeRaw(escrow, seller, { amount: "$C", timing: "Net proceeds after fees" });
+    },
+    bond: () => {
+      nodes = []; edges = []; nextId = 1; selected = null;
+      const uw = addNodeRaw("Underwriter", "sender", 60, 100);
+      const trustee = addNodeRaw("Trustee", "trustee", 320, 100);
+      const issuer = addNodeRaw("Issuer Project Account", "receiver", 580, 40);
+      const holders = addNodeRaw("Bondholders", "receiver", 580, 200);
+      addEdgeRaw(uw, trustee, { amount: "$X", timing: "Bond proceeds, at closing" });
+      addEdgeRaw(trustee, issuer, { amount: "$Y", timing: "After legal opinions received" });
+      addEdgeRaw(issuer, trustee, { amount: "$Z", timing: "Semi-annual debt service" });
+      addEdgeRaw(trustee, holders, { amount: "$A", timing: "Interest payment, per schedule" });
+    },
+    vendor: () => {
+      nodes = []; edges = []; nextId = 1; selected = null;
+      const org = addNodeRaw("Organization", "sender", 100, 140);
+      const vendor = addNodeRaw("Vendor", "receiver", 480, 140);
+      addEdgeRaw(org, vendor, { amount: "$X", timing: "Net 30 from invoice date" });
+    },
+    capitalcall: () => {
+      nodes = []; edges = []; nextId = 1; selected = null;
+      const lp1 = addNodeRaw("LP 1", "sender", 60, 40);
+      const lp2 = addNodeRaw("LP 2", "sender", 60, 150);
+      const lp3 = addNodeRaw("LP 3", "sender", 60, 260);
+      const fa = addNodeRaw("Fund Administrator", "intermediary", 320, 130);
+      const gp = addNodeRaw("General Partner", "intermediary", 540, 130);
+      const target = addNodeRaw("Target Company", "receiver", 760, 130);
+      addEdgeRaw(lp1, fa, { amount: "$A", timing: "Within 10 business days of notice" });
+      addEdgeRaw(lp2, fa, { amount: "$B", timing: "Within 10 business days of notice" });
+      addEdgeRaw(lp3, fa, { amount: "$C", timing: "Within 10 business days of notice" });
+      addEdgeRaw(fa, gp, { amount: "$D", timing: "After all LPs funded" });
+      addEdgeRaw(gp, target, { amount: "$E", timing: "At investment closing" });
+    }
+  };
+
+  function addNodeRaw(name, type, x, y) {
+    const id = nextId++;
+    nodes.push({ id, name, type, x, y });
+    return id;
+  }
+  function addEdgeRaw(from, to, props = {}) {
+    const id = nextId++;
+    edges.push({ id, from, to, amount: props.amount || "", timing: props.timing || "", condition: props.condition || "", rail: props.rail || "" });
+  }
+
+  // ── AUTO-LAYOUT ───────────────────────────────────────────────────
+  function autoLayout() {
+    if (nodes.length === 0) return;
+    pushHistory();
+
+    // Simple left-to-right topological layout
+    const levels = {};
+    const visited = new Set();
+
+    // Find roots (nodes with no incoming edges)
+    const hasIncoming = new Set(edges.map(e => e.to));
+    const roots = nodes.filter(n => !hasIncoming.has(n.id));
+    if (roots.length === 0) roots.push(nodes[0]);
+
+    function assignLevel(id, level) {
+      if (visited.has(id)) return;
+      visited.add(id);
+      levels[id] = Math.max(levels[id] || 0, level);
+      edges.filter(e => e.from === id).forEach(e => assignLevel(e.to, level + 1));
+    }
+    roots.forEach(r => assignLevel(r.id, 0));
+    // Assign unvisited nodes
+    nodes.forEach(n => { if (!visited.has(n.id)) levels[n.id] = 0; });
+
+    // Group by level
+    const groups = {};
+    nodes.forEach(n => {
+      const l = levels[n.id] || 0;
+      if (!groups[l]) groups[l] = [];
+      groups[l].push(n);
+    });
+
+    const xGap = 260, yGap = 100, startX = 80, startY = 60;
+    Object.keys(groups).sort((a,b) => a-b).forEach(l => {
+      const g = groups[l];
+      g.forEach((n, i) => {
+        n.x = startX + parseInt(l) * xGap;
+        n.y = startY + i * yGap;
+      });
+    });
+
+    render();
+  }
+
+  // ── SAVE / LOAD ───────────────────────────────────────────────────
+  function autoSave() {
+    try {
+      localStorage.setItem("ff_autosave", JSON.stringify({ nodes, edges, nextId, title: document.getElementById("ff-diagram-title").value }));
+    } catch(_) {}
+  }
+
+  function saveDiagram() {
+    const title = document.getElementById("ff-diagram-title").value || "Untitled";
+    const key = "ff_saved_" + Date.now();
+    const data = { nodes, edges, nextId, title, savedAt: new Date().toISOString() };
+    try {
+      localStorage.setItem(key, JSON.stringify(data));
+      alert("Diagram saved: " + title);
+    } catch(_) {}
+  }
+
+  function loadDiagram() {
+    const keys = [];
+    for (let i = 0; i < localStorage.length; i++) {
+      const k = localStorage.key(i);
+      if (k.startsWith("ff_saved_") || k === "ff_autosave") {
+        try {
+          const d = JSON.parse(localStorage.getItem(k));
+          keys.push({ key: k, title: d.title || "Untitled", savedAt: d.savedAt || "" });
+        } catch(_) {}
+      }
+    }
+    if (keys.length === 0) { alert("No saved diagrams found."); return; }
+    const choice = prompt("Saved diagrams:\n" + keys.map((k, i) => `${i + 1}. ${k.title} ${k.key === 'ff_autosave' ? '(auto)' : ''}`).join("\n") + "\n\nEnter number to load:");
+    const idx = parseInt(choice) - 1;
+    if (idx >= 0 && idx < keys.length) {
+      const d = JSON.parse(localStorage.getItem(keys[idx].key));
+      pushHistory();
+      nodes = d.nodes; edges = d.edges; nextId = d.nextId;
+      document.getElementById("ff-diagram-title").value = d.title || "Untitled";
+      selected = null;
+      render();
+    }
+  }
+
+  // ── PDF EXPORT ────────────────────────────────────────────────────
+  function exportPDF() {
+    const title = document.getElementById("ff-diagram-title").value || "Untitled Transaction";
+
+    // Save current zoom/pan, reset for capture
+    const origZoom = zoom, origPan = { ...pan };
+    zoom = 1; pan = { x: 20, y: 20 };
+    render();
+
+    setTimeout(() => {
+      const captureEl = document.getElementById("ff-canvas-wrap");
+      html2canvas(captureEl, { backgroundColor: "#FAFBFC", scale: 2, useCORS: true }).then(canvas => {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF({ orientation: "landscape", unit: "mm", format: "letter" });
+        const W = 279, H = 216;
+        const BLUE = [20, 93, 208];
+
+        // Header
+        doc.setFillColor(...BLUE); doc.rect(0, 0, W, 18, "F");
+        doc.setTextColor(255, 255, 255); doc.setFont("helvetica", "bold"); doc.setFontSize(12);
+        doc.text("Funds Flow Diagram \u2014 " + title, 12, 12);
+        doc.setFontSize(8); doc.setFont("helvetica", "normal");
+        doc.text("When Money Moves | Chapter 5: Connected Transactions", W - 12, 12, { align: "right" });
+
+        // Diagram image
+        const imgData = canvas.toDataURL("image/png");
+        const maxW = W - 24, maxH = H - 80;
+        const ratio = Math.min(maxW / canvas.width, maxH / canvas.height);
+        const imgW = canvas.width * ratio, imgH = canvas.height * ratio;
+        doc.addImage(imgData, "PNG", 12, 22, imgW, imgH);
+
+        // Flow table
+        let tableY = 22 + imgH + 6;
+        if (edges.length > 0 && tableY < H - 40) {
+          doc.setFontSize(9); doc.setFont("helvetica", "bold"); doc.setTextColor(31, 41, 55);
+          doc.text("Flow Summary", 12, tableY); tableY += 5;
+
+          doc.setFontSize(7); doc.setFont("helvetica", "bold"); doc.setTextColor(107, 114, 128);
+          const cols = [12, 55, 100, 140, 195, 240];
+          ["From", "To", "Amount", "Timing", "Condition", "Rail"].forEach((h, i) => doc.text(h, cols[i], tableY));
+          tableY += 1; doc.setDrawColor(229, 231, 235); doc.line(12, tableY, W - 12, tableY); tableY += 3;
+
+          doc.setFont("helvetica", "normal"); doc.setTextColor(55, 65, 81);
+          edges.forEach(e => {
+            if (tableY > H - 20) return;
+            const fromN = nodes.find(n => n.id === e.from);
+            const toN = nodes.find(n => n.id === e.to);
+            doc.text((fromN?.name || "?").substring(0, 20), cols[0], tableY);
+            doc.text((toN?.name || "?").substring(0, 20), cols[1], tableY);
+            doc.text((e.amount || "\u2014").substring(0, 18), cols[2], tableY);
+            doc.text((e.timing || "\u2014").substring(0, 24), cols[3], tableY);
+            doc.text((e.condition || "\u2014").substring(0, 20), cols[4], tableY);
+            doc.text(e.rail || "\u2014", cols[5], tableY);
+            tableY += 4;
+          });
+        }
+
+        // Legend
+        let legY = tableY + 4;
+        if (legY < H - 18) {
+          doc.setFontSize(7); doc.setFont("helvetica", "bold"); doc.setTextColor(107, 114, 128);
+          doc.text("Legend:", 12, legY);
+          let lx = 30;
+          PARTY_TYPES.forEach(t => {
+            doc.setFillColor(...hexToRgb(t.color)); doc.rect(lx, legY - 2.5, 3, 3, "F");
+            doc.setFont("helvetica", "normal"); doc.setTextColor(55, 65, 81);
+            doc.text(t.label, lx + 5, legY); lx += doc.getTextWidth(t.label) + 12;
+          });
+        }
+
+        // Footer
+        doc.setFillColor(...BLUE); doc.rect(0, H - 12, W, 12, "F");
+        doc.setTextColor(255, 255, 255); doc.setFont("helvetica", "normal"); doc.setFontSize(6);
+        doc.text("This diagram represents a single moment in time. In Basefund, your funds flow is live \u2014 tracking real movement against the plan, with alerts when something diverges.", 12, H - 6);
+        doc.setFont("helvetica", "bold"); doc.text("basefund.com", W - 12, H - 6, { align: "right" });
+
+        // Watermark
+        doc.setTextColor(200, 210, 230); doc.setFontSize(20); doc.setFont("helvetica", "italic");
+        doc.text("Created with When Money Moves Companion Tools", W / 2, H / 2, { align: "center", angle: 30 });
+
+        doc.save("funds-flow-" + title.toLowerCase().replace(/\s+/g, "-") + ".pdf");
+
+        // Restore zoom/pan
+        zoom = origZoom; pan = origPan;
+        render();
+      });
+    }, 200);
+  }
+
+  function hexToRgb(hex) {
+    const r = parseInt(hex.slice(1,3), 16), g = parseInt(hex.slice(3,5), 16), b = parseInt(hex.slice(5,7), 16);
+    return [r, g, b];
+  }
+
+  // ── PUBLIC API ────────────────────────────────────────────────────
+  window.FF = {
+    addNode: () => addNode(),
+    updateNode: (id, key, val) => { pushHistory(); const n = nodes.find(x => x.id === id); if (n) { n[key] = val; render(); } },
+    removeNode: id => { pushHistory(); edges = edges.filter(e => e.from !== id && e.to !== id); nodes = nodes.filter(n => n.id !== id); selected = null; render(); },
+    updateEdge: (id, key, val) => { pushHistory(); const e = edges.find(x => x.id === id); if (e) { e[key] = val; render(); } },
+    removeEdge: id => { pushHistory(); edges = edges.filter(e => e.id !== id); selected = null; render(); },
+    deleteSelected: () => {
+      if (!selected) return;
+      if (selected.type === "node") FF.removeNode(selected.id);
+      else FF.removeEdge(selected.id);
+    },
+    undo: () => { if (historyIdx > 0) { historyIdx--; restoreHistory(historyIdx); } },
+    redo: () => { if (historyIdx < history.length - 1) { historyIdx++; restoreHistory(historyIdx); } },
+    zoomIn: () => { zoom = Math.min(2, zoom + 0.15); render(); },
+    zoomOut: () => { zoom = Math.max(0.3, zoom - 0.15); render(); },
+    zoomFit: () => {
+      if (nodes.length === 0) return;
+      const rect = canvasWrap.getBoundingClientRect();
+      const minX = Math.min(...nodes.map(n => n.x)) - 40;
+      const minY = Math.min(...nodes.map(n => n.y)) - 40;
+      const maxX = Math.max(...nodes.map(n => n.x + 180)) + 40;
+      const maxY = Math.max(...nodes.map(n => n.y + 60)) + 40;
+      const dw = maxX - minX, dh = maxY - minY;
+      zoom = Math.min(rect.width / dw, rect.height / dh, 1.5);
+      pan.x = (rect.width - dw * zoom) / 2 - minX * zoom;
+      pan.y = (rect.height - dh * zoom) / 2 - minY * zoom;
+      render();
+    },
+    autoLayout: () => autoLayout(),
+    toggleTemplates: () => {
+      document.getElementById("ff-template-menu").classList.toggle("hidden");
+    },
+    loadTemplate: key => {
+      pushHistory();
+      TEMPLATES[key]();
+      document.getElementById("ff-template-menu").classList.add("hidden");
+      pushHistory();
+      FF.zoomFit();
+    },
+    exportPDF: () => exportPDF(),
+    saveDiagram: () => saveDiagram(),
+    loadDiagram: () => loadDiagram(),
+  };
+
+  // Close template menu on outside click
+  document.addEventListener("click", e => {
+    const menu = document.getElementById("ff-template-menu");
+    if (!menu.classList.contains("hidden") && !e.target.closest("#ff-toolbar")) {
+      menu.classList.add("hidden");
+    }
+  });
+
+  // Try to load autosave
+  try {
+    const saved = JSON.parse(localStorage.getItem("ff_autosave"));
+    if (saved && saved.nodes && saved.nodes.length > 0) {
+      nodes = saved.nodes; edges = saved.edges || []; nextId = saved.nextId || 1;
+      if (saved.title) document.getElementById("ff-diagram-title").value = saved.title;
+    }
+  } catch(_) {}
+
+  pushHistory();
+  render();
+})();
+</script>
+
+<!-- END EMBED -->
+
+</body>
+</html>

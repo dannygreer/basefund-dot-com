@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Participation Mapping Tool — When Money Moves | Basefund</title>
+  <meta name="description" content="Enter a transaction and its participants, assign roles and active moments, and instantly see a visual matrix that flags where separation of duties breaks down.">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: { blue: '#145DD0', dark: '#0F4AA3', light: '#E8F0FE', lighter: '#F4F8FF' },
+            gray: { 50: '#F9FAFB', 100: '#F3F4F6', 200: '#E5E7EB', 300: '#D1D5DB', 400: '#9CA3AF', 500: '#6B7280', 600: '#4B5563', 700: '#374151', 800: '#1F2937', 900: '#111827' },
+          },
+          fontFamily: {
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+            heading: ['Lora', 'Georgia', 'serif'],
+          },
+        },
+      },
+    }
+  </script>
+  <style>
+    *,*::before,*::after{box-sizing:border-box}
+    .noise{position:relative;isolation:isolate}
+    .noise::after{content:'';position:absolute;inset:0;z-index:1;pointer-events:none;opacity:.06;mix-blend-mode:overlay;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-repeat:repeat;background-size:256px 256px}
+    .r{opacity:0;transform:translateY(24px);transition:opacity .8s cubic-bezier(.16,1,.3,1),transform .8s cubic-bezier(.16,1,.3,1)}
+    .r.v{opacity:1;transform:translateY(0)}
+    .rd1{transition-delay:.1s}.rd2{transition-delay:.2s}.rd3{transition-delay:.3s}.rd4{transition-delay:.4s}
+    .mesh-hero{background:radial-gradient(ellipse 80% 70% at 0% 100%, rgba(0,244,224,.25) 0%, transparent 55%),radial-gradient(ellipse 60% 60% at 85% 0%, rgba(40,164,221,.4) 0%, transparent 50%),radial-gradient(ellipse 70% 60% at 100% 80%, rgba(40,164,221,.3) 0%, transparent 55%),radial-gradient(ellipse 50% 50% at 30% 20%, rgba(20,93,208,.35) 0%, transparent 45%),linear-gradient(135deg, #145DD0 0%, #1a6ae0 30%, #28A4DD 70%, #145DD0 100%)}
+    .mesh-blue{background:radial-gradient(ellipse 70% 60% at 100% 0%, rgba(0,244,224,.25) 0%, transparent 55%),radial-gradient(ellipse 60% 70% at 0% 80%, rgba(40,164,221,.4) 0%, transparent 50%),radial-gradient(ellipse 50% 50% at 70% 100%, rgba(40,164,221,.3) 0%, transparent 55%),radial-gradient(ellipse 45% 45% at 20% 30%, rgba(20,93,208,.35) 0%, transparent 45%),linear-gradient(315deg, #145DD0 0%, #1a6ae0 30%, #28A4DD 70%, #145DD0 100%)}
+    .btn-primary{transition:all .3s ease}
+    .btn-primary:hover{box-shadow:0 4px 20px rgba(20,93,208,.3);transform:translateY(-1px)}
+  </style>
+</head>
+<body class="bg-white text-gray-800 antialiased overflow-x-hidden font-sans">
+
+  <section class="relative overflow-hidden">
+    <div class="mesh-hero noise">
+      <nav class="relative z-50">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8 flex items-center justify-between h-[72px]">
+          <a href="/book" class="flex items-center">
+            <img src="/basefund-logo.svg" alt="Basefund" class="h-8 brightness-0 invert">
+          </a>
+          <a href="/book" class="text-sm font-semibold text-white/90 hover:text-white transition-colors">← Back to Book</a>
+        </div>
+      </nav>
+      <div class="max-w-4xl mx-auto px-6 lg:px-8 py-20 lg:py-28">
+        <div class="r inline-flex items-center gap-2 bg-white/15 rounded-full px-4 py-1.5 mb-6">
+          <span class="text-xs text-white font-semibold uppercase tracking-[.15em]">Chapter 9: Participants</span>
+        </div>
+        <h1 class="r rd1 font-heading text-4xl sm:text-5xl lg:text-[56px] leading-[1.15] font-bold tracking-tight text-white mb-4">
+          Participation Mapping Tool
+        </h1>
+        <p class="r rd2 text-xl font-heading text-white/70 mb-6">Interactive Web App · Web-based tool with automated risk flagging + PDF export</p>
+        <p class="r rd3 text-xl text-white/90 leading-relaxed mb-10 max-w-2xl font-heading italic">
+          "Map who does what at every critical moment in your transaction."
+        </p>
+        <div class="r rd4">
+          <a href="#try-it" class="btn-primary inline-block bg-white text-brand-blue font-bold text-base px-8 py-4 rounded-lg">
+            Open the Tool
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-20 bg-white">
+    <div class="max-w-4xl mx-auto px-6 lg:px-8">
+      <p class="r text-xs text-brand-blue uppercase tracking-[.2em] mb-3 font-semibold">What You'll Get</p>
+      <h2 class="r rd1 font-heading text-3xl lg:text-4xl font-bold text-gray-900 mb-10">Everything in this tool</h2>
+      <div class="grid sm:grid-cols-2 gap-4">
+        <div class="r rd1 flex gap-4 p-6 rounded-xl border border-gray-100 bg-gray-50">
+          <div class="shrink-0 w-6 h-6 rounded-full bg-brand-light flex items-center justify-center mt-0.5">
+            <svg class="w-3.5 h-3.5 text-brand-blue" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>
+          </div>
+          <p class="text-sm text-gray-600 leading-relaxed">A visual participation matrix mapping every person to their role across three critical moments</p>
+        </div>
+        <div class="r rd2 flex gap-4 p-6 rounded-xl border border-gray-100 bg-gray-50">
+          <div class="shrink-0 w-6 h-6 rounded-full bg-brand-light flex items-center justify-center mt-0.5">
+            <svg class="w-3.5 h-3.5 text-brand-blue" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>
+          </div>
+          <p class="text-sm text-gray-600 leading-relaxed">Automated red flags: participants spanning all moments, access exceeding authority, missing separation</p>
+        </div>
+        <div class="r rd3 flex gap-4 p-6 rounded-xl border border-gray-100 bg-gray-50">
+          <div class="shrink-0 w-6 h-6 rounded-full bg-brand-light flex items-center justify-center mt-0.5">
+            <svg class="w-3.5 h-3.5 text-brand-blue" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>
+          </div>
+          <p class="text-sm text-gray-600 leading-relaxed">Automated yellow flags: moments with no verifier, single points of dependency</p>
+        </div>
+        <div class="r rd4 flex gap-4 p-6 rounded-xl border border-gray-100 bg-gray-50">
+          <div class="shrink-0 w-6 h-6 rounded-full bg-brand-light flex items-center justify-center mt-0.5">
+            <svg class="w-3.5 h-3.5 text-brand-blue" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>
+          </div>
+          <p class="text-sm text-gray-600 leading-relaxed">A downloadable PDF matrix suitable for audit documentation or team review</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-20 bg-gray-50">
+    <div class="max-w-4xl mx-auto px-6 lg:px-8">
+      <p class="r text-xs text-brand-blue uppercase tracking-[.2em] mb-3 font-semibold">How It Works</p>
+      <h2 class="r rd1 font-heading text-3xl lg:text-4xl font-bold text-gray-900 mb-10">Four steps to your risk matrix</h2>
+      <div class="grid sm:grid-cols-2 gap-6">
+        <div class="r rd1 flex gap-5">
+          <div class="shrink-0 w-10 h-10 rounded-full bg-brand-blue text-white flex items-center justify-center font-bold text-sm">1</div>
+          <p class="text-gray-600 leading-relaxed pt-2">Enter the transaction name, type, and approximate dollar amount</p>
+        </div>
+        <div class="r rd2 flex gap-5">
+          <div class="shrink-0 w-10 h-10 rounded-full bg-brand-blue text-white flex items-center justify-center font-bold text-sm">2</div>
+          <p class="text-gray-600 leading-relaxed pt-2">Add each participant with their role (Sender, Clearer, Receiver, View-Only) and active moments (Initiation, Approval, Release)</p>
+        </div>
+        <div class="r rd3 flex gap-5">
+          <div class="shrink-0 w-10 h-10 rounded-full bg-brand-blue text-white flex items-center justify-center font-bold text-sm">3</div>
+          <p class="text-gray-600 leading-relaxed pt-2">Specify each participant's system access level</p>
+        </div>
+        <div class="r rd4 flex gap-5">
+          <div class="shrink-0 w-10 h-10 rounded-full bg-brand-blue text-white flex items-center justify-center font-bold text-sm">4</div>
+          <p class="text-gray-600 leading-relaxed pt-2">Review the auto-generated matrix and its risk flags</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-20 bg-white">
+    <div class="max-w-4xl mx-auto px-6 lg:px-8">
+      <p class="r text-xs text-brand-blue uppercase tracking-[.2em] mb-3 font-semibold">Who It's For</p>
+      <h2 class="r rd1 font-heading text-3xl lg:text-4xl font-bold text-gray-900 mb-6">Built for auditors and compliance teams</h2>
+      <p class="r rd2 text-lg text-gray-600 leading-relaxed max-w-2xl">
+        Internal auditors, controllers, compliance teams, and anyone designing or reviewing transaction workflows who needs to verify that roles are properly separated.
+      </p>
+    </div>
+  </section>
+
+  <section class="py-20 mesh-blue noise relative overflow-hidden">
+    <div class="relative z-10 max-w-4xl mx-auto px-6 lg:px-8">
+      <p class="r text-xs text-white/60 uppercase tracking-[.2em] mb-3 font-semibold">The Key Insight</p>
+      <h2 class="r rd1 font-heading text-3xl lg:text-4xl font-bold text-white mb-6">Titles aren't controls — moments are</h2>
+      <p class="r rd2 text-lg text-white/85 leading-relaxed max-w-2xl">
+        Most organizations assume separation of duties exists because different people have different titles. But titles aren't controls. This tool reveals whether participation is actually separated across the moments that matter — or whether the same people show up everywhere.
+      </p>
+    </div>
+  </section>
+
+  <section id="try-it" class="py-20 bg-white">
+    <div class="max-w-4xl mx-auto px-6 lg:px-8">
+      <p class="r text-xs text-brand-blue uppercase tracking-[.2em] mb-3 font-semibold">Try It Now</p>
+      <h2 class="r rd1 font-heading text-3xl lg:text-4xl font-bold text-gray-900 mb-4">Open the mapping tool</h2>
+      <p class="r rd2 text-base text-gray-500 mb-8">Use the tool for free. Enter your email to download the PDF matrix.</p>
+      <div class="r rd3 bg-brand-light/40 border border-brand-light rounded-2xl p-8 max-w-lg">
+        <div class="flex items-center gap-3 mb-4">
+          <div class="w-10 h-10 rounded-full bg-brand-blue/10 flex items-center justify-center">
+            <svg class="w-5 h-5 text-brand-blue" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z"/></svg>
+          </div>
+          <p class="font-semibold text-gray-800">Interactive tool coming soon</p>
+        </div>
+        <p class="text-sm text-gray-500 leading-relaxed mb-6">The Participation Mapping Tool is being prepared. Enter your email to be notified at launch.</p>
+        <form class="flex flex-col gap-3" onsubmit="event.preventDefault()">
+          <input type="email" placeholder="Enter your work email" class="w-full border border-gray-200 rounded-lg px-5 py-3 text-base text-gray-800 placeholder:text-gray-400 focus:outline-none focus:border-brand-blue focus:ring-2 focus:ring-brand-light transition-all">
+          <button type="submit" class="btn-primary bg-brand-blue text-white font-bold text-base px-7 py-3 rounded-lg">
+            Notify Me When It Launches
+          </button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-16 bg-gray-50 border-t border-gray-100">
+    <div class="max-w-4xl mx-auto px-6 lg:px-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
+      <div class="r">
+        <p class="text-xs text-brand-blue uppercase tracking-[.2em] mb-2 font-semibold">From the Book</p>
+        <p class="text-gray-600 leading-relaxed max-w-xl">This resource is a companion to <strong class="text-gray-800">Chapter 9: Participants</strong> of <em>When Money Moves</em>. The chapter provides the full framework — this tool helps you apply it to your own organization.</p>
+      </div>
+      <a href="/book" class="r rd1 shrink-0 btn-primary inline-block bg-brand-blue text-white font-semibold text-sm px-6 py-3 rounded-lg">
+        Get the Book →
+      </a>
+    </div>
+  </section>
+
+  <footer class="border-t border-gray-100 py-8 bg-white">
+    <p class="text-sm text-gray-400 text-center">&copy; 2026 &middot; Basefund</p>
+  </footer>
+
+  <script>
+    const o=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('v')})},{threshold:.06,rootMargin:'0px 0px -30px 0px'});
+    document.querySelectorAll('.r').forEach(e=>o.observe(e));
+  </script>
+</body>
+</html>
