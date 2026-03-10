@@ -443,6 +443,16 @@
     render();
   }
 
+  // Format dollar amounts: add $ prefix and commas
+  function fmtAmount(val) {
+    if (!val) return val;
+    // Strip existing $ and commas, keep digits and decimal
+    const raw = String(val).replace(/[$,]/g, '').trim();
+    const num = parseFloat(raw);
+    if (isNaN(num)) return val; // not a number, return as-is
+    return '$' + num.toLocaleString('en-US', { maximumFractionDigits: 2 });
+  }
+
   // ── RENDER ────────────────────────────────────────────────────────
   function render() {
     renderNodes();
@@ -537,7 +547,7 @@
       // Label
       const mx = ((p1.x + p2.x) / 2) * zoom + pan.x;
       const my = ((p1.y + p2.y) / 2) * zoom + pan.y;
-      const labelText = [e.amount, e.timing].filter(Boolean).join(" · ") || "Click to edit";
+      const labelText = [fmtAmount(e.amount), e.timing].filter(Boolean).join(" · ") || "Click to edit";
       const label = document.createElement("div");
       label.className = "ff-edge-label" + (isSelected ? " selected" : "");
       label.style.left = mx + "px";
@@ -603,7 +613,7 @@
         <div class="space-y-4">
           <div>
             <label class="block text-xs font-medium text-gray-600 mb-1">Amount</label>
-            <input type="text" value="${e.amount||''}" placeholder="e.g. $340,000" class="w-full border border-gray-200 rounded-lg px-3 py-2 focus:border-brand-blue focus:ring-2 focus:ring-brand-blue/20 outline-none" onchange="FF.updateEdge(${e.id},'amount',this.value)">
+            <input type="text" value="${fmtAmount(e.amount)||''}" placeholder="e.g. $340,000" class="w-full border border-gray-200 rounded-lg px-3 py-2 focus:border-brand-blue focus:ring-2 focus:ring-brand-blue/20 outline-none" onchange="FF.updateEdge(${e.id},'amount',this.value)">
           </div>
           <div>
             <label class="block text-xs font-medium text-gray-600 mb-1">Timing</label>
