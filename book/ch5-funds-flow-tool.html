@@ -912,14 +912,41 @@
   function exportPDF() {
     const title = document.getElementById("ff-diagram-title").value || "Untitled Transaction";
 
-    // Save current zoom/pan, reset for capture
+    // Calculate bounding box of all nodes to fit diagram
+    const NODE_W = 180, NODE_H = 60, PAD = 40;
+    let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+    nodes.forEach(n => {
+      minX = Math.min(minX, n.x);
+      minY = Math.min(minY, n.y);
+      maxX = Math.max(maxX, n.x + NODE_W);
+      maxY = Math.max(maxY, n.y + NODE_H);
+    });
+    if (!isFinite(minX)) { minX = 0; minY = 0; maxX = 600; maxY = 400; }
+
+    // Save current zoom/pan, fit all content
     const origZoom = zoom, origPan = { ...pan };
-    zoom = 1; pan = { x: 20, y: 20 };
+    const captureEl = document.getElementById("ff-canvas-wrap");
+    const cw = captureEl.clientWidth, ch = captureEl.clientHeight;
+    const contentW = maxX - minX + PAD * 2, contentH = maxY - minY + PAD * 2;
+    zoom = Math.min(cw / contentW, ch / contentH, 1.2);
+    pan = { x: -minX * zoom + PAD * zoom + (cw - contentW * zoom) / 2, y: -minY * zoom + PAD * zoom + (ch - contentH * zoom) / 2 };
+
+    // Hide UI elements during capture
+    const zoomCtrl = captureEl.querySelector('.absolute.bottom-3.left-3');
+    const zoomLvl = document.getElementById('ff-zoom-level');
+    const emptyState = document.getElementById('ff-empty');
+    if (zoomCtrl) zoomCtrl.style.display = 'none';
+    if (zoomLvl) zoomLvl.style.display = 'none';
+    if (emptyState) emptyState.style.display = 'none';
     render();
 
     setTimeout(() => {
-      const captureEl = document.getElementById("ff-canvas-wrap");
-      html2canvas(captureEl, { backgroundColor: "#FAFBFC", scale: 2, useCORS: true }).then(canvas => {
+      html2canvas(captureEl, { backgroundColor: "#FFFFFF", scale: 2, useCORS: true }).then(canvas => {
+        // Restore UI
+        if (zoomCtrl) zoomCtrl.style.display = '';
+        if (zoomLvl) zoomLvl.style.display = '';
+        if (emptyState) emptyState.style.display = '';
+
         const { jsPDF } = window.jspdf;
         const doc = new jsPDF({ orientation: "landscape", unit: "mm", format: "letter" });
         const W = 279, H = 216;
@@ -932,32 +959,33 @@
         doc.setFontSize(8); doc.setFont("helvetica", "normal");
         doc.text("When Money Moves | Chapter 5: Connected Transactions", W - 12, 12, { align: "right" });
 
-        // Diagram image
+        // Diagram image — full width
         const imgData = canvas.toDataURL("image/png");
-        const maxW = W - 24, maxH = H - 80;
-        const ratio = Math.min(maxW / canvas.width, maxH / canvas.height);
+        const imgAreaW = W - 16, imgAreaH = H - 70;
+        const ratio = Math.min(imgAreaW / canvas.width, imgAreaH / canvas.height);
         const imgW = canvas.width * ratio, imgH = canvas.height * ratio;
-        doc.addImage(imgData, "PNG", 12, 22, imgW, imgH);
+        const imgX = (W - imgW) / 2;
+        doc.addImage(imgData, "PNG", imgX, 22, imgW, imgH);
 
         // Flow table
-        let tableY = 22 + imgH + 6;
-        if (edges.length > 0 && tableY < H - 40) {
+        let tableY = 22 + imgH + 4;
+        if (edges.length > 0 && tableY < H - 30) {
           doc.setFontSize(9); doc.setFont("helvetica", "bold"); doc.setTextColor(31, 41, 55);
           doc.text("Flow Summary", 12, tableY); tableY += 5;
 
           doc.setFontSize(7); doc.setFont("helvetica", "bold"); doc.setTextColor(107, 114, 128);
-          const cols = [12, 55, 100, 140, 195, 240];
+          const cols = [12, 55, 110, 145, 195, 245];
           ["From", "To", "Amount", "Timing", "Condition", "Rail"].forEach((h, i) => doc.text(h, cols[i], tableY));
           tableY += 1; doc.setDrawColor(229, 231, 235); doc.line(12, tableY, W - 12, tableY); tableY += 3;
 
           doc.setFont("helvetica", "normal"); doc.setTextColor(55, 65, 81);
           edges.forEach(e => {
-            if (tableY > H - 20) return;
+            if (tableY > H - 18) return;
             const fromN = nodes.find(n => n.id === e.from);
             const toN = nodes.find(n => n.id === e.to);
-            doc.text((fromN?.name || "?").substring(0, 20), cols[0], tableY);
-            doc.text((toN?.name || "?").substring(0, 20), cols[1], tableY);
-            doc.text((e.amount || "\u2014").substring(0, 18), cols[2], tableY);
+            doc.text((fromN?.name || "?").substring(0, 25), cols[0], tableY);
+            doc.text((toN?.name || "?").substring(0, 25), cols[1], tableY);
+            doc.text(fmtAmount(e.amount) || "\u2014", cols[2], tableY);
             doc.text((e.timing || "\u2014").substring(0, 24), cols[3], tableY);
             doc.text((e.condition || "\u2014").substring(0, 20), cols[4], tableY);
             doc.text(e.rail || "\u2014", cols[5], tableY);
@@ -966,8 +994,8 @@
         }
 
         // Legend
-        let legY = tableY + 4;
-        if (legY < H - 18) {
+        let legY = tableY + 3;
+        if (legY < H - 16) {
           doc.setFontSize(7); doc.setFont("helvetica", "bold"); doc.setTextColor(107, 114, 128);
           doc.text("Legend:", 12, legY);
           let lx = 30;
@@ -979,14 +1007,10 @@
         }
 
         // Footer
-        doc.setFillColor(...BLUE); doc.rect(0, H - 12, W, 12, "F");
+        doc.setFillColor(...BLUE); doc.rect(0, H - 10, W, 10, "F");
         doc.setTextColor(255, 255, 255); doc.setFont("helvetica", "normal"); doc.setFontSize(6);
-        doc.text("This diagram represents a single moment in time. In Basefund, your funds flow is live \u2014 tracking real movement against the plan, with alerts when something diverges.", 12, H - 6);
-        doc.setFont("helvetica", "bold"); doc.text("basefund.com", W - 12, H - 6, { align: "right" });
-
-        // Watermark
-        doc.setTextColor(200, 210, 230); doc.setFontSize(20); doc.setFont("helvetica", "italic");
-        doc.text("Created with When Money Moves Companion Tools", W / 2, H / 2, { align: "center", angle: 30 });
+        doc.text("When Money Moves \u2014 basefund.com", 12, H - 4);
+        doc.setFont("helvetica", "bold"); doc.text("basefund.com", W - 12, H - 4, { align: "right" });
 
         doc.save("funds-flow-" + title.toLowerCase().replace(/\s+/g, "-") + ".pdf");
 
