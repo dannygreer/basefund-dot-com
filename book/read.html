@@ -71,8 +71,10 @@
   <script type="module">
     import EmbedPDF from 'https://cdn.jsdelivr.net/npm/@embedpdf/snippet@2/dist/embedpdf.js';
     EmbedPDF.init({
-      container: '#viewer-container',
+      type: 'container',
+      target: document.getElementById('viewer-container'),
       src: '/book/when-money-moves.pdf',
+      theme: { preference: 'light' },
     });
   </script>
 </body>
