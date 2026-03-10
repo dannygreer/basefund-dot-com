@@ -46,6 +46,7 @@
 
     @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}.float{animation:float 6s ease-in-out infinite}
     @keyframes nudge{0%,68%,100%{transform:translateY(0)}74%{transform:translateY(5px)}80%{transform:translateY(-2px)}86%{transform:translateY(3px)}92%{transform:translateY(-1px)}}.nudge{animation:nudge 2.5s ease-in-out infinite}
+    @keyframes orb-drift{0%,100%{translate:0 0;scale:1}25%{translate:12px -8px;scale:1.03}50%{translate:-6px 10px;scale:0.97}75%{translate:8px 5px;scale:1.02}}.orb-animate{animation:orb-drift 12s ease-in-out infinite}.orb-animate-alt{animation:orb-drift 16s ease-in-out infinite reverse}
 
     /* Tag styles */
     .tag-download{background:#E8F0FE;color:#145DD0;border:1px solid #CDDCF5}
@@ -848,8 +849,8 @@
 
   <!-- CTA / GET THE BOOK -->
   <section id="get-the-book" class="py-28 lg:py-36 mesh-blue noise relative overflow-hidden">
-    <div class="absolute top-0 right-0 w-[500px] h-[500px] rounded-full bg-white/[.04]" style="transform:translate(30%,-40%)"></div>
-    <div class="absolute bottom-0 left-0 w-[400px] h-[400px] rounded-full bg-white/[.03]" style="transform:translate(-30%,40%)"></div>
+    <div class="absolute top-0 right-0 w-[500px] h-[500px] rounded-full bg-white/[.04] orb-animate" style="transform:translate(30%,-40%)"></div>
+    <div class="absolute bottom-0 left-0 w-[400px] h-[400px] rounded-full bg-white/[.03] orb-animate-alt" style="transform:translate(-30%,40%)"></div>
 
     <div class="relative z-10 max-w-3xl mx-auto px-6 lg:px-8 text-center">
       <h2 class="r font-heading text-4xl lg:text-[56px] leading-[1.1] font-bold tracking-tight text-white mb-6">
