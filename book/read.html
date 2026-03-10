@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Read — When Money Moves</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lora:wght@500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { height: 100%; overflow: hidden; font-family: 'Inter', system-ui, sans-serif; background: #111; }
+    .topbar {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 12px 24px;
+      background: rgba(17,17,17,0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .topbar-left { display: flex; align-items: center; gap: 12px; }
+    .topbar-left a {
+      display: flex; align-items: center; gap: 8px;
+      color: rgba(255,255,255,0.6); text-decoration: none; font-size: 13px; font-weight: 500;
+      transition: color 0.2s;
+    }
+    .topbar-left a:hover { color: #fff; }
+    .topbar-left svg { width: 16px; height: 16px; }
+    .topbar-title {
+      font-family: 'Lora', serif; font-size: 15px; font-weight: 600; color: #fff;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .topbar-right { display: flex; align-items: center; gap: 8px; }
+    .topbar-btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 7px 14px; border-radius: 6px;
+      font-size: 13px; font-weight: 500; text-decoration: none;
+      border: 1px solid rgba(255,255,255,0.12); color: rgba(255,255,255,0.7);
+      background: transparent; cursor: pointer; transition: all 0.2s;
+    }
+    .topbar-btn:hover { background: rgba(255,255,255,0.08); color: #fff; }
+    .topbar-btn.primary {
+      background: #145DD0; border-color: #145DD0; color: #fff;
+    }
+    .topbar-btn.primary:hover { background: #1a6fe8; }
+    #viewer-container {
+      position: fixed; top: 53px; left: 0; right: 0; bottom: 0;
+    }
+    @media (max-width: 640px) {
+      .topbar { padding: 10px 16px; }
+      .topbar-title { font-size: 13px; max-width: 140px; }
+      .topbar-btn span { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="topbar-left">
+      <a href="/book">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+        Back
+      </a>
+      <span class="topbar-title">When Money Moves</span>
+    </div>
+    <div class="topbar-right">
+      <a href="/book#resources" class="topbar-btn"><span>Resources</span><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"/></svg></a>
+      <a href="/book#get-the-book" class="topbar-btn primary">Get the Book</a>
+    </div>
+  </div>
+  <div id="viewer-container"></div>
+
+  <script type="module">
+    import EmbedPDF from 'https://cdn.jsdelivr.net/npm/@embedpdf/snippet@2/dist/embedpdf.js';
+    EmbedPDF.init({
+      container: '#viewer-container',
+      src: '/book/when-money-moves.pdf',
+    });
+  </script>
+</body>
+</html>
