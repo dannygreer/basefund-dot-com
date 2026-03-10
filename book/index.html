@@ -148,7 +148,7 @@
         <div>
           <div class="r inline-flex items-center gap-2.5 bg-white/15 rounded-full px-5 py-2 mb-8">
             <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25"/></svg>
-            <span class="text-xs text-white font-semibold uppercase tracking-[.15em]">A Must-Read for Anyone That Works with Money</span>
+            <span class="text-xs text-white font-semibold uppercase tracking-[.15em]"><span class="hidden sm:inline">A Must-Read for Anyone That Works with Money</span><span class="sm:hidden">A Must-Read</span></span>
           </div>
 
           <h1 class="r rd1 font-heading text-4xl sm:text-5xl lg:text-[56px] leading-[1.15] font-bold tracking-tight text-white mb-4">
@@ -174,14 +174,14 @@
           </div>
 
           <!-- Secondary CTAs -->
-          <div class="r rd5 flex flex-wrap items-center gap-4">
-            <a href="/book/read" target="_blank" class="inline-flex items-center gap-2 text-sm font-semibold text-white/90 hover:text-white transition-colors">
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25"/></svg>
+          <div class="r rd5 flex flex-nowrap items-center gap-2 sm:gap-4">
+            <a href="/book/read" target="_blank" class="inline-flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm font-semibold text-white/90 hover:text-white transition-colors whitespace-nowrap">
+              <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25"/></svg>
               Read the Digital Book
             </a>
             <span class="text-white/30">|</span>
-            <a href="#resources" class="nudge inline-flex items-center gap-2 text-sm font-semibold text-white/90 hover:text-white transition-colors">
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"/></svg>
+            <a href="#resources" class="nudge inline-flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm font-semibold text-white/90 hover:text-white transition-colors whitespace-nowrap">
+              <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"/></svg>
               Browse Resources
             </a>
           </div>
@@ -189,7 +189,7 @@
 
         <!-- Right — Book cover image -->
         <div class="r rd2 relative flex items-center justify-center">
-          <img src="../book.webp" alt="When Money Moves — The Secure Transactions Framework for Modern Finance by Robert White" class="w-full max-w-[420px] h-auto drop-shadow-2xl float">
+          <img src="../book.webp" alt="When Money Moves — The Secure Transactions Framework for Modern Finance by Robert White" class="w-3/5 sm:w-full max-w-[420px] h-auto drop-shadow-2xl float">
         </div>
       </div>
     </div>
@@ -276,7 +276,7 @@
   <section class="py-24 lg:py-32 mesh-blue noise">
     <div class="max-w-7xl mx-auto px-6 lg:px-8 grid lg:grid-cols-2 gap-16 lg:gap-20 items-center">
       <!-- Left — History cards (compact vertical) -->
-      <div class="flex flex-col items-center">
+      <div class="flex flex-col items-center order-2 lg:order-1">
         <!-- Era 1 -->
         <div class="r slow flex flex-col sm:flex-row gap-0 sm:gap-6 items-stretch bg-white/12 backdrop-blur-md rounded-2xl overflow-hidden shadow-lg w-full border border-white/20">
           <div class="shrink-0 w-full sm:w-40 h-40 sm:h-auto sm:min-h-[160px]">
@@ -319,7 +319,7 @@
         </div>
       </div>
       <!-- Right — Text -->
-      <div>
+      <div class="order-1 lg:order-2">
         <h2 class="r font-heading text-3xl lg:text-[2.75rem] leading-tight text-white font-normal mb-2">Part history.</h2>
         <h2 class="r rd1 font-heading text-3xl lg:text-[2.75rem] leading-tight text-white font-normal mb-2">Part framework.</h2>
         <h2 class="r rd2 font-heading text-3xl lg:text-[2.75rem] leading-tight text-white font-normal">Part field guide for <em>what's coming next.</em></h2>
@@ -392,7 +392,7 @@
               Each chapter builds on the last — from foundational concepts through the framework itself to implementation.
             </p>
             <!-- Part indicators -->
-            <div class="r rd3 flex flex-col gap-3 mt-10">
+            <div class="r rd3 hidden lg:flex flex-col gap-3 mt-10">
               <div class="chapter-indicator flex items-center gap-3 text-sm" data-part="1">
                 <div class="w-8 h-0.5 bg-gray-300 rounded-full transition-all duration-500 indicator-bar shrink-0"></div>
                 <div>
