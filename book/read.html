@@ -94,7 +94,7 @@
     const items = JSON.parse(JSON.stringify(toolbar.items));
     const leftGroup = items.find(item => item.id === 'left-group');
     if (leftGroup) {
-      leftGroup.items = leftGroup.items.filter(item => item.id !== 'document-menu-button');
+      leftGroup.items = leftGroup.items.filter(item => item.id !== 'document-menu-button' && item.type !== 'separator');
     }
     ui.mergeSchema({ toolbars: { 'main-toolbar': { ...toolbar, items } } });
   </script>
