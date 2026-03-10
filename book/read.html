@@ -45,6 +45,8 @@
     #viewer-container {
       position: fixed; top: 53px; left: 0; right: 0; bottom: 0;
     }
+    /* Hide all separators in EmbedPDF toolbar */
+    #viewer-container [class*="eparator"] { display: none !important; }
     @media (max-width: 640px) {
       .topbar { padding: 10px 16px; }
       .topbar-title { font-size: 13px; max-width: 140px; }
