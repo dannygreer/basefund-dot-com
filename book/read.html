@@ -70,7 +70,7 @@
 
   <script type="module">
     import EmbedPDF from 'https://cdn.jsdelivr.net/npm/@embedpdf/snippet@2/dist/embedpdf.js';
-    EmbedPDF.init({
+    const viewer = EmbedPDF.init({
       type: 'container',
       target: document.getElementById('viewer-container'),
       src: '/book/when-money-moves.pdf',
@@ -85,6 +85,18 @@
         'rotate', 'navigation',
       ],
     });
+
+    // Remove the document menu button from toolbar while keeping fullscreen in page settings
+    const registry = await viewer.registry;
+    const ui = registry.getPlugin('ui').provides();
+    const schema = ui.getSchema();
+    const toolbar = schema.toolbars['main-toolbar'];
+    const items = JSON.parse(JSON.stringify(toolbar.items));
+    const leftGroup = items.find(item => item.id === 'left-group');
+    if (leftGroup) {
+      leftGroup.items = leftGroup.items.filter(item => item.id !== 'document-menu-button');
+    }
+    ui.mergeSchema({ toolbars: { 'main-toolbar': { ...toolbar, items } } });
   </script>
 </body>
 </html>
