@@ -145,7 +145,8 @@ button{cursor:pointer;font-family:var(--f-body);}
   radial-gradient(ellipse 45% 60% at 10% 80%, rgba(11,53,128,.55) 0%, transparent 60%),
   radial-gradient(ellipse 70% 50% at 50% -5%, rgba(40,164,221,.4) 0%, transparent 55%),
   radial-gradient(ellipse 50% 50% at 30% 20%, rgba(20,93,208,.35) 0%, transparent 45%);}
-.hero-cinema-dots{position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.12) 1px,transparent 1px);background-size:32px 32px;mask-image:radial-gradient(ellipse 90% 90% at 50% 50%,black 30%,transparent 100%);}
+.hero-cinema-dots{position:absolute;inset:0;pointer-events:none;}
+.hero-cinema-dots canvas{width:100%;height:100%;display:block;}
 .hero-cinema-lines{position:absolute;inset:0;background:linear-gradient(transparent 49.8%,rgba(255,255,255,.04) 50%,transparent 50.2%);background-size:100% 80px;}
 .hero-cinema-content{position:relative;z-index:2;max-width:600px;}
 .hero-cinema-content .ep{background:rgba(255,255,255,.18);border-color:rgba(255,255,255,.3);color:rgba(255,255,255,.9);margin-bottom:32px;}
@@ -567,8 +568,10 @@ button{cursor:pointer;font-family:var(--f-body);}
    ============================================ */
 
 /* Dot grid: ONLY on blue backgrounds (heroes, CTAs, footer) */
-.hero-cinema::after{content:'';position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.07) 1px,transparent 1px);background-size:28px 28px;pointer-events:none;border-radius:inherit;mask-image:radial-gradient(ellipse 85% 85% at 50% 50%,black 20%,transparent 100%);z-index:1;}
-.cta-full::after{content:'';position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.05) 1px,transparent 1px);background-size:28px 28px;pointer-events:none;border-radius:inherit;mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black 30%,transparent 100%);z-index:0;}
+.hero-cinema::after{display:none;}
+.cta-full::after{display:none;}
+.cta-full-dots{position:absolute;inset:0;pointer-events:none;z-index:0;border-radius:inherit;overflow:hidden;}
+.cta-full-dots canvas{width:100%;height:100%;display:block;}
 .cta-full h2,.cta-full p,.cta-full-actions{position:relative;z-index:2;}
 .footer::after{content:'';position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.03) 1px,transparent 1px);background-size:28px 28px;pointer-events:none;mask-image:linear-gradient(180deg,black 0%,transparent 70%);}
 .testimonial-feature::after{content:'';position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.06) 1px,transparent 1px);background-size:28px 28px;pointer-events:none;border-radius:inherit;mask-image:radial-gradient(ellipse 70% 70% at 80% 20%,black 20%,transparent 100%);}
@@ -1280,7 +1283,7 @@ textarea.contact-input{resize:vertical;min-height:120px;line-height:1.6;}
 <div style="padding:0 48px 16px;">
   <div class="hero-cinema noise" style="border-radius:2px;overflow:hidden;">
     <div class="hero-cinema-bg"></div>
-    <div class="hero-cinema-dots"></div>
+    <div class="hero-cinema-dots"><canvas id="hero-dots-canvas"></canvas></div>
     <div class="hero-cinema-lines"></div>
     <div class="hero-cinema-content">
       <div class="ep" style="margin-bottom:32px;"><span class="dot"></span>SOC 2 Certified · $15B+ Secured</div>
@@ -2867,6 +2870,7 @@ textarea.contact-input{resize:vertical;min-height:120px;line-height:1.6;}
   <div class="cta-full noise">
     <div class="cta-full-bg"></div>
     <div class="cta-full-grid"></div>
+    <div class="cta-full-dots"><canvas id="cta-dots-canvas"></canvas></div>
     <h2>Ready to secure your<br><em>next transaction?</em></h2>
     <p>Join hundreds of municipalities, underwriters, and bond counsel who trust Basefund with every dollar in motion.</p>
     <div class="cta-full-actions">
@@ -3041,6 +3045,100 @@ const observer = new IntersectionObserver(entries => {
   });
 }, { rootMargin: '-20% 0px -70% 0px' });
 sections.forEach(s => observer.observe(s));
+
+// ---- DOTS RIPPLE ANIMATION (shared) ----
+function initDotRipple(canvasId, containerSel, opts) {
+  const canvas = document.getElementById(canvasId);
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const gap = opts.gap || 32;
+  const baseRadius = opts.radius || 0.8;
+  const baseAlpha = opts.alpha || 0.06;
+  const maskSize = opts.mask || 0.48;
+  let cols, rows, w, h, ripples = [], raf;
+
+  function resize() {
+    const rect = canvas.parentElement.getBoundingClientRect();
+    w = rect.width; h = rect.height;
+    canvas.width = w * devicePixelRatio;
+    canvas.height = h * devicePixelRatio;
+    ctx.setTransform(devicePixelRatio, 0, 0, devicePixelRatio, 0, 0);
+    cols = Math.ceil(w / gap) + 1;
+    rows = Math.ceil(h / gap) + 1;
+  }
+
+  function spawnRipple() {
+    ripples.push({
+      cx: (Math.random() * (cols - 4) + 2) | 0,
+      cy: (Math.random() * (rows - 4) + 2) | 0,
+      t: 0,
+      speed: 0.008 + Math.random() * 0.006,
+      maxR: 3 + Math.random() * 2
+    });
+  }
+
+  function ease(t) { return t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2; }
+
+  function draw() {
+    ctx.clearRect(0, 0, w, h);
+    const cx = w / 2, cy = h / 2;
+    const maskR = Math.max(w, h) * maskSize;
+
+    for (let r = 0; r < rows; r++) {
+      for (let c = 0; c < cols; c++) {
+        const x = c * gap, y = r * gap;
+        const dx = x - cx, dy = y - cy;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        const mask = Math.max(0, 1 - Math.pow(dist / maskR, 2));
+        if (mask < 0.01) continue;
+
+        let scale = 1, alphaBoost = 0;
+
+        for (let i = 0; i < ripples.length; i++) {
+          const rp = ripples[i];
+          const rdx = c - rp.cx, rdy = r - rp.cy;
+          const gridDist = Math.sqrt(rdx * rdx + rdy * rdy);
+          const progress = ease(rp.t);
+          const waveFront = progress * rp.maxR;
+          const distFromWave = Math.abs(gridDist - waveFront);
+
+          if (distFromWave < 1.8) {
+            const intensity = (1 - distFromWave / 1.8);
+            const life = 1 - Math.pow(2 * rp.t - 1, 2);
+            const effect = intensity * life;
+            scale = Math.max(scale, 1 + effect * 1.8);
+            alphaBoost = Math.max(alphaBoost, effect * 0.12);
+          }
+        }
+
+        ctx.beginPath();
+        ctx.arc(x, y, baseRadius * scale, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(255,255,255,${(baseAlpha + alphaBoost) * mask})`;
+        ctx.fill();
+      }
+    }
+
+    for (let i = ripples.length - 1; i >= 0; i--) {
+      ripples[i].t += ripples[i].speed;
+      if (ripples[i].t >= 1) ripples.splice(i, 1);
+    }
+    if (ripples.length < 3 && Math.random() < 0.015) spawnRipple();
+    raf = requestAnimationFrame(draw);
+  }
+
+  const container = canvas.closest(containerSel);
+  const visObs = new IntersectionObserver(entries => {
+    if (entries[0].isIntersecting) { resize(); if (!raf) draw(); }
+    else { cancelAnimationFrame(raf); raf = null; }
+  }, { threshold: 0.1 });
+  visObs.observe(container);
+
+  window.addEventListener('resize', () => { if (raf) resize(); });
+  resize(); spawnRipple(); draw();
+}
+
+initDotRipple('hero-dots-canvas', '.hero-cinema', { gap: 32, radius: 0.8, alpha: 0.06, mask: 0.48 });
+initDotRipple('cta-dots-canvas', '.cta-full', { gap: 28, radius: 0.7, alpha: 0.05, mask: 0.55 });
 </script>
 </body>
 </html>
