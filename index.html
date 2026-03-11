@@ -55,8 +55,8 @@ img{display:block;}
 .ann-close:hover{color:#fff;}
 
 /* ===== NAV ===== */
-.nav-wrap{position:sticky;top:0;z-index:500;}
-.nav{display:flex;align-items:center;height:64px;padding:0 40px;background:rgba(247,248,250,.92);backdrop-filter:blur(24px) saturate(1.4);-webkit-backdrop-filter:blur(24px) saturate(1.4);border-bottom:1px solid rgba(0,0,0,.06);position:relative;}
+.nav-wrap{position:sticky;top:0;z-index:500;background:rgba(247,248,250,.92);backdrop-filter:blur(24px) saturate(1.4);-webkit-backdrop-filter:blur(24px) saturate(1.4);border-bottom:1px solid rgba(0,0,0,.06);}
+.nav{display:flex;align-items:center;height:64px;padding:0 48px;max-width:1400px;margin:0 auto;position:relative;}
 .nav::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent 10%,rgba(20,93,208,.12),rgba(40,164,221,.08),transparent 90%);}
 .nav.scrolled{background:rgba(255,255,255,.95);box-shadow:0 4px 24px rgba(20,93,208,.07);}
 .nav-logo{display:flex;align-items:center;gap:10px;margin-right:48px;font-family:var(--f-head);font-size:19px;font-weight:600;color:var(--dark);letter-spacing:-.025em;}
@@ -113,7 +113,7 @@ img{display:block;}
 .hero-cinema-dots{position:absolute;inset:0;}
 .hero-cinema-dots canvas{width:100%;height:100%;display:block;}
 .hero-cinema::after{content:'';position:absolute;inset:0;pointer-events:none;opacity:.04;mix-blend-mode:overlay;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-repeat:repeat;background-size:256px 256px;z-index:1;}
-.hero-cinema-content{display:flex;align-items:center;gap:64px;max-width:1200px;margin:0 auto;padding:0 48px;position:relative;z-index:2;}
+.hero-cinema-content{display:flex;align-items:center;gap:64px;max-width:1400px;margin:0 auto;padding:0 48px;position:relative;z-index:2;}
 .hero-text{flex:1;min-width:0;}
 .hero-ep{display:inline-flex;align-items:center;gap:8px;font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.9);background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.28);padding:8px 18px;border-radius:2px;margin-bottom:36px;}
 .hero-ep-dot{width:6px;height:6px;border-radius:2px;background:var(--accent);flex-shrink:0;}
@@ -215,11 +215,11 @@ img{display:block;}
 .tile-icon.blue-bg{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.2);}
 .tile-icon.dark-bg{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.12);}
 .tile-icon.light-bg{background:var(--blue-pale);border:1px solid rgba(20,93,208,.1);}
-.tile-icon.accent-bg{background:rgba(0,244,224,.12);border:1px solid rgba(0,244,224,.2);}
+.tile-icon.accent-bg{background:rgba(20,93,208,.12);border:1px solid rgba(20,93,208,.15);}
 .tile-icon img{width:24px;height:24px;}
 .tile-icon.blue-bg img,.tile-icon.dark-bg img{filter:brightness(0) invert(1);}
 .tile-icon.light-bg img{filter:brightness(0) saturate(100%) invert(28%) sepia(98%) saturate(952%) hue-rotate(196deg) brightness(96%) contrast(101%);}
-.tile-icon.accent-bg img{filter:brightness(0) saturate(100%) invert(87%) sepia(25%) saturate(830%) hue-rotate(130deg) brightness(107%) contrast(101%);}
+.tile-icon.accent-bg img{filter:brightness(0) saturate(100%) invert(30%) sepia(93%) saturate(1352%) hue-rotate(213deg) brightness(97%) contrast(93%);}
 .tile-circle{position:absolute;right:-40px;bottom:-40px;width:180px;height:180px;border-radius:50%;border:40px solid;pointer-events:none;}
 .tc-white{border-color:rgba(255,255,255,.06);}
 .tc-blue{border-color:rgba(20,93,208,.08);}
@@ -381,7 +381,8 @@ img{display:block;}
 .cta-full-actions{display:flex;align-items:center;justify-content:center;gap:12px;position:relative;z-index:1;flex-wrap:wrap;}
 
 /* ===== FOOTER ===== */
-.footer{background:var(--blue-deep);padding:72px 56px 40px;color:#fff;position:relative;overflow:hidden;}
+.footer{background:var(--blue-deep);padding:72px 0 40px;color:#fff;position:relative;overflow:hidden;}
+.footer-inner{max-width:1400px;margin:0 auto;padding:0 48px;}
 .footer::before{content:'';position:absolute;inset:0;background:
   radial-gradient(ellipse 60% 50% at 90% 20%, rgba(40,164,221,.20) 0%, transparent 50%),
   radial-gradient(ellipse 50% 60% at 10% 80%, rgba(0,244,224,.12) 0%, transparent 50%);pointer-events:none;}
@@ -899,6 +900,60 @@ img{display:block;}
   </div>
 </div>
 
+<!-- COMPARISON TABLE -->
+<div class="comp-section">
+  <div class="container">
+    <div class="section-header r">
+      <div class="eyebrow">Comparison</div>
+      <h2>With Basefund vs. without.</h2>
+      <p>See how Basefund changes the risk and operational profile of institutional transactions.</p>
+    </div>
+    <div class="comp-table r">
+      <table>
+        <thead>
+          <tr>
+            <th>Capability</th>
+            <th>Traditional Process</th>
+            <th>With Basefund</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Identity Verification</td>
+            <td>Manual document review, days to complete</td>
+            <td><span class="comp-check">✓</span> Real-time, &lt;1 second</td>
+          </tr>
+          <tr>
+            <td>Bank Account Validation</td>
+            <td>Voided check or bank letter</td>
+            <td><span class="comp-check">✓</span> Instant micro-deposit verification</td>
+          </tr>
+          <tr>
+            <td>Transaction-Level Insurance</td>
+            <td><span class="comp-x">✗</span> Not available</td>
+            <td><span class="comp-check">✓</span> Bound at deal level, pre-close</td>
+          </tr>
+          <tr>
+            <td>Wire Fraud Protection</td>
+            <td>Email disclaimers, hope</td>
+            <td><span class="comp-check">✓</span> Verified accounts + insurance layer</td>
+          </tr>
+          <tr>
+            <td>Multi-Party Coordination</td>
+            <td>Email threads, spreadsheets, fax</td>
+            <td><span class="comp-check">✓</span> Unified deal room with audit trail</td>
+          </tr>
+          <tr>
+            <td>Regulatory Audit Trail</td>
+            <td>Manual document assembly</td>
+            <td><span class="comp-check">✓</span> Auto-generated, exportable</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
 <!-- TESTIMONIAL -->
 <div class="testimonial-section">
   <div class="container">
@@ -954,66 +1009,12 @@ img{display:block;}
   </div>
 </div>
 
-<!-- COMPARISON TABLE -->
-<div class="comp-section">
-  <div class="container">
-    <div class="section-header r">
-      <div class="eyebrow">Comparison</div>
-      <h2>With Basefund vs. without.</h2>
-      <p>See how Basefund changes the risk and operational profile of institutional transactions.</p>
-    </div>
-    <div class="comp-table r">
-      <table>
-        <thead>
-          <tr>
-            <th>Capability</th>
-            <th>Traditional Process</th>
-            <th>With Basefund</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Identity Verification</td>
-            <td>Manual document review, days to complete</td>
-            <td><span class="comp-check">✓</span> Real-time, &lt;1 second</td>
-          </tr>
-          <tr>
-            <td>Bank Account Validation</td>
-            <td>Voided check or bank letter</td>
-            <td><span class="comp-check">✓</span> Instant micro-deposit verification</td>
-          </tr>
-          <tr>
-            <td>Transaction-Level Insurance</td>
-            <td><span class="comp-x">✗</span> Not available</td>
-            <td><span class="comp-check">✓</span> Bound at deal level, pre-close</td>
-          </tr>
-          <tr>
-            <td>Wire Fraud Protection</td>
-            <td>Email disclaimers, hope</td>
-            <td><span class="comp-check">✓</span> Verified accounts + insurance layer</td>
-          </tr>
-          <tr>
-            <td>Multi-Party Coordination</td>
-            <td>Email threads, spreadsheets, fax</td>
-            <td><span class="comp-check">✓</span> Unified deal room with audit trail</td>
-          </tr>
-          <tr>
-            <td>Regulatory Audit Trail</td>
-            <td>Manual document assembly</td>
-            <td><span class="comp-check">✓</span> Auto-generated, exportable</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-</div>
-
 <!-- PERSONA CARDS -->
 <div class="persona-section">
   <div class="container">
     <div class="section-header r">
       <div class="eyebrow">Who It's For</div>
-      <h2>Built for every seat at the closing table.</h2>
+      <h2>Built to serve <em>and protect</em> every transaction participant.</h2>
       <p>Basefund is designed for the full ecosystem of institutional transactions — not just one side of the deal.</p>
     </div>
     <div class="persona-grid">
@@ -1133,6 +1134,7 @@ img{display:block;}
 
 <!-- FOOTER -->
 <footer class="footer">
+  <div class="footer-inner">
   <div class="footer-top">
     <div class="footer-brand">
       <div class="footer-logo">
@@ -1189,77 +1191,95 @@ img{display:block;}
       <a href="#">Cookie Policy</a>
     </div>
   </div>
+  </div>
 </footer>
 
 <script>
-// ---- HERO HORIZONTAL LINES ----
+// ---- HERO HORIZONTAL LINES + BEAMS ----
 (function() {
   const canvas = document.getElementById('hero-lines');
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
-  let w, h, lines = [];
-  const LINE_COUNT = 60;
+  let w, h, dpr;
+  const LINE_COUNT = 8;
+  const lineYs = [];
+  const beams = [];
 
   function resize() {
-    const dpr = window.devicePixelRatio || 1;
+    dpr = window.devicePixelRatio || 1;
     const rect = canvas.parentElement.getBoundingClientRect();
     w = rect.width;
     h = rect.height;
     canvas.width = w * dpr;
     canvas.height = h * dpr;
-    ctx.scale(dpr, dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    // Recalculate permanent line positions
+    lineYs.length = 0;
+    for (let i = 0; i < LINE_COUNT; i++) {
+      lineYs.push((i + 1) / (LINE_COUNT + 1) * h);
+    }
   }
 
-  function createLine() {
-    return {
-      x: -Math.random() * w * 0.5,
-      y: Math.random() * h,
-      len: 80 + Math.random() * 220,
-      speed: 0.6 + Math.random() * 1.8,
-      alpha: 0.03 + Math.random() * 0.10,
-      width: 1 + Math.random() * 1.5
-    };
+  function spawnBeam() {
+    const lineIdx = Math.floor(Math.random() * LINE_COUNT);
+    beams.push({
+      y: lineYs[lineIdx],
+      x: -200,
+      len: 120 + Math.random() * 200,
+      speed: 2 + Math.random() * 4,
+      alpha: 0.25 + Math.random() * 0.35
+    });
   }
 
   function init() {
     resize();
-    lines = [];
-    for (let i = 0; i < LINE_COUNT; i++) {
-      const l = createLine();
-      l.x = Math.random() * (w + l.len);
-      lines.push(l);
+    beams.length = 0;
+    for (let i = 0; i < 4; i++) {
+      const b = { y: lineYs[Math.floor(Math.random() * LINE_COUNT)], x: Math.random() * w, len: 120 + Math.random() * 200, speed: 2 + Math.random() * 4, alpha: 0.25 + Math.random() * 0.35 };
+      beams.push(b);
     }
   }
 
-  function draw() {
+  let lastSpawn = 0;
+  function draw(t) {
     ctx.clearRect(0, 0, w, h);
-    for (const l of lines) {
-      const grad = ctx.createLinearGradient(l.x, 0, l.x + l.len, 0);
-      grad.addColorStop(0, `rgba(255,255,255,0)`);
-      grad.addColorStop(0.3, `rgba(255,255,255,${l.alpha})`);
-      grad.addColorStop(0.7, `rgba(255,255,255,${l.alpha})`);
-      grad.addColorStop(1, `rgba(255,255,255,0)`);
-      ctx.strokeStyle = grad;
-      ctx.lineWidth = l.width;
+    // Draw permanent lines
+    ctx.strokeStyle = 'rgba(255,255,255,0.06)';
+    ctx.lineWidth = 1;
+    for (const y of lineYs) {
       ctx.beginPath();
-      ctx.moveTo(l.x, l.y);
-      ctx.lineTo(l.x + l.len, l.y);
+      ctx.moveTo(0, y);
+      ctx.lineTo(w, y);
       ctx.stroke();
-
-      l.x += l.speed;
-      if (l.x > w + 10) {
-        l.x = -l.len - Math.random() * 100;
-        l.y = Math.random() * h;
-        l.speed = 0.6 + Math.random() * 1.8;
-        l.alpha = 0.03 + Math.random() * 0.10;
-      }
+    }
+    // Draw beams
+    for (let i = beams.length - 1; i >= 0; i--) {
+      const b = beams[i];
+      const grad = ctx.createLinearGradient(b.x, 0, b.x + b.len, 0);
+      grad.addColorStop(0, 'rgba(255,255,255,0)');
+      grad.addColorStop(0.4, `rgba(255,255,255,${b.alpha})`);
+      grad.addColorStop(0.6, `rgba(255,255,255,${b.alpha})`);
+      grad.addColorStop(1, 'rgba(255,255,255,0)');
+      ctx.strokeStyle = grad;
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(b.x, b.y);
+      ctx.lineTo(b.x + b.len, b.y);
+      ctx.stroke();
+      b.x += b.speed;
+      if (b.x > w + b.len) beams.splice(i, 1);
+    }
+    // Spawn new beams at random intervals
+    if (t - lastSpawn > 400 + Math.random() * 800) {
+      spawnBeam();
+      lastSpawn = t;
     }
     requestAnimationFrame(draw);
   }
 
   init();
-  window.addEventListener('resize', init);
-  draw();
+  window.addEventListener('resize', resize);
+  requestAnimationFrame(draw);
 })();
 
 // ---- NAV SCROLL ----
