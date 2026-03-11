@@ -185,7 +185,7 @@ img{display:block;}
 /* ===== STATS STRIP ===== */
 .stats-section{padding:64px 0;}
 .stats-strip{display:grid;grid-template-columns:auto 1fr;background:#fff;border:none;border-radius:2px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.04);}
-.stat-text-cell{padding:40px 48px;display:flex;align-items:center;}
+.stat-text-cell{padding:40px 48px;display:flex;flex-direction:column;justify-content:center;align-items:flex-start;}
 .stat-text-cell p{font-size:16px;line-height:1.65;color:var(--slate);max-width:52ch;}
 .stat-cell{padding:40px 44px;border-right:1px solid rgba(0,0,0,.05);position:relative;}
 .stat-cell:last-child{border-right:none;}
@@ -724,7 +724,8 @@ img{display:block;}
         <div class="stat-l">Payments Monthly</div>
       </div>
       <div class="stat-text-cell r sd1">
-        <p>Trusted by thousands of financial leaders and the world's leading banks. Basefund is managing over $200 billion in payments and securely closing billions each month.</p>
+        <div class="tile-h" style="margin-bottom:8px;">Trusted by thousands of financial leaders and the world's leading banks.</div>
+        <p>Basefund is managing over $200 billion in payments and securely closing billions each month.</p>
       </div>
     </div>
   </div>
@@ -1214,8 +1215,9 @@ img{display:block;}
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     // Recalculate permanent line positions
     lineYs.length = 0;
+    const pad = h * 0.06;
     for (let i = 0; i < LINE_COUNT; i++) {
-      lineYs.push((i + 1) / (LINE_COUNT + 1) * h);
+      lineYs.push(pad + i * (h - 2 * pad) / (LINE_COUNT - 1));
     }
   }
 
