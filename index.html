@@ -103,7 +103,7 @@ img{display:block;}
 .btn:hover .arr{transform:translateX(3px);}
 
 /* ===== HERO CINEMA ===== */
-.hero-cinema{background:var(--blue);min-height:640px;position:relative;overflow:hidden;display:flex;align-items:center;padding:100px 0 90px;}
+.hero-cinema{background:var(--blue);min-height:720px;position:relative;overflow:hidden;display:flex;align-items:center;padding:120px 0 100px;}
 .hero-cinema-bg{position:absolute;inset:0;background:
   radial-gradient(ellipse 80% 70% at 0% 100%, rgba(0,244,224,.15) 0%, transparent 55%),
   radial-gradient(ellipse 60% 90% at 80% 60%, rgba(255,255,255,.18) 0%, transparent 55%),
@@ -127,7 +127,7 @@ img{display:block;}
 .hero-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
 .hero-grid-cell{border-radius:2px;overflow:hidden;box-shadow:var(--s-lg);position:relative;}
 .hero-grid-cell.app-screen{background:#fff;}
-.hero-grid-cell.photo-cell{height:180px;}
+.hero-grid-cell.photo-cell{height:220px;}
 .hero-grid-cell.photo-cell img{width:100%;height:100%;object-fit:cover;display:block;}
 .hero-grid-cell.photo-cell .photo-overlay{position:absolute;bottom:10px;right:10px;background:#fff;border-radius:2px;padding:10px 14px;box-shadow:var(--s-md);max-width:170px;}
 .hero-grid-cell.photo-cell .photo-overlay-label{font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:var(--blue);margin-bottom:4px;}
@@ -367,8 +367,8 @@ img{display:block;}
 .blog-card-link:hover{color:var(--blue-deep);}
 
 /* ===== CTA SECTION ===== */
-.cta-section{padding:0 0 80px;}
-.cta-full{background:var(--blue);border-radius:2px;padding:80px 72px;position:relative;overflow:hidden;text-align:center;}
+.cta-section{padding:0;background:var(--blue);}
+.cta-full{background:transparent;border-radius:0;padding:96px 72px;position:relative;overflow:hidden;text-align:center;}
 .cta-full-bg{position:absolute;inset:0;background:
   radial-gradient(ellipse 80% 60% at 0% 100%, rgba(0,244,224,.20) 0%, transparent 50%),
   radial-gradient(ellipse 60% 80% at 50% 0%, rgba(255,255,255,.18) 0%, transparent 60%),
@@ -467,8 +467,8 @@ img{display:block;}
   .blog-section{padding:56px 0 40px;}
   .blog-grid{grid-template-columns:1fr;}
   .bqb-section{padding:64px 32px;}
-  .cta-section{padding:0 0 40px;}
-  .cta-full{padding:48px 24px;}
+  .cta-section{padding:0;}
+  .cta-full{padding:56px 24px;}
   .cta-full-actions{flex-direction:column;align-items:stretch;}
   .cta-full-actions .btn{text-align:center;justify-content:center;}
   .footer{padding:48px 24px 32px;}
@@ -893,8 +893,15 @@ img{display:block;}
         <div class="prob-h">Infrastructure that moves with the money.</div>
         <div class="prob-p">Basefund wraps every transaction in a verified, insured, and coordinated layer — so that by the time a wire leaves, every account has been validated, every party has been identified, and every condition has been met.</div>
       </div>
-      <div class="breakout-wrap r sd3">
+      <div class="breakout-wrap r sd3" style="position:relative;">
         <img src="design-system/images/professional-woman-laptop.jpg" alt="Professional working">
+        <div class="photo-overlay" style="position:absolute;bottom:16px;right:16px;">
+          <div class="photo-overlay-label">Next Settlement</div>
+          <div style="display:flex;gap:8px;align-items:baseline;margin-top:2px;">
+            <span class="photo-overlay-val" id="countdown-timer">02:14:37</span>
+          </div>
+          <div class="photo-overlay-sub">Metro Water · Series 2026A</div>
+        </div>
       </div>
     </div>
   </div>
@@ -1226,7 +1233,7 @@ img{display:block;}
       y: lineYs[lineIdx],
       x: -200,
       len: 120 + Math.random() * 200,
-      speed: 2 + Math.random() * 4,
+      speed: 0.5 + Math.random() * 1.2,
       alpha: 0.25 + Math.random() * 0.35
     });
   }
@@ -1235,7 +1242,7 @@ img{display:block;}
     resize();
     beams.length = 0;
     for (let i = 0; i < 4; i++) {
-      const b = { y: lineYs[Math.floor(Math.random() * LINE_COUNT)], x: Math.random() * w, len: 120 + Math.random() * 200, speed: 2 + Math.random() * 4, alpha: 0.25 + Math.random() * 0.35 };
+      const b = { y: lineYs[Math.floor(Math.random() * LINE_COUNT)], x: Math.random() * w, len: 120 + Math.random() * 200, speed: 0.5 + Math.random() * 1.2, alpha: 0.25 + Math.random() * 0.35 };
       beams.push(b);
     }
   }
@@ -1270,7 +1277,7 @@ img{display:block;}
       if (b.x > w + b.len) beams.splice(i, 1);
     }
     // Spawn new beams at random intervals
-    if (t - lastSpawn > 400 + Math.random() * 800) {
+    if (t - lastSpawn > 1500 + Math.random() * 2500) {
       spawnBeam();
       lastSpawn = t;
     }
@@ -1302,6 +1309,20 @@ document.addEventListener('click', e => {
     hamburger.classList.remove('open');
   }
 });
+
+// ---- COUNTDOWN TIMER ----
+(function() {
+  const el = document.getElementById('countdown-timer');
+  if (!el) return;
+  let secs = 2 * 3600 + 14 * 60 + 37;
+  function fmt(s) {
+    const h = String(Math.floor(s / 3600)).padStart(2, '0');
+    const m = String(Math.floor((s % 3600) / 60)).padStart(2, '0');
+    const sec = String(s % 60).padStart(2, '0');
+    return h + ':' + m + ':' + sec;
+  }
+  setInterval(() => { if (secs > 0) { secs--; el.textContent = fmt(secs); } }, 1000);
+})();
 
 // ---- SCROLL REVEAL ----
 const revealEls = document.querySelectorAll('.r');
