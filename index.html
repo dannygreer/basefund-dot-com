@@ -110,7 +110,8 @@ img{display:block;}
   radial-gradient(ellipse 45% 60% at 10% 80%, rgba(11,53,128,.55) 0%, transparent 60%),
   radial-gradient(ellipse 70% 50% at 50% -5%, rgba(40,164,221,.4) 0%, transparent 55%),
   radial-gradient(ellipse 50% 50% at 30% 20%, rgba(20,93,208,.35) 0%, transparent 45%);}
-.hero-cinema-dots{position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.18) 1px,transparent 1px);background-size:32px 32px;mask-image:radial-gradient(ellipse 90% 90% at 50% 50%,black 30%,transparent 100%);}
+.hero-cinema-dots{position:absolute;inset:0;}
+.hero-cinema-dots canvas{width:100%;height:100%;display:block;}
 .hero-cinema::after{content:'';position:absolute;inset:0;pointer-events:none;opacity:.04;mix-blend-mode:overlay;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-repeat:repeat;background-size:256px 256px;z-index:1;}
 .hero-cinema-content{display:flex;align-items:center;gap:64px;max-width:1200px;margin:0 auto;padding:0 48px;position:relative;z-index:2;}
 .hero-text{flex:1;min-width:0;}
@@ -521,7 +522,7 @@ img{display:block;}
 <!-- HERO -->
 <section class="hero-cinema noise">
   <div class="hero-cinema-bg"></div>
-  <div class="hero-cinema-dots"></div>
+  <div class="hero-cinema-dots"><canvas id="hero-lines"></canvas></div>
   <div class="hero-cinema-content">
     <div class="hero-text">
       <div class="hero-ep r">
@@ -1196,6 +1197,76 @@ img{display:block;}
 </footer>
 
 <script>
+// ---- HERO HORIZONTAL LINES ----
+(function() {
+  const canvas = document.getElementById('hero-lines');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  let w, h, lines = [];
+  const LINE_COUNT = 60;
+
+  function resize() {
+    const dpr = window.devicePixelRatio || 1;
+    const rect = canvas.parentElement.getBoundingClientRect();
+    w = rect.width;
+    h = rect.height;
+    canvas.width = w * dpr;
+    canvas.height = h * dpr;
+    ctx.scale(dpr, dpr);
+  }
+
+  function createLine() {
+    return {
+      x: -Math.random() * w * 0.5,
+      y: Math.random() * h,
+      len: 80 + Math.random() * 220,
+      speed: 0.6 + Math.random() * 1.8,
+      alpha: 0.03 + Math.random() * 0.10,
+      width: 1 + Math.random() * 1.5
+    };
+  }
+
+  function init() {
+    resize();
+    lines = [];
+    for (let i = 0; i < LINE_COUNT; i++) {
+      const l = createLine();
+      l.x = Math.random() * (w + l.len);
+      lines.push(l);
+    }
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, w, h);
+    for (const l of lines) {
+      const grad = ctx.createLinearGradient(l.x, 0, l.x + l.len, 0);
+      grad.addColorStop(0, `rgba(255,255,255,0)`);
+      grad.addColorStop(0.3, `rgba(255,255,255,${l.alpha})`);
+      grad.addColorStop(0.7, `rgba(255,255,255,${l.alpha})`);
+      grad.addColorStop(1, `rgba(255,255,255,0)`);
+      ctx.strokeStyle = grad;
+      ctx.lineWidth = l.width;
+      ctx.beginPath();
+      ctx.moveTo(l.x, l.y);
+      ctx.lineTo(l.x + l.len, l.y);
+      ctx.stroke();
+
+      l.x += l.speed;
+      if (l.x > w + 10) {
+        l.x = -l.len - Math.random() * 100;
+        l.y = Math.random() * h;
+        l.speed = 0.6 + Math.random() * 1.8;
+        l.alpha = 0.03 + Math.random() * 0.10;
+      }
+    }
+    requestAnimationFrame(draw);
+  }
+
+  init();
+  window.addEventListener('resize', init);
+  draw();
+})();
+
 // ---- NAV SCROLL ----
 const nav = document.getElementById('main-nav');
 window.addEventListener('scroll', () => {
