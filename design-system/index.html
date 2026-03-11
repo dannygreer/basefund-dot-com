@@ -520,8 +520,8 @@ button{cursor:pointer;font-family:var(--f-body);}
 .bar-fill:hover{opacity:.75;}
 .bar-label{font-size:11px;color:var(--slate-lt);font-weight:500;margin-top:8px;flex-shrink:0;}
 .bar-val{font-size:10px;font-weight:700;color:var(--blue);flex-shrink:0;margin-bottom:4px;}
-.line-chart{position:relative;height:160px;margin-top:32px;}
-.line-chart svg{width:100%;height:100%;overflow:visible;}
+.line-chart{position:relative;margin-top:32px;max-width:480px;}
+.line-chart svg{width:100%;height:auto;overflow:visible;display:block;}
 
 /* TOASTS */
 .toast{display:inline-flex;align-items:center;gap:12px;background:#fff;border:1px solid var(--border);border-radius:var(--r-lg);padding:16px 20px;box-shadow:0 12px 40px rgba(0,0,0,.08),0 4px 12px rgba(20,93,208,.06);font-size:13px;max-width:360px;animation:toastIn .35s var(--ease-back) both;backdrop-filter:blur(12px);}
@@ -803,6 +803,103 @@ textarea.contact-input{resize:vertical;min-height:120px;line-height:1.6;}
 /* External links in sidebar */
 .sb-link-ext{background:var(--off);border-left:2px solid var(--blue);padding-left:14px;margin:4px 8px;border-radius:2px;font-weight:600;color:var(--blue);}
 .sb-link-ext:hover{background:var(--blue-tint);}
+
+/* ===== 49. PILLAR LIST ===== */
+.pillar-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+.pillar-card{background:#fff;border:none;border-radius:2px;padding:36px 32px;box-shadow:0 1px 3px rgba(0,0,0,.04);display:flex;flex-direction:column;}
+.pillar-pill{display:inline-flex;align-items:center;gap:8px;background:var(--blue-tint);border:1px solid rgba(20,93,208,.12);border-radius:2px;padding:7px 14px;margin-bottom:24px;width:fit-content;}
+.pillar-pill img{width:14px;height:14px;opacity:.75;}
+.pillar-pill-label{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--blue);}
+.pillar-heading{font-family:var(--f-head);font-size:clamp(20px,2vw,26px);font-weight:600;color:var(--ink);letter-spacing:-.025em;margin-bottom:24px;line-height:1.2;}
+.pillar-items{display:flex;flex-direction:column;gap:0;}
+.pillar-item{font-size:14px;line-height:1.6;color:var(--slate);padding:14px 0;}
+.pillar-item:not(:last-child){border-bottom:2px solid var(--blue);}
+
+/* ===== 50. TWO-TONE SPLIT ===== */
+.two-tone-wrap{position:relative;display:flex;align-items:flex-start;min-height:380px;padding:20px 0 60px;}
+.tt-card{border-radius:2px;padding:44px 40px;width:420px;position:relative;}
+.tt-card-1{background:var(--blue-lt);z-index:1;}
+.tt-card-2{background:var(--blue-deep);margin-top:48px;margin-left:-40px;z-index:2;box-shadow:0 24px 72px rgba(11,53,128,.35),0 8px 24px rgba(11,53,128,.2);}
+.tt-card-1{box-shadow:0 16px 48px rgba(40,164,221,.25),0 4px 16px rgba(40,164,221,.12);}
+.tt-fade-head{font-family:var(--f-head);font-size:clamp(52px,7vw,88px);font-weight:700;letter-spacing:-.05em;line-height:.9;color:rgba(255,255,255,.18);margin-bottom:28px;pointer-events:none;user-select:none;}
+.tt-items{display:flex;flex-direction:column;gap:20px;}
+.tt-item-title{font-size:15px;font-weight:700;color:#fff;margin-bottom:4px;}
+.tt-item-desc{font-size:13px;color:rgba(255,255,255,.6);line-height:1.55;}
+
+/* ===== 51. ICON CARD GRID ON BLUE ===== */
+.icg-section{background:var(--blue);border-radius:2px;padding:56px 52px;position:relative;overflow:hidden;}
+.icg-section::before{content:'';position:absolute;inset:0;background:
+  radial-gradient(ellipse 70% 60% at 90% 10%,rgba(255,255,255,.08) 0%,transparent 55%),
+  radial-gradient(ellipse 50% 70% at 10% 80%,rgba(0,244,224,.06) 0%,transparent 50%),
+  radial-gradient(ellipse 60% 50% at 50% 50%,rgba(11,53,128,.3) 0%,transparent 65%);pointer-events:none;}
+.icg-section::after{content:'';position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.05) 1px,transparent 1px);background-size:28px 28px;pointer-events:none;mask-image:radial-gradient(ellipse 85% 85% at 50% 50%,black 20%,transparent 100%);}
+.icg-heading{font-family:var(--f-head);font-size:clamp(22px,2.5vw,30px);font-weight:600;color:#fff;letter-spacing:-.025em;margin-bottom:32px;position:relative;z-index:1;}
+.icg-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;position:relative;z-index:1;}
+.icg-card{background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.16);border-radius:2px;padding:28px 26px;backdrop-filter:blur(16px) saturate(1.3);-webkit-backdrop-filter:blur(16px) saturate(1.3);transition:all 250ms var(--ease);}
+.icg-card:hover{background:rgba(255,255,255,.16);border-color:rgba(255,255,255,.28);transform:translateY(-2px);}
+.icg-card.wide{grid-column:span 2;display:flex;align-items:center;justify-content:space-between;gap:20px;}
+.icg-icon{width:40px;height:40px;border-radius:2px;background:rgba(0,244,224,.15);border:1px solid rgba(0,244,224,.25);display:flex;align-items:center;justify-content:center;margin-bottom:14px;flex-shrink:0;}
+.icg-icon img{width:20px;height:20px;filter:brightness(0) saturate(100%) invert(87%) sepia(25%) saturate(830%) hue-rotate(130deg) brightness(107%) contrast(101%);}
+.icg-card.wide .icg-icon{margin-bottom:0;}
+.icg-card-text{font-size:14px;color:rgba(255,255,255,.82);line-height:1.55;}
+.icg-card.wide .icg-card-text{font-size:15px;font-weight:500;}
+.icg-cta-arr{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700;color:var(--accent);white-space:nowrap;flex-shrink:0;}
+.icg-cta-arr::after{content:'→';font-size:15px;}
+
+/* ===== 52. EVOLUTION PATH ===== */
+.evo-wrap{background:#fff;border-radius:2px;padding:56px 52px;box-shadow:0 1px 3px rgba(0,0,0,.04);position:relative;overflow:hidden;}
+.evo-wrap::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(20,93,208,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(20,93,208,.03) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;}
+.evo-heading{font-family:var(--f-head);font-size:clamp(22px,2.5vw,32px);font-weight:600;color:var(--ink);letter-spacing:-.025em;margin-bottom:40px;position:relative;z-index:1;}
+.evo-steps{display:flex;flex-direction:column;gap:0;position:relative;z-index:1;}
+.evo-step{display:grid;grid-template-columns:24px 1fr;gap:0 20px;align-items:start;padding:0 0 36px;}
+.evo-step:last-child{padding-bottom:0;}
+.evo-dot-col{display:flex;flex-direction:column;align-items:center;padding-top:4px;}
+.evo-dot{width:16px;height:16px;border-radius:50%;flex-shrink:0;}
+.evo-dot.legacy{background:#E84040;}
+.evo-dot.current{background:var(--blue);box-shadow:0 0 0 4px rgba(20,93,208,.15);}
+.evo-dot-line{width:2px;flex:1;min-height:28px;background:var(--gray);margin-top:6px;}
+.evo-step:last-child .evo-dot-line{display:none;}
+.evo-content{padding-top:2px;}
+.evo-title{font-size:16px;font-weight:700;color:var(--ink);margin-bottom:4px;}
+.evo-date{font-size:11px;font-weight:700;color:var(--blue);letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px;}
+.evo-desc{font-size:13px;color:var(--slate);line-height:1.6;}
+.evo-step.featured .evo-content{background:linear-gradient(135deg,var(--blue),var(--blue-deep));border-radius:2px;padding:24px 26px;margin-left:0;}
+.evo-step.featured .evo-title{color:#fff;font-size:17px;}
+.evo-step.featured .evo-date{color:var(--accent);}
+.evo-step.featured .evo-desc{color:rgba(255,255,255,.72);}
+
+/* ===== 53. BORDERED BULLET GRID ===== */
+.bbg-wrap{max-width:800px;}
+.bbg-heading{font-family:var(--f-head);font-size:clamp(20px,2.5vw,28px);font-weight:600;color:var(--ink);letter-spacing:-.025em;text-align:center;margin-bottom:40px;max-width:50ch;margin-left:auto;margin-right:auto;line-height:1.25;}
+.bbg-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+.bbg-item{background:#fff;border:none;border-radius:2px;padding:28px 28px 28px 32px;border-left:3px solid var(--blue);box-shadow:0 1px 3px rgba(0,0,0,.04);font-size:15px;color:var(--ink);font-weight:500;line-height:1.5;}
+
+/* ===== 54. PHOTO MOSAIC ===== */
+.mosaic-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;align-items:start;}
+.mosaic-img{border-radius:2px;overflow:hidden;width:100%;}
+.mosaic-img img{width:100%;height:100%;object-fit:cover;display:block;transition:transform 400ms var(--ease);}
+.mosaic-img:hover img{transform:scale(1.04);}
+.mosaic-img.tall{height:320px;}
+.mosaic-img.med{height:220px;}
+.mosaic-img.short{height:160px;}
+.mosaic-img.mt1{margin-top:40px;}
+.mosaic-img.mt2{margin-top:80px;}
+.mosaic-img.mt3{margin-top:24px;}
+
+/* ===== 55. BIG QUOTE ON BLUE ===== */
+.bqb-section{background:var(--blue);border-radius:2px;padding:96px 72px;text-align:center;position:relative;overflow:hidden;}
+.bqb-circles{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;z-index:0;}
+.bqb-circle{position:absolute;border-radius:50%;border:1px solid rgba(255,255,255,.06);transform:translate(-50%,-50%);}
+.bqb-circle:nth-child(1){width:300px;height:300px;}
+.bqb-circle:nth-child(2){width:520px;height:520px;border-color:rgba(255,255,255,.04);}
+.bqb-circle:nth-child(3){width:740px;height:740px;border-color:rgba(255,255,255,.025);}
+.bqb-circle:nth-child(4){width:960px;height:960px;border-color:rgba(255,255,255,.015);}
+.bqb-content{position:relative;z-index:1;max-width:720px;margin:0 auto;}
+.bqb-pill{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:2px;padding:8px 18px;font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.85);margin-bottom:36px;}
+.bqb-pill-dot{width:6px;height:6px;border-radius:2px;background:var(--accent);}
+.bqb-qmark{font-family:var(--f-head);font-size:clamp(80px,12vw,120px);line-height:.6;color:var(--accent);display:block;margin-bottom:-16px;font-style:normal;}
+.bqb-quote{font-family:var(--f-head);font-size:clamp(22px,3vw,36px);font-style:italic;font-weight:500;color:#fff;line-height:1.45;letter-spacing:-.02em;}
+.bqb-quote em{font-style:normal;color:var(--accent);}
 </style>
 </head>
 <body>
@@ -871,10 +968,18 @@ textarea.contact-input{resize:vertical;min-height:120px;line-height:1.6;}
   <a class="sb-link" href="#forms"><span class="sb-num">43</span>Form Fields</a>
   <a class="sb-link" href="#toasts"><span class="sb-num">44</span>Toasts</a>
   <a class="sb-link" href="#cookie"><span class="sb-num">45</span>Cookie Consent</a>
+  <div class="sb-section">Sales &amp; Marketing</div>
+  <a class="sb-link" href="#pillar-list"><span class="sb-num">49</span>Pillar List</a>
+  <a class="sb-link" href="#two-tone-split"><span class="sb-num">50</span>Two-Tone Split</a>
+  <a class="sb-link" href="#icon-card-grid"><span class="sb-num">51</span>Icon Card Grid</a>
+  <a class="sb-link" href="#evolution-path"><span class="sb-num">52</span>Evolution Path</a>
+  <a class="sb-link" href="#bordered-bullet-grid"><span class="sb-num">53</span>Bordered Bullet Grid</a>
+  <a class="sb-link" href="#photo-mosaic"><span class="sb-num">54</span>Photo Mosaic</a>
+  <a class="sb-link" href="#big-quote-blue"><span class="sb-num">55</span>Big Quote on Blue</a>
   <div class="sb-section">Layout</div>
-  <a class="sb-link" href="#layouts"><span class="sb-num">46</span>Layout Shells</a>
-  <a class="sb-link" href="#cta"><span class="sb-num">47</span>CTA Sections</a>
-  <a class="sb-link" href="#footer"><span class="sb-num">48</span>Footer</a>
+  <a class="sb-link" href="#layouts"><span class="sb-num">56</span>Layout Shells</a>
+  <a class="sb-link" href="#cta"><span class="sb-num">57</span>CTA Sections</a>
+  <a class="sb-link" href="#footer"><span class="sb-num">58</span>Footer</a>
 </nav>
 
 <!-- MAIN -->
@@ -935,26 +1040,51 @@ textarea.contact-input{resize:vertical;min-height:120px;line-height:1.6;}
 <!-- 02. COLORS -->
 <div id="colors" class="sec-label">02 · Foundations</div>
 <div class="sec-name">Color Palette</div>
-<div class="swatch-grid">
-  <div class="sw"><div class="sw-block" style="background:#145DD0;"></div><div class="sw-name">Blue</div><div class="sw-hex">#145DD0</div></div>
-  <div class="sw"><div class="sw-block" style="background:#28A4DD;"></div><div class="sw-name">Blue Light</div><div class="sw-hex">#28A4DD</div></div>
-  <div class="sw"><div class="sw-block" style="background:#0B3580;"></div><div class="sw-name">Blue Deep</div><div class="sw-hex">#0B3580</div></div>
-  <div class="sw"><div class="sw-block" style="background:#0E4399;"></div><div class="sw-name">Dark-2 (Blue)</div><div class="sw-hex">#0E4399</div></div>
-  <div class="sw"><div class="sw-block" style="background:#DDEEFF;border-color:rgba(0,0,0,.08);"></div><div class="sw-name">Blue Pale</div><div class="sw-hex">#DDEEFF</div></div>
-  <div class="sw"><div class="sw-block" style="background:#EEF5FF;border-color:rgba(0,0,0,.08);"></div><div class="sw-name">Blue Tint</div><div class="sw-hex">#EEF5FF</div></div>
-  <div class="sw"><div class="sw-block" style="background:#FFFFFF;border-color:rgba(0,0,0,.08);"></div><div class="sw-name">White</div><div class="sw-hex">#FFFFFF</div></div>
-  <div class="sw"><div class="sw-block" style="background:#F7F8FA;border-color:rgba(0,0,0,.08);"></div><div class="sw-name">Off-White</div><div class="sw-hex">#F7F8FA</div></div>
-  <div class="sw"><div class="sw-block" style="background:#ECEEF3;border-color:rgba(0,0,0,.08);"></div><div class="sw-name">Gray</div><div class="sw-hex">#ECEEF3</div></div>
-  <div class="sw"><div class="sw-block" style="background:#2B2B2B;"></div><div class="sw-name">Ink</div><div class="sw-hex">#2B2B2B</div></div>
-  <div class="sw"><div class="sw-block" style="background:#5C6680;"></div><div class="sw-name">Slate</div><div class="sw-hex">#5C6680</div></div>
-  <div class="sw"><div class="sw-block" style="background:#8B96AE;"></div><div class="sw-name">Slate Lt</div><div class="sw-hex">#8B96AE</div></div>
-  <div class="sw"><div class="sw-block" style="background:#167A43;"></div><div class="sw-name">Green</div><div class="sw-hex">#167A43</div></div>
-  <div class="sw"><div class="sw-block" style="background:#DFF4EA;border-color:rgba(0,0,0,.08);"></div><div class="sw-name">Green Pale</div><div class="sw-hex">#DFF4EA</div></div>
-  <div class="sw"><div class="sw-block" style="background:#9A6100;"></div><div class="sw-name">Amber</div><div class="sw-hex">#9A6100</div></div>
-  <div class="sw"><div class="sw-block" style="background:#00F4E0;"></div><div class="sw-name">Accent</div><div class="sw-hex">#00F4E0</div></div>
-  <div class="sw"><div class="sw-block" style="background:#00C4B4;"></div><div class="sw-name">Accent Deep</div><div class="sw-hex">#00C4B4</div></div>
+<div class="pad col" style="gap:32px;">
+
+  <div>
+    <div class="t-caption" style="margin-bottom:12px;">Primary — Brand blue, CTAs, links, active states</div>
+    <div class="swatch-grid" style="padding:0;">
+      <div class="sw"><div class="sw-block" style="background:#145DD0;"></div><div class="sw-name">Blue</div><div class="sw-hex">#145DD0</div></div>
+      <div class="sw"><div class="sw-block" style="background:#28A4DD;"></div><div class="sw-name">Blue Light</div><div class="sw-hex">#28A4DD</div></div>
+      <div class="sw"><div class="sw-block" style="background:#0B3580;"></div><div class="sw-name">Blue Deep</div><div class="sw-hex">#0B3580</div></div>
+      <div class="sw"><div class="sw-block" style="background:#0E4399;"></div><div class="sw-name">Dark-2</div><div class="sw-hex">#0E4399</div></div>
+      <div class="sw"><div class="sw-block" style="background:#DDEEFF;border-color:rgba(0,0,0,.08);"></div><div class="sw-name">Blue Pale</div><div class="sw-hex">#DDEEFF</div></div>
+      <div class="sw"><div class="sw-block" style="background:#EEF5FF;border-color:rgba(0,0,0,.08);"></div><div class="sw-name">Blue Tint</div><div class="sw-hex">#EEF5FF</div></div>
+    </div>
+  </div>
+
+  <div>
+    <div class="t-caption" style="margin-bottom:12px;">Accent — Sparingly for highlights, data viz emphasis, gradient terminals, premium markers. Not for CTAs or body text.</div>
+    <div class="swatch-grid" style="padding:0;">
+      <div class="sw"><div class="sw-block" style="background:#00F4E0;"></div><div class="sw-name">Accent</div><div class="sw-hex">#00F4E0</div></div>
+      <div class="sw"><div class="sw-block" style="background:#00C4B4;"></div><div class="sw-name">Accent Deep</div><div class="sw-hex">#00C4B4</div></div>
+    </div>
+  </div>
+
+  <div>
+    <div class="t-caption" style="margin-bottom:12px;">Neutral — Backgrounds, text, borders</div>
+    <div class="swatch-grid" style="padding:0;">
+      <div class="sw"><div class="sw-block" style="background:#2B2B2B;"></div><div class="sw-name">Ink</div><div class="sw-hex">#2B2B2B</div></div>
+      <div class="sw"><div class="sw-block" style="background:#5C6680;"></div><div class="sw-name">Slate</div><div class="sw-hex">#5C6680</div></div>
+      <div class="sw"><div class="sw-block" style="background:#8B96AE;"></div><div class="sw-name">Slate Lt</div><div class="sw-hex">#8B96AE</div></div>
+      <div class="sw"><div class="sw-block" style="background:#ECEEF3;border-color:rgba(0,0,0,.08);"></div><div class="sw-name">Gray</div><div class="sw-hex">#ECEEF3</div></div>
+      <div class="sw"><div class="sw-block" style="background:#F7F8FA;border-color:rgba(0,0,0,.08);"></div><div class="sw-name">Off-White</div><div class="sw-hex">#F7F8FA</div></div>
+      <div class="sw"><div class="sw-block" style="background:#FFFFFF;border-color:rgba(0,0,0,.08);"></div><div class="sw-name">White</div><div class="sw-hex">#FFFFFF</div></div>
+    </div>
+  </div>
+
+  <div>
+    <div class="t-caption" style="margin-bottom:12px;">Semantic — Success, warning, status indicators only</div>
+    <div class="swatch-grid" style="padding:0;">
+      <div class="sw"><div class="sw-block" style="background:#167A43;"></div><div class="sw-name">Green</div><div class="sw-hex">#167A43</div></div>
+      <div class="sw"><div class="sw-block" style="background:#DFF4EA;border-color:rgba(0,0,0,.08);"></div><div class="sw-name">Green Pale</div><div class="sw-hex">#DFF4EA</div></div>
+      <div class="sw"><div class="sw-block" style="background:#9A6100;"></div><div class="sw-name">Amber</div><div class="sw-hex">#9A6100</div></div>
+      <div class="sw"><div class="sw-block" style="background:#FFF2DC;border-color:rgba(0,0,0,.08);"></div><div class="sw-name">Amber Pale</div><div class="sw-hex">#FFF2DC</div></div>
+    </div>
+  </div>
+
 </div>
-<div style="padding:0 48px 12px;"><p class="t-caption" style="color:var(--slate);">Accent (#00F4E0) — use sparingly for highlights, data viz emphasis, gradient terminals, and premium feature markers. Not for primary CTAs or body text.</p></div>
 
 <!-- 03. BUTTONS -->
 <div id="buttons" class="sec-label">03 · Actions</div>
@@ -1160,34 +1290,6 @@ textarea.contact-input{resize:vertical;min-height:120px;line-height:1.6;}
       <div class="hero-ctas">
         <button class="btn btn-w btn-lg btn-arrow">Get Started Free <span class="arr" style="background:rgba(0,0,0,.08);">→</span></button>
         <button class="btn btn-gw btn-lg">Watch Demo</button>
-      </div>
-    </div>
-    <div class="hero-cinema-right">
-      <div class="glass-card" style="animation-delay:.3s">
-        <div class="gc-label">Total Secured</div>
-        <div class="gc-value">$15.4B</div>
-        <div class="gc-sub">Across 48 states</div>
-        <div class="gc-badge">↑ 34% YoY</div>
-        <div class="gc-spark">
-          <div class="gc-bar" style="height:35%;animation-delay:.4s"></div>
-          <div class="gc-bar" style="height:50%;animation-delay:.48s"></div>
-          <div class="gc-bar" style="height:42%;animation-delay:.56s"></div>
-          <div class="gc-bar" style="height:68%;animation-delay:.64s"></div>
-          <div class="gc-bar" style="height:58%;animation-delay:.72s"></div>
-          <div class="gc-bar" style="height:80%;animation-delay:.80s"></div>
-          <div class="gc-bar hi" style="height:100%;animation-delay:.88s"></div>
-        </div>
-      </div>
-      <div class="glass-card blue-tinted" style="animation-delay:.5s">
-        <div class="gc-label">Avg. Verification</div>
-        <div class="gc-value">0.8<span style="font-size:20px;font-weight:400;">s</span></div>
-        <div class="gc-sub">Real-time identity layer</div>
-        <div style="margin-top:14px;">
-          <div style="background:rgba(255,255,255,.15);border-radius:2px;height:4px;overflow:hidden;">
-            <div style="background:var(--blue-lt);width:92%;height:100%;border-radius:2px;animation:fillBar 1.5s var(--ease) .8s both;"></div>
-          </div>
-          <div style="font-size:11px;color:rgba(255,255,255,.7);margin-top:6px;">92% faster than industry avg.</div>
-        </div>
       </div>
     </div>
   </div>
@@ -1562,7 +1664,7 @@ textarea.contact-input{resize:vertical;min-height:120px;line-height:1.6;}
     <div class="chart-title">Verification Time (ms) — 30-Day Trend</div>
     <div class="chart-sub">Average response time across all verification requests</div>
     <div class="line-chart">
-      <svg viewBox="0 0 400 140" preserveAspectRatio="none">
+      <svg viewBox="0 0 400 140" preserveAspectRatio="xMidYMid meet">
         <defs>
           <linearGradient id="lineGrad" x1="0" y1="0" x2="0" y2="1">
             <stop offset="0%" stop-color="rgba(20,93,208,.18)"/>
@@ -2411,8 +2513,249 @@ textarea.contact-input{resize:vertical;min-height:120px;line-height:1.6;}
   </div>
 </div>
 
-<!-- 36. LAYOUT SHELLS -->
-<div id="layouts" class="sec-label">46 · Layout</div>
+<!-- 49. PILLAR LIST -->
+<div id="pillar-list" class="sec-label">49 · Sales &amp; Marketing</div>
+<div class="sec-name">Pillar List</div>
+<div class="pad">
+  <div class="pillar-grid">
+    <!-- Verify -->
+    <div class="pillar-card">
+      <div class="pillar-pill">
+        <img src="icons/shield-tick.svg" alt="">
+        <span class="pillar-pill-label">Verify</span>
+      </div>
+      <div class="pillar-heading">Identity Verification</div>
+      <div class="pillar-items">
+        <div class="pillar-item">Bank-grade identity checks</div>
+        <div class="pillar-item">Establish trust before money moves</div>
+        <div class="pillar-item">Prevent social engineering impersonation attempts</div>
+      </div>
+    </div>
+    <!-- Validate -->
+    <div class="pillar-card">
+      <div class="pillar-pill">
+        <img src="icons/check-verified-01.svg" alt="">
+        <span class="pillar-pill-label">Validate</span>
+      </div>
+      <div class="pillar-heading">Account Validation</div>
+      <div class="pillar-items">
+        <div class="pillar-item">Confirm routing and account details in real time</div>
+        <div class="pillar-item">Detect closed or fraudulent accounts instantly</div>
+        <div class="pillar-item">Reduce ACH returns and wire rejections</div>
+      </div>
+    </div>
+    <!-- Insure -->
+    <div class="pillar-card">
+      <div class="pillar-pill">
+        <img src="icons/umbrella-01.svg" alt="">
+        <span class="pillar-pill-label">Insure</span>
+      </div>
+      <div class="pillar-heading">Transaction Insurance</div>
+      <div class="pillar-items">
+        <div class="pillar-item">Coverage for verified and validated transactions</div>
+        <div class="pillar-item">Clear liability determination on every transfer</div>
+        <div class="pillar-item">Peace of mind from initiation through settlement</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 50. TWO-TONE SPLIT -->
+<div id="two-tone-split" class="sec-label">50 · Sales &amp; Marketing</div>
+<div class="sec-name">Two-Tone Split</div>
+<div class="pad">
+  <div class="two-tone-wrap">
+    <!-- Card 1: Light Blue -->
+    <div class="tt-card tt-card-1">
+      <div class="tt-fade-head">Risk</div>
+      <div class="tt-items">
+        <div>
+          <div class="tt-item-title">Authorized Access</div>
+          <div class="tt-item-desc">Only verified participants can initiate or approve a transaction.</div>
+        </div>
+        <div>
+          <div class="tt-item-title">Verified Participants</div>
+          <div class="tt-item-desc">Every party in the transaction chain is identity-confirmed before funds move.</div>
+        </div>
+        <div>
+          <div class="tt-item-title">Validated Instructions</div>
+          <div class="tt-item-desc">Routing, account, and amount details are validated against source records.</div>
+        </div>
+      </div>
+    </div>
+    <!-- Card 2: Deep Blue -->
+    <div class="tt-card tt-card-2">
+      <div class="tt-fade-head">Liability</div>
+      <div class="tt-items">
+        <div>
+          <div class="tt-item-title">Insured Delivery</div>
+          <div class="tt-item-desc">Transactions carry coverage from initiation through final settlement.</div>
+        </div>
+        <div>
+          <div class="tt-item-title">Audit Trail</div>
+          <div class="tt-item-desc">A complete, time-stamped record of every verification and approval step.</div>
+        </div>
+        <div>
+          <div class="tt-item-title">Determined Fallback</div>
+          <div class="tt-item-desc">Pre-defined resolution paths when exceptions occur — no ambiguity.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 51. ICON CARD GRID ON BLUE -->
+<div id="icon-card-grid" class="sec-label">51 · Sales &amp; Marketing</div>
+<div class="sec-name">Icon Card Grid on Blue</div>
+<div class="pad">
+  <div class="icg-section">
+    <div class="icg-heading">We're inviting Corporate Trust to:</div>
+    <div class="icg-grid">
+      <div class="icg-card">
+        <div class="icg-icon"><img src="icons/users-01.svg" alt=""></div>
+        <div class="icg-card-text">Form a working group on secure transaction standards</div>
+      </div>
+      <div class="icg-card">
+        <div class="icg-icon"><img src="icons/heart.svg" alt=""></div>
+        <div class="icg-card-text">Recommend Basefund to protect the bank and their customers</div>
+      </div>
+      <div class="icg-card">
+        <div class="icg-icon"><img src="icons/shield-01.svg" alt=""></div>
+        <div class="icg-card-text">Co-develop The Secure Transactions Framework</div>
+      </div>
+      <div class="icg-card">
+        <div class="icg-icon"><img src="icons/check-circle.svg" alt=""></div>
+        <div class="icg-card-text">Co-create fiduciary legislation like G-42</div>
+      </div>
+      <div class="icg-card wide">
+        <div style="display:flex;align-items:center;gap:16px;">
+          <div class="icg-icon"><img src="icons/settings-01.svg" alt=""></div>
+          <div class="icg-card-text">Lead the industry's next evolution</div>
+        </div>
+        <div class="icg-cta-arr">Learn more</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 52. EVOLUTION PATH -->
+<div id="evolution-path" class="sec-label">52 · Sales &amp; Marketing</div>
+<div class="sec-name">Evolution Path</div>
+<div class="pad">
+  <div class="evo-wrap" style="max-width:640px;">
+    <div class="evo-heading">But we never standardized security.</div>
+    <div class="evo-steps">
+      <div class="evo-step">
+        <div class="evo-dot-col">
+          <div class="evo-dot legacy"></div>
+          <div class="evo-dot-line"></div>
+        </div>
+        <div class="evo-content">
+          <div class="evo-date">1990s – 2000s</div>
+          <div class="evo-title">Plain Email Exchange</div>
+          <div class="evo-desc">Sharing account and bank information over unencrypted email.</div>
+        </div>
+      </div>
+      <div class="evo-step">
+        <div class="evo-dot-col">
+          <div class="evo-dot legacy"></div>
+          <div class="evo-dot-line"></div>
+        </div>
+        <div class="evo-content">
+          <div class="evo-date">2010s – 2020+</div>
+          <div class="evo-title">Encrypted Email</div>
+          <div class="evo-desc">Provides confidentiality in transit. Does almost nothing for security.</div>
+        </div>
+      </div>
+      <div class="evo-step">
+        <div class="evo-dot-col">
+          <div class="evo-dot legacy"></div>
+          <div class="evo-dot-line"></div>
+        </div>
+        <div class="evo-content">
+          <div class="evo-date">2010s – 2020+</div>
+          <div class="evo-title">Callback Verification</div>
+          <div class="evo-desc">Relies on voice familiarity. Voices can be spoofed in seconds.</div>
+        </div>
+      </div>
+      <div class="evo-step featured">
+        <div class="evo-dot-col">
+          <div class="evo-dot current"></div>
+        </div>
+        <div class="evo-content">
+          <div class="evo-date">Today →</div>
+          <div class="evo-title">Secure Transaction Layer</div>
+          <div class="evo-desc">The future of transaction security is verified, validated, and insured.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 53. BORDERED BULLET GRID -->
+<div id="bordered-bullet-grid" class="sec-label">53 · Sales &amp; Marketing</div>
+<div class="sec-name">Bordered Bullet Grid</div>
+<div class="pad">
+  <div class="bbg-wrap">
+    <div class="bbg-heading">Security works best as a shared foundation, not a competitive differentiator.</div>
+    <div class="bbg-grid">
+      <div class="bbg-item">Prevent fraud across all participants</div>
+      <div class="bbg-item">Define and reduce liability on transactions</div>
+      <div class="bbg-item">Restore and strengthen client confidence</div>
+      <div class="bbg-item">Set the standard other industries will follow</div>
+    </div>
+  </div>
+</div>
+
+<!-- 54. PHOTO MOSAIC -->
+<div id="photo-mosaic" class="sec-label">54 · Sales &amp; Marketing</div>
+<div class="sec-name">Photo Mosaic</div>
+<div class="pad">
+  <div class="mosaic-grid">
+    <!-- Column 1 -->
+    <div style="display:flex;flex-direction:column;gap:12px;">
+      <div class="mosaic-img tall"><img src="images/professional-man-cafe.jpg" alt="Professional man at cafe"></div>
+      <div class="mosaic-img short"><img src="images/professional-woman-senior.jpg" alt="Senior professional woman"></div>
+    </div>
+    <!-- Column 2 -->
+    <div style="display:flex;flex-direction:column;gap:12px;margin-top:48px;">
+      <div class="mosaic-img med"><img src="images/professional-woman-laptop.jpg" alt="Professional woman with laptop"></div>
+      <div class="mosaic-img med"><img src="images/professional-man-writing.jpg" alt="Professional man writing"></div>
+    </div>
+    <!-- Column 3 -->
+    <div style="display:flex;flex-direction:column;gap:12px;">
+      <div class="mosaic-img short"><img src="images/professional-dual-monitors.jpg" alt="Dual monitors workspace"></div>
+      <div class="mosaic-img tall"><img src="images/professional-woman-coworking.jpg" alt="Professional woman coworking"></div>
+    </div>
+    <!-- Column 4 -->
+    <div style="display:flex;flex-direction:column;gap:12px;margin-top:32px;">
+      <div class="mosaic-img med"><img src="images/professional-man-office.jpg" alt="Professional man in office"></div>
+      <div class="mosaic-img med"><img src="images/professional-woman-window.jpg" alt="Professional woman by window"></div>
+    </div>
+  </div>
+</div>
+
+<!-- 55. BIG QUOTE ON BLUE -->
+<div id="big-quote-blue" class="sec-label">55 · Sales &amp; Marketing</div>
+<div class="sec-name">Big Quote on Blue</div>
+<div class="pad">
+  <div class="bqb-section">
+    <div class="bqb-circles">
+      <div class="bqb-circle"></div>
+      <div class="bqb-circle"></div>
+      <div class="bqb-circle"></div>
+      <div class="bqb-circle"></div>
+    </div>
+    <div class="bqb-content">
+      <div class="bqb-pill"><span class="bqb-pill-dot"></span>Basefund Started as a Question</div>
+      <span class="bqb-qmark">"</span>
+      <blockquote class="bqb-quote">Why are <em>transactions</em> not <em>secure</em> between our trusted institutions and the recipients we serve?</blockquote>
+    </div>
+  </div>
+</div>
+
+<!-- 56. LAYOUT SHELLS -->
+<div id="layouts" class="sec-label">56 · Layout</div>
 <div class="sec-name">Layout Shells</div>
 <div class="pad col" style="gap:48px;">
   <p class="t-body">Reusable grid containers. Drop any component inside these shells to create page sections.</p>
@@ -2514,8 +2857,8 @@ textarea.contact-input{resize:vertical;min-height:120px;line-height:1.6;}
   </div>
 </div>
 
-<!-- 27. CTA SECTIONS -->
-<div id="cta" class="sec-label">47 · Layout</div>
+<!-- 57. CTA SECTIONS -->
+<div id="cta" class="sec-label">57 · Layout</div>
 <div class="sec-name">CTA Sections</div>
 <div class="pad col" style="gap:20px;">
   <div class="cta-full noise">
@@ -2537,8 +2880,8 @@ textarea.contact-input{resize:vertical;min-height:120px;line-height:1.6;}
   </div>
 </div>
 
-<!-- 37. FOOTER (was 34) -->
-<div id="footer" class="sec-label">48 · Layout</div>
+<!-- 58. FOOTER -->
+<div id="footer" class="sec-label">58 · Layout</div>
 <div class="sec-name">Footer — Deep Blue Background</div>
 <footer class="footer noise" style="margin-top:8px;">
   <div class="footer-top">
