@@ -129,10 +129,10 @@ img{display:block;}
 .hero-grid-cell.app-screen{background:#fff;}
 .hero-grid-cell.photo-cell{height:220px;}
 .hero-grid-cell.photo-cell img{width:100%;height:100%;object-fit:cover;display:block;}
-.hero-grid-cell.photo-cell .photo-overlay{position:absolute;bottom:10px;right:10px;background:#fff;border-radius:2px;padding:10px 14px;box-shadow:var(--s-md);max-width:170px;}
-.hero-grid-cell.photo-cell .photo-overlay-label{font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:var(--blue);margin-bottom:4px;}
-.hero-grid-cell.photo-cell .photo-overlay-val{font-size:13px;font-weight:700;color:var(--ink);letter-spacing:-.02em;}
-.hero-grid-cell.photo-cell .photo-overlay-sub{font-size:10px;color:var(--slate-lt);margin-top:2px;}
+.photo-overlay{position:absolute;bottom:10px;right:10px;background:#fff;border-radius:2px;padding:10px 14px;box-shadow:var(--s-md);max-width:170px;}
+.photo-overlay-label{font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:var(--blue);margin-bottom:4px;}
+.photo-overlay-val{font-size:13px;font-weight:700;color:var(--ink);letter-spacing:-.02em;}
+.photo-overlay-sub{font-size:10px;color:var(--slate-lt);margin-top:2px;}
 /* Mockup chrome */
 .mockup-titlebar{display:flex;align-items:center;gap:6px;padding:8px 12px;background:#F2F4F7;border-bottom:1px solid rgba(0,0,0,.07);}
 .mockup-dots{display:flex;gap:4px;}
@@ -367,14 +367,14 @@ img{display:block;}
 .blog-card-link:hover{color:var(--blue-deep);}
 
 /* ===== CTA SECTION ===== */
-.cta-section{padding:0;background:var(--blue);}
-.cta-full{background:transparent;border-radius:0;padding:96px 72px;position:relative;overflow:hidden;text-align:center;}
-.cta-full-bg{position:absolute;inset:0;background:
+.cta-section{padding:0;background:var(--blue);position:relative;overflow:hidden;}
+.cta-section::before{content:'';position:absolute;inset:0;background:
   radial-gradient(ellipse 80% 60% at 0% 100%, rgba(0,244,224,.20) 0%, transparent 50%),
   radial-gradient(ellipse 60% 80% at 50% 0%, rgba(255,255,255,.18) 0%, transparent 60%),
   radial-gradient(ellipse 40% 50% at 100% 80%, rgba(40,164,221,.30) 0%, transparent 55%),
-  radial-gradient(ellipse 40% 50% at 0% 100%, rgba(11,53,128,.50) 0%, transparent 55%);}
-.cta-full::after{content:'';position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.12) 1px,transparent 1px);background-size:28px 28px;pointer-events:none;mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black 30%,transparent 100%);z-index:0;}
+  radial-gradient(ellipse 40% 50% at 0% 100%, rgba(11,53,128,.50) 0%, transparent 55%);pointer-events:none;}
+.cta-section::after{content:'';position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.12) 1px,transparent 1px);background-size:28px 28px;pointer-events:none;mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black 30%,transparent 100%);z-index:0;}
+.cta-full{background:transparent;border-radius:0;padding:96px 72px;position:relative;text-align:center;z-index:1;}
 .cta-full h2{font-family:var(--f-head);font-size:clamp(32px,4.5vw,58px);font-weight:600;letter-spacing:-.035em;line-height:1.05;color:#fff;margin-bottom:18px;position:relative;z-index:1;}
 .cta-full h2 em{font-style:italic;color:rgba(255,255,255,.75);}
 .cta-full p{font-size:17px;color:rgba(255,255,255,.65);max-width:44ch;margin:0 auto 44px;position:relative;z-index:1;line-height:1.65;}
@@ -1128,7 +1128,6 @@ img{display:block;}
 <div class="cta-section">
   <div class="container">
     <div class="cta-full r">
-      <div class="cta-full-bg"></div>
       <h2>Ready to secure your<br><em>next transaction?</em></h2>
       <p>Join the institutions that have already moved over $15 billion through Basefund's verified, insured infrastructure.</p>
       <div class="cta-full-actions">
@@ -1208,7 +1207,7 @@ img{display:block;}
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
   let w, h, dpr;
-  const LINE_COUNT = 8;
+  const LINE_COUNT = 4;
   const lineYs = [];
   const beams = [];
 
@@ -1233,8 +1232,8 @@ img{display:block;}
       y: lineYs[lineIdx],
       x: -200,
       len: 120 + Math.random() * 200,
-      speed: 0.5 + Math.random() * 1.2,
-      alpha: 0.25 + Math.random() * 0.35
+      speed: 0.65 + Math.random() * 1.56,
+      alpha: 0.18 + Math.random() * 0.24
     });
   }
 
@@ -1242,7 +1241,7 @@ img{display:block;}
     resize();
     beams.length = 0;
     for (let i = 0; i < 4; i++) {
-      const b = { y: lineYs[Math.floor(Math.random() * LINE_COUNT)], x: Math.random() * w, len: 120 + Math.random() * 200, speed: 0.5 + Math.random() * 1.2, alpha: 0.25 + Math.random() * 0.35 };
+      const b = { y: lineYs[Math.floor(Math.random() * LINE_COUNT)], x: Math.random() * w, len: 120 + Math.random() * 200, speed: 0.65 + Math.random() * 1.56, alpha: 0.18 + Math.random() * 0.24 };
       beams.push(b);
     }
   }
