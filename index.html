@@ -30,6 +30,9 @@ a{text-decoration:none;color:inherit;}
 button{cursor:pointer;font-family:var(--f-body);}
 img{display:block;}
 
+/* ===== CONTAINER ===== */
+.container{max-width:1200px;margin:0 auto;padding:0 48px;}
+
 /* ===== NOISE TEXTURE ===== */
 .noise{position:relative;isolation:isolate;}
 .noise::after{content:'';position:absolute;inset:0;z-index:1;pointer-events:none;opacity:.04;mix-blend-mode:overlay;border-radius:inherit;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-repeat:repeat;background-size:256px 256px;}
@@ -100,7 +103,7 @@ img{display:block;}
 .btn:hover .arr{transform:translateX(3px);}
 
 /* ===== HERO CINEMA ===== */
-.hero-cinema{background:var(--blue);min-height:620px;position:relative;overflow:hidden;display:flex;align-items:center;padding:120px 72px 100px;}
+.hero-cinema{background:var(--blue);min-height:640px;position:relative;overflow:hidden;display:flex;align-items:center;padding:100px 0 90px;}
 .hero-cinema-bg{position:absolute;inset:0;background:
   radial-gradient(ellipse 80% 70% at 0% 100%, rgba(0,244,224,.15) 0%, transparent 55%),
   radial-gradient(ellipse 60% 90% at 80% 60%, rgba(255,255,255,.18) 0%, transparent 55%),
@@ -109,22 +112,50 @@ img{display:block;}
   radial-gradient(ellipse 50% 50% at 30% 20%, rgba(20,93,208,.35) 0%, transparent 45%);}
 .hero-cinema-dots{position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.10) 1px,transparent 1px);background-size:32px 32px;mask-image:radial-gradient(ellipse 90% 90% at 50% 50%,black 30%,transparent 100%);}
 .hero-cinema::after{content:'';position:absolute;inset:0;pointer-events:none;opacity:.04;mix-blend-mode:overlay;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-repeat:repeat;background-size:256px 256px;z-index:1;}
-.hero-cinema-content{position:relative;z-index:2;max-width:580px;}
+.hero-cinema-content{display:flex;align-items:center;gap:64px;max-width:1200px;margin:0 auto;padding:0 48px;position:relative;z-index:2;}
+.hero-text{flex:1;min-width:0;}
 .hero-ep{display:inline-flex;align-items:center;gap:8px;font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.9);background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.28);padding:8px 18px;border-radius:2px;margin-bottom:36px;}
 .hero-ep-dot{width:6px;height:6px;border-radius:2px;background:var(--accent);flex-shrink:0;}
-.hero-title{font-family:var(--f-head);font-size:clamp(52px,7vw,88px);font-weight:600;line-height:.96;letter-spacing:-.045em;color:#fff;margin-bottom:28px;}
+.hero-title{font-family:var(--f-head);font-size:clamp(52px,6vw,82px);font-weight:600;line-height:.96;letter-spacing:-.045em;color:#fff;margin-bottom:28px;}
 .hero-title .italic{font-style:italic;color:rgba(255,255,255,.85);}
-.hero-sub{font-size:18px;line-height:1.65;color:rgba(255,255,255,.75);max-width:46ch;margin-bottom:44px;}
+.hero-sub{font-size:17px;line-height:1.65;color:rgba(255,255,255,.75);max-width:46ch;margin-bottom:44px;}
 .hero-ctas{display:flex;gap:12px;align-items:center;flex-wrap:wrap;}
 
-/* Hero right stats */
-.hero-right{position:absolute;right:72px;top:50%;transform:translateY(-50%);z-index:2;display:flex;flex-direction:column;gap:14px;width:260px;}
-.glass-card{background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.20);border-radius:2px;padding:22px 24px;backdrop-filter:blur(24px) saturate(1.4);-webkit-backdrop-filter:blur(24px) saturate(1.4);box-shadow:0 8px 32px rgba(0,0,0,.08),inset 0 1px 0 rgba(255,255,255,.12);}
-.glass-card.blue-tinted{background:rgba(11,53,128,.35);border-color:rgba(255,255,255,.15);}
-.gc-label{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.55);margin-bottom:8px;}
-.gc-value{font-family:var(--f-head);font-size:36px;font-weight:700;color:#fff;letter-spacing:-.04em;line-height:1;}
-.gc-sub{font-size:12px;color:rgba(255,255,255,.55);margin-top:5px;}
-.gc-badge{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:700;color:var(--accent);background:rgba(0,244,224,.12);border:1px solid rgba(0,244,224,.2);border-radius:2px;padding:3px 9px;margin-top:8px;}
+/* Hero right — app mockups */
+.hero-right{position:relative;width:420px;flex-shrink:0;}
+.mockup-stack{position:relative;height:340px;}
+/* Back mockup */
+.mockup-back{position:absolute;top:0;left:0;width:320px;background:#fff;border-radius:2px;box-shadow:var(--s-lg);overflow:hidden;z-index:1;}
+/* Front mockup */
+.mockup-front{position:absolute;top:60px;left:80px;width:340px;background:#fff;border-radius:2px;box-shadow:var(--s-xl);overflow:hidden;z-index:2;}
+.mockup-titlebar{display:flex;align-items:center;gap:6px;padding:10px 14px;background:#F2F4F7;border-bottom:1px solid rgba(0,0,0,.07);}
+.mockup-dots{display:flex;gap:5px;}
+.mockup-dot{width:9px;height:9px;border-radius:50%;}
+.mockup-dot.red{background:#FF5F57;}
+.mockup-dot.y{background:#FEBC2E;}
+.mockup-dot.g{background:#28C840;}
+.mockup-title-text{font-size:11px;font-weight:600;color:#5C6680;margin-left:8px;letter-spacing:-.01em;}
+.mockup-body{padding:14px 16px;}
+/* Deal Dashboard mockup content */
+.dash-deal-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
+.dash-deal-name{font-size:11px;font-weight:700;color:var(--ink);letter-spacing:-.01em;}
+.dash-badge{font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;background:#DFF4EA;color:#167A43;padding:3px 8px;border-radius:2px;}
+.dash-stats-row{display:flex;gap:0;border:1px solid rgba(0,0,0,.07);border-radius:2px;overflow:hidden;margin-bottom:12px;}
+.dash-stat{flex:1;padding:8px 10px;text-align:center;border-right:1px solid rgba(0,0,0,.07);}
+.dash-stat:last-child{border-right:none;}
+.dash-stat-v{font-size:12px;font-weight:700;color:var(--ink);letter-spacing:-.02em;}
+.dash-stat-l{font-size:9px;color:var(--slate-lt);margin-top:2px;}
+.dash-progress-label{display:flex;justify-content:space-between;font-size:10px;color:var(--slate);margin-bottom:5px;}
+.dash-progress-track{height:5px;background:rgba(20,93,208,.1);border-radius:2px;overflow:hidden;}
+.dash-progress-fill{height:100%;width:94%;background:linear-gradient(90deg,var(--blue),var(--blue-lt));border-radius:2px;}
+/* Verification mockup content */
+.verify-list{display:flex;flex-direction:column;gap:8px;margin-bottom:12px;}
+.verify-row{display:flex;align-items:center;gap:10px;padding:8px 10px;background:#F7F9FF;border-radius:2px;border:1px solid rgba(20,93,208,.06);}
+.verify-check{width:18px;height:18px;border-radius:50%;background:#DFF4EA;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:10px;color:#167A43;font-weight:700;}
+.verify-name{font-size:11px;font-weight:600;color:var(--ink);}
+.verify-status-row{display:flex;align-items:center;gap:6px;padding-top:6px;border-top:1px solid rgba(0,0,0,.06);}
+.verify-status-dot{width:6px;height:6px;border-radius:50%;background:#28C840;flex-shrink:0;}
+.verify-status-text{font-size:10px;font-weight:600;color:#167A43;}
 
 /* ===== MARQUEE ===== */
 .marquee-section{background:#fff;border-top:1px solid var(--border);border-bottom:1px solid var(--border);overflow:hidden;padding:0;}
@@ -139,7 +170,7 @@ img{display:block;}
 .marq-sep{width:1px;height:20px;background:var(--border);flex-shrink:0;}
 
 /* ===== STATS STRIP ===== */
-.stats-section{padding:40px 40px;}
+.stats-section{padding:64px 0;}
 .stats-strip{display:grid;grid-template-columns:repeat(4,1fr);background:#fff;border:none;border-radius:2px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.04);}
 .stat-cell{padding:40px 44px;border-right:1px solid rgba(0,0,0,.05);position:relative;}
 .stat-cell:last-child{border-right:none;}
@@ -150,7 +181,7 @@ img{display:block;}
 .stat-l{font-size:14px;color:var(--slate);}
 
 /* ===== BENTO GRID ===== */
-.bento-section{padding:0 40px 40px;}
+.bento-section{padding:0 0 80px;}
 .bento-grid{display:grid;grid-template-columns:repeat(12,1fr);grid-auto-rows:minmax(220px,auto);gap:14px;}
 .bg-tile{background:#fff;border:none;border-radius:2px;padding:40px 36px;overflow:hidden;position:relative;display:flex;flex-direction:column;transition:transform 350ms var(--ease),box-shadow 350ms;box-shadow:0 1px 3px rgba(0,0,0,.04);}
 .bg-tile:hover{transform:translateY(-4px);box-shadow:0 20px 64px rgba(20,93,208,.09),0 4px 14px rgba(20,93,208,.04);}
@@ -186,8 +217,17 @@ img{display:block;}
 .tile-list-item{display:flex;align-items:center;gap:10px;font-size:13px;color:rgba(255,255,255,.7);}
 .tile-list-dot{width:6px;height:6px;border-radius:2px;background:var(--accent);flex-shrink:0;}
 
+/* ===== BREAKOUT IMAGE SECTIONS ===== */
+.breakout-section{padding:0 0 80px;}
+.breakout-wrap{position:relative;border-radius:2px;overflow:hidden;}
+.breakout-img img{width:100%;height:480px;object-fit:cover;display:block;}
+.breakout-card{position:absolute;bottom:40px;right:40px;background:#fff;padding:32px 36px;border-radius:2px;box-shadow:var(--s-lg);max-width:380px;}
+.breakout-card-eyebrow{font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--blue);margin-bottom:10px;}
+.breakout-card-h{font-family:var(--f-head);font-size:22px;font-weight:600;color:var(--ink);letter-spacing:-.02em;line-height:1.2;margin-bottom:10px;}
+.breakout-card-p{font-size:14px;line-height:1.65;color:var(--slate);}
+
 /* ===== PROCESS EDITORIAL ===== */
-.process-section{padding:0 40px 40px;}
+.process-section{padding:0 0 80px;}
 .process-editorial{display:grid;grid-template-columns:1fr 1fr;background:#fff;border:none;border-radius:2px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.04);}
 .pe-left{padding:56px 52px;border-right:1px solid rgba(0,0,0,.05);display:flex;flex-direction:column;justify-content:center;}
 .pe-eyebrow{font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--blue);margin-bottom:14px;}
@@ -203,7 +243,7 @@ img{display:block;}
 .pe-desc{font-size:13px;line-height:1.65;color:var(--slate);}
 
 /* ===== PROBLEM STATEMENT ===== */
-.problem-section{padding:0 40px 40px;}
+.problem-section{padding:0 0 80px;}
 .problem-inner{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;}
 .prob-card{border-radius:2px;padding:36px 32px;display:flex;flex-direction:column;gap:0;box-shadow:0 1px 3px rgba(0,0,0,.04);}
 .prob-card.problem{background:#FFF5F5;}
@@ -228,7 +268,7 @@ img{display:block;}
 .prob-card.approach .prob-p{color:rgba(255,255,255,.65);position:relative;z-index:1;}
 
 /* ===== TESTIMONIAL ===== */
-.testimonial-section{padding:0 40px 40px;}
+.testimonial-section{padding:0 0 80px;}
 .testimonial-inner{display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:start;}
 .testimonial-feature{background:var(--blue);border-radius:2px;padding:56px 52px;position:relative;overflow:hidden;}
 .tf-bg{position:absolute;inset:0;background:
@@ -252,7 +292,7 @@ img{display:block;}
 .testi-role{font-size:11px;color:var(--slate-lt);}
 
 /* ===== COMPARISON TABLE ===== */
-.comp-section{padding:0 40px 40px;}
+.comp-section{padding:0 0 80px;}
 .comp-header{text-align:center;margin-bottom:32px;}
 .comp-table{background:#fff;border-radius:2px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.04);}
 .comp-table table{width:100%;border-collapse:collapse;}
@@ -271,7 +311,7 @@ img{display:block;}
 .comp-table tr:nth-child(even) td:last-child{background:rgba(20,93,208,.06);}
 
 /* ===== PERSONA GRID ===== */
-.persona-section{padding:0 40px 40px;}
+.persona-section{padding:0 0 80px;}
 .persona-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
 .persona-card{background:#fff;border:none;border-radius:2px;padding:36px 32px;position:relative;overflow:hidden;transition:all 350ms var(--ease);box-shadow:0 1px 3px rgba(0,0,0,.04);}
 .persona-card:hover{transform:translateY(-4px);box-shadow:0 20px 60px rgba(20,93,208,.09),0 4px 12px rgba(20,93,208,.04);}
@@ -281,7 +321,7 @@ img{display:block;}
 .persona-desc{font-size:13px;line-height:1.68;color:var(--slate);}
 
 /* ===== BIG QUOTE ON BLUE ===== */
-.bqb-section{background:var(--blue);border-radius:2px;margin:0 40px 40px;padding:96px 72px;text-align:center;position:relative;overflow:hidden;}
+.bqb-section{background:var(--blue);margin:0 0 0;padding:96px 72px;text-align:center;position:relative;overflow:hidden;}
 .bqb-circles{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;z-index:0;}
 .bqb-circle{position:absolute;border-radius:50%;border:1px solid rgba(255,255,255,.06);transform:translate(-50%,-50%);}
 .bqb-circle:nth-child(1){width:300px;height:300px;}
@@ -297,7 +337,7 @@ img{display:block;}
 .bqb-quote em{font-style:normal;color:var(--accent);}
 
 /* ===== CTA SECTION ===== */
-.cta-section{padding:0 40px 56px;}
+.cta-section{padding:0 0 80px;}
 .cta-full{background:var(--blue);border-radius:2px;padding:80px 72px;position:relative;overflow:hidden;text-align:center;}
 .cta-full-bg{position:absolute;inset:0;background:
   radial-gradient(ellipse 80% 60% at 0% 100%, rgba(0,244,224,.12) 0%, transparent 50%),
@@ -340,7 +380,7 @@ img{display:block;}
 .section-header .eyebrow{font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--blue);margin-bottom:12px;}
 .section-header h2{font-family:var(--f-head);font-size:clamp(28px,4vw,48px);font-weight:600;color:var(--ink);letter-spacing:-.03em;line-height:1.1;margin-bottom:14px;}
 .section-header p{font-size:16px;line-height:1.7;color:var(--slate);}
-.section-wrap{padding:72px 40px 0;}
+.section-wrap{padding:96px 0 0;}
 
 /* ===== BADGES ===== */
 .badge{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:5px 11px;border-radius:2px;}
@@ -362,29 +402,37 @@ img{display:block;}
   .stat-cell{border-bottom:1px solid rgba(0,0,0,.05);}
   .bento-grid{grid-template-columns:1fr;}
   .bg-tile.c5,.bg-tile.c7{grid-column:span 1;}
+  .breakout-card{max-width:320px;}
+  .hero-right{display:none;}
+  .hero-cinema-content{gap:0;}
 }
 @media(max-width:768px){
+  .container{padding:0 20px;}
   .announcement-bar .ann-sep,.announcement-bar .ann-sep + span{display:none;}
   .nav{padding:0 20px;height:56px;}
   .nav-links{display:none;}
   .nav-right{display:none;}
   .nav-hamburger{display:flex;}
-  .hero-cinema{padding:80px 24px 60px;min-height:auto;}
+  .hero-cinema{padding:80px 0 60px;min-height:auto;}
+  .hero-cinema-content{flex-direction:column;padding:0 20px;}
   .hero-right{display:none;}
   .hero-title{font-size:clamp(40px,11vw,62px);}
   .hero-ctas{flex-wrap:wrap;}
-  .stats-section{padding:24px 20px;}
+  .stats-section{padding:40px 0;}
   .stats-strip{grid-template-columns:1fr 1fr;}
   .stat-cell{padding:24px 20px;}
-  .bento-section{padding:0 20px 24px;}
-  .process-section{padding:0 20px 24px;}
-  .problem-section{padding:0 20px 24px;}
-  .testimonial-section{padding:0 20px 24px;}
-  .comp-section{padding:0 20px 24px;}
-  .persona-section{padding:0 20px 24px;}
+  .bento-section{padding:0 0 40px;}
+  .process-section{padding:0 0 40px;}
+  .problem-section{padding:0 0 40px;}
+  .testimonial-section{padding:0 0 40px;}
+  .comp-section{padding:0 0 40px;}
+  .persona-section{padding:0 0 40px;}
   .persona-grid{grid-template-columns:1fr;}
-  .bqb-section{margin:0 20px 24px;padding:64px 32px;}
-  .cta-section{padding:0 20px 40px;}
+  .breakout-section{padding:0 0 40px;}
+  .breakout-img img{height:280px;}
+  .breakout-card{position:relative;bottom:auto;right:auto;left:auto!important;margin:-40px 20px 0;}
+  .bqb-section{padding:64px 32px;}
+  .cta-section{padding:0 0 40px;}
   .cta-full{padding:48px 24px;}
   .cta-full-actions{flex-direction:column;align-items:stretch;}
   .cta-full-actions .btn{text-align:center;justify-content:center;}
@@ -392,7 +440,7 @@ img{display:block;}
   .footer-top{grid-template-columns:1fr;gap:32px;}
   .footer-cols{grid-template-columns:1fr 1fr;gap:20px;}
   .footer-bottom{flex-direction:column;text-align:center;}
-  .section-wrap{padding:56px 20px 0;}
+  .section-wrap{padding:56px 0 0;}
   .section-header{margin-bottom:36px;}
   .testimonial-feature{padding:36px 28px;}
   .tf-quote-mark{font-size:80px;}
@@ -460,40 +508,97 @@ img{display:block;}
   <div class="hero-cinema-bg"></div>
   <div class="hero-cinema-dots"></div>
   <div class="hero-cinema-content">
-    <div class="hero-ep r">
-      <span class="hero-ep-dot"></span>
-      SOC 2 Certified &nbsp;·&nbsp; $15B+ Secured
+    <div class="hero-text">
+      <div class="hero-ep r">
+        <span class="hero-ep-dot"></span>
+        SOC 2 Certified &nbsp;·&nbsp; $15B+ Secured
+      </div>
+      <h1 class="hero-title r sd1">
+        Secure and insure<br>
+        <span class="italic">your money</span><br>
+        in motion.
+      </h1>
+      <p class="hero-sub r sd2">Basefund unifies identity verification, bank validation, transaction-specific insurance, and deal coordination in one platform — built for the institutions that move capital.</p>
+      <div class="hero-ctas r sd3">
+        <button class="btn btn-w btn-lg">Get Started Free <span class="arr" style="background:rgba(20,93,208,.12);color:var(--blue);">→</span></button>
+        <button class="btn btn-gw btn-lg">Watch Demo</button>
+      </div>
     </div>
-    <h1 class="hero-title r sd1">
-      Secure and insure<br>
-      <span class="italic">your money</span><br>
-      in motion.
-    </h1>
-    <p class="hero-sub r sd2">Basefund unifies identity verification, bank validation, transaction-specific insurance, and deal coordination in one platform — built for the institutions that move capital.</p>
-    <div class="hero-ctas r sd3">
-      <button class="btn btn-w btn-lg">Get Started Free <span class="arr" style="background:rgba(20,93,208,.12);color:var(--blue);">→</span></button>
-      <button class="btn btn-gw btn-lg">Watch Demo</button>
-    </div>
-  </div>
 
-  <!-- Right stats -->
-  <div class="hero-right">
-    <div class="glass-card" style="animation-delay:.2s">
-      <div class="gc-label">Transaction Volume</div>
-      <div class="gc-value">$2.4B</div>
-      <div class="gc-sub">Secured this quarter</div>
-      <div class="gc-badge">↑ 34% vs prior quarter</div>
-    </div>
-    <div class="glass-card blue-tinted" style="animation-delay:.35s">
-      <div class="gc-label">Verification Speed</div>
-      <div class="gc-value">&lt;1s</div>
-      <div class="gc-sub">Avg. identity check time</div>
-    </div>
-    <div class="glass-card" style="animation-delay:.5s">
-      <div class="gc-label">Coverage Bound</div>
-      <div class="gc-value">$250K</div>
-      <div class="gc-sub">Default transaction limit</div>
-      <div class="gc-badge">Custom limits available</div>
+    <!-- App mockups -->
+    <div class="hero-right">
+      <div class="mockup-stack">
+        <!-- Back mockup: Identity Verification -->
+        <div class="mockup-back">
+          <div class="mockup-titlebar">
+            <div class="mockup-dots">
+              <div class="mockup-dot red"></div>
+              <div class="mockup-dot y"></div>
+              <div class="mockup-dot g"></div>
+            </div>
+            <div class="mockup-title-text">Identity Verification</div>
+          </div>
+          <div class="mockup-body">
+            <div class="verify-list">
+              <div class="verify-row">
+                <div class="verify-check">✓</div>
+                <div class="verify-name">Metro Water District</div>
+              </div>
+              <div class="verify-row">
+                <div class="verify-check">✓</div>
+                <div class="verify-name">Apex Bond Counsel</div>
+              </div>
+              <div class="verify-row">
+                <div class="verify-check">✓</div>
+                <div class="verify-name">Pacific Trust &amp; Escrow</div>
+              </div>
+            </div>
+            <div class="verify-status-row">
+              <div class="verify-status-dot"></div>
+              <div class="verify-status-text">All parties verified</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Front mockup: Deal Dashboard -->
+        <div class="mockup-front">
+          <div class="mockup-titlebar">
+            <div class="mockup-dots">
+              <div class="mockup-dot red"></div>
+              <div class="mockup-dot y"></div>
+              <div class="mockup-dot g"></div>
+            </div>
+            <div class="mockup-title-text">Deal Dashboard</div>
+          </div>
+          <div class="mockup-body">
+            <div class="dash-deal-row">
+              <div class="dash-deal-name">Metro Water District · Series 2026A</div>
+              <div class="dash-badge">Active</div>
+            </div>
+            <div class="dash-stats-row">
+              <div class="dash-stat">
+                <div class="dash-stat-v">$42.5M</div>
+                <div class="dash-stat-l">Deal Size</div>
+              </div>
+              <div class="dash-stat">
+                <div class="dash-stat-v">7</div>
+                <div class="dash-stat-l">Parties</div>
+              </div>
+              <div class="dash-stat">
+                <div class="dash-stat-v">94%</div>
+                <div class="dash-stat-l">Complete</div>
+              </div>
+            </div>
+            <div class="dash-progress-label">
+              <span>Settlement Progress</span>
+              <span style="font-weight:700;color:var(--blue);">94%</span>
+            </div>
+            <div class="dash-progress-track">
+              <div class="dash-progress-fill"></div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -590,119 +695,141 @@ img{display:block;}
 
 <!-- STATS STRIP -->
 <div class="stats-section">
-  <div class="stats-strip">
-    <div class="stat-cell r">
-      <div class="stat-n">500<sup>+</sup></div>
-      <div class="stat-l">Municipal Issuers</div>
-    </div>
-    <div class="stat-cell r sd1">
-      <div class="stat-n">$15B<sup>+</sup></div>
-      <div class="stat-l">Total Capital Secured</div>
-    </div>
-    <div class="stat-cell r sd2">
-      <div class="stat-n">&lt;1s</div>
-      <div class="stat-l">Identity Verification</div>
-    </div>
-    <div class="stat-cell r sd3">
-      <div class="stat-n">99.99%</div>
-      <div class="stat-l">Platform Uptime</div>
+  <div class="container">
+    <div class="stats-strip">
+      <div class="stat-cell r">
+        <div class="stat-n">500<sup>+</sup></div>
+        <div class="stat-l">Municipal Issuers</div>
+      </div>
+      <div class="stat-cell r sd1">
+        <div class="stat-n">$15B<sup>+</sup></div>
+        <div class="stat-l">Total Capital Secured</div>
+      </div>
+      <div class="stat-cell r sd2">
+        <div class="stat-n">&lt;1s</div>
+        <div class="stat-l">Identity Verification</div>
+      </div>
+      <div class="stat-cell r sd3">
+        <div class="stat-n">99.99%</div>
+        <div class="stat-l">Platform Uptime</div>
+      </div>
     </div>
   </div>
 </div>
 
 <!-- BENTO FEATURES -->
 <div class="bento-section">
-  <div class="section-header r" style="text-align:left;margin:0 0 32px;">
-    <div class="eyebrow">Platform Pillars</div>
-    <h2 style="font-family:var(--f-head);font-size:clamp(28px,4vw,44px);font-weight:600;color:var(--ink);letter-spacing:-.03em;line-height:1.1;margin-bottom:0;">Four layers of protection,<br><em style="font-style:italic;color:var(--blue);">one unified platform.</em></h2>
+  <div class="container">
+    <div class="section-header r" style="text-align:left;margin:0 0 32px;">
+      <div class="eyebrow">Platform Pillars</div>
+      <h2 style="font-family:var(--f-head);font-size:clamp(28px,4vw,44px);font-weight:600;color:var(--ink);letter-spacing:-.03em;line-height:1.1;margin-bottom:0;">Four layers of protection,<br><em style="font-style:italic;color:var(--blue);">one unified platform.</em></h2>
+    </div>
+    <div class="bento-grid">
+
+      <!-- Identity Verification — blue, c7 -->
+      <div class="bg-tile blue c7 r">
+        <div class="tile-icon blue-bg">
+          <img src="design-system/icons/fingerprint-02.svg" alt="Identity">
+        </div>
+        <div class="tile-tag">01 · Identity Verification</div>
+        <div class="tile-h">Know who you're transacting with — before the wire leaves.</div>
+        <div class="tile-p">Real-time identity checks against authoritative government databases, OFAC, and beneficial ownership registries. Every counterparty verified before a deal can proceed.</div>
+        <div class="tile-list">
+          <div class="tile-list-item"><span class="tile-list-dot"></span> KYC / KYB checks in under 1 second</div>
+          <div class="tile-list-item"><span class="tile-list-dot"></span> OFAC &amp; watchlist screening</div>
+          <div class="tile-list-item"><span class="tile-list-dot"></span> Beneficial ownership mapping</div>
+        </div>
+        <div class="tile-circle tc-white"></div>
+      </div>
+
+      <!-- Bank Validation — white, c5 -->
+      <div class="bg-tile c5 r sd1">
+        <div class="tile-icon light-bg">
+          <img src="design-system/icons/bank.svg" alt="Bank">
+        </div>
+        <div class="tile-tag">02 · Bank Validation</div>
+        <div class="tile-h">Verify every account before funds are released.</div>
+        <div class="tile-p">Instant micro-deposit validation and ACH prenote checks confirm that destination accounts are real, open, and owned by who you think — eliminating misdirected wire risk.</div>
+        <div class="tile-circle tc-blue"></div>
+      </div>
+
+      <!-- Transaction Insurance — dark, c5 -->
+      <div class="bg-tile dark c5 r sd2">
+        <div class="tile-icon dark-bg">
+          <img src="design-system/icons/shield-dollar.svg" alt="Insurance">
+        </div>
+        <div class="tile-tag">03 · Transaction Insurance</div>
+        <div class="tile-h">Coverage bound at the deal level. Not the portfolio.</div>
+        <div class="tile-p">First-of-its-kind transaction-specific insurance that binds to individual deals, providing coverage from signing through settlement — regardless of deal size or complexity.</div>
+        <div class="tile-circle tc-white"></div>
+      </div>
+
+      <!-- Coordination — blue-lt, c7 -->
+      <div class="bg-tile blue-lt c7 r sd3">
+        <div class="tile-icon accent-bg">
+          <img src="design-system/icons/users-check.svg" alt="Coordination">
+        </div>
+        <div class="tile-tag" style="color:var(--blue);">04 · Deal Coordination</div>
+        <div class="tile-h" style="color:var(--ink);">Every stakeholder. Every document. One deal room.</div>
+        <div class="tile-p" style="color:var(--slate);">Municipal issuers, bond counsel, underwriters, escrow agents, and banks — all coordinating in a single secure workspace with audit trails and milestone tracking built in.</div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:20px;">
+          <span class="badge bd-blue">Role-Based Access</span>
+          <span class="badge bd-green">Full Audit Trail</span>
+          <span class="badge bd-amber">Real-Time Alerts</span>
+        </div>
+      </div>
+
+    </div>
   </div>
-  <div class="bento-grid">
+</div>
 
-    <!-- Identity Verification — blue, c7 -->
-    <div class="bg-tile blue c7 r">
-      <div class="tile-icon blue-bg">
-        <img src="design-system/icons/fingerprint-02.svg" alt="Identity">
+<!-- BREAKOUT IMAGE A: after Bento, before Process -->
+<div class="breakout-section">
+  <div class="container">
+    <div class="breakout-wrap">
+      <div class="breakout-img">
+        <img src="design-system/images/professional-dual-monitors.jpg" alt="Professional at work">
       </div>
-      <div class="tile-tag">01 · Identity Verification</div>
-      <div class="tile-h">Know who you're transacting with — before the wire leaves.</div>
-      <div class="tile-p">Real-time identity checks against authoritative government databases, OFAC, and beneficial ownership registries. Every counterparty verified before a deal can proceed.</div>
-      <div class="tile-list">
-        <div class="tile-list-item"><span class="tile-list-dot"></span> KYC / KYB checks in under 1 second</div>
-        <div class="tile-list-item"><span class="tile-list-dot"></span> OFAC &amp; watchlist screening</div>
-        <div class="tile-list-item"><span class="tile-list-dot"></span> Beneficial ownership mapping</div>
-      </div>
-      <div class="tile-circle tc-white"></div>
-    </div>
-
-    <!-- Bank Validation — white, c5 -->
-    <div class="bg-tile c5 r sd1">
-      <div class="tile-icon light-bg">
-        <img src="design-system/icons/bank.svg" alt="Bank">
-      </div>
-      <div class="tile-tag">02 · Bank Validation</div>
-      <div class="tile-h">Verify every account before funds are released.</div>
-      <div class="tile-p">Instant micro-deposit validation and ACH prenote checks confirm that destination accounts are real, open, and owned by who you think — eliminating misdirected wire risk.</div>
-      <div class="tile-circle tc-blue"></div>
-    </div>
-
-    <!-- Transaction Insurance — dark, c5 -->
-    <div class="bg-tile dark c5 r sd2">
-      <div class="tile-icon dark-bg">
-        <img src="design-system/icons/shield-dollar.svg" alt="Insurance">
-      </div>
-      <div class="tile-tag">03 · Transaction Insurance</div>
-      <div class="tile-h">Coverage bound at the deal level. Not the portfolio.</div>
-      <div class="tile-p">First-of-its-kind transaction-specific insurance that binds to individual deals, providing coverage from signing through settlement — regardless of deal size or complexity.</div>
-      <div class="tile-circle tc-white"></div>
-    </div>
-
-    <!-- Coordination — blue-lt, c7 -->
-    <div class="bg-tile blue-lt c7 r sd3">
-      <div class="tile-icon accent-bg">
-        <img src="design-system/icons/users-check.svg" alt="Coordination">
-      </div>
-      <div class="tile-tag" style="color:var(--blue);">04 · Deal Coordination</div>
-      <div class="tile-h" style="color:var(--ink);">Every stakeholder. Every document. One deal room.</div>
-      <div class="tile-p" style="color:var(--slate);">Municipal issuers, bond counsel, underwriters, escrow agents, and banks — all coordinating in a single secure workspace with audit trails and milestone tracking built in.</div>
-      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:20px;">
-        <span class="badge bd-blue">Role-Based Access</span>
-        <span class="badge bd-green">Full Audit Trail</span>
-        <span class="badge bd-amber">Real-Time Alerts</span>
+      <div class="breakout-card">
+        <div class="breakout-card-eyebrow">Real-Time Dashboard</div>
+        <div class="breakout-card-h">Monitor every transaction as it moves.</div>
+        <div class="breakout-card-p">Track verification status, insurance binding, and settlement progress across all active deals from a single pane of glass.</div>
       </div>
     </div>
-
   </div>
 </div>
 
 <!-- PROCESS EDITORIAL -->
 <div class="process-section">
-  <div class="process-editorial">
-    <div class="pe-left r">
-      <div class="pe-eyebrow">How It Works</div>
-      <h2 class="pe-h">From first connection to final close — in four steps.</h2>
-      <p class="pe-p">Basefund was purpose-built for the operational complexity of institutional transactions. Get from term sheet to settlement without the spreadsheets, fax machines, and overnight couriers.</p>
-      <button class="btn btn-p" style="width:fit-content;">See Full Walkthrough →</button>
-    </div>
-    <div class="pe-right">
-      <div class="pe-step">
-        <div class="pe-num">01</div>
-        <div class="pe-title">Connect Your Org</div>
-        <div class="pe-desc">Onboard your entity in minutes. Connect your banking relationships, invite counterparties, and configure your deal templates once.</div>
+  <div class="container">
+    <div class="process-editorial">
+      <div class="pe-left r">
+        <div class="pe-eyebrow">How It Works</div>
+        <h2 class="pe-h">From first connection to final close — in four steps.</h2>
+        <p class="pe-p">Basefund was purpose-built for the operational complexity of institutional transactions. Get from term sheet to settlement without the spreadsheets, fax machines, and overnight couriers.</p>
+        <button class="btn btn-p" style="width:fit-content;">See Full Walkthrough →</button>
       </div>
-      <div class="pe-step">
-        <div class="pe-num">02</div>
-        <div class="pe-title">Create a Deal</div>
-        <div class="pe-desc">Structure the transaction — parties, amounts, milestones, and disbursement conditions. Basefund generates the coordination layer automatically.</div>
-      </div>
-      <div class="pe-step">
-        <div class="pe-num">03</div>
-        <div class="pe-title">Verify &amp; Insure</div>
-        <div class="pe-desc">Run identity checks on all counterparties, validate bank accounts, and bind transaction-specific insurance before any funds move.</div>
-      </div>
-      <div class="pe-step">
-        <div class="pe-num">04</div>
-        <div class="pe-title">Close &amp; Settle</div>
-        <div class="pe-desc">Release funds against verified conditions with a complete audit trail, executed documents, and confirmation pushed to all parties instantly.</div>
+      <div class="pe-right">
+        <div class="pe-step">
+          <div class="pe-num">01</div>
+          <div class="pe-title">Connect Your Org</div>
+          <div class="pe-desc">Onboard your entity in minutes. Connect your banking relationships, invite counterparties, and configure your deal templates once.</div>
+        </div>
+        <div class="pe-step">
+          <div class="pe-num">02</div>
+          <div class="pe-title">Create a Deal</div>
+          <div class="pe-desc">Structure the transaction — parties, amounts, milestones, and disbursement conditions. Basefund generates the coordination layer automatically.</div>
+        </div>
+        <div class="pe-step">
+          <div class="pe-num">03</div>
+          <div class="pe-title">Verify &amp; Insure</div>
+          <div class="pe-desc">Run identity checks on all counterparties, validate bank accounts, and bind transaction-specific insurance before any funds move.</div>
+        </div>
+        <div class="pe-step">
+          <div class="pe-num">04</div>
+          <div class="pe-title">Close &amp; Settle</div>
+          <div class="pe-desc">Release funds against verified conditions with a complete audit trail, executed documents, and confirmation pushed to all parties instantly.</div>
+        </div>
       </div>
     </div>
   </div>
@@ -710,85 +837,105 @@ img{display:block;}
 
 <!-- PROBLEM STATEMENT -->
 <div class="problem-section">
-  <div class="section-header r">
-    <div class="eyebrow">Why Basefund</div>
-    <h2>The infrastructure gap in institutional finance.</h2>
-    <p>High-value transactions move through a patchwork of phone calls, email threads, and manual wire instructions — with no systematic protection layer.</p>
+  <div class="container">
+    <div class="section-header r">
+      <div class="eyebrow">Why Basefund</div>
+      <h2>The infrastructure gap in institutional finance.</h2>
+      <p>High-value transactions move through a patchwork of phone calls, email threads, and manual wire instructions — with no systematic protection layer.</p>
+    </div>
+    <div class="problem-inner">
+      <div class="prob-card problem r">
+        <div class="prob-icon-wrap">
+          <img src="design-system/icons/alert-triangle.svg" alt="Problem" style="filter:brightness(0) saturate(100%) invert(22%) sepia(82%) saturate(1200%) hue-rotate(340deg) brightness(95%) contrast(98%);">
+        </div>
+        <div class="prob-label">The Problem</div>
+        <div class="prob-h">Fragmented, manual, and uninsured.</div>
+        <div class="prob-p">Municipal bond proceeds and capital project disbursements flow through disconnected systems with no unified verification, no real-time visibility, and no protection against wire fraud, misdirection, or counterparty failure.</div>
+      </div>
+      <div class="prob-card cost r sd1">
+        <div class="prob-icon-wrap">
+          <img src="design-system/icons/line-chart-up-03.svg" alt="Cost" style="filter:brightness(0) saturate(100%) invert(35%) sepia(70%) saturate(900%) hue-rotate(10deg) brightness(92%) contrast(99%);">
+        </div>
+        <div class="prob-label">The Cost</div>
+        <div class="prob-h">$15B lost to wire fraud annually.</div>
+        <div class="prob-p">The FBI estimates $15B in annual losses from Business Email Compromise targeting financial transactions. Municipal issuers and institutional counterparties are prime targets — and most have no transaction-level protection in place.</div>
+      </div>
+      <div class="prob-card approach r sd2">
+        <div class="prob-icon-wrap">
+          <img src="design-system/icons/shield-tick.svg" alt="Approach">
+        </div>
+        <div class="prob-label">The Basefund Approach</div>
+        <div class="prob-h">Infrastructure that moves with the money.</div>
+        <div class="prob-p">Basefund wraps every transaction in a verified, insured, and coordinated layer — so that by the time a wire leaves, every account has been validated, every party has been identified, and every condition has been met.</div>
+      </div>
+    </div>
   </div>
-  <div class="problem-inner">
-    <div class="prob-card problem r">
-      <div class="prob-icon-wrap">
-        <img src="design-system/icons/alert-triangle.svg" alt="Problem" style="filter:brightness(0) saturate(100%) invert(22%) sepia(82%) saturate(1200%) hue-rotate(340deg) brightness(95%) contrast(98%);">
+</div>
+
+<!-- BREAKOUT IMAGE B: after Problem, before Testimonial -->
+<div class="breakout-section">
+  <div class="container">
+    <div class="breakout-wrap">
+      <div class="breakout-img">
+        <img src="design-system/images/professional-woman-laptop.jpg" alt="Professional working">
       </div>
-      <div class="prob-label">The Problem</div>
-      <div class="prob-h">Fragmented, manual, and uninsured.</div>
-      <div class="prob-p">Municipal bond proceeds and capital project disbursements flow through disconnected systems with no unified verification, no real-time visibility, and no protection against wire fraud, misdirection, or counterparty failure.</div>
-    </div>
-    <div class="prob-card cost r sd1">
-      <div class="prob-icon-wrap">
-        <img src="design-system/icons/line-chart-up-03.svg" alt="Cost" style="filter:brightness(0) saturate(100%) invert(35%) sepia(70%) saturate(900%) hue-rotate(10deg) brightness(92%) contrast(99%);">
+      <div class="breakout-card" style="left:40px;right:auto;">
+        <div class="breakout-card-eyebrow">Built for Teams</div>
+        <div class="breakout-card-h">Every stakeholder, one platform.</div>
+        <div class="breakout-card-p">From municipal CFOs to bond counsel, underwriters to escrow agents — Basefund gives every party at the closing table real-time visibility and verified confidence.</div>
       </div>
-      <div class="prob-label">The Cost</div>
-      <div class="prob-h">$15B lost to wire fraud annually.</div>
-      <div class="prob-p">The FBI estimates $15B in annual losses from Business Email Compromise targeting financial transactions. Municipal issuers and institutional counterparties are prime targets — and most have no transaction-level protection in place.</div>
-    </div>
-    <div class="prob-card approach r sd2">
-      <div class="prob-icon-wrap">
-        <img src="design-system/icons/shield-tick.svg" alt="Approach">
-      </div>
-      <div class="prob-label">The Basefund Approach</div>
-      <div class="prob-h">Infrastructure that moves with the money.</div>
-      <div class="prob-p">Basefund wraps every transaction in a verified, insured, and coordinated layer — so that by the time a wire leaves, every account has been validated, every party has been identified, and every condition has been met.</div>
     </div>
   </div>
 </div>
 
 <!-- TESTIMONIAL -->
 <div class="testimonial-section">
-  <div class="testimonial-inner">
-    <div class="testimonial-feature r">
-      <div class="tf-bg"></div>
-      <span class="tf-quote-mark">"</span>
-      <div class="tf-quote">Basefund gave us something we didn't know was possible — the ability to wire $40 million in bond proceeds and know with certainty that every account had been verified, every party identified, and every condition met. It changed how we think about closing.</div>
-      <div class="tf-author">
-        <div class="tf-avatar">SC</div>
-        <div>
-          <div class="tf-name">Sarah Chen</div>
-          <div class="tf-title">Chief Financial Officer, Metro Water District</div>
-        </div>
-      </div>
-    </div>
-    <div class="testi-aside">
-      <div class="testi-sm r sd1">
-        <div class="testi-stars">★★★★★</div>
-        <div class="testi-q">"The identity verification alone saved us two weeks of back-and-forth. We verified 14 counterparties across 3 deals before lunch."</div>
-        <div class="testi-author">
-          <div class="testi-av">MR</div>
+  <div class="container">
+    <div class="testimonial-inner">
+      <div class="testimonial-feature r">
+        <div class="tf-bg"></div>
+        <span class="tf-quote-mark">"</span>
+        <div class="tf-quote">Basefund gave us something we didn't know was possible — the ability to wire $40 million in bond proceeds and know with certainty that every account had been verified, every party identified, and every condition met. It changed how we think about closing.</div>
+        <div class="tf-author">
+          <div class="tf-avatar">SC</div>
           <div>
-            <div class="testi-name">Marcus Rodriguez</div>
-            <div class="testi-role">Managing Director, Apex Underwriters</div>
+            <div class="tf-name">Sarah Chen</div>
+            <div class="tf-title">Chief Financial Officer, Metro Water District</div>
           </div>
         </div>
       </div>
-      <div class="testi-sm r sd2">
-        <div class="testi-stars">★★★★★</div>
-        <div class="testi-q">"As bond counsel, we've historically relied on client representations for account verification. Basefund turns that into a documented, auditable fact."</div>
-        <div class="testi-author">
-          <div class="testi-av">JW</div>
-          <div>
-            <div class="testi-name">Jennifer Walsh</div>
-            <div class="testi-role">Partner, Walsh &amp; Thornton LLP</div>
+      <div class="testi-aside">
+        <div class="testi-sm r sd1">
+          <div class="testi-stars">★★★★★</div>
+          <div class="testi-q">"The identity verification alone saved us two weeks of back-and-forth. We verified 14 counterparties across 3 deals before lunch."</div>
+          <div class="testi-author">
+            <div class="testi-av">MR</div>
+            <div>
+              <div class="testi-name">Marcus Rodriguez</div>
+              <div class="testi-role">Managing Director, Apex Underwriters</div>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="testi-sm r sd3">
-        <div class="testi-stars">★★★★★</div>
-        <div class="testi-q">"The deal room eliminated the 47-email closing threads we used to manage. Everything is tracked, timestamped, and retrievable for audit."</div>
-        <div class="testi-author">
-          <div class="testi-av">DK</div>
-          <div>
-            <div class="testi-name">David Kim</div>
-            <div class="testi-role">SVP Trust Operations, Pacific Escrow Co.</div>
+        <div class="testi-sm r sd2">
+          <div class="testi-stars">★★★★★</div>
+          <div class="testi-q">"As bond counsel, we've historically relied on client representations for account verification. Basefund turns that into a documented, auditable fact."</div>
+          <div class="testi-author">
+            <div class="testi-av">JW</div>
+            <div>
+              <div class="testi-name">Jennifer Walsh</div>
+              <div class="testi-role">Partner, Walsh &amp; Thornton LLP</div>
+            </div>
+          </div>
+        </div>
+        <div class="testi-sm r sd3">
+          <div class="testi-stars">★★★★★</div>
+          <div class="testi-q">"The deal room eliminated the 47-email closing threads we used to manage. Everything is tracked, timestamped, and retrievable for audit."</div>
+          <div class="testi-author">
+            <div class="testi-av">DK</div>
+            <div>
+              <div class="testi-name">David Kim</div>
+              <div class="testi-role">SVP Trust Operations, Pacific Escrow Co.</div>
+            </div>
           </div>
         </div>
       </div>
@@ -798,110 +945,114 @@ img{display:block;}
 
 <!-- COMPARISON TABLE -->
 <div class="comp-section">
-  <div class="section-header r">
-    <div class="eyebrow">Comparison</div>
-    <h2>With Basefund vs. without.</h2>
-    <p>See how Basefund changes the risk and operational profile of institutional transactions.</p>
-  </div>
-  <div class="comp-table r">
-    <table>
-      <thead>
-        <tr>
-          <th>Capability</th>
-          <th>Traditional Process</th>
-          <th>With Basefund</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>Identity Verification</td>
-          <td>Manual document review, days to complete</td>
-          <td><span class="comp-check">✓</span> Real-time, &lt;1 second</td>
-        </tr>
-        <tr>
-          <td>Bank Account Validation</td>
-          <td>Voided check or bank letter</td>
-          <td><span class="comp-check">✓</span> Instant micro-deposit verification</td>
-        </tr>
-        <tr>
-          <td>Transaction-Level Insurance</td>
-          <td><span class="comp-x">✗</span> Not available</td>
-          <td><span class="comp-check">✓</span> Bound at deal level, pre-close</td>
-        </tr>
-        <tr>
-          <td>Wire Fraud Protection</td>
-          <td>Email disclaimers, hope</td>
-          <td><span class="comp-check">✓</span> Verified accounts + insurance layer</td>
-        </tr>
-        <tr>
-          <td>Multi-Party Coordination</td>
-          <td>Email threads, spreadsheets, fax</td>
-          <td><span class="comp-check">✓</span> Unified deal room with audit trail</td>
-        </tr>
-        <tr>
-          <td>Regulatory Audit Trail</td>
-          <td>Manual document assembly</td>
-          <td><span class="comp-check">✓</span> Auto-generated, exportable</td>
-        </tr>
-        <tr>
-          <td>OFAC / Watchlist Screening</td>
-          <td>Periodic manual checks</td>
-          <td><span class="comp-check">✓</span> Continuous, real-time screening</td>
-        </tr>
-      </tbody>
-    </table>
+  <div class="container">
+    <div class="section-header r">
+      <div class="eyebrow">Comparison</div>
+      <h2>With Basefund vs. without.</h2>
+      <p>See how Basefund changes the risk and operational profile of institutional transactions.</p>
+    </div>
+    <div class="comp-table r">
+      <table>
+        <thead>
+          <tr>
+            <th>Capability</th>
+            <th>Traditional Process</th>
+            <th>With Basefund</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Identity Verification</td>
+            <td>Manual document review, days to complete</td>
+            <td><span class="comp-check">✓</span> Real-time, &lt;1 second</td>
+          </tr>
+          <tr>
+            <td>Bank Account Validation</td>
+            <td>Voided check or bank letter</td>
+            <td><span class="comp-check">✓</span> Instant micro-deposit verification</td>
+          </tr>
+          <tr>
+            <td>Transaction-Level Insurance</td>
+            <td><span class="comp-x">✗</span> Not available</td>
+            <td><span class="comp-check">✓</span> Bound at deal level, pre-close</td>
+          </tr>
+          <tr>
+            <td>Wire Fraud Protection</td>
+            <td>Email disclaimers, hope</td>
+            <td><span class="comp-check">✓</span> Verified accounts + insurance layer</td>
+          </tr>
+          <tr>
+            <td>Multi-Party Coordination</td>
+            <td>Email threads, spreadsheets, fax</td>
+            <td><span class="comp-check">✓</span> Unified deal room with audit trail</td>
+          </tr>
+          <tr>
+            <td>Regulatory Audit Trail</td>
+            <td>Manual document assembly</td>
+            <td><span class="comp-check">✓</span> Auto-generated, exportable</td>
+          </tr>
+          <tr>
+            <td>OFAC / Watchlist Screening</td>
+            <td>Periodic manual checks</td>
+            <td><span class="comp-check">✓</span> Continuous, real-time screening</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>
 
 <!-- PERSONA CARDS -->
 <div class="persona-section">
-  <div class="section-header r">
-    <div class="eyebrow">Who It's For</div>
-    <h2>Built for every seat at the closing table.</h2>
-    <p>Basefund is designed for the full ecosystem of institutional transactions — not just one side of the deal.</p>
-  </div>
-  <div class="persona-grid">
-    <div class="persona-card r">
-      <div class="persona-icon">
-        <img src="design-system/icons/building-02.svg" alt="Municipal">
-      </div>
-      <div class="persona-title">Municipal Issuers</div>
-      <div class="persona-desc">Protect bond proceeds and capital project disbursements with verified accounts, insured wires, and a clear audit trail for bond counsel and trustees.</div>
+  <div class="container">
+    <div class="section-header r">
+      <div class="eyebrow">Who It's For</div>
+      <h2>Built for every seat at the closing table.</h2>
+      <p>Basefund is designed for the full ecosystem of institutional transactions — not just one side of the deal.</p>
     </div>
-    <div class="persona-card r sd1">
-      <div class="persona-icon">
-        <img src="design-system/icons/line-chart-up-03.svg" alt="Underwriters">
+    <div class="persona-grid">
+      <div class="persona-card r">
+        <div class="persona-icon">
+          <img src="design-system/icons/building-02.svg" alt="Municipal">
+        </div>
+        <div class="persona-title">Municipal Issuers</div>
+        <div class="persona-desc">Protect bond proceeds and capital project disbursements with verified accounts, insured wires, and a clear audit trail for bond counsel and trustees.</div>
       </div>
-      <div class="persona-title">Underwriters</div>
-      <div class="persona-desc">Know that every counterparty in the syndicate has been verified before the pricing date. Reduce underwriting risk with documented, repeatable due diligence.</div>
-    </div>
-    <div class="persona-card r sd2">
-      <div class="persona-icon">
-        <img src="design-system/icons/scales-02.svg" alt="Bond Counsel">
+      <div class="persona-card r sd1">
+        <div class="persona-icon">
+          <img src="design-system/icons/line-chart-up-03.svg" alt="Underwriters">
+        </div>
+        <div class="persona-title">Underwriters</div>
+        <div class="persona-desc">Know that every counterparty in the syndicate has been verified before the pricing date. Reduce underwriting risk with documented, repeatable due diligence.</div>
       </div>
-      <div class="persona-title">Bond Counsel</div>
-      <div class="persona-desc">Replace client representations with auditable, third-party verified facts. Close with confidence knowing every account and party is verified.</div>
-    </div>
-    <div class="persona-card r sd1">
-      <div class="persona-icon">
-        <img src="design-system/icons/lock-01.svg" alt="Escrow">
+      <div class="persona-card r sd2">
+        <div class="persona-icon">
+          <img src="design-system/icons/scales-02.svg" alt="Bond Counsel">
+        </div>
+        <div class="persona-title">Bond Counsel</div>
+        <div class="persona-desc">Replace client representations with auditable, third-party verified facts. Close with confidence knowing every account and party is verified.</div>
       </div>
-      <div class="persona-title">Escrow &amp; Trust Companies</div>
-      <div class="persona-desc">Manage disbursement conditions, verify accounts at scale, and provide clients with a documented release process that satisfies regulatory requirements.</div>
-    </div>
-    <div class="persona-card r sd2">
-      <div class="persona-icon">
-        <img src="design-system/icons/bank.svg" alt="Banks">
+      <div class="persona-card r sd1">
+        <div class="persona-icon">
+          <img src="design-system/icons/lock-01.svg" alt="Escrow">
+        </div>
+        <div class="persona-title">Escrow &amp; Trust Companies</div>
+        <div class="persona-desc">Manage disbursement conditions, verify accounts at scale, and provide clients with a documented release process that satisfies regulatory requirements.</div>
       </div>
-      <div class="persona-title">Banks &amp; Financial Institutions</div>
-      <div class="persona-desc">Extend verified, insured closing infrastructure to your institutional clients as a value-add service — reducing your own exposure to wire fraud liability.</div>
-    </div>
-    <div class="persona-card r sd3">
-      <div class="persona-icon">
-        <img src="design-system/icons/credit-card-shield.svg" alt="Insurance">
+      <div class="persona-card r sd2">
+        <div class="persona-icon">
+          <img src="design-system/icons/bank.svg" alt="Banks">
+        </div>
+        <div class="persona-title">Banks &amp; Financial Institutions</div>
+        <div class="persona-desc">Extend verified, insured closing infrastructure to your institutional clients as a value-add service — reducing your own exposure to wire fraud liability.</div>
       </div>
-      <div class="persona-title">Insurance Underwriters</div>
-      <div class="persona-desc">Access transaction-level data to underwrite coverage with precision. Basefund's verification layer reduces loss ratios on institutional transaction policies.</div>
+      <div class="persona-card r sd3">
+        <div class="persona-icon">
+          <img src="design-system/icons/credit-card-shield.svg" alt="Insurance">
+        </div>
+        <div class="persona-title">Insurance Underwriters</div>
+        <div class="persona-desc">Access transaction-level data to underwrite coverage with precision. Basefund's verification layer reduces loss ratios on institutional transaction policies.</div>
+      </div>
     </div>
   </div>
 </div>
@@ -928,13 +1079,15 @@ img{display:block;}
 
 <!-- CTA -->
 <div class="cta-section">
-  <div class="cta-full r">
-    <div class="cta-full-bg"></div>
-    <h2>Ready to secure your<br><em>next transaction?</em></h2>
-    <p>Join the institutions that have already moved over $15 billion through Basefund's verified, insured infrastructure.</p>
-    <div class="cta-full-actions">
-      <button class="btn btn-w btn-xl">Get Started Free <span class="arr" style="background:rgba(20,93,208,.12);color:var(--blue);">→</span></button>
-      <button class="btn btn-gw btn-lg">Talk to Sales</button>
+  <div class="container">
+    <div class="cta-full r">
+      <div class="cta-full-bg"></div>
+      <h2>Ready to secure your<br><em>next transaction?</em></h2>
+      <p>Join the institutions that have already moved over $15 billion through Basefund's verified, insured infrastructure.</p>
+      <div class="cta-full-actions">
+        <button class="btn btn-w btn-xl">Get Started Free <span class="arr" style="background:rgba(20,93,208,.12);color:var(--blue);">→</span></button>
+        <button class="btn btn-gw btn-lg">Talk to Sales</button>
+      </div>
     </div>
   </div>
 </div>
