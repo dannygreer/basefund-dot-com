@@ -654,8 +654,10 @@ button{cursor:pointer;font-family:var(--f-body);}
 .stage-list-wrap .fd-stage{padding:20px 28px;}
 .stage-list-wrap .fd-stage-icon{width:40px;height:40px;border-radius:2px;font-size:16px;}
 .stage-list-wrap .fd-stage-icon.si-blue{background:linear-gradient(135deg,var(--blue-tint),var(--blue-pale));color:var(--blue);box-shadow:0 2px 8px rgba(20,93,208,.1);}
-.stage-list-wrap .fd-stage-icon.si-green{background:linear-gradient(135deg,#DFF4EA,#C8F0DA);color:#167A43;box-shadow:0 2px 8px rgba(22,122,67,.1);}
-.stage-list-wrap .fd-stage-icon.si-slate{background:linear-gradient(135deg,var(--gray),#E2E4EF);color:var(--slate);box-shadow:0 2px 8px rgba(0,0,0,.06);}
+.stage-list-wrap .fd-stage-icon.si-green{background:linear-gradient(135deg,#D1FAE5,#A7F3D0);color:#059669;box-shadow:0 2px 8px rgba(5,150,105,.1);}
+.stage-list-wrap .fd-stage-icon.si-slate{background:linear-gradient(135deg,var(--gray),#E2E4EF);color:#5C6680;box-shadow:0 2px 8px rgba(0,0,0,.06);}
+.stage-list-wrap .fd-stage-icon.si-orange{background:linear-gradient(135deg,#FFEDD5,#FED7AA);color:#EA580C;box-shadow:0 2px 8px rgba(234,88,12,.1);}
+.stage-list-wrap .fd-stage-icon.si-red{background:linear-gradient(135deg,#FEE2E2,#FECACA);color:#B91C1C;box-shadow:0 2px 8px rgba(185,28,28,.1);}
 .stage-list-wrap .fd-stage-name{font:600 15px/1.2 var(--f-body);color:var(--ink);}
 .stage-list-wrap .fd-stage-desc{font:400 13px/1.4 var(--f-body);color:var(--slate-lt);}
 
@@ -1727,30 +1729,30 @@ textarea.contact-input{resize:vertical;min-height:120px;line-height:1.6;}
 <div id="stage-list" class="sec-label">23 · Features</div>
 <div class="sec-name">Stage List</div>
 <div class="pad col" style="gap:24px;">
-  <p class="t-body">A vertical list of named stages with colored icon circles, a stage name, and a short description aligned to the right. Used to communicate workflow states such as Draft → Active → Closed → Archived.</p>
+  <p class="t-body">A vertical list of named stages with colored icon circles, a stage name, and a short description aligned to the right. Used to communicate workflow states such as Draft → Active → Locked → Closed.</p>
   <div class="stage-list-wrap">
     <div class="fd-stage">
-      <div class="fd-stage-icon si-slate"><img src="icons/pencil-01.svg" style="width:18px;height:18px;display:inline-block;vertical-align:middle;filter:brightness(0) saturate(0) opacity(0.6);" alt=""></div>
+      <div class="fd-stage-icon si-orange"><img src="icons/pencil-01.svg" style="width:18px;height:18px;display:inline-block;vertical-align:middle;filter:brightness(0) saturate(100%) invert(43%) sepia(96%) saturate(1200%) hue-rotate(360deg) brightness(97%);" alt=""></div>
       <div class="fd-stage-name">Draft</div>
       <div class="fd-stage-desc">Work ahead and schedule transactions</div>
     </div>
     <div class="fd-stage">
-      <div class="fd-stage-icon si-blue"><img src="icons/zap.svg" style="width:18px;height:18px;display:inline-block;vertical-align:middle;filter:brightness(0) saturate(100%) invert(24%) sepia(98%) saturate(757%) hue-rotate(196deg) brightness(94%);" alt=""></div>
+      <div class="fd-stage-icon si-green"><img src="icons/zap.svg" style="width:18px;height:18px;display:inline-block;vertical-align:middle;filter:brightness(0) saturate(100%) invert(42%) sepia(93%) saturate(500%) hue-rotate(127deg) brightness(92%);" alt=""></div>
       <div class="fd-stage-name">Active</div>
       <div class="fd-stage-desc">Open transactions with invited participants</div>
     </div>
     <div class="fd-stage">
-      <div class="fd-stage-icon si-slate"><img src="icons/lock-01.svg" style="width:18px;height:18px;display:inline-block;vertical-align:middle;filter:brightness(0) saturate(0) opacity(0.6);" alt=""></div>
-      <div class="fd-stage-name">Closed</div>
-      <div class="fd-stage-desc">Transaction complete, no action needed</div>
+      <div class="fd-stage-icon si-red"><img src="icons/lock-01.svg" style="width:18px;height:18px;display:inline-block;vertical-align:middle;filter:brightness(0) saturate(100%) invert(14%) sepia(95%) saturate(4500%) hue-rotate(353deg) brightness(85%);" alt=""></div>
+      <div class="fd-stage-name">Locked</div>
+      <div class="fd-stage-desc">Transaction complete, no further changes</div>
     </div>
     <div class="fd-stage">
-      <div class="fd-stage-icon si-green"><img src="icons/package.svg" style="width:18px;height:18px;display:inline-block;vertical-align:middle;filter:brightness(0) saturate(100%) invert(30%) sepia(60%) saturate(600%) hue-rotate(113deg) brightness(88%);" alt=""></div>
-      <div class="fd-stage-name">Archived</div>
-      <div class="fd-stage-desc">Transaction foldered for future reference</div>
+      <div class="fd-stage-icon si-slate"><img src="icons/x-close.svg" style="width:18px;height:18px;display:inline-block;vertical-align:middle;filter:brightness(0) saturate(0) opacity(0.5);" alt=""></div>
+      <div class="fd-stage-name">Closed</div>
+      <div class="fd-stage-desc">Transaction archived, no action needed</div>
     </div>
   </div>
-  <div class="t-caption" style="color:var(--slate-lt);">Classes: <code>.stage-list-wrap</code> · <code>.fd-stage</code> · <code>.fd-stage-icon.si-{blue|green|slate}</code> · <code>.fd-stage-name</code> · <code>.fd-stage-desc</code> — Wrap in <code>.stage-list-wrap</code> for the polished card treatment.</div>
+  <div class="t-caption" style="color:var(--slate-lt);">Classes: <code>.stage-list-wrap</code> · <code>.fd-stage</code> · <code>.fd-stage-icon.si-{orange|green|red|slate}</code> · <code>.fd-stage-name</code> · <code>.fd-stage-desc</code> — Wrap in <code>.stage-list-wrap</code> for the polished card treatment.</div>
 </div>
 
 <!-- 49. BENEFIT CHIPS -->
