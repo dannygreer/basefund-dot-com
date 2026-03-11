@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Basefund — Image Library</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:wght@600&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --blue:#145DD0; --blue-lt:#28A4DD; --blue-deep:#0B3580;
+  --blue-pale:#DDEEFF; --blue-tint:#EEF5FF;
+  --white:#FFFFFF; --off:#F7F8FA;
+  --ink:#2B2B2B; --slate:#5C6680; --slate-lt:#8B96AE;
+  --border:rgba(0,0,0,.07);
+  --f-head:'Lora',Georgia,serif; --f-body:'Inter',-apple-system,sans-serif;
+  --ease:cubic-bezier(.16,1,.3,1);
+  --s-sm:0 2px 8px rgba(20,93,208,.10);
+  --s-md:0 6px 20px rgba(20,93,208,.13);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{-webkit-font-smoothing:antialiased;font-size:16px;scroll-behavior:smooth;}
+body{font-family:var(--f-body);background:#F7F8FA;color:var(--ink);overflow-x:hidden;}
+a{text-decoration:none;color:inherit;}
+
+/* ── PAGE HEADER ── */
+.page-header {
+  background: #fff;
+  border-bottom: 1px solid var(--border);
+  padding: 0 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 64px;
+  position: sticky;
+  top: 0;
+  z-index: 200;
+}
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.header-mark {
+  width: 32px;
+  height: 32px;
+  border-radius: 2px;
+  background: linear-gradient(135deg, var(--blue-deep), var(--blue-lt));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: -.5px;
+  flex-shrink: 0;
+}
+.header-title {
+  font-family: var(--f-head);
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--ink);
+  letter-spacing: -.02em;
+}
+.header-divider {
+  width: 1px;
+  height: 18px;
+  background: var(--border);
+}
+.header-sub {
+  font-size: 12px;
+  color: var(--slate-lt);
+  font-weight: 500;
+}
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.back-link {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--slate);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 2px;
+  border: 1px solid var(--border);
+  background: #fff;
+  transition: all 150ms;
+}
+.back-link:hover {
+  color: var(--blue);
+  border-color: rgba(20,93,208,.25);
+  background: var(--blue-tint);
+}
+.back-link svg {
+  width: 14px;
+  height: 14px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* ── FILTER BAR ── */
+.filter-bar {
+  position: sticky;
+  top: 64px;
+  z-index: 100;
+  background: #F7F8FA;
+  border-bottom: 1px solid var(--border);
+  padding: 14px 48px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.filter-pill {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--slate);
+  padding: 6px 16px;
+  border-radius: 2px;
+  border: 1px solid var(--border);
+  background: #fff;
+  cursor: pointer;
+  transition: all 150ms;
+  white-space: nowrap;
+}
+.filter-pill:hover {
+  color: var(--blue);
+  border-color: rgba(20,93,208,.25);
+  background: var(--blue-tint);
+}
+.filter-pill.active {
+  background: var(--blue);
+  color: #fff;
+  border-color: var(--blue);
+}
+.filter-count {
+  font-size: 12px;
+  color: var(--slate-lt);
+  font-weight: 500;
+  margin-left: auto;
+}
+.filter-count strong {
+  color: var(--slate);
+  font-weight: 600;
+}
+
+/* ── MAIN CONTENT ── */
+.content {
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 40px 48px 80px;
+}
+
+/* ── CATEGORY SECTION ── */
+.cat-section {
+  margin-bottom: 56px;
+}
+.cat-header {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 20px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+.cat-title {
+  font-family: var(--f-head);
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--ink);
+  letter-spacing: -.02em;
+}
+.cat-count {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--slate-lt);
+  background: var(--off);
+  padding: 2px 8px;
+  border-radius: 2px;
+}
+
+/* ── IMAGE GRID ── */
+.image-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 20px;
+}
+
+/* ── IMAGE CARD ── */
+.image-card {
+  background: #fff;
+  border-radius: 2px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0,0,0,.04);
+  transition: all 250ms var(--ease);
+  cursor: pointer;
+  position: relative;
+}
+.image-card:hover {
+  box-shadow: var(--s-md);
+  transform: translateY(-2px);
+}
+.image-card img {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  display: block;
+  transition: transform 400ms var(--ease);
+}
+.image-card:hover img {
+  transform: scale(1.03);
+}
+.image-card-body {
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.image-card-info {
+  flex: 1;
+  min-width: 0;
+}
+.image-card-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.image-card-meta {
+  font-size: 11px;
+  color: var(--slate-lt);
+  margin-top: 2px;
+}
+.image-card-tags {
+  display: flex;
+  gap: 4px;
+  flex-shrink: 0;
+}
+.image-tag {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  color: var(--blue);
+  background: var(--blue-tint);
+  padding: 3px 8px;
+  border-radius: 2px;
+}
+
+/* ── COPY TOAST ── */
+.copy-toast {
+  position: fixed;
+  bottom: 32px;
+  left: 50%;
+  transform: translateX(-50%) translateY(80px);
+  background: var(--ink);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 10px 20px;
+  border-radius: 2px;
+  box-shadow: var(--s-md);
+  opacity: 0;
+  transition: all 350ms cubic-bezier(.34,1.56,.64,1);
+  pointer-events: none;
+  z-index: 999;
+  white-space: nowrap;
+}
+.copy-toast.visible {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
+}
+
+/* ── LIGHTBOX ── */
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 500;
+  background: rgba(0,0,0,.85);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  cursor: zoom-out;
+}
+.lightbox.open {
+  display: flex;
+}
+.lightbox img {
+  max-width: 90vw;
+  max-height: 85vh;
+  object-fit: contain;
+  border-radius: 2px;
+  box-shadow: 0 32px 80px rgba(0,0,0,.5);
+}
+.lightbox-close {
+  position: absolute;
+  top: 24px;
+  right: 32px;
+  width: 40px;
+  height: 40px;
+  border-radius: 2px;
+  background: rgba(255,255,255,.1);
+  border: 1px solid rgba(255,255,255,.15);
+  color: rgba(255,255,255,.7);
+  font-size: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 150ms;
+}
+.lightbox-close:hover {
+  background: rgba(255,255,255,.2);
+  color: #fff;
+}
+.lightbox-info {
+  position: absolute;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: rgba(0,0,0,.6);
+  backdrop-filter: blur(12px);
+  padding: 10px 20px;
+  border-radius: 2px;
+  border: 1px solid rgba(255,255,255,.1);
+}
+.lightbox-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: #fff;
+}
+.lightbox-dims {
+  font-size: 11px;
+  color: rgba(255,255,255,.5);
+}
+.lightbox-copy {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--blue-lt);
+  background: rgba(40,164,221,.1);
+  border: 1px solid rgba(40,164,221,.25);
+  padding: 5px 14px;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: all 150ms;
+}
+.lightbox-copy:hover {
+  background: rgba(40,164,221,.2);
+  color: #fff;
+}
+
+/* ── USAGE GUIDE ── */
+.usage-section {
+  margin-top: 64px;
+  padding-top: 40px;
+  border-top: 1px solid var(--border);
+}
+.usage-title {
+  font-family: var(--f-head);
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--ink);
+  letter-spacing: -.02em;
+  margin-bottom: 20px;
+}
+.usage-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 16px;
+}
+.usage-card {
+  background: #fff;
+  border-radius: 2px;
+  padding: 20px;
+  box-shadow: 0 1px 3px rgba(0,0,0,.04);
+}
+.usage-card-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 8px;
+}
+.usage-card code {
+  display: block;
+  font-size: 12px;
+  color: var(--blue);
+  background: var(--blue-tint);
+  padding: 10px 14px;
+  border-radius: 2px;
+  font-family: 'SF Mono', Monaco, 'Cascadia Code', monospace;
+  white-space: pre-wrap;
+  word-break: break-all;
+  line-height: 1.5;
+}
+.usage-card p {
+  font-size: 12px;
+  color: var(--slate);
+  margin-top: 8px;
+  line-height: 1.5;
+}
+
+@media (max-width: 768px) {
+  .page-header, .filter-bar, .content { padding-left: 20px; padding-right: 20px; }
+  .image-grid { grid-template-columns: 1fr; }
+  .usage-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="page-header">
+  <div class="header-left">
+    <div class="header-mark">BF</div>
+    <div class="header-title">Image Library</div>
+    <div class="header-divider"></div>
+    <div class="header-sub" id="totalCount">11 images</div>
+  </div>
+  <div class="header-right">
+    <a class="back-link" href="index.html">
+      <svg viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      Design System
+    </a>
+  </div>
+</header>
+
+<!-- FILTER BAR -->
+<div class="filter-bar">
+  <button class="filter-pill active" data-filter="all">All</button>
+  <button class="filter-pill" data-filter="people">People</button>
+  <button class="filter-pill" data-filter="workspace">Workspace</button>
+  <button class="filter-pill" data-filter="detail">Detail</button>
+  <div class="filter-count">Showing <strong id="showingCount">11</strong> of <strong>11</strong></div>
+</div>
+
+<!-- CONTENT -->
+<div class="content">
+
+  <!-- PEOPLE — Full portraits with faces visible -->
+  <div class="cat-section" data-category="people">
+    <div class="cat-header">
+      <div class="cat-title">People</div>
+      <div class="cat-count">8 images</div>
+    </div>
+    <div class="image-grid">
+
+      <div class="image-card" data-name="professional-man-cafe.jpg" data-tags="people" data-src="images/professional-man-cafe.jpg">
+        <img src="images/professional-man-cafe.jpg" alt="Professional working at a cafe" loading="lazy">
+        <div class="image-card-body">
+          <div class="image-card-info">
+            <div class="image-card-name">professional-man-cafe.jpg</div>
+            <div class="image-card-meta">Man at cafe with laptop, warm light</div>
+          </div>
+          <div class="image-card-tags"><span class="image-tag">People</span></div>
+        </div>
+      </div>
+
+      <div class="image-card" data-name="professional-dual-monitors.jpg" data-tags="people workspace" data-src="images/professional-dual-monitors.jpg">
+        <img src="images/professional-dual-monitors.jpg" alt="Professional at desk with dual monitors" loading="lazy">
+        <div class="image-card-body">
+          <div class="image-card-info">
+            <div class="image-card-name">professional-dual-monitors.jpg</div>
+            <div class="image-card-meta">Man at desk, dual monitors with chart</div>
+          </div>
+          <div class="image-card-tags"><span class="image-tag">People</span></div>
+        </div>
+      </div>
+
+      <div class="image-card" data-name="professional-woman-laptop.jpg" data-tags="people" data-src="images/professional-woman-laptop.jpg">
+        <img src="images/professional-woman-laptop.jpg" alt="Professional woman working on laptop" loading="lazy">
+        <div class="image-card-body">
+          <div class="image-card-info">
+            <div class="image-card-name">professional-woman-laptop.jpg</div>
+            <div class="image-card-meta">Woman at laptop, glasses, warm office</div>
+          </div>
+          <div class="image-card-tags"><span class="image-tag">People</span></div>
+        </div>
+      </div>
+
+      <div class="image-card" data-name="professional-woman-window.jpg" data-tags="people" data-src="images/professional-woman-window.jpg">
+        <img src="images/professional-woman-window.jpg" alt="Professional woman typing by window" loading="lazy">
+        <div class="image-card-body">
+          <div class="image-card-info">
+            <div class="image-card-name">professional-woman-window.jpg</div>
+            <div class="image-card-meta">Woman with laptop, backlit window</div>
+          </div>
+          <div class="image-card-tags"><span class="image-tag">People</span></div>
+        </div>
+      </div>
+
+      <div class="image-card" data-name="professional-man-office.jpg" data-tags="people" data-src="images/professional-man-office.jpg">
+        <img src="images/professional-man-office.jpg" alt="Professional man working at office desk" loading="lazy">
+        <div class="image-card-body">
+          <div class="image-card-info">
+            <div class="image-card-name">professional-man-office.jpg</div>
+            <div class="image-card-meta">Man at desk, dress shirt, natural light</div>
+          </div>
+          <div class="image-card-tags"><span class="image-tag">People</span></div>
+        </div>
+      </div>
+
+      <div class="image-card" data-name="professional-woman-coworking.jpg" data-tags="people" data-src="images/professional-woman-coworking.jpg">
+        <img src="images/professional-woman-coworking.jpg" alt="Professional woman at coworking space" loading="lazy">
+        <div class="image-card-body">
+          <div class="image-card-info">
+            <div class="image-card-name">professional-woman-coworking.jpg</div>
+            <div class="image-card-meta">Woman at coworking, blue laptop</div>
+          </div>
+          <div class="image-card-tags"><span class="image-tag">People</span></div>
+        </div>
+      </div>
+
+      <div class="image-card" data-name="professional-woman-senior.jpg" data-tags="people" data-src="images/professional-woman-senior.jpg">
+        <img src="images/professional-woman-senior.jpg" alt="Senior professional woman at desk" loading="lazy">
+        <div class="image-card-body">
+          <div class="image-card-info">
+            <div class="image-card-name">professional-woman-senior.jpg</div>
+            <div class="image-card-meta">Senior woman, blazer, office setting</div>
+          </div>
+          <div class="image-card-tags"><span class="image-tag">People</span></div>
+        </div>
+      </div>
+
+      <div class="image-card" data-name="professional-phone-call.jpg" data-tags="people" data-src="images/professional-phone-call.jpg">
+        <img src="images/professional-phone-call.jpg" alt="Professional on phone call with laptop" loading="lazy">
+        <div class="image-card-body">
+          <div class="image-card-info">
+            <div class="image-card-name">professional-phone-call.jpg</div>
+            <div class="image-card-meta">Man on phone, hotel lobby, laptop open</div>
+          </div>
+          <div class="image-card-tags"><span class="image-tag">People</span></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- WORKSPACE — Work environment, cropped/anonymous -->
+  <div class="cat-section" data-category="workspace">
+    <div class="cat-header">
+      <div class="cat-title">Workspace</div>
+      <div class="cat-count">2 images</div>
+    </div>
+    <div class="image-grid">
+
+      <div class="image-card" data-name="professional-man-writing.jpg" data-tags="workspace" data-src="images/professional-man-writing.jpg">
+        <img src="images/professional-man-writing.jpg" alt="Professional writing at desk with laptop" loading="lazy">
+        <div class="image-card-body">
+          <div class="image-card-info">
+            <div class="image-card-name">professional-man-writing.jpg</div>
+            <div class="image-card-meta">Man writing notes, suit, side profile</div>
+          </div>
+          <div class="image-card-tags"><span class="image-tag">Workspace</span></div>
+        </div>
+      </div>
+
+      <div class="image-card" data-name="professional-woman-typing.jpg" data-tags="workspace" data-src="images/professional-woman-typing.jpg">
+        <img src="images/professional-woman-typing.jpg" alt="Professional woman typing on laptop" loading="lazy">
+        <div class="image-card-body">
+          <div class="image-card-info">
+            <div class="image-card-name">professional-woman-typing.jpg</div>
+            <div class="image-card-meta">Woman typing, blouse, cropped portrait</div>
+          </div>
+          <div class="image-card-tags"><span class="image-tag">Workspace</span></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- DETAIL — Close-up, abstract, texture -->
+  <div class="cat-section" data-category="detail">
+    <div class="cat-header">
+      <div class="cat-title">Detail</div>
+      <div class="cat-count">1 image</div>
+    </div>
+    <div class="image-grid">
+
+      <div class="image-card" data-name="professional-hands-keyboard.jpg" data-tags="detail" data-src="images/professional-hands-keyboard.jpg">
+        <img src="images/professional-hands-keyboard.jpg" alt="Hands typing on laptop keyboard" loading="lazy">
+        <div class="image-card-body">
+          <div class="image-card-info">
+            <div class="image-card-name">professional-hands-keyboard.jpg</div>
+            <div class="image-card-meta">Hands on keyboard, wood desk, vertical crop</div>
+          </div>
+          <div class="image-card-tags"><span class="image-tag">Detail</span></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- USAGE GUIDE -->
+  <div class="usage-section">
+    <div class="usage-title">Usage Guide</div>
+    <div class="usage-grid">
+      <div class="usage-card">
+        <div class="usage-card-title">Hero Background</div>
+        <code>&lt;div style="background:url('images/professional-man-cafe.jpg') center/cover"&gt;</code>
+        <p>Use with a dark overlay (rgba(0,0,0,.55)) for text readability. Best with People category images.</p>
+      </div>
+      <div class="usage-card">
+        <div class="usage-card-title">Card Image</div>
+        <code>&lt;img src="images/professional-woman-laptop.jpg" style="object-fit:cover;height:240px"&gt;</code>
+        <p>Use object-fit:cover with a fixed height for consistent card layouts. All images are high-res and crop well.</p>
+      </div>
+      <div class="usage-card">
+        <div class="usage-card-title">Testimonial / Persona</div>
+        <code>&lt;img src="images/professional-man-office.jpg" style="object-fit:cover;width:80px;height:80px;border-radius:2px"&gt;</code>
+        <p>Crop to square for avatar-style usage. People category images work best for testimonials and team cards.</p>
+      </div>
+      <div class="usage-card">
+        <div class="usage-card-title">Copy Filename</div>
+        <code>Click any image card to copy its path to clipboard</code>
+        <p>Copied path format: <strong>images/filename.jpg</strong> — ready to paste into src attributes.</p>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox">
+  <button class="lightbox-close" id="lightboxClose">&times;</button>
+  <img id="lightboxImg" src="" alt="">
+  <div class="lightbox-info">
+    <div class="lightbox-name" id="lightboxName"></div>
+    <div class="lightbox-dims" id="lightboxDims"></div>
+    <button class="lightbox-copy" id="lightboxCopy">Copy Path</button>
+  </div>
+</div>
+
+<!-- COPY TOAST -->
+<div class="copy-toast" id="copyToast">Copied to clipboard</div>
+
+<script>
+(function() {
+  const cards = document.querySelectorAll('.image-card');
+  const filterPills = document.querySelectorAll('.filter-pill');
+  const showingCount = document.getElementById('showingCount');
+  const lightbox = document.getElementById('lightbox');
+  const lightboxImg = document.getElementById('lightboxImg');
+  const lightboxName = document.getElementById('lightboxName');
+  const lightboxDims = document.getElementById('lightboxDims');
+  const lightboxCopy = document.getElementById('lightboxCopy');
+  const lightboxClose = document.getElementById('lightboxClose');
+  const copyToast = document.getElementById('copyToast');
+  let currentPath = '';
+
+  // Toast helper
+  function showToast(msg) {
+    copyToast.textContent = msg;
+    copyToast.classList.add('visible');
+    setTimeout(() => copyToast.classList.remove('visible'), 2000);
+  }
+
+  // Copy helper
+  function copyPath(path) {
+    navigator.clipboard.writeText(path).then(() => {
+      showToast('Copied: ' + path);
+    });
+  }
+
+  // Filter
+  filterPills.forEach(pill => {
+    pill.addEventListener('click', () => {
+      filterPills.forEach(p => p.classList.remove('active'));
+      pill.classList.add('active');
+      const filter = pill.dataset.filter;
+      let visible = 0;
+      document.querySelectorAll('.cat-section').forEach(sec => {
+        if (filter === 'all' || sec.dataset.category === filter) {
+          sec.style.display = '';
+          visible += sec.querySelectorAll('.image-card').length;
+        } else {
+          sec.style.display = 'none';
+        }
+      });
+      showingCount.textContent = visible;
+    });
+  });
+
+  // Card click — open lightbox
+  cards.forEach(card => {
+    card.addEventListener('click', () => {
+      const src = card.dataset.src;
+      const name = card.dataset.name;
+      currentPath = src;
+      lightboxImg.src = src;
+      lightboxName.textContent = name;
+      // Get natural dimensions
+      const img = new Image();
+      img.onload = () => {
+        lightboxDims.textContent = img.naturalWidth + ' x ' + img.naturalHeight;
+      };
+      img.src = src;
+      lightbox.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    });
+  });
+
+  // Lightbox close
+  function closeLightbox() {
+    lightbox.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  lightboxClose.addEventListener('click', (e) => { e.stopPropagation(); closeLightbox(); });
+  lightbox.addEventListener('click', (e) => { if (e.target === lightbox) closeLightbox(); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeLightbox(); });
+
+  // Lightbox copy
+  lightboxCopy.addEventListener('click', (e) => {
+    e.stopPropagation();
+    copyPath(currentPath);
+  });
+
+  // Double-click card to copy path directly
+  cards.forEach(card => {
+    card.addEventListener('dblclick', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      copyPath(card.dataset.src);
+    });
+  });
+})();
+</script>
+</body>
+</html>

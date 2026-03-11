@@ -1,0 +1,1675 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Basefund — App Screens</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:wght@600&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --blue:#145DD0; --blue-lt:#28A4DD; --blue-deep:#0B3580;
+  --blue-pale:#DDEEFF; --blue-tint:#EEF5FF;
+  --green:#16A34A; --green-lt:#DCFCE7; --green-mid:#22C55E;
+  --amber:#D97706; --amber-lt:#FEF3C7;
+  --white:#FFFFFF; --off:#F7F8FA;
+  --ink:#2B2B2B; --slate:#5C6680; --slate-lt:#8B96AE;
+  --border:rgba(0,0,0,.07);
+  --f-head:'Lora',Georgia,serif; --f-body:'Inter',-apple-system,sans-serif;
+  --ease:cubic-bezier(.16,1,.3,1);
+  --r-sm:6px; --r-md:12px; --r-lg:20px; --r-xl:24px; --r-pill:100px;
+  --s-sm:0 2px 8px rgba(20,93,208,.10);
+  --s-md:0 6px 20px rgba(20,93,208,.13);
+  /* Mockup-specific: border-radius 2px per spec */
+  --mock-r:2px;
+  --mock-s:0 1px 3px rgba(0,0,0,.04);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{-webkit-font-smoothing:antialiased;font-size:16px;scroll-behavior:smooth;}
+body{font-family:var(--f-body);background:#F7F8FA;color:var(--ink);overflow-x:hidden;}
+a{text-decoration:none;color:inherit;}
+img{display:block;}
+
+/* ── PAGE HEADER ── */
+.page-header {
+  background: #fff;
+  border-bottom: 1px solid var(--border);
+  padding: 0 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 64px;
+  position: sticky;
+  top: 0;
+  z-index: 200;
+}
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.header-mark {
+  width: 32px;
+  height: 32px;
+  border-radius: 2px;
+  background: linear-gradient(135deg, var(--blue-deep), var(--blue-lt));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: -.5px;
+  flex-shrink: 0;
+}
+.header-title {
+  font-family: var(--f-head);
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--ink);
+  letter-spacing: -.02em;
+}
+.header-divider {
+  width: 1px;
+  height: 18px;
+  background: var(--border);
+}
+.header-sub {
+  font-size: 12px;
+  color: var(--slate-lt);
+  font-weight: 500;
+}
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.back-link {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--slate);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 2px;
+  border: 1px solid var(--border);
+  background: #fff;
+  transition: all 150ms;
+}
+.back-link:hover {
+  color: var(--blue);
+  border-color: rgba(20,93,208,.25);
+  background: var(--blue-tint);
+}
+.back-link svg {
+  width: 14px;
+  height: 14px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* ── MAIN CONTENT ── */
+.content {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 48px 48px 80px;
+}
+
+/* ── SECTION ── */
+.screen-section {
+  margin-bottom: 72px;
+}
+.section-header {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin-bottom: 8px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--border);
+}
+.section-name {
+  font-family: var(--f-head);
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--ink);
+  letter-spacing: -.02em;
+}
+.section-tag {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--blue);
+  background: var(--blue-tint);
+  padding: 2px 9px;
+  border-radius: 2px;
+  letter-spacing: .02em;
+}
+.section-desc {
+  font-size: 13px;
+  color: var(--slate);
+  margin-bottom: 28px;
+  line-height: 1.6;
+}
+
+/* ── MOCKUP SHELL ── */
+.mockup-shell {
+  background: #fff;
+  border-radius: 2px;
+  box-shadow: 0 2px 12px rgba(0,0,0,.06), 0 1px 3px rgba(0,0,0,.04);
+  overflow: hidden;
+  max-width: 620px;
+  margin: 0 auto;
+  font-family: var(--f-body);
+  font-size: 13px;
+  color: var(--ink);
+}
+
+/* Breakout grid for smaller components */
+.breakout-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 24px;
+}
+.breakout-shell {
+  background: #fff;
+  border-radius: 2px;
+  box-shadow: 0 2px 12px rgba(0,0,0,.06), 0 1px 3px rgba(0,0,0,.04);
+  overflow: hidden;
+  padding: 24px;
+  font-family: var(--f-body);
+  font-size: 13px;
+  color: var(--ink);
+}
+
+/* ── SHARED MOCK ELEMENTS ── */
+.mock-topbar {
+  background: var(--blue-deep);
+  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: #fff;
+}
+.mock-topbar-title {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -.01em;
+}
+.mock-topbar-avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+  color: #fff;
+  flex-shrink: 0;
+}
+.mock-topbar-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.mock-body {
+  padding: 16px 20px;
+  background: #F7F8FA;
+}
+
+.mock-row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+.mock-row:last-child { margin-bottom: 0; }
+
+/* Cards */
+.mock-card {
+  background: #fff;
+  border-radius: var(--mock-r);
+  box-shadow: var(--mock-s);
+  padding: 12px 14px;
+  flex: 1;
+}
+.mock-card-label {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--slate-lt);
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  margin-bottom: 4px;
+}
+.mock-card-value {
+  font-family: var(--f-head);
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--ink);
+  line-height: 1.1;
+}
+.mock-card-sub {
+  font-size: 10px;
+  color: var(--slate);
+  margin-top: 3px;
+}
+.mock-card-btn {
+  margin-top: 10px;
+  background: var(--blue);
+  color: #fff;
+  border: none;
+  border-radius: var(--mock-r);
+  padding: 6px 12px;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: default;
+  display: inline-block;
+}
+
+/* Amount pills */
+.mock-amount-row {
+  display: flex;
+  gap: 6px;
+  margin-top: 8px;
+}
+.mock-amount-pill {
+  flex: 1;
+  background: var(--off);
+  border-radius: var(--mock-r);
+  padding: 8px 10px;
+}
+.mock-amount-pill-label {
+  font-size: 9px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  color: var(--slate-lt);
+  margin-bottom: 2px;
+}
+.mock-amount-pill-value {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--ink);
+}
+.mock-amount-pill-value.in { color: var(--green); }
+.mock-amount-pill-value.out { color: var(--blue); }
+
+/* Table */
+.mock-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 11px;
+}
+.mock-table th {
+  text-align: left;
+  font-size: 9px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  color: var(--slate-lt);
+  padding: 6px 8px;
+  border-bottom: 1px solid var(--border);
+}
+.mock-table td {
+  padding: 7px 8px;
+  border-bottom: 1px solid var(--border);
+  color: var(--ink);
+}
+.mock-table tr:last-child td { border-bottom: none; }
+
+/* Type badges */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 7px;
+  border-radius: var(--mock-r);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+.badge-closing { background: #EEF5FF; color: var(--blue); }
+.badge-onetime { background: #DCFCE7; color: var(--green); }
+.badge-ongoing { background: #E0F2FE; color: var(--blue-lt); }
+.badge-transfer { background: var(--amber-lt); color: var(--amber); }
+.badge-open { background: var(--blue-tint); color: var(--blue); }
+.badge-full { background: var(--green-lt); color: var(--green); }
+
+/* Section subheader inside mockup */
+.mock-subhead {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  color: var(--slate-lt);
+  padding: 10px 14px 6px;
+  border-top: 1px solid var(--border);
+  margin-top: 4px;
+}
+
+/* Filter bar */
+.mock-filter-bar {
+  display: flex;
+  gap: 6px;
+  padding: 10px 20px;
+  background: #fff;
+  border-bottom: 1px solid var(--border);
+  flex-wrap: wrap;
+}
+.mock-filter-select {
+  background: #F7F8FA;
+  border: 1px solid var(--border);
+  border-radius: var(--mock-r);
+  padding: 4px 8px;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--slate);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.mock-filter-select svg {
+  width: 10px;
+  height: 10px;
+  stroke: var(--slate-lt);
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  flex-shrink: 0;
+}
+
+/* Mock header bar (inside white background) */
+.mock-inner-header {
+  background: #fff;
+  padding: 14px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border);
+}
+.mock-inner-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--ink);
+  letter-spacing: -.01em;
+}
+.mock-btn-primary {
+  background: var(--blue);
+  color: #fff;
+  border: none;
+  border-radius: var(--mock-r);
+  padding: 7px 13px;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: default;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  white-space: nowrap;
+}
+.mock-btn-secondary {
+  background: #fff;
+  color: var(--slate);
+  border: 1px solid var(--border);
+  border-radius: var(--mock-r);
+  padding: 7px 13px;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: default;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* Progress circle */
+.progress-circle {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.progress-circle svg {
+  transform: rotate(-90deg);
+}
+.progress-circle .pct-label {
+  position: absolute;
+  font-size: 8px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+/* Breadcrumb */
+.mock-breadcrumb {
+  font-size: 11px;
+  color: var(--blue);
+  padding: 10px 20px 0;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.mock-breadcrumb svg {
+  width: 12px;
+  height: 12px;
+  stroke: var(--blue);
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Metadata cards row */
+.mock-meta-row {
+  display: flex;
+  gap: 8px;
+  padding: 10px 20px;
+  background: #fff;
+  border-bottom: 1px solid var(--border);
+}
+.mock-meta-card {
+  flex: 1;
+  background: var(--off);
+  border-radius: var(--mock-r);
+  padding: 8px 10px;
+  min-width: 0;
+}
+.mock-meta-card-label {
+  font-size: 9px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  color: var(--slate-lt);
+  margin-bottom: 3px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.mock-meta-card-value {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--ink);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Insurance banner */
+.mock-insurance-banner {
+  background: linear-gradient(135deg, #E8D08C, #D4B95E, #C9A84C, #D4B95E, #E8D08C);
+  color: #3D3520;
+  padding: 8px 20px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .06em;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+/* Stats card strip */
+.mock-stats-strip {
+  display: flex;
+  gap: 8px;
+  padding: 12px 20px;
+  background: #fff;
+  border-bottom: 1px solid var(--border);
+}
+.mock-stat {
+  flex: 1;
+  background: var(--off);
+  border-radius: var(--mock-r);
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+}
+.mock-stat-icon {
+  width: 20px;
+  height: 20px;
+  border-radius: 2px;
+  background: var(--blue-tint);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.mock-stat-icon img {
+  width: 12px;
+  height: 12px;
+  filter: brightness(0) saturate(100%) invert(22%) sepia(98%) saturate(1319%) hue-rotate(207deg) brightness(96%) contrast(96%);
+}
+.mock-stat-value {
+  font-family: var(--f-head);
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--ink);
+  line-height: 1;
+}
+.mock-stat-label {
+  font-size: 9px;
+  font-weight: 500;
+  color: var(--slate-lt);
+  text-transform: uppercase;
+  letter-spacing: .04em;
+}
+
+/* Gauge */
+.gauge-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+.gauge-label {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--slate-lt);
+  text-transform: uppercase;
+  letter-spacing: .05em;
+}
+.gauge-svg-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.gauge-center-text {
+  position: absolute;
+  text-align: center;
+}
+.gauge-center-pct {
+  font-family: var(--f-head);
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--ink);
+  line-height: 1;
+}
+.gauge-center-sub {
+  font-size: 9px;
+  color: var(--slate-lt);
+  margin-top: 1px;
+}
+
+/* Countdown */
+.countdown-grid {
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+}
+.countdown-unit {
+  background: var(--blue-deep);
+  color: #fff;
+  border-radius: var(--mock-r);
+  padding: 8px 12px;
+  text-align: center;
+  flex: 1;
+}
+.countdown-val {
+  font-family: var(--f-head);
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1;
+}
+.countdown-lbl {
+  font-size: 8px;
+  font-weight: 600;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.55);
+  margin-top: 3px;
+}
+
+/* Calendar */
+.mock-calendar {
+  background: #fff;
+  border-radius: var(--mock-r);
+  box-shadow: var(--mock-s);
+  overflow: hidden;
+}
+.mock-cal-header {
+  background: var(--blue);
+  color: #fff;
+  text-align: center;
+  padding: 8px;
+  font-size: 11px;
+  font-weight: 700;
+}
+.mock-cal-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 0;
+  padding: 4px;
+}
+.mock-cal-day-name {
+  font-size: 7px;
+  font-weight: 700;
+  color: var(--slate-lt);
+  text-align: center;
+  padding: 3px 0;
+  text-transform: uppercase;
+}
+.mock-cal-day {
+  font-size: 9px;
+  text-align: center;
+  padding: 4px 2px;
+  color: var(--ink);
+  border-radius: 2px;
+}
+.mock-cal-day.empty { color: transparent; }
+.mock-cal-day.today {
+  background: var(--blue);
+  color: #fff;
+  font-weight: 700;
+}
+.mock-cal-day.dot {
+  position: relative;
+}
+.mock-cal-day.dot::after {
+  content: '';
+  position: absolute;
+  bottom: 1px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: var(--blue-lt);
+}
+
+/* Identity verification screen */
+.mock-id-split {
+  display: flex;
+  gap: 0;
+}
+.mock-id-left {
+  background: var(--blue-deep);
+  color: #fff;
+  padding: 20px 18px;
+  flex: 1;
+  min-width: 0;
+}
+.mock-id-right {
+  padding: 20px 18px;
+  flex: 1;
+  min-width: 0;
+  background: #fff;
+}
+.mock-qr {
+  width: 70px;
+  height: 70px;
+  background: #fff;
+  border-radius: 2px;
+  margin: 12px auto;
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  grid-template-rows: repeat(7, 1fr);
+  gap: 1.5px;
+  padding: 5px;
+}
+.mock-qr-cell {
+  border-radius: 1px;
+  background: #fff;
+}
+.mock-qr-cell.dark {
+  background: var(--ink);
+}
+
+/* Checklist */
+.mock-checklist { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+.mock-checklist li {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 11px;
+  line-height: 1.5;
+  color: var(--slate);
+}
+.mock-check-icon {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--green-lt);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+.mock-check-icon svg {
+  width: 9px;
+  height: 9px;
+  stroke: var(--green);
+  fill: none;
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.mock-check-strong {
+  font-weight: 600;
+  color: var(--ink);
+  display: block;
+  margin-bottom: 1px;
+}
+
+/* Coverage suite */
+.coverage-suite {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 12px 20px;
+}
+.coverage-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  color: var(--ink);
+}
+.coverage-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--green-lt);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.coverage-dot svg {
+  width: 8px;
+  height: 8px;
+  stroke: var(--green);
+  fill: none;
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Action row */
+.mock-action-row {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+  padding: 12px 20px;
+  border-top: 1px solid var(--border);
+  background: #fff;
+}
+
+/* Text helpers */
+.text-xs { font-size: 10px; }
+.text-sm { font-size: 11px; }
+.text-slate { color: var(--slate); }
+.text-blue { color: var(--blue); }
+.text-green { color: var(--green); }
+.fw-600 { font-weight: 600; }
+.fw-700 { font-weight: 700; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 720px) {
+  .page-header { padding: 0 20px; }
+  .content { padding: 28px 20px 60px; }
+  .header-sub { display: none; }
+  .mock-id-split { flex-direction: column; }
+  .mock-topbar-title { font-size: 12px; }
+}
+</style>
+</head>
+<body>
+
+<!-- PAGE HEADER -->
+<header class="page-header">
+  <div class="header-left">
+    <div class="header-mark">BF</div>
+    <div class="header-title">App Screens</div>
+    <div class="header-divider"></div>
+    <span class="header-sub">6 screens · 6 breakout components</span>
+  </div>
+  <div class="header-right">
+    <a class="back-link" href="index.html">
+      <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+      Design System
+    </a>
+  </div>
+</header>
+
+<div class="content">
+
+  <!-- ══════════════════════════════════════
+       FULL SCREEN MOCKUPS
+  ══════════════════════════════════════ -->
+
+  <!-- 1. DASHBOARD -->
+  <div class="screen-section">
+    <div class="section-header">
+      <span class="section-name">Dashboard</span>
+      <span class="section-tag">Full Screen</span>
+    </div>
+    <p class="section-desc">Main overview showing security score, transaction stats, countdown timer, and contact summaries.</p>
+
+    <div class="mockup-shell">
+      <!-- Top bar -->
+      <div class="mock-topbar">
+        <div class="mock-topbar-left">
+          <span class="mock-topbar-title">Secure Transaction Dashboard</span>
+        </div>
+        <div class="mock-topbar-avatar">JL</div>
+      </div>
+
+      <div class="mock-body">
+        <!-- Row 1: Transaction card + Countdown + Gauge -->
+        <div class="mock-row">
+          <!-- Transaction count card -->
+          <div class="mock-card" style="flex:1.1">
+            <div class="mock-card-label">Active Transactions</div>
+            <div class="mock-card-value" style="font-size:32px;color:var(--blue);">7</div>
+            <div class="mock-card-sub">$2,340,000 Protected</div>
+            <div class="mock-card-btn">View Transactions</div>
+            <div class="mock-amount-row">
+              <div class="mock-amount-pill">
+                <div class="mock-amount-pill-label">Incoming</div>
+                <div class="mock-amount-pill-value in">$1,450,000</div>
+              </div>
+              <div class="mock-amount-pill">
+                <div class="mock-amount-pill-label">Outgoing</div>
+                <div class="mock-amount-pill-value out">$890,000</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right column: Countdown + Gauge -->
+          <div style="flex:1.6;display:flex;flex-direction:column;gap:10px;">
+            <!-- Countdown -->
+            <div class="mock-card" style="padding:10px 12px;">
+              <div class="mock-card-label" style="margin-bottom:8px;">Next Closing Deadline</div>
+              <div class="countdown-grid">
+                <div class="countdown-unit">
+                  <div class="countdown-val">14</div>
+                  <div class="countdown-lbl">Days</div>
+                </div>
+                <div class="countdown-unit">
+                  <div class="countdown-val">08</div>
+                  <div class="countdown-lbl">Hours</div>
+                </div>
+                <div class="countdown-unit">
+                  <div class="countdown-val">23</div>
+                  <div class="countdown-lbl">Min</div>
+                </div>
+                <div class="countdown-unit">
+                  <div class="countdown-val">41</div>
+                  <div class="countdown-lbl">Sec</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Security gauge + Calendar -->
+            <div style="display:flex;gap:10px;">
+              <!-- Gauge -->
+              <div class="mock-card" style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;padding:10px 8px;">
+                <div class="mock-card-label">Security Score</div>
+                <div class="gauge-svg-wrap">
+                  <svg width="80" height="80" viewBox="0 0 80 80">
+                    <circle cx="40" cy="40" r="32" fill="none" stroke="#F0F0F0" stroke-width="7"/>
+                    <circle cx="40" cy="40" r="32" fill="none" stroke="#16A34A" stroke-width="7"
+                      stroke-dasharray="201.06" stroke-dashoffset="32.17"
+                      stroke-linecap="round" transform="rotate(-90 40 40)"/>
+                  </svg>
+                  <div class="gauge-center-text">
+                    <div class="gauge-center-pct" style="font-size:16px;">84%</div>
+                    <div class="gauge-center-sub">Secure</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Calendar -->
+              <div class="mock-card" style="flex:1.5;padding:8px;">
+                <div class="mock-cal-header">March 2026</div>
+                <div class="mock-cal-grid">
+                  <div class="mock-cal-day-name">Su</div>
+                  <div class="mock-cal-day-name">Mo</div>
+                  <div class="mock-cal-day-name">Tu</div>
+                  <div class="mock-cal-day-name">We</div>
+                  <div class="mock-cal-day-name">Th</div>
+                  <div class="mock-cal-day-name">Fr</div>
+                  <div class="mock-cal-day-name">Sa</div>
+                  <div class="mock-cal-day empty">0</div>
+                  <div class="mock-cal-day empty">0</div>
+                  <div class="mock-cal-day empty">0</div>
+                  <div class="mock-cal-day empty">0</div>
+                  <div class="mock-cal-day empty">0</div>
+                  <div class="mock-cal-day empty">0</div>
+                  <div class="mock-cal-day">1</div>
+                  <div class="mock-cal-day">2</div>
+                  <div class="mock-cal-day dot">3</div>
+                  <div class="mock-cal-day">4</div>
+                  <div class="mock-cal-day">5</div>
+                  <div class="mock-cal-day dot">6</div>
+                  <div class="mock-cal-day">7</div>
+                  <div class="mock-cal-day">8</div>
+                  <div class="mock-cal-day today">9</div>
+                  <div class="mock-cal-day">10</div>
+                  <div class="mock-cal-day dot">11</div>
+                  <div class="mock-cal-day">12</div>
+                  <div class="mock-cal-day">13</div>
+                  <div class="mock-cal-day">14</div>
+                  <div class="mock-cal-day">15</div>
+                  <div class="mock-cal-day dot">16</div>
+                  <div class="mock-cal-day">17</div>
+                  <div class="mock-cal-day">18</div>
+                  <div class="mock-cal-day">19</div>
+                  <div class="mock-cal-day">20</div>
+                  <div class="mock-cal-day">21</div>
+                  <div class="mock-cal-day dot">22</div>
+                  <div class="mock-cal-day">23</div>
+                  <div class="mock-cal-day">24</div>
+                  <div class="mock-cal-day">25</div>
+                  <div class="mock-cal-day">26</div>
+                  <div class="mock-cal-day">27</div>
+                  <div class="mock-cal-day">28</div>
+                  <div class="mock-cal-day">29</div>
+                  <div class="mock-cal-day">30</div>
+                  <div class="mock-cal-day">31</div>
+                  <div class="mock-cal-day empty">0</div>
+                  <div class="mock-cal-day empty">0</div>
+                  <div class="mock-cal-day empty">0</div>
+                  <div class="mock-cal-day empty">0</div>
+                  <div class="mock-cal-day empty">0</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Row 2: Contacts + Transactions by type -->
+        <div class="mock-row">
+          <div class="mock-card" style="flex:1;padding:10px 0;">
+            <div style="padding:0 12px 6px;font-size:10px;font-weight:700;color:var(--slate-lt);text-transform:uppercase;letter-spacing:.05em;">Contacts</div>
+            <table class="mock-table">
+              <thead>
+                <tr><th>Type</th><th style="text-align:right;">Count</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>People</td><td style="text-align:right;font-weight:700;">79</td></tr>
+                <tr><td>Organizations</td><td style="text-align:right;font-weight:700;">53</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="mock-card" style="flex:2;padding:10px 0;">
+            <div style="padding:0 12px 6px;font-size:10px;font-weight:700;color:var(--slate-lt);text-transform:uppercase;letter-spacing:.05em;">Transactions by Type</div>
+            <table class="mock-table">
+              <thead>
+                <tr><th>Type</th><th style="text-align:right;">Pending</th><th style="text-align:right;">Done</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><span class="badge badge-closing">Closing</span></td>
+                  <td style="text-align:right;">2</td><td style="text-align:right;font-weight:700;color:var(--green);">5</td>
+                </tr>
+                <tr>
+                  <td><span class="badge badge-onetime">One-Time</span></td>
+                  <td style="text-align:right;">1</td><td style="text-align:right;font-weight:700;color:var(--green);">8</td>
+                </tr>
+                <tr>
+                  <td><span class="badge badge-ongoing">Ongoing</span></td>
+                  <td style="text-align:right;">3</td><td style="text-align:right;font-weight:700;color:var(--green);">4</td>
+                </tr>
+                <tr>
+                  <td><span class="badge badge-transfer">Transfer</span></td>
+                  <td style="text-align:right;">1</td><td style="text-align:right;font-weight:700;color:var(--green);">2</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. TRANSACTION LIST -->
+  <div class="screen-section">
+    <div class="section-header">
+      <span class="section-name">Transaction List</span>
+      <span class="section-tag">Full Screen</span>
+    </div>
+    <p class="section-desc">Filterable list of all transactions with type badges, amounts, dates, and circular progress status indicators.</p>
+
+    <div class="mockup-shell">
+      <div class="mock-topbar">
+        <div class="mock-topbar-left">
+          <span class="mock-topbar-title">Secure Transaction Dashboard</span>
+        </div>
+        <div class="mock-topbar-avatar">JL</div>
+      </div>
+
+      <div class="mock-inner-header">
+        <div class="mock-inner-title">My Secure Transactions</div>
+        <button class="mock-btn-primary">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Add Transaction
+        </button>
+      </div>
+
+      <div class="mock-filter-bar">
+        <div class="mock-filter-select">
+          Stage
+          <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="mock-filter-select">
+          Month
+          <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="mock-filter-select">
+          Year
+          <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="mock-filter-select">
+          Type
+          <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+      </div>
+
+      <div style="background:#fff;overflow-x:auto;">
+        <table class="mock-table" style="min-width:500px;">
+          <thead style="background:var(--off);">
+            <tr>
+              <th>Type</th>
+              <th>Transaction</th>
+              <th style="text-align:right;">Amount</th>
+              <th>Date</th>
+              <th style="text-align:center;">Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="badge badge-closing">Closing</span></td>
+              <td class="fw-600">Riverside County ISD Bonds</td>
+              <td style="text-align:right;font-weight:700;">$12,500,000</td>
+              <td class="text-slate">Mar 24, 2026</td>
+              <td style="text-align:center;">
+                <div style="display:inline-flex;align-items:center;gap:4px;">
+                  <svg width="22" height="22" viewBox="0 0 22 22">
+                    <circle cx="11" cy="11" r="9" fill="none" stroke="#E5E7EB" stroke-width="2.5"/>
+                    <circle cx="11" cy="11" r="9" fill="none" stroke="var(--blue)" stroke-width="2.5"
+                      stroke-dasharray="56.55" stroke-dashoffset="22.62" stroke-linecap="round" transform="rotate(-90 11 11)"/>
+                  </svg>
+                  <span style="font-size:10px;font-weight:600;color:var(--blue);">60%</span>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td><span class="badge badge-onetime">One-Time</span></td>
+              <td class="fw-600">Lakewood Municipal District</td>
+              <td style="text-align:right;font-weight:700;">$750,000</td>
+              <td class="text-slate">Mar 15, 2026</td>
+              <td style="text-align:center;">
+                <div style="display:inline-flex;align-items:center;gap:4px;">
+                  <svg width="22" height="22" viewBox="0 0 22 22">
+                    <circle cx="11" cy="11" r="9" fill="none" stroke="#E5E7EB" stroke-width="2.5"/>
+                    <circle cx="11" cy="11" r="9" fill="none" stroke="var(--green)" stroke-width="2.5"
+                      stroke-dasharray="56.55" stroke-dashoffset="0" stroke-linecap="round" transform="rotate(-90 11 11)"/>
+                  </svg>
+                  <span style="font-size:10px;font-weight:600;color:var(--green);">100%</span>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td><span class="badge badge-ongoing">Ongoing</span></td>
+              <td class="fw-600">Cedar Hills Water Authority</td>
+              <td style="text-align:right;font-weight:700;">$280,000</td>
+              <td class="text-slate">Apr 1, 2026</td>
+              <td style="text-align:center;">
+                <div style="display:inline-flex;align-items:center;gap:4px;">
+                  <svg width="22" height="22" viewBox="0 0 22 22">
+                    <circle cx="11" cy="11" r="9" fill="none" stroke="#E5E7EB" stroke-width="2.5"/>
+                    <circle cx="11" cy="11" r="9" fill="none" stroke="var(--blue-lt)" stroke-width="2.5"
+                      stroke-dasharray="56.55" stroke-dashoffset="28.28" stroke-linecap="round" transform="rotate(-90 11 11)"/>
+                  </svg>
+                  <span style="font-size:10px;font-weight:600;color:var(--blue-lt);">50%</span>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td><span class="badge badge-transfer">Transfer</span></td>
+              <td class="fw-600">Northgate Utility District</td>
+              <td style="text-align:right;font-weight:700;">$95,000</td>
+              <td class="text-slate">Mar 10, 2026</td>
+              <td style="text-align:center;">
+                <div style="display:inline-flex;align-items:center;gap:4px;">
+                  <svg width="22" height="22" viewBox="0 0 22 22">
+                    <circle cx="11" cy="11" r="9" fill="none" stroke="#E5E7EB" stroke-width="2.5"/>
+                    <circle cx="11" cy="11" r="9" fill="none" stroke="var(--amber)" stroke-width="2.5"
+                      stroke-dasharray="56.55" stroke-dashoffset="42.41" stroke-linecap="round" transform="rotate(-90 11 11)"/>
+                  </svg>
+                  <span style="font-size:10px;font-weight:600;color:var(--amber);">25%</span>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td><span class="badge badge-closing">Closing</span></td>
+              <td class="fw-600">Pineview School District</td>
+              <td style="text-align:right;font-weight:700;">$4,200,000</td>
+              <td class="text-slate">Apr 18, 2026</td>
+              <td style="text-align:center;">
+                <div style="display:inline-flex;align-items:center;gap:4px;">
+                  <svg width="22" height="22" viewBox="0 0 22 22">
+                    <circle cx="11" cy="11" r="9" fill="none" stroke="#E5E7EB" stroke-width="2.5"/>
+                    <circle cx="11" cy="11" r="9" fill="none" stroke="var(--blue)" stroke-width="2.5"
+                      stroke-dasharray="56.55" stroke-dashoffset="39.59" stroke-linecap="round" transform="rotate(-90 11 11)"/>
+                  </svg>
+                  <span style="font-size:10px;font-weight:600;color:var(--blue);">30%</span>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. TRANSACTION DETAIL -->
+  <div class="screen-section">
+    <div class="section-header">
+      <span class="section-name">Transaction Detail</span>
+      <span class="section-tag">Full Screen</span>
+    </div>
+    <p class="section-desc">Single transaction view with metadata cards, insurance banner, and flow of funds section.</p>
+
+    <div class="mockup-shell">
+      <div class="mock-topbar">
+        <div class="mock-topbar-left">
+          <span class="mock-topbar-title">Secure Transaction Dashboard</span>
+        </div>
+        <div class="mock-topbar-avatar">JL</div>
+      </div>
+
+      <!-- Breadcrumb -->
+      <div class="mock-breadcrumb" style="background:#fff;padding:10px 20px 0;">
+        <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+        Back to All Transactions
+      </div>
+
+      <!-- Title + badge -->
+      <div style="background:#fff;padding:10px 20px 14px;border-bottom:1px solid var(--border);">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+          <span class="badge badge-open" style="font-size:10px;">OPEN</span>
+          <span class="badge badge-closing">Closing</span>
+        </div>
+        <div style="font-size:14px;font-weight:700;color:var(--ink);line-height:1.4;">
+          Riverside County ISD $12,500,000 General Obligation Bonds, Series 2026
+        </div>
+        <div style="font-size:11px;color:var(--slate);margin-top:4px;">Prepared by: Jordan L. &nbsp;·&nbsp; Created Mar 1, 2026</div>
+      </div>
+
+      <!-- Metadata cards -->
+      <div class="mock-meta-row">
+        <div class="mock-meta-card">
+          <div class="mock-meta-card-label">Expected Close</div>
+          <div class="mock-meta-card-value">Mar 24, 2026</div>
+        </div>
+        <div class="mock-meta-card">
+          <div class="mock-meta-card-label">Total Amount</div>
+          <div class="mock-meta-card-value" style="color:var(--blue);">$12,500,000</div>
+        </div>
+        <div class="mock-meta-card">
+          <div class="mock-meta-card-label">Documents</div>
+          <div class="mock-meta-card-value">4 of 7 Done</div>
+        </div>
+        <div class="mock-meta-card" style="display:flex;flex-direction:column;align-items:center;">
+          <div class="mock-meta-card-label" style="text-align:center;">Verified</div>
+          <div style="display:flex;align-items:center;gap:4px;margin-top:2px;">
+            <svg width="18" height="18" viewBox="0 0 18 18">
+              <circle cx="9" cy="9" r="7" fill="none" stroke="#E5E7EB" stroke-width="2"/>
+              <circle cx="9" cy="9" r="7" fill="none" stroke="var(--green)" stroke-width="2"
+                stroke-dasharray="43.98" stroke-dashoffset="10.99" stroke-linecap="round" transform="rotate(-90 9 9)"/>
+            </svg>
+            <span style="font-size:11px;font-weight:700;color:var(--green);">75%</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Insurance banner -->
+      <div class="mock-insurance-banner">
+        ✓ &nbsp; This Transaction Is Insurance Enabled
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 4. CONTACTS & ORGANIZATIONS -->
+  <div class="screen-section">
+    <div class="section-header">
+      <span class="section-name">Contacts &amp; Organizations</span>
+      <span class="section-tag">Full Screen</span>
+    </div>
+    <p class="section-desc">Contact directory with stats, verification rates, and an organization table.</p>
+
+    <div class="mockup-shell">
+      <div class="mock-topbar">
+        <div class="mock-topbar-left">
+          <span class="mock-topbar-title">Secure Transaction Dashboard</span>
+        </div>
+        <div class="mock-topbar-avatar">JL</div>
+      </div>
+
+      <div class="mock-inner-header">
+        <div class="mock-inner-title">Secure Contacts</div>
+        <button class="mock-btn-primary">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Add Organization
+        </button>
+      </div>
+
+      <!-- Stats strip 1: Organizations -->
+      <div class="mock-stats-strip">
+        <div class="mock-stat">
+          <div class="mock-stat-icon"><img src="icons/building-02.svg" alt=""></div>
+          <div class="mock-stat-value">53</div>
+          <div class="mock-stat-label">Organizations</div>
+        </div>
+        <div class="mock-stat">
+          <div class="mock-stat-icon"><img src="icons/coins-01.svg" alt=""></div>
+          <div class="mock-stat-value" style="font-size:14px;">$368K</div>
+          <div class="mock-stat-label">Txn Amount</div>
+        </div>
+        <div class="mock-stat">
+          <div class="mock-stat-icon"><img src="icons/check-verified-01.svg" alt=""></div>
+          <div class="mock-stat-value">42%</div>
+          <div class="mock-stat-label">Verified</div>
+        </div>
+        <div class="mock-stat" style="align-items:center;">
+          <div class="mock-stat-label" style="margin-bottom:2px;">Security</div>
+          <div style="position:relative;display:inline-flex;align-items:center;justify-content:center;">
+            <svg width="44" height="44" viewBox="0 0 44 44">
+              <circle cx="22" cy="22" r="16" fill="none" stroke="#F0F0F0" stroke-width="4"/>
+              <circle cx="22" cy="22" r="16" fill="none" stroke="#16A34A" stroke-width="4"
+                stroke-dasharray="100.53" stroke-dashoffset="16.08"
+                stroke-linecap="round" transform="rotate(-90 22 22)"/>
+            </svg>
+            <div style="position:absolute;font-size:10px;font-weight:700;color:var(--ink);">84%</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stats strip 2: People -->
+      <div class="mock-stats-strip" style="border-top:1px solid var(--border);">
+        <div class="mock-stat">
+          <div class="mock-stat-icon"><img src="icons/user-01.svg" alt=""></div>
+          <div class="mock-stat-value">79</div>
+          <div class="mock-stat-label">People</div>
+        </div>
+        <div class="mock-stat">
+          <div class="mock-stat-icon"><img src="icons/bar-chart-01.svg" alt=""></div>
+          <div class="mock-stat-value">4</div>
+          <div class="mock-stat-label">Txn Count</div>
+        </div>
+        <div class="mock-stat">
+          <div class="mock-stat-icon"><img src="icons/shield-tick.svg" alt=""></div>
+          <div class="mock-stat-value">0%</div>
+          <div class="mock-stat-label">Dual Verified</div>
+        </div>
+        <div class="mock-stat" style="background:transparent;"></div>
+      </div>
+
+      <!-- Organization table -->
+      <div style="background:#fff;overflow-x:auto;">
+        <table class="mock-table" style="min-width:440px;">
+          <thead style="background:var(--off);">
+            <tr>
+              <th>Organization</th>
+              <th style="text-align:right;">People</th>
+              <th style="text-align:right;">Txn Count</th>
+              <th style="text-align:right;">Txn Amount</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="fw-600">Meridian Capital Partners</td>
+              <td style="text-align:right;">8</td>
+              <td style="text-align:right;">3</td>
+              <td style="text-align:right;font-weight:700;">$128,000</td>
+            </tr>
+            <tr>
+              <td class="fw-600">Oakridge Financial Group</td>
+              <td style="text-align:right;">5</td>
+              <td style="text-align:right;">2</td>
+              <td style="text-align:right;font-weight:700;">$74,500</td>
+            </tr>
+            <tr>
+              <td class="fw-600">Summit Legal Advisors</td>
+              <td style="text-align:right;">4</td>
+              <td style="text-align:right;">1</td>
+              <td style="text-align:right;font-weight:700;">$48,000</td>
+            </tr>
+            <tr>
+              <td class="fw-600">Greenfield Municipal Services</td>
+              <td style="text-align:right;">12</td>
+              <td style="text-align:right;">6</td>
+              <td style="text-align:right;font-weight:700;">$82,000</td>
+            </tr>
+            <tr>
+              <td class="fw-600">Pacific Trust Holdings</td>
+              <td style="text-align:right;">3</td>
+              <td style="text-align:right;">1</td>
+              <td style="text-align:right;font-weight:700;">$35,500</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. INSURANCE COVERAGE -->
+  <div class="screen-section">
+    <div class="section-header">
+      <span class="section-name">Insurance Coverage</span>
+      <span class="section-tag">Full Screen</span>
+    </div>
+    <p class="section-desc">Coverage selection step showing full protection status, fee summary, and coverage suite checklist.</p>
+
+    <div class="mockup-shell">
+      <div class="mock-topbar">
+        <div class="mock-topbar-left">
+          <span class="mock-topbar-title">Transaction Insurance Coverage</span>
+        </div>
+        <!-- Step indicator -->
+        <div style="display:flex;align-items:center;gap:4px;">
+          <div style="width:20px;height:6px;border-radius:2px;background:rgba(255,255,255,.4);"></div>
+          <div style="width:20px;height:6px;border-radius:2px;background:rgba(255,255,255,.4);"></div>
+          <div style="width:20px;height:6px;border-radius:2px;background:#fff;"></div>
+        </div>
+      </div>
+
+      <div style="background:#fff;padding:20px;">
+        <!-- Coverage card -->
+        <div style="border:2px solid var(--green);border-radius:var(--mock-r);padding:16px;margin-bottom:14px;">
+          <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:10px;">
+            <div>
+              <span class="badge badge-full" style="font-size:10px;padding:3px 10px;margin-bottom:6px;display:inline-block;">FULL COVERAGE</span>
+              <div style="font-size:16px;font-weight:700;color:var(--ink);">Complete Protection</div>
+              <div style="font-size:11px;color:var(--slate);margin-top:2px;">Up to your full transaction amount</div>
+            </div>
+            <div style="text-align:right;">
+              <div style="font-size:10px;color:var(--slate-lt);font-weight:600;text-transform:uppercase;letter-spacing:.04em;">Coverage</div>
+              <div style="font-family:var(--f-head);font-size:22px;font-weight:600;color:var(--green);">$250,000</div>
+            </div>
+          </div>
+          <div style="background:var(--green-lt);border-radius:2px;padding:8px 12px;display:flex;align-items:center;gap:8px;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            <span style="font-size:11px;font-weight:700;color:var(--green);">Fully Protected Transaction</span>
+          </div>
+        </div>
+
+        <!-- Fee summary -->
+        <div style="background:var(--off);border-radius:var(--mock-r);padding:12px 14px;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center;">
+          <div>
+            <div style="font-size:11px;font-weight:600;color:var(--slate-lt);text-transform:uppercase;letter-spacing:.04em;">Total Transaction Fee</div>
+            <div style="font-size:10px;color:var(--slate);margin-top:2px;">Includes all coverage &amp; processing</div>
+          </div>
+          <div style="font-family:var(--f-head);font-size:24px;font-weight:600;color:var(--ink);">$750</div>
+        </div>
+
+        <!-- Coverage suite -->
+        <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--slate-lt);margin-bottom:8px;">Coverage Suite</div>
+        <ul class="mock-checklist">
+          <li>
+            <div class="mock-check-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+            <div><span class="mock-check-strong">Fraud Checks</span>Real-time transaction screening</div>
+          </li>
+          <li>
+            <div class="mock-check-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+            <div><span class="mock-check-strong">Identity Verification</span>All parties confirmed</div>
+          </li>
+          <li>
+            <div class="mock-check-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+            <div><span class="mock-check-strong">Bank Account Validation</span>Routing and account confirmed</div>
+          </li>
+          <li>
+            <div class="mock-check-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+            <div><span class="mock-check-strong">Insurance Coverage</span>Full protection up to $250,000</div>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Action row -->
+      <div class="mock-action-row">
+        <button class="mock-btn-secondary">Cancel</button>
+        <button class="mock-btn-secondary">Back</button>
+        <button class="mock-btn-primary">Confirm &amp; Proceed</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. IDENTITY VERIFICATION -->
+  <div class="screen-section">
+    <div class="section-header">
+      <span class="section-name">Document Upload / Identity Verification</span>
+      <span class="section-tag">Full Screen</span>
+    </div>
+    <p class="section-desc">ID verification screen with QR code instruction card and benefit explanations.</p>
+
+    <div class="mockup-shell">
+      <div class="mock-topbar">
+        <div class="mock-topbar-left">
+          <span class="mock-topbar-title">Document Upload for Identity Verification</span>
+        </div>
+        <div class="mock-topbar-avatar">JL</div>
+      </div>
+
+      <div class="mock-id-split">
+        <!-- Left: Blue card with QR -->
+        <div class="mock-id-left">
+          <div style="font-size:12px;font-weight:700;margin-bottom:4px;">Scan to Upload</div>
+          <div style="font-size:10px;color:rgba(255,255,255,.7);line-height:1.5;margin-bottom:4px;">
+            Use your phone to scan the QR code and upload a government-issued photo ID.
+          </div>
+
+          <!-- QR code pattern (decorative grid) -->
+          <div class="mock-qr">
+            <!-- Row 1 -->
+            <div class="mock-qr-cell dark"></div><div class="mock-qr-cell dark"></div><div class="mock-qr-cell dark"></div><div class="mock-qr-cell"></div><div class="mock-qr-cell dark"></div><div class="mock-qr-cell dark"></div><div class="mock-qr-cell dark"></div>
+            <!-- Row 2 -->
+            <div class="mock-qr-cell dark"></div><div class="mock-qr-cell"></div><div class="mock-qr-cell dark"></div><div class="mock-qr-cell"></div><div class="mock-qr-cell dark"></div><div class="mock-qr-cell"></div><div class="mock-qr-cell dark"></div>
+            <!-- Row 3 -->
+            <div class="mock-qr-cell dark"></div><div class="mock-qr-cell"></div><div class="mock-qr-cell dark"></div><div class="mock-qr-cell dark"></div><div class="mock-qr-cell dark"></div><div class="mock-qr-cell"></div><div class="mock-qr-cell dark"></div>
+            <!-- Row 4 -->
+            <div class="mock-qr-cell"></div><div class="mock-qr-cell dark"></div><div class="mock-qr-cell"></div><div class="mock-qr-cell dark"></div><div class="mock-qr-cell"></div><div class="mock-qr-cell dark"></div><div class="mock-qr-cell"></div>
+            <!-- Row 5 -->
+            <div class="mock-qr-cell dark"></div><div class="mock-qr-cell"></div><div class="mock-qr-cell dark"></div><div class="mock-qr-cell"></div><div class="mock-qr-cell dark"></div><div class="mock-qr-cell"></div><div class="mock-qr-cell dark"></div>
+            <!-- Row 6 -->
+            <div class="mock-qr-cell dark"></div><div class="mock-qr-cell"></div><div class="mock-qr-cell dark"></div><div class="mock-qr-cell dark"></div><div class="mock-qr-cell dark"></div><div class="mock-qr-cell"></div><div class="mock-qr-cell dark"></div>
+            <!-- Row 7 -->
+            <div class="mock-qr-cell dark"></div><div class="mock-qr-cell dark"></div><div class="mock-qr-cell dark"></div><div class="mock-qr-cell"></div><div class="mock-qr-cell dark"></div><div class="mock-qr-cell dark"></div><div class="mock-qr-cell dark"></div>
+          </div>
+
+          <div style="font-size:9px;color:rgba(255,255,255,.5);text-align:center;margin-top:4px;">Or upload directly below</div>
+
+          <div style="margin-top:10px;background:rgba(255,255,255,.15);border:1px dashed rgba(255,255,255,.3);border-radius:2px;padding:10px;text-align:center;">
+            <div style="font-size:10px;color:rgba(255,255,255,.8);font-weight:600;">Drop file here or click to browse</div>
+            <div style="font-size:9px;color:rgba(255,255,255,.5);margin-top:2px;">JPG, PNG, PDF — max 10 MB</div>
+          </div>
+        </div>
+
+        <!-- Right: Benefits -->
+        <div class="mock-id-right">
+          <div style="font-size:12px;font-weight:700;color:var(--ink);margin-bottom:14px;">Why we ask for this</div>
+          <ul class="mock-checklist">
+            <li>
+              <div class="mock-check-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+              <div>
+                <span class="mock-check-strong">Confirm your identity</span>
+                We verify who you are to protect all parties in the transaction.
+              </div>
+            </li>
+            <li>
+              <div class="mock-check-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+              <div>
+                <span class="mock-check-strong">It just takes a minute</span>
+                Scan your ID with your phone — quick and straightforward.
+              </div>
+            </li>
+            <li>
+              <div class="mock-check-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+              <div>
+                <span class="mock-check-strong">Unlocks insurance coverage</span>
+                Verified contacts make transactions eligible for full protection.
+              </div>
+            </li>
+            <li>
+              <div class="mock-check-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+              <div>
+                <span class="mock-check-strong">Your info stays secure</span>
+                Documents are handled by a certified third-party — never stored by us.
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Action row -->
+      <div class="mock-action-row">
+        <button class="mock-btn-secondary">Cancel</button>
+        <button class="mock-btn-primary">Finish</button>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ══════════════════════════════════════
+       BREAKOUT COMPONENTS
+  ══════════════════════════════════════ -->
+
+  <div class="screen-section">
+    <div class="section-header">
+      <span class="section-name">Breakout Components</span>
+      <span class="section-tag">Components</span>
+    </div>
+    <p class="section-desc">Standalone pieces extracted from the screens above — ready to drop into marketing layouts.</p>
+
+    <div class="breakout-grid">
+
+      <!-- Security Score Gauge -->
+      <div class="breakout-shell">
+        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--slate-lt);margin-bottom:16px;">Security Score Gauge</div>
+        <div class="gauge-wrap">
+          <div class="gauge-svg-wrap">
+            <svg width="120" height="120" viewBox="0 0 120 120">
+              <!-- Track -->
+              <circle cx="60" cy="60" r="48" fill="none" stroke="#F0F4FA" stroke-width="10"/>
+              <!-- Fill: 84% of circumference -->
+              <circle cx="60" cy="60" r="48" fill="none" stroke="url(#gaugeGrad)" stroke-width="10"
+                stroke-dasharray="301.59" stroke-dashoffset="48.25"
+                stroke-linecap="round" transform="rotate(-90 60 60)"/>
+              <defs>
+                <linearGradient id="gaugeGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stop-color="#22C55E"/>
+                  <stop offset="100%" stop-color="#16A34A"/>
+                </linearGradient>
+              </defs>
+            </svg>
+            <div class="gauge-center-text">
+              <div class="gauge-center-pct" style="font-size:28px;">84%</div>
+              <div class="gauge-center-sub" style="font-size:10px;">Secure</div>
+            </div>
+          </div>
+          <div class="gauge-label" style="margin-top:8px;">Overall Security Score</div>
+        </div>
+      </div>
+
+      <!-- Transaction Type Badges -->
+      <div class="breakout-shell">
+        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--slate-lt);margin-bottom:16px;">Transaction Type Badges</div>
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <div style="display:flex;align-items:center;gap:10px;">
+            <span class="badge badge-closing" style="font-size:11px;padding:4px 12px;">CLOSING</span>
+            <span style="font-size:11px;color:var(--slate);">Bond or real estate closing</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;">
+            <span class="badge badge-onetime" style="font-size:11px;padding:4px 12px;">ONE-TIME</span>
+            <span style="font-size:11px;color:var(--slate);">Single payment transaction</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;">
+            <span class="badge badge-ongoing" style="font-size:11px;padding:4px 12px;">ONGOING</span>
+            <span style="font-size:11px;color:var(--slate);">Recurring payment series</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;">
+            <span class="badge badge-transfer" style="font-size:11px;padding:4px 12px;">TRANSFER</span>
+            <span style="font-size:11px;color:var(--slate);">Internal fund movement</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stat Card Row -->
+      <div class="breakout-shell">
+        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--slate-lt);margin-bottom:16px;">Stat Card Row</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+          <div class="mock-stat" style="border-radius:2px;background:var(--off);">
+            <div class="mock-stat-icon"><img src="icons/building-02.svg" alt=""></div>
+            <div class="mock-stat-value">53</div>
+            <div class="mock-stat-label">Organizations</div>
+          </div>
+          <div class="mock-stat" style="border-radius:2px;background:var(--off);">
+            <div class="mock-stat-icon"><img src="icons/user-01.svg" alt=""></div>
+            <div class="mock-stat-value">79</div>
+            <div class="mock-stat-label">People</div>
+          </div>
+          <div class="mock-stat" style="border-radius:2px;background:var(--off);">
+            <div class="mock-stat-icon"><img src="icons/shield-tick.svg" alt=""></div>
+            <div class="mock-stat-value">42%</div>
+            <div class="mock-stat-label">Verified</div>
+          </div>
+          <div class="mock-stat" style="border-radius:2px;background:var(--off);">
+            <div class="mock-stat-icon"><img src="icons/coins-01.svg" alt=""></div>
+            <div class="mock-stat-value" style="font-size:14px;">$368K</div>
+            <div class="mock-stat-label">Protected</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Insurance Banner -->
+      <div class="breakout-shell">
+        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--slate-lt);margin-bottom:16px;">Insurance Banner</div>
+        <div style="border-radius:2px;overflow:hidden;">
+          <div class="mock-insurance-banner" style="font-size:13px;padding:12px 20px;">
+            ✓ &nbsp; This Transaction Is Insurance Enabled
+          </div>
+        </div>
+        <div style="margin-top:12px;border-radius:2px;overflow:hidden;">
+          <div style="background:linear-gradient(135deg, #E8D08C, #D4B95E, #C9A84C, #D4B95E, #E8D08C);color:#3D3520;padding:12px 20px;font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;text-align:center;">
+            🔒 &nbsp; Secured by Basefund Protection
+          </div>
+        </div>
+      </div>
+
+      <!-- Countdown Timer -->
+      <div class="breakout-shell">
+        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--slate-lt);margin-bottom:16px;">Countdown Timer</div>
+        <div style="font-size:11px;color:var(--slate);margin-bottom:10px;">Next Closing Deadline</div>
+        <div class="countdown-grid">
+          <div class="countdown-unit">
+            <div class="countdown-val">14</div>
+            <div class="countdown-lbl">Days</div>
+          </div>
+          <div class="countdown-unit">
+            <div class="countdown-val">08</div>
+            <div class="countdown-lbl">Hours</div>
+          </div>
+          <div class="countdown-unit">
+            <div class="countdown-val">23</div>
+            <div class="countdown-lbl">Min</div>
+          </div>
+          <div class="countdown-unit">
+            <div class="countdown-val">41</div>
+            <div class="countdown-lbl">Sec</div>
+          </div>
+        </div>
+        <div style="font-size:10px;color:var(--slate-lt);text-align:center;margin-top:8px;">Riverside County ISD Bonds — Mar 24, 2026</div>
+      </div>
+
+    </div><!-- /breakout-grid -->
+  </div>
+
+</div><!-- /content -->
+
+</body>
+</html>

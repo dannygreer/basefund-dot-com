@@ -1,0 +1,2700 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Basefund — Design System v3</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --blue:#145DD0; --blue-lt:#28A4DD; --blue-deep:#0B3580;
+  --blue-pale:#DDEEFF; --blue-tint:#EEF5FF;
+  --accent:#00F4E0; --accent-tint:rgba(0,244,224,.10); --accent-deep:#00C4B4;
+  --white:#FFFFFF; --off:#F7F8FA; --gray:#ECEEF3;
+  --dark:#0B3580; --dark-2:#0E4399;
+  --ink:#2B2B2B; --slate:#5C6680; --slate-lt:#8B96AE;
+  --border:rgba(0,0,0,.07); --border-lt:rgba(255,255,255,.12);
+  --f-head:'Lora',Georgia,serif; --f-body:'Inter',-apple-system,sans-serif;
+  --ease:cubic-bezier(.16,1,.3,1); --ease-back:cubic-bezier(.34,1.56,.64,1);
+  --r-sm:2px; --r-md:2px; --r-lg:2px; --r-xl:2px; --r-2xl:2px; --r-pill:2px;
+  --s-sm:0 2px 8px rgba(20,93,208,.10);
+  --s-md:0 6px 20px rgba(20,93,208,.13);
+  --s-lg:0 16px 48px rgba(20,93,208,.18);
+  --s-xl:0 32px 80px rgba(20,93,208,.22);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{-webkit-font-smoothing:antialiased;font-size:16px;scroll-behavior:smooth;}
+body{font-family:var(--f-body);background:#F7F8FA;color:var(--ink);overflow-x:hidden;display:flex;}
+a{text-decoration:none;color:inherit;}
+button{cursor:pointer;font-family:var(--f-body);}
+
+/* NOISE TEXTURE */
+.noise{position:relative;isolation:isolate;}
+.noise::after{content:'';position:absolute;inset:0;z-index:1;pointer-events:none;opacity:.04;mix-blend-mode:overlay;border-radius:inherit;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-repeat:repeat;background-size:256px 256px;}
+.noise-inner{position:relative;isolation:isolate;}
+.noise-inner::before{content:'';position:absolute;inset:0;z-index:2;pointer-events:none;opacity:.04;mix-blend-mode:overlay;border-radius:inherit;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-repeat:repeat;background-size:256px 256px;}
+
+/* LAYOUT */
+.sidebar{width:240px;flex-shrink:0;position:sticky;top:0;height:100vh;overflow-y:auto;background:#fff;border-right:1px solid var(--border);padding:20px 0;z-index:100;}
+.sidebar-logo{display:flex;align-items:center;gap:8px;padding:0 20px 20px;border-bottom:1px solid var(--border);margin-bottom:12px;}
+.sidebar-mark{width:28px;height:28px;border-radius:2px;background:linear-gradient(135deg,var(--blue),var(--blue-lt));display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#fff;}
+.sidebar-name{font-family:var(--f-head);font-size:14px;font-weight:600;color:var(--ink);}
+.sb-section{padding:4px 12px;font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--slate-lt);margin-top:12px;margin-bottom:2px;}
+.sb-link{display:flex;align-items:center;gap:8px;padding:7px 20px;font-size:12px;color:var(--slate);cursor:pointer;transition:all 120ms;border-left:2px solid transparent;line-height:1.3;}
+.sb-link:hover{color:var(--ink);background:var(--off);}
+.sb-link.active{color:var(--blue);font-weight:600;border-left-color:var(--blue);background:var(--blue-tint);}
+.sb-num{font-size:10px;color:var(--slate-lt);font-weight:400;flex-shrink:0;}
+.main{flex:1;min-width:0;}
+
+/* SHELL */
+.shell-header{background:var(--blue-deep);padding:20px 48px;display:flex;align-items:center;justify-content:space-between;}
+.shell-title{font-family:var(--f-head);font-size:20px;font-weight:600;color:#fff;letter-spacing:-.02em;}
+.shell-badge{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.7);padding:5px 14px;border-radius:2px;}
+
+/* SECTION DIVIDERS */
+.sec{padding:0;}
+.sec-label{font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--slate-lt);padding:72px 48px 8px;border-top:1px solid var(--border);display:flex;align-items:baseline;gap:12px;}
+.sec-label:first-of-type{border-top:none;}
+.sec-name{font-family:var(--f-head);font-size:22px;font-weight:600;color:var(--ink);padding:0 48px 28px;letter-spacing:-.02em;}
+.pad{padding:0 48px 72px;}
+.row{display:flex;flex-wrap:wrap;gap:16px;align-items:flex-start;}
+.row.center{align-items:center;}
+.col{display:flex;flex-direction:column;gap:12px;}
+
+/* TYPOGRAPHY */
+.t-display{font-family:var(--f-head);font-size:clamp(60px,9vw,130px);font-weight:600;line-height:.93;letter-spacing:-.045em;color:var(--ink);}
+.t-display em{font-style:italic;color:var(--blue);}
+.t-display .ghost{-webkit-text-stroke:1.5px var(--ink);color:transparent;}
+.t-h1{font-family:var(--f-head);font-size:clamp(44px,6vw,80px);font-weight:600;line-height:1.02;letter-spacing:-.035em;}
+.t-h2{font-family:var(--f-head);font-size:clamp(30px,4vw,52px);font-weight:500;line-height:1.1;letter-spacing:-.025em;}
+.t-h3{font-family:var(--f-head);font-size:clamp(22px,2.5vw,34px);font-weight:500;line-height:1.2;letter-spacing:-.02em;}
+.t-eyebrow{font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--blue);}
+.t-lead{font-size:18px;line-height:1.65;color:var(--slate);font-weight:400;max-width:52ch;}
+.t-body{font-size:15px;line-height:1.72;color:var(--slate);}
+.t-caption{font-size:12px;color:var(--slate-lt);font-weight:500;}
+
+/* COLOR SWATCHES */
+.swatch-grid{display:flex;gap:10px;flex-wrap:wrap;padding:0 48px 56px;}
+.sw{display:flex;flex-direction:column;gap:8px;}
+.sw-block{width:72px;height:72px;border-radius:2px;border:1px solid rgba(0,0,0,.06);}
+.sw-name{font-size:11px;font-weight:600;color:var(--ink);}
+.sw-hex{font-size:10px;color:var(--slate-lt);font-family:monospace;}
+
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;padding:13px 26px;font-family:var(--f-body);font-size:14px;font-weight:600;letter-spacing:-.01em;border:none;border-radius:var(--r-pill);transition:all 220ms var(--ease);cursor:pointer;white-space:nowrap;position:relative;overflow:hidden;}
+.btn:active{transform:scale(.972);}
+.btn-p{background:var(--blue);color:#fff;}
+.btn-p::before{content:'';position:absolute;inset:0;background:linear-gradient(105deg,transparent 40%,rgba(255,255,255,.18) 50%,transparent 60%);transform:translateX(-100%);transition:transform 500ms var(--ease);}
+.btn-p:hover{background:#1A6AEB;box-shadow:0 8px 32px rgba(20,93,208,.4);transform:translateY(-1px);}
+.btn-p:hover::before{transform:translateX(100%);}
+.btn-d{background:var(--dark);color:#fff;box-shadow:0 4px 16px rgba(11,53,128,.22);}
+.btn-d:hover{background:var(--dark-2);transform:translateY(-1px);box-shadow:0 8px 28px rgba(11,53,128,.32);}
+.btn-w{background:#fff;color:var(--dark);box-shadow:0 4px 16px rgba(0,0,0,.1);}
+.btn-w:hover{background:var(--off);transform:translateY(-1px);}
+.btn-g{background:transparent;color:var(--ink);border:1.5px solid rgba(0,0,0,.14);}
+.btn-g:hover{background:#fff;border-color:rgba(0,0,0,.2);}
+.btn-gw{background:transparent;color:rgba(255,255,255,.85);border:1.5px solid rgba(255,255,255,.22);}
+.btn-gw:hover{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.45);}
+.btn-ob{background:var(--blue-tint);color:var(--blue);border:1.5px solid rgba(20,93,208,.25);}
+.btn-ob:hover{background:var(--blue-pale);border-color:var(--blue);}
+.btn-sm{padding:9px 18px;font-size:13px;}
+.btn-lg{padding:16px 36px;font-size:16px;}
+.btn-xl{padding:20px 48px;font-size:17px;letter-spacing:-.02em;}
+.btn-arrow .arr{width:18px;height:18px;border-radius:2px;background:rgba(255,255,255,.22);display:flex;align-items:center;justify-content:center;font-size:11px;transition:transform 200ms var(--ease);}
+.btn-arrow:hover .arr{transform:translateX(3px);}
+.btn-circle{width:48px;height:48px;padding:0;border-radius:2px;font-size:18px;background:var(--blue-tint);color:var(--blue);border:none;}
+.btn-circle:hover{background:var(--blue);color:#fff;}
+
+/* BADGES */
+.badge{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:5px 11px;border-radius:var(--r-pill);}
+.bd-blue{background:var(--blue-pale);color:var(--blue);}
+.bd-green{background:#DFF4EA;color:#167A43;}
+.bd-amber{background:#FFF2DC;color:#9A6100;}
+.bd-slate{background:#ECEEF3;color:var(--slate);}
+.bd-dark{background:var(--dark);color:#fff;}
+.bd-glow{background:linear-gradient(90deg,var(--blue),var(--accent));color:#fff;box-shadow:0 2px 12px rgba(0,244,224,.25);}
+.bd-accent{background:var(--accent-tint);color:var(--accent-deep);}
+.ep{display:inline-flex;align-items:center;gap:8px;font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--slate);background:#fff;border:1px solid rgba(0,0,0,.06);padding:8px 18px;border-radius:var(--r-pill);box-shadow:0 1px 4px rgba(0,0,0,.04);}
+.ep .dot{width:6px;height:6px;border-radius:2px;background:linear-gradient(135deg,var(--blue),var(--blue-lt));flex-shrink:0;}
+.status-live{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:600;color:#167A43;background:#DFF4EA;border:1px solid rgba(22,122,67,.15);padding:5px 12px;border-radius:var(--r-pill);}
+.status-live::before{content:'';width:6px;height:6px;border-radius:2px;background:#22C55E;animation:pulseGreen 2s ease infinite;box-shadow:0 0 0 0 rgba(34,197,94,.4);}
+@keyframes pulseGreen{0%{box-shadow:0 0 0 0 rgba(34,197,94,.5);}70%{box-shadow:0 0 0 6px rgba(34,197,94,0);}100%{box-shadow:0 0 0 0 rgba(34,197,94,0);}}
+
+/* NAVIGATION */
+.nav{display:flex;align-items:center;height:68px;padding:0 40px;background:rgba(247,248,250,.88);backdrop-filter:blur(24px) saturate(1.3);-webkit-backdrop-filter:blur(24px) saturate(1.3);border-bottom:1px solid rgba(0,0,0,.05);position:relative;}
+.nav-logo{display:flex;align-items:center;gap:10px;margin-right:44px;font-family:var(--f-head);font-size:18px;font-weight:600;color:var(--dark);letter-spacing:-.025em;}
+.nav-mark{width:36px;height:36px;border-radius:2px;background:var(--blue-deep);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;}
+.nav-mark::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,var(--blue) 0%,var(--blue-lt) 100%);opacity:.85;}
+.nav-mark span{font-size:14px;font-weight:800;color:#fff;position:relative;z-index:1;letter-spacing:-.5px;}
+.nav-links{display:flex;align-items:center;flex:1;list-style:none;}
+.nav-links a{font-size:14px;font-weight:500;color:var(--slate);padding:8px 16px;border-radius:2px;transition:all 150ms;}
+.nav-links a:hover{color:var(--ink);background:rgba(0,0,0,.04);}
+.nav-links a.active{color:var(--blue);font-weight:600;}
+.nav-right{display:flex;align-items:center;gap:10px;}
+.nav-blue{background:rgba(20,93,208,.94);backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,.12);}
+.nav-blue .nav-logo{color:#fff;}
+.nav-blue .nav-links a{color:rgba(255,255,255,.55);}
+.nav-blue .nav-links a:hover{color:#fff;background:rgba(255,255,255,.08);}
+.nav-blue .nav-links a.active{color:#fff;}
+
+/* HERO CINEMA BLUE */
+.hero-cinema{background:var(--blue);min-height:580px;position:relative;overflow:hidden;display:flex;align-items:center;padding:100px 72px;}
+.hero-cinema-bg{position:absolute;inset:0;background:
+  radial-gradient(ellipse 80% 70% at 0% 100%, rgba(0,244,224,.15) 0%, transparent 55%),
+  radial-gradient(ellipse 60% 90% at 80% 60%, rgba(255,255,255,.18) 0%, transparent 55%),
+  radial-gradient(ellipse 45% 60% at 10% 80%, rgba(11,53,128,.55) 0%, transparent 60%),
+  radial-gradient(ellipse 70% 50% at 50% -5%, rgba(40,164,221,.4) 0%, transparent 55%),
+  radial-gradient(ellipse 50% 50% at 30% 20%, rgba(20,93,208,.35) 0%, transparent 45%);}
+.hero-cinema-dots{position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.12) 1px,transparent 1px);background-size:32px 32px;mask-image:radial-gradient(ellipse 90% 90% at 50% 50%,black 30%,transparent 100%);}
+.hero-cinema-lines{position:absolute;inset:0;background:linear-gradient(transparent 49.8%,rgba(255,255,255,.04) 50%,transparent 50.2%);background-size:100% 80px;}
+.hero-cinema-content{position:relative;z-index:2;max-width:600px;}
+.hero-cinema-content .ep{background:rgba(255,255,255,.18);border-color:rgba(255,255,255,.3);color:rgba(255,255,255,.9);margin-bottom:32px;}
+.hero-cinema-content .ep .dot{background:linear-gradient(135deg,#fff,rgba(255,255,255,.7));}
+.hero-title{font-family:var(--f-head);font-size:clamp(56px,8vw,100px);font-weight:600;line-height:.95;letter-spacing:-.045em;color:#fff;margin-bottom:32px;}
+.hero-title .italic{font-style:italic;}
+.hero-title .outline{-webkit-text-stroke:2px rgba(255,255,255,.55);color:transparent;}
+.hero-title .grad{background:linear-gradient(135deg,#fff 0%,rgba(255,255,255,.75) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.hero-sub{font-size:18px;line-height:1.65;color:rgba(255,255,255,.8);max-width:44ch;margin-bottom:44px;}
+.hero-ctas{display:flex;gap:12px;align-items:center;}
+.hero-cinema-right{position:absolute;right:72px;top:50%;transform:translateY(-50%);z-index:2;display:flex;flex-direction:column;gap:14px;width:280px;}
+.glass-card{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.22);border-radius:var(--r-xl);padding:24px 26px;backdrop-filter:blur(24px) saturate(1.4);-webkit-backdrop-filter:blur(24px) saturate(1.4);animation:slideUp .6s var(--ease) both;box-shadow:0 8px 32px rgba(0,0,0,.08),inset 0 1px 0 rgba(255,255,255,.15);}
+.glass-card.blue-tinted{background:rgba(11,53,128,.35);border-color:rgba(255,255,255,.2);}
+@keyframes slideUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:none;}}
+.gc-label{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.65);margin-bottom:10px;}
+.gc-value{font-family:var(--f-head);font-size:40px;font-weight:700;color:#fff;letter-spacing:-.04em;line-height:1;}
+.gc-sub{font-size:12px;color:rgba(255,255,255,.65);margin-top:6px;}
+.gc-badge{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:700;color:#fff;background:rgba(255,255,255,.2);border-radius:var(--r-pill);padding:3px 9px;margin-top:8px;}
+.gc-spark{display:flex;align-items:flex-end;gap:3px;height:40px;margin-top:12px;}
+.gc-bar{flex:1;border-radius:2px 2px 0 0;background:rgba(40,164,221,.25);animation:barUp .8s var(--ease) both;}
+.gc-bar.hi{background:linear-gradient(180deg,var(--accent),var(--blue));}
+@keyframes barUp{from{transform:scaleY(0);transform-origin:bottom;}to{transform:scaleY(1);}}
+
+/* HERO EDITORIAL */
+.hero-editorial{background:var(--white);padding:80px 72px 0;position:relative;overflow:hidden;min-height:560px;}
+.hero-editorial-inner{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:end;max-width:1300px;}
+.hero-bento{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding-bottom:0;align-self:end;}
+.bento-tile{background:var(--off);border:1px solid var(--border);border-radius:var(--r-lg);padding:24px;overflow:hidden;position:relative;transition:transform 300ms var(--ease),box-shadow 300ms;}
+.bento-tile:hover{transform:translateY(-3px);box-shadow:var(--s-lg);}
+.bento-tile.span2{grid-column:span 2;}
+.bento-tile.dark{background:var(--dark);border-color:transparent;color:#fff;}
+.bento-tile.blue{background:linear-gradient(135deg,var(--blue),#1A72EB);border-color:transparent;color:#fff;}
+.bento-label{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--slate-lt);margin-bottom:10px;}
+.bento-tile.dark .bento-label,.bento-tile.blue .bento-label{color:rgba(255,255,255,.45);}
+.bento-number{font-family:var(--f-head);font-size:42px;font-weight:700;letter-spacing:-.04em;line-height:1;color:var(--ink);}
+.bento-tile.dark .bento-number,.bento-tile.blue .bento-number{color:#fff;}
+.bento-desc{font-size:13px;color:var(--slate);margin-top:6px;}
+.bento-tile.dark .bento-desc{color:rgba(255,255,255,.45);}
+.bento-tile.blue .bento-desc{color:rgba(255,255,255,.65);}
+.verify-steps{display:flex;flex-direction:column;gap:8px;margin-top:12px;}
+.verify-step{display:flex;align-items:center;gap:10px;font-size:12px;color:var(--slate);background:#fff;border:1px solid var(--border);border-radius:2px;padding:8px 12px;}
+.vs-icon{width:22px;height:22px;border-radius:2px;display:flex;align-items:center;justify-content:center;font-size:10px;flex-shrink:0;}
+.vs-done{background:#DFF4EA;color:#167A43;}
+.vs-active{background:var(--blue-pale);color:var(--blue);}
+.vs-active img{animation:spin 1.2s linear infinite;}
+.vs-wait{background:#ECEEF3;color:var(--slate-lt);}
+@keyframes spin{to{transform:rotate(360deg);}}
+.vs-name{font-weight:600;color:var(--ink);font-size:12px;}
+
+/* HERO GRADIENT (NEW) */
+.hero-gradient{background:linear-gradient(160deg,var(--blue-tint) 0%,var(--white) 60%);padding:100px 72px;position:relative;overflow:hidden;text-align:center;}
+.hero-gradient-bg{position:absolute;inset:0;background:
+  radial-gradient(ellipse 60% 50% at 15% 85%, rgba(0,244,224,.06) 0%, transparent 50%),
+  radial-gradient(ellipse 50% 60% at 30% 40%, rgba(40,164,221,.08) 0%, transparent 55%),
+  radial-gradient(ellipse 40% 50% at 70% 70%, rgba(20,93,208,.06) 0%, transparent 55%),
+  radial-gradient(ellipse 55% 45% at 85% 15%, rgba(40,164,221,.05) 0%, transparent 50%);}
+.hero-gradient-content{position:relative;z-index:1;max-width:700px;margin:0 auto;}
+
+/* LOGO MARQUEE */
+.marquee{overflow:hidden;padding:28px 0;background:#fff;border-top:1px solid var(--border);border-bottom:1px solid var(--border);}
+.marquee-t{display:flex;gap:64px;width:max-content;animation:marq 28s linear infinite;}
+.marquee-t:hover{animation-play-state:paused;}
+@keyframes marq{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+.marq-item{display:flex;align-items:center;gap:9px;font-size:14px;font-weight:700;letter-spacing:-.02em;color:var(--slate-lt);white-space:nowrap;transition:color 200ms;}
+.marq-item:hover{color:var(--slate);}
+.marq-item-i{width:28px;height:28px;border-radius:2px;background:linear-gradient(135deg,var(--blue-tint),var(--blue-pale));display:flex;align-items:center;justify-content:center;font-size:13px;box-shadow:0 2px 6px rgba(20,93,208,.08);}
+
+/* LOGO STRIP (NEW) */
+.logo-strip{display:flex;align-items:center;justify-content:center;gap:40px;flex-wrap:wrap;padding:36px 48px;background:#fff;border:none;border-radius:var(--r-xl);box-shadow:0 1px 3px rgba(0,0,0,.04);}
+.logo-strip-item{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700;color:#C0C8D8;letter-spacing:-.01em;transition:color 250ms var(--ease);cursor:pointer;}
+.logo-strip-item:hover{color:var(--slate);}
+.logo-strip-item-icon{width:28px;height:28px;border-radius:2px;background:#ECEEF3;display:flex;align-items:center;justify-content:center;font-size:14px;filter:grayscale(1);transition:filter 250ms;}
+.logo-strip-item:hover .logo-strip-item-icon{filter:grayscale(0);}
+
+/* STATS STRIP */
+.stats-strip{display:grid;grid-template-columns:repeat(4,1fr);background:#fff;border:none;border-radius:var(--r-2xl);overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.04);}
+.stat-cell{padding:40px 44px;border-right:1px solid rgba(0,0,0,.05);position:relative;}
+.stat-cell:last-child{border-right:none;}
+.stat-cell::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--blue),var(--blue-lt),var(--blue));background-size:200% 100%;transform:scaleX(0);transform-origin:left;transition:transform .5s var(--ease);}
+.stat-cell:hover::before{transform:scaleX(1);animation:shimmerBorder 2s ease infinite;}
+@keyframes shimmerBorder{0%{background-position:200% 0;}100%{background-position:-200% 0;}}
+.stat-n{font-family:var(--f-head);font-size:clamp(40px,5vw,64px);font-weight:700;letter-spacing:-.05em;line-height:.9;background:linear-gradient(135deg,var(--blue) 0%,var(--accent) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:10px;}
+.stat-n sup{font-size:.45em;vertical-align:.4em;}
+.stat-l{font-size:14px;color:var(--slate);}
+.stat-d{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;color:#167A43;background:#DFF4EA;padding:3px 9px;border-radius:var(--r-pill);margin-top:10px;}
+
+/* BENTO FEATURE GRID */
+.bento-grid{display:grid;grid-template-columns:repeat(12,1fr);grid-auto-rows:minmax(200px,auto);gap:16px;}
+.bg-tile{background:#fff;border:none;border-radius:var(--r-2xl);padding:40px 36px;overflow:hidden;position:relative;display:flex;flex-direction:column;transition:transform 350ms var(--ease),box-shadow 350ms;box-shadow:0 1px 3px rgba(0,0,0,.04);}
+.bg-tile:hover{transform:translateY(-5px);box-shadow:0 24px 72px rgba(20,93,208,.1),0 4px 16px rgba(20,93,208,.04);}
+.bg-tile.c3{grid-column:span 3;}.bg-tile.c4{grid-column:span 4;}.bg-tile.c5{grid-column:span 5;}
+.bg-tile.c6{grid-column:span 6;}.bg-tile.c7{grid-column:span 7;}.bg-tile.c8{grid-column:span 8;}.bg-tile.c12{grid-column:span 12;}
+.bg-tile.dark{background:linear-gradient(150deg,var(--dark) 0%,var(--blue-deep) 100%);border-color:transparent;}
+.bg-tile.blue{background:linear-gradient(150deg,var(--blue) 0%,var(--blue-deep) 100%);border-color:transparent;position:relative;}
+.bg-tile.blue::after{content:'';position:absolute;inset:0;border-radius:inherit;background:
+  radial-gradient(ellipse 60% 60% at 80% 20%, rgba(255,255,255,.1) 0%, transparent 55%),
+  radial-gradient(ellipse 50% 50% at 20% 80%, rgba(0,244,224,.06) 0%, transparent 50%);pointer-events:none;}
+.bg-tile.blue-lt{background:var(--blue-tint);border-color:rgba(20,93,208,.1);}
+.tile-tag{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--blue);margin-bottom:16px;}
+.bg-tile.dark .tile-tag{color:var(--blue-lt);}.bg-tile.blue .tile-tag{color:rgba(255,255,255,.65);}
+.tile-h{font-family:var(--f-head);font-size:22px;font-weight:600;color:var(--ink);letter-spacing:-.02em;line-height:1.2;margin-bottom:12px;}
+.bg-tile.dark .tile-h,.bg-tile.blue .tile-h{color:#fff;}
+.tile-p{font-size:14px;line-height:1.7;color:var(--slate);flex:1;}
+.bg-tile.dark .tile-p,.bg-tile.blue .tile-p{color:rgba(255,255,255,.6);}
+.tile-bignum{font-family:var(--f-head);font-size:clamp(52px,7vw,88px);font-weight:700;letter-spacing:-.05em;line-height:.9;color:var(--ink);margin:auto 0;}
+.bg-tile.blue .tile-bignum{color:#fff;}
+.tile-bignum sup{font-size:.4em;vertical-align:.5em;}
+.tile-circle{position:absolute;right:-40px;bottom:-40px;width:180px;height:180px;border-radius:2px;border:40px solid;pointer-events:none;}
+.tc-blue{border-color:rgba(20,93,208,.08);}.tc-white{border-color:rgba(255,255,255,.07);}.tc-lt{border-color:rgba(40,164,221,.12);}.tc-accent{border-color:rgba(0,244,224,.10);}
+
+/* PROCESS GRID */
+.process-editorial{display:grid;grid-template-columns:1fr 1fr;background:#fff;border:none;border-radius:var(--r-2xl);overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.04);}
+.pe-left{padding:56px 52px;border-right:1px solid rgba(0,0,0,.05);display:flex;flex-direction:column;justify-content:center;}
+.pe-right{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;}
+.pe-step{padding:36px 32px;border-bottom:1px solid rgba(0,0,0,.05);border-right:1px solid rgba(0,0,0,.05);position:relative;transition:background 200ms;}
+.pe-step:nth-child(2n){border-right:none;}
+.pe-step:nth-child(3),.pe-step:nth-child(4){border-bottom:none;}
+.pe-step:hover{background:var(--blue-tint);}
+.pe-num{font-family:var(--f-head);font-size:56px;font-weight:700;letter-spacing:-.05em;background:linear-gradient(135deg,rgba(20,93,208,.15) 0%,rgba(40,164,221,.08) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1;margin-bottom:16px;}
+.pe-title{font-family:var(--f-head);font-size:17px;font-weight:600;color:var(--ink);margin-bottom:8px;}
+.pe-desc{font-size:13px;line-height:1.65;color:var(--slate);}
+
+/* STEP FLOW (NEW) */
+.step-flow{display:flex;align-items:flex-start;gap:0;background:#fff;border:none;border-radius:var(--r-2xl);overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.04);}
+.sf-step{flex:1;padding:36px 28px;border-right:1px solid rgba(0,0,0,.05);position:relative;transition:background 220ms;}
+.sf-step:last-child{border-right:none;}
+.sf-step:hover{background:var(--blue-tint);}
+.sf-num{width:40px;height:40px;border-radius:2px;background:linear-gradient(145deg,var(--blue),var(--blue-lt));color:#fff;font-size:15px;font-weight:700;display:flex;align-items:center;justify-content:center;margin-bottom:18px;box-shadow:0 8px 24px rgba(20,93,208,.3),inset 0 1px 0 rgba(255,255,255,.25);position:relative;}
+.sf-icon{font-size:20px;margin-bottom:8px;}
+.sf-title{font-family:var(--f-head);font-size:15px;font-weight:600;color:var(--ink);margin-bottom:8px;}
+.sf-desc{font-size:12px;line-height:1.6;color:var(--slate);}
+
+
+/* PROBLEM STATEMENT (NEW) */
+.problem-cards{display:flex;flex-direction:column;gap:16px;max-width:720px;}
+.prob-card{border-radius:var(--r-xl);padding:28px 32px;display:flex;gap:20px;align-items:flex-start;border:none;box-shadow:0 1px 3px rgba(0,0,0,.04);}
+.prob-card.problem{background:#FFF5F5;}
+.prob-card.solution{background:#F0FAF5;}
+.prob-card.approach{background:var(--blue-tint);}
+.prob-icon{width:44px;height:44px;border-radius:2px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;box-shadow:0 4px 12px rgba(0,0,0,.06);}
+.prob-card.problem .prob-icon{background:#FFE4E4;}
+.prob-card.solution .prob-icon{background:#DFF4EA;}
+.prob-card.approach .prob-icon{background:var(--blue-pale);}
+.prob-label{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;margin-bottom:6px;}
+.prob-card.problem .prob-label{color:#DC2626;}
+.prob-card.solution .prob-label{color:#167A43;}
+.prob-card.approach .prob-label{color:var(--blue);}
+.prob-h{font-family:var(--f-head);font-size:18px;font-weight:600;color:var(--ink);margin-bottom:6px;}
+.prob-p{font-size:14px;line-height:1.65;color:var(--slate);}
+
+/* TESTIMONIALS */
+.testimonial-feature{background:var(--blue);border-radius:var(--r-2xl);padding:56px 52px;position:relative;overflow:hidden;max-width:700px;}
+.tf-bg{position:absolute;inset:0;background:
+  radial-gradient(ellipse 70% 70% at 80% 20%, rgba(255,255,255,.12) 0%, transparent 60%),
+  radial-gradient(ellipse 50% 50% at 10% 90%, rgba(0,244,224,.08) 0%, transparent 50%),
+  radial-gradient(ellipse 60% 60% at 50% 50%, rgba(40,164,221,.1) 0%, transparent 55%);}
+.tf-quote-mark{font-family:var(--f-head);font-size:140px;line-height:.7;background:linear-gradient(180deg,rgba(255,255,255,.25) 0%,rgba(255,255,255,.05) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:-20px;display:block;position:relative;z-index:1;}
+.tf-quote{font-family:var(--f-head);font-size:clamp(20px,2.5vw,28px);font-style:italic;font-weight:500;line-height:1.45;color:#fff;position:relative;z-index:1;margin-bottom:36px;}
+.tf-author{display:flex;align-items:center;gap:16px;position:relative;z-index:1;}
+.tf-avatar{width:48px;height:48px;border-radius:2px;background:rgba(255,255,255,.25);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:15px;color:#fff;flex-shrink:0;}
+.tf-name{font-size:15px;font-weight:700;color:#fff;}
+.tf-title{font-size:12px;color:rgba(255,255,255,.55);margin-top:2px;}
+.testimonial-card-sm{background:#fff;border:none;border-radius:var(--r-2xl);padding:32px;max-width:320px;display:flex;flex-direction:column;gap:18px;transition:all 300ms var(--ease);box-shadow:0 1px 3px rgba(0,0,0,.04);}
+.testimonial-card-sm:hover{transform:translateY(-4px);box-shadow:0 20px 60px rgba(20,93,208,.08),0 4px 12px rgba(20,93,208,.04);}
+.tc-stars{font-size:13px;color:#F5A623;letter-spacing:1px;}
+.tc-quote{font-family:var(--f-head);font-size:15px;font-style:italic;line-height:1.6;color:var(--ink);font-weight:500;}
+.tc-author{display:flex;align-items:center;gap:10px;}
+.tc-av{width:36px;height:36px;border-radius:2px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;flex-shrink:0;color:#fff;}
+.tc-n{font-size:13px;font-weight:700;color:var(--ink);}
+.tc-t{font-size:11px;color:var(--slate-lt);}
+
+/* PERSONA CARDS (NEW) */
+.persona-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+.persona-card{background:#fff;border:none;border-radius:var(--r-2xl);padding:40px 36px;position:relative;overflow:hidden;transition:all 350ms var(--ease);box-shadow:0 1px 3px rgba(0,0,0,.04);}
+.persona-card::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 80% 0%,rgba(20,93,208,.03) 0%,transparent 60%);transition:opacity 350ms;pointer-events:none;}
+.persona-card:hover{transform:translateY(-5px);box-shadow:0 20px 60px rgba(20,93,208,.1),0 4px 12px rgba(20,93,208,.04);}
+.persona-card:hover::before{opacity:0;}
+.persona-icon{width:56px;height:56px;border-radius:2px;background:linear-gradient(145deg,var(--blue) 0%,var(--blue-deep) 100%);display:flex;align-items:center;justify-content:center;font-size:24px;margin-bottom:20px;box-shadow:0 8px 24px rgba(20,93,208,.25),inset 0 1px 0 rgba(255,255,255,.2);position:relative;}
+.persona-title{font-family:var(--f-head);font-size:19px;font-weight:600;color:var(--ink);margin-bottom:10px;letter-spacing:-.02em;}
+.persona-desc{font-size:14px;line-height:1.7;color:var(--slate);}
+
+/* BLOG CARDS (NEW) */
+.blog-featured{display:grid;grid-template-columns:1.4fr 1fr;gap:0;background:#fff;border:none;border-radius:var(--r-2xl);overflow:hidden;transition:all 300ms var(--ease);box-shadow:0 1px 3px rgba(0,0,0,.04);}
+.blog-featured:hover{box-shadow:0 24px 72px rgba(20,93,208,.08),0 4px 16px rgba(20,93,208,.04);transform:translateY(-3px);}
+.blog-thumb{background:linear-gradient(145deg,var(--blue-tint) 0%,var(--blue-pale) 40%,rgba(40,164,221,.15) 100%);min-height:280px;display:flex;align-items:center;justify-content:center;font-size:48px;position:relative;overflow:hidden;}
+.blog-thumb-bg{position:absolute;inset:0;background:radial-gradient(ellipse 60% 60% at 50% 50%,rgba(20,93,208,.08) 0%,transparent 60%);}
+.blog-thumb-label{position:absolute;top:20px;left:20px;}
+.blog-body{padding:40px;}
+.blog-cat{display:inline-block;font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--blue);background:var(--blue-tint);padding:4px 12px;border-radius:var(--r-pill);margin-bottom:16px;}
+.blog-title{font-family:var(--f-head);font-size:22px;font-weight:600;color:var(--ink);letter-spacing:-.02em;line-height:1.3;margin-bottom:12px;}
+.blog-excerpt{font-size:14px;line-height:1.7;color:var(--slate);margin-bottom:20px;}
+.blog-meta{font-size:12px;color:var(--slate-lt);display:flex;gap:12px;align-items:center;}
+.blog-card{background:#fff;border:none;border-radius:var(--r-2xl);overflow:hidden;transition:all 300ms var(--ease);max-width:320px;box-shadow:0 1px 3px rgba(0,0,0,.04);}
+.blog-card:hover{transform:translateY(-5px);box-shadow:0 24px 60px rgba(20,93,208,.08),0 4px 12px rgba(20,93,208,.04);}
+.blog-card-thumb{background:linear-gradient(135deg,var(--blue-tint) 0%,var(--blue-pale) 50%,rgba(40,164,221,.12) 100%);height:180px;display:flex;align-items:center;justify-content:center;font-size:40px;position:relative;overflow:hidden;}
+.blog-card-thumb::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 60% at 30% 70%,rgba(20,93,208,.08) 0%,transparent 60%);}
+.blog-card-body{padding:24px;}
+.blog-minimal{background:#fff;border:none;border-radius:var(--r-xl);padding:28px 32px;max-width:480px;transition:all 250ms var(--ease);box-shadow:0 1px 3px rgba(0,0,0,.04);}
+.blog-minimal:hover{background:var(--blue-tint);}
+.blog-minimal-title{font-family:var(--f-head);font-size:18px;font-weight:600;color:var(--ink);letter-spacing:-.02em;margin-bottom:8px;}
+.blog-minimal-meta{font-size:12px;color:var(--slate-lt);display:flex;gap:12px;}
+
+/* TEAM CARDS (NEW) */
+.team-grid{display:flex;gap:20px;flex-wrap:wrap;}
+.team-card{background:#fff;border:none;border-radius:var(--r-2xl);padding:32px;text-align:center;width:200px;transition:all 300ms var(--ease);box-shadow:0 1px 3px rgba(0,0,0,.04);}
+.team-card:hover{transform:translateY(-4px);box-shadow:0 20px 60px rgba(20,93,208,.08);}
+.team-photo{width:88px;height:88px;border-radius:2px;background:linear-gradient(145deg,var(--blue-pale),var(--blue-tint));display:flex;align-items:center;justify-content:center;font-size:30px;margin:0 auto 18px;position:relative;z-index:1;box-shadow:0 4px 16px rgba(20,93,208,.12);border:3px solid #fff;}
+.team-name{font-family:var(--f-head);font-size:15px;font-weight:600;color:var(--ink);margin-bottom:4px;}
+.team-role{font-size:12px;color:var(--slate);margin-bottom:12px;}
+.team-li{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:2px;background:var(--blue-tint);color:var(--blue);font-size:12px;font-weight:700;cursor:pointer;transition:all 150ms;}
+.team-li:hover{background:var(--blue);color:#fff;}
+
+/* CHECKLIST CARD (NEW) */
+.checklist-card{background:#fff;border:none;border-radius:var(--r-2xl);padding:44px;max-width:460px;box-shadow:0 1px 3px rgba(0,0,0,.04);}
+.checklist-h{font-family:var(--f-head);font-size:22px;font-weight:600;color:var(--ink);margin-bottom:24px;letter-spacing:-.02em;}
+.checklist-items{display:flex;flex-direction:column;gap:12px;margin-bottom:28px;}
+.cl-item{display:flex;gap:12px;align-items:flex-start;font-size:14px;color:var(--slate);line-height:1.5;}
+.cl-check{width:22px;height:22px;border-radius:2px;background:linear-gradient(135deg,var(--blue),var(--blue-lt));color:#fff;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;flex-shrink:0;margin-top:1px;box-shadow:0 2px 8px rgba(20,93,208,.25);}
+
+/* COMPARISON TABLE (NEW) */
+.comp-table{background:#fff;border:none;border-radius:var(--r-2xl);overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.04);}
+.comp-table table{width:100%;border-collapse:collapse;}
+.comp-table th{background:var(--blue);color:#fff;padding:16px 20px;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;text-align:center;}
+.comp-table th:first-child{text-align:left;background:var(--blue-deep);}
+.comp-table td{padding:14px 20px;font-size:13px;color:var(--slate);border-bottom:1px solid var(--border);text-align:center;}
+.comp-table td:first-child{text-align:left;font-weight:600;color:var(--ink);}
+.comp-table tr:nth-child(even) td{background:var(--off);}
+.comp-table tr:last-child td{border-bottom:none;}
+.comp-check{color:#167A43;font-weight:700;font-size:15px;}
+.comp-x{color:#DC2626;font-weight:700;font-size:15px;}
+.comp-dash{color:var(--slate-lt);}
+.comp-table td:nth-child(2){color:var(--slate-lt);font-style:italic;}
+.comp-table th:last-child{background:linear-gradient(135deg,var(--blue),var(--blue-lt));position:relative;}
+.comp-table th:last-child::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,.1) 0%,transparent 50%);pointer-events:none;}
+.comp-table td:last-child{background:rgba(20,93,208,.03);font-weight:500;color:var(--ink);}
+.comp-table tr:nth-child(even) td:last-child{background:rgba(20,93,208,.06);}
+
+/* TABS (NEW) */
+.tabs-underline{display:flex;gap:0;border-bottom:2px solid var(--border);margin-bottom:24px;overflow-x:auto;}
+.tab-u{padding:12px 20px;font-size:14px;font-weight:600;color:var(--slate);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;transition:all 200ms;white-space:nowrap;}
+.tab-u:hover{color:var(--ink);}
+.tab-u.active{color:var(--blue);border-bottom-color:var(--blue);font-weight:700;background:linear-gradient(180deg,transparent 60%,rgba(20,93,208,.04) 100%);}
+.tabs-pill{display:flex;gap:6px;background:var(--off);border-radius:var(--r-pill);padding:4px;margin-bottom:20px;width:fit-content;}
+.tab-pill{padding:8px 18px;font-size:13px;font-weight:600;color:var(--slate);cursor:pointer;border-radius:var(--r-pill);transition:all 200ms;}
+.tab-pill.active{background:#fff;color:var(--blue);box-shadow:0 4px 16px rgba(20,93,208,.12),0 1px 3px rgba(0,0,0,.06);font-weight:700;}
+.tabs-numbered{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px;}
+.tab-num{display:flex;align-items:center;gap:8px;padding:10px 18px;font-size:13px;font-weight:600;color:var(--slate);cursor:pointer;border:1.5px solid var(--border);border-radius:var(--r-md);background:#fff;transition:all 200ms;}
+.tab-num-circle{width:22px;height:22px;border-radius:2px;background:var(--gray);color:var(--slate);font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all 200ms;}
+.tab-num.active{color:var(--blue);border-color:var(--blue);background:var(--blue-tint);}
+.tab-num.active .tab-num-circle{background:var(--blue);color:#fff;}
+.tab-panel{display:none;background:#fff;border:none;border-radius:var(--r-xl);padding:28px;box-shadow:0 1px 3px rgba(0,0,0,.04);}
+.tab-panel.active{display:block;}
+
+/* ACCORDION (NEW) */
+.accordion{background:#fff;border:none;border-radius:var(--r-2xl);overflow:hidden;max-width:680px;box-shadow:0 1px 3px rgba(0,0,0,.04);}
+.acc-item{border-bottom:1px solid rgba(0,0,0,.05);}
+.acc-item:last-child{border-bottom:none;}
+.acc-trigger{display:flex;align-items:center;justify-content:space-between;padding:22px 28px;cursor:pointer;font-size:15px;font-weight:600;color:var(--ink);transition:background 150ms;}
+.acc-trigger:hover{background:var(--off);}
+.acc-trigger.open{color:var(--blue);}
+.acc-chevron{width:28px;height:28px;border-radius:2px;background:var(--off);display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--slate);transition:transform 300ms var(--ease),background 200ms,color 200ms,box-shadow 200ms;flex-shrink:0;}
+.acc-trigger.open .acc-chevron{transform:rotate(180deg);background:linear-gradient(135deg,var(--blue),var(--blue-lt));color:#fff;box-shadow:0 4px 12px rgba(20,93,208,.3);}
+.acc-body{max-height:0;overflow:hidden;transition:max-height 400ms var(--ease);}
+.acc-body-inner{padding:0 28px 22px;font-size:14px;line-height:1.72;color:var(--slate);}
+
+
+/* FORM CTA (NEW) */
+.form-cta-white{background:#fff;border:none;border-radius:var(--r-2xl);padding:56px 60px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.04);}
+.form-cta-blue{background:linear-gradient(135deg,var(--blue),var(--blue-deep));border-radius:var(--r-2xl);padding:52px 56px;text-align:center;position:relative;overflow:hidden;}
+.form-cta-blue::before{content:'';position:absolute;inset:0;background:
+  radial-gradient(ellipse 70% 60% at 80% 20%, rgba(0,244,224,.08) 0%, transparent 50%),
+  radial-gradient(ellipse 50% 60% at 70% 30%, rgba(255,255,255,.08) 0%, transparent 55%),
+  radial-gradient(ellipse 60% 70% at 20% 80%, rgba(40,164,221,.15) 0%, transparent 50%);}
+.form-inline{display:flex;gap:10px;max-width:480px;margin:24px auto 0;}
+.form-inline input{flex:1;padding:14px 20px;font-family:var(--f-body);font-size:14px;color:var(--ink);background:#fff;border:1.5px solid var(--border);border-radius:var(--r-pill);outline:none;transition:all 200ms var(--ease);box-shadow:0 2px 8px rgba(0,0,0,.04);}
+.form-inline input:focus{border-color:var(--blue);box-shadow:0 0 0 4px rgba(20,93,208,.1),0 4px 16px rgba(20,93,208,.08);}
+.form-inline-blue input{background:rgba(255,255,255,.15);border-color:rgba(255,255,255,.25);color:#fff;}
+.form-inline-blue input::placeholder{color:rgba(255,255,255,.5);}
+.field{display:flex;flex-direction:column;gap:7px;min-width:260px;}
+.field-label{font-size:12px;font-weight:700;color:var(--ink);letter-spacing:.01em;}
+.field-input{width:100%;padding:13px 17px;font-family:var(--f-body);font-size:14px;color:var(--ink);background:#fff;border:1.5px solid var(--border);border-radius:2px;outline:none;transition:all 180ms var(--ease);}
+.field-input::placeholder{color:var(--slate-lt);}
+.field-input:focus{border-color:var(--blue);box-shadow:0 0 0 4px rgba(20,93,208,.1);}
+.field-hint{font-size:11px;color:var(--slate-lt);}
+.field-error .field-input{border-color:#E53535;}
+.field-error .field-hint{color:#E53535;}
+.search-pill{display:flex;align-items:center;gap:10px;background:#fff;border:1.5px solid var(--border);border-radius:var(--r-pill);padding:11px 20px;box-shadow:var(--s-sm);transition:all 180ms;}
+.search-pill:focus-within{border-color:var(--blue);box-shadow:0 0 0 4px rgba(20,93,208,.08);}
+.search-pill input{border:none;outline:none;font-family:var(--f-body);font-size:14px;color:var(--ink);background:transparent;flex:1;min-width:200px;}
+.search-pill input::placeholder{color:var(--slate-lt);}
+
+/* ALERT BANNER (NEW) */
+.alert-banner{display:flex;align-items:center;gap:16px;padding:13px 24px;font-size:13px;font-weight:500;}
+.alert-banner.ab-info{background:var(--blue-tint);color:var(--blue);}
+.alert-banner.ab-promo{background:linear-gradient(90deg,var(--blue),var(--blue-lt));color:#fff;}
+.alert-banner.ab-warn{background:#FFF2DC;color:#9A6100;}
+.ab-icon{font-size:16px;flex-shrink:0;}
+.ab-text{flex:1;}
+.ab-text strong{font-weight:700;}
+.ab-link{font-weight:700;text-decoration:underline;cursor:pointer;opacity:.8;transition:opacity 150ms;}
+.ab-link:hover{opacity:1;}
+.ab-close{background:none;border:none;font-size:18px;line-height:1;cursor:pointer;opacity:.5;padding:2px 6px;border-radius:2px;transition:opacity 150ms;color:inherit;}
+.ab-close:hover{opacity:1;}
+
+/* CTA SECTIONS */
+.cta-full{background:var(--blue);border-radius:var(--r-2xl);padding:80px 72px;position:relative;overflow:hidden;text-align:center;}
+.cta-full-bg{position:absolute;inset:0;background:
+  radial-gradient(ellipse 80% 60% at 0% 100%, rgba(0,244,224,.12) 0%, transparent 50%),
+  radial-gradient(ellipse 60% 80% at 50% 0%, rgba(255,255,255,.12) 0%, transparent 60%),
+  radial-gradient(ellipse 40% 50% at 100% 80%, rgba(40,164,221,.2) 0%, transparent 55%),
+  radial-gradient(ellipse 40% 50% at 0% 100%, rgba(11,53,128,.4) 0%, transparent 55%);}
+.cta-full-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px);background-size:64px 64px;}
+.cta-full h2{font-family:var(--f-head);font-size:clamp(36px,5vw,64px);font-weight:600;letter-spacing:-.035em;line-height:1.05;color:#fff;margin-bottom:20px;position:relative;z-index:1;}
+.cta-full h2 em{font-style:italic;color:rgba(255,255,255,.75);}
+.cta-full p{font-size:18px;color:rgba(255,255,255,.65);max-width:48ch;margin:0 auto 48px;position:relative;z-index:1;line-height:1.6;}
+.cta-full-actions{display:flex;align-items:center;justify-content:center;gap:12px;position:relative;z-index:1;}
+.cta-banner{background:#fff;border:none;border-radius:var(--r-2xl);padding:40px 52px;display:flex;align-items:center;justify-content:space-between;gap:32px;position:relative;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.04);}
+.cta-banner::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;background:linear-gradient(180deg,var(--blue),var(--accent));border-radius:0 2px 2px 0;}
+.cta-banner h3{font-family:var(--f-head);font-size:24px;font-weight:600;color:var(--ink);letter-spacing:-.02em;}
+.cta-banner p{font-size:14px;color:var(--slate);margin-top:4px;}
+.cta-banner-right{display:flex;gap:10px;flex-shrink:0;}
+
+/* JOB CARDS (NEW) */
+.job-list{display:flex;flex-direction:column;gap:12px;max-width:720px;}
+.job-card{background:#fff;border:none;border-radius:var(--r-xl);padding:24px 28px;display:flex;align-items:center;gap:20px;cursor:pointer;transition:all 250ms var(--ease);box-shadow:0 1px 3px rgba(0,0,0,.04);}
+.job-card:hover{box-shadow:0 12px 40px rgba(20,93,208,.08);transform:translateY(-2px);}
+.job-dept{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--blue);background:var(--blue-tint);padding:4px 10px;border-radius:var(--r-pill);white-space:nowrap;flex-shrink:0;}
+.job-info{flex:1;}
+.job-title{font-size:15px;font-weight:700;color:var(--ink);margin-bottom:4px;}
+.job-meta{display:flex;gap:12px;font-size:12px;color:var(--slate-lt);}
+.job-arrow{color:var(--slate-lt);font-size:18px;transition:transform 200ms var(--ease),color 200ms;}
+.job-card:hover .job-arrow{color:var(--blue);transform:translateX(3px);}
+
+/* STAT ROW (NEW) */
+.stat-row{display:flex;gap:48px;align-items:center;background:#fff;border-radius:var(--r-xl);padding:36px 48px;border:none;box-shadow:0 1px 3px rgba(0,0,0,.04);}
+.sr-metric{flex:1;text-align:center;}
+.sr-divider{width:1px;background:var(--border);align-self:stretch;flex-shrink:0;}
+.sr-num{font-family:var(--f-head);font-size:clamp(32px,4vw,52px);font-weight:700;letter-spacing:-.04em;background:linear-gradient(135deg,var(--ink) 0%,var(--blue-deep) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1;margin-bottom:8px;}
+.sr-label{font-size:13px;color:var(--slate);}
+.sr-trend{display:inline-flex;align-items:center;gap:4px;font-size:12px;font-weight:700;color:#167A43;background:#DFF4EA;padding:3px 9px;border-radius:var(--r-pill);margin-top:8px;}
+
+/* COOKIE CONSENT (NEW) */
+.cookie-consent{position:fixed;bottom:24px;right:24px;background:#fff;border:none;border-radius:var(--r-2xl);padding:28px;max-width:340px;box-shadow:0 24px 72px rgba(0,0,0,.1),0 8px 24px rgba(20,93,208,.06);z-index:900;animation:slideUp .4s var(--ease-back) both;backdrop-filter:blur(20px);}
+.cookie-icon{font-size:24px;margin-bottom:12px;}
+.cookie-title{font-size:14px;font-weight:700;color:var(--ink);margin-bottom:6px;}
+.cookie-desc{font-size:12px;line-height:1.6;color:var(--slate);margin-bottom:18px;}
+.cookie-actions{display:flex;gap:8px;}
+
+/* PAGINATION (NEW) */
+.pagination{display:flex;align-items:center;gap:4px;}
+.page-btn{min-width:36px;height:36px;border-radius:var(--r-md);border:1.5px solid var(--border);background:#fff;color:var(--slate);font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all 150ms;padding:0 8px;}
+.page-btn:hover{border-color:var(--blue);color:var(--blue);}
+.page-btn.active{background:var(--blue);color:#fff;border-color:var(--blue);}
+.page-btn.disabled{opacity:.4;cursor:not-allowed;}
+.page-ellipsis{padding:0 6px;color:var(--slate-lt);font-size:13px;}
+
+/* CATEGORY FILTER (NEW) */
+.cat-filter{display:flex;gap:8px;flex-wrap:wrap;}
+.cat-pill{display:flex;align-items:center;gap:6px;padding:8px 16px;border-radius:var(--r-pill);border:1.5px solid var(--border);background:#fff;font-size:13px;font-weight:600;color:var(--slate);cursor:pointer;transition:all 180ms;}
+.cat-pill:hover{border-color:var(--blue);color:var(--blue);}
+.cat-pill.active{background:var(--blue);color:#fff;border-color:var(--blue);}
+.cat-pill.active .cat-count{background:rgba(255,255,255,.3);color:#fff;}
+.cat-count{font-size:10px;font-weight:700;background:var(--off);color:var(--slate-lt);padding:2px 7px;border-radius:var(--r-pill);transition:all 180ms;}
+
+/* CHART DISPLAY (NEW) */
+.chart-wrap{background:#fff;border:none;border-radius:var(--r-2xl);padding:36px 40px;box-shadow:0 1px 3px rgba(0,0,0,.04);}
+.chart-title{font-family:var(--f-head);font-size:17px;font-weight:600;color:var(--ink);margin-bottom:4px;}
+.chart-sub{font-size:12px;color:var(--slate-lt);margin-bottom:28px;}
+.bar-chart{display:flex;align-items:stretch;gap:12px;height:180px;border-bottom:1.5px solid var(--border);padding-bottom:0;}
+.bar-col{display:flex;flex-direction:column;align-items:center;flex:1;justify-content:flex-end;}
+.bar-fill{border-radius:2px 2px 0 0;background:linear-gradient(180deg,var(--accent),var(--blue));width:100%;transition:opacity 200ms;}
+.bar-fill:hover{opacity:.75;}
+.bar-label{font-size:11px;color:var(--slate-lt);font-weight:500;margin-top:8px;flex-shrink:0;}
+.bar-val{font-size:10px;font-weight:700;color:var(--blue);flex-shrink:0;margin-bottom:4px;}
+.line-chart{position:relative;height:160px;margin-top:32px;}
+.line-chart svg{width:100%;height:100%;overflow:visible;}
+
+/* TOASTS */
+.toast{display:inline-flex;align-items:center;gap:12px;background:#fff;border:1px solid var(--border);border-radius:var(--r-lg);padding:16px 20px;box-shadow:0 12px 40px rgba(0,0,0,.08),0 4px 12px rgba(20,93,208,.06);font-size:13px;max-width:360px;animation:toastIn .35s var(--ease-back) both;backdrop-filter:blur(12px);}
+@keyframes toastIn{from{opacity:0;transform:translateY(10px) scale(.96);}to{opacity:1;transform:none;}}
+.toast-icon{width:34px;height:34px;border-radius:2px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:15px;}
+.toast-body{flex:1;}
+.toast-title{font-weight:700;color:var(--ink);font-size:13px;}
+.toast-sub{font-size:11px;color:var(--slate-lt);margin-top:2px;}
+.toast-x{background:none;border:none;color:var(--slate-lt);font-size:18px;line-height:1;cursor:pointer;padding:2px 4px;border-radius:2px;}
+.toast-x:hover{background:var(--off);color:var(--ink);}
+.t-success .toast-icon{background:#DFF4EA;color:#167A43;}
+.t-info .toast-icon{background:var(--blue-pale);color:var(--blue);}
+.t-warn .toast-icon{background:#FFF2DC;color:#9A6100;}
+
+/* FOOTER (REWORKED: deep blue) */
+.footer{background:var(--blue-deep);padding:72px 56px 40px;color:#fff;position:relative;overflow:hidden;}
+.footer::before{content:'';position:absolute;inset:0;background:
+  radial-gradient(ellipse 60% 50% at 90% 20%, rgba(40,164,221,.12) 0%, transparent 50%),
+  radial-gradient(ellipse 50% 60% at 10% 80%, rgba(0,244,224,.06) 0%, transparent 50%);pointer-events:none;}
+.footer-top{display:grid;grid-template-columns:300px 1fr;gap:72px;padding-bottom:52px;border-bottom:1px solid rgba(255,255,255,.08);position:relative;z-index:1;}
+.footer-bottom{display:flex;align-items:center;justify-content:space-between;padding-top:32px;gap:24px;position:relative;z-index:1;}
+.footer-brand{display:flex;flex-direction:column;gap:18px;}
+.footer-logo{display:flex;align-items:center;gap:10px;font-family:var(--f-head);font-size:19px;font-weight:600;color:#fff;}
+.footer-copy{font-size:13px;color:rgba(255,255,255,.45);line-height:1.65;}
+.footer-cols{display:grid;grid-template-columns:repeat(3,1fr);gap:48px;}
+.fc-title{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:18px;}
+.fc-links{display:flex;flex-direction:column;gap:11px;list-style:none;}
+.fc-links a{font-size:14px;color:rgba(255,255,255,.55);transition:color 150ms;}
+.fc-links a:hover{color:#fff;}
+
+.footer-cr{font-size:12px;color:rgba(255,255,255,.3);}
+.footer-bl{display:flex;gap:24px;}
+.footer-bl a{font-size:12px;color:rgba(255,255,255,.3);transition:color 150ms;}
+.footer-bl a:hover{color:rgba(255,255,255,.7);}
+.socials{display:flex;gap:8px;}
+.s-btn{width:34px;height:34px;border-radius:2px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;font-size:14px;color:rgba(255,255,255,.5);cursor:pointer;transition:all 150ms;}
+.s-btn:hover{background:var(--blue);color:#fff;border-color:var(--blue);}
+
+@keyframes fillBar{from{width:0;}to{width:92%;}}
+
+/* ============================================
+   SELECTIVE TEXTURE — restraint is luxury
+   ============================================ */
+
+/* Dot grid: ONLY on blue backgrounds (heroes, CTAs, footer) */
+.hero-cinema::after{content:'';position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.07) 1px,transparent 1px);background-size:28px 28px;pointer-events:none;border-radius:inherit;mask-image:radial-gradient(ellipse 85% 85% at 50% 50%,black 20%,transparent 100%);z-index:1;}
+.cta-full::after{content:'';position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.05) 1px,transparent 1px);background-size:28px 28px;pointer-events:none;border-radius:inherit;mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black 30%,transparent 100%);z-index:0;}
+.cta-full h2,.cta-full p,.cta-full-actions{position:relative;z-index:2;}
+.footer::after{content:'';position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.03) 1px,transparent 1px);background-size:28px 28px;pointer-events:none;mask-image:linear-gradient(180deg,black 0%,transparent 70%);}
+.testimonial-feature::after{content:'';position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.06) 1px,transparent 1px);background-size:28px 28px;pointer-events:none;border-radius:inherit;mask-image:radial-gradient(ellipse 70% 70% at 80% 20%,black 20%,transparent 100%);}
+
+/* Toast left accent bars — these are nice, keep them */
+.toast{position:relative;overflow:hidden;}
+.toast::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;border-radius:2px 0 0 2px;}
+.t-success::before{background:linear-gradient(180deg,#22C55E,#167A43);}
+.t-info::before{background:linear-gradient(180deg,var(--blue),var(--blue-lt));}
+.t-warn::before{background:linear-gradient(180deg,#F5A623,#9A6100);}
+
+/* Active pill glow — subtle, keep */
+.page-btn.active{box-shadow:0 4px 16px rgba(20,93,208,.3);}
+.cat-pill.active{box-shadow:0 4px 16px rgba(20,93,208,.25);}
+
+/* Blog minimal hover accent — subtle, keep */
+.blog-minimal{position:relative;overflow:hidden;}
+.blog-minimal::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(180deg,var(--blue),var(--blue-lt));opacity:0;transition:opacity 250ms;border-radius:2px 0 0 2px;}
+.blog-minimal:hover::before{opacity:1;}
+
+/* Nav gradient line — very subtle, keep */
+.nav::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent 10%,rgba(20,93,208,.12),rgba(40,164,221,.08),transparent 90%);}
+.nav-blue::after{background:linear-gradient(90deg,transparent 10%,rgba(255,255,255,.08),rgba(255,255,255,.04),transparent 90%);}
+
+/* ===== LAYOUT SHELLS ===== */
+.layout{display:grid;gap:32px;align-items:start;}
+.layout-2{grid-template-columns:1fr 1fr;}
+.layout-2-narrow{grid-template-columns:5fr 7fr;}
+.layout-2-wide{grid-template-columns:7fr 5fr;}
+.layout-3{grid-template-columns:repeat(3,1fr);}
+.layout-4{grid-template-columns:repeat(4,1fr);}
+.layout-sidebar{grid-template-columns:320px 1fr;}
+.layout-sidebar-r{grid-template-columns:1fr 320px;}
+
+.layout-gap-sm{gap:20px;}
+.layout-gap-lg{gap:48px;}
+.layout-gap-xl{gap:64px;}
+.layout-align-center{align-items:center;}
+.layout-align-stretch{align-items:stretch;}
+
+/* Section wrapper for layout demos */
+.layout-section{padding:48px 0;}
+.layout-section + .layout-section{border-top:1px solid var(--gray);}
+
+/* Placeholder visual block */
+.layout-placeholder{
+  background:linear-gradient(135deg,var(--blue-tint),var(--blue-pale));
+  border-radius:var(--r-lg);
+  min-height:240px;
+  display:flex;align-items:center;justify-content:center;
+  color:var(--slate-lt);font:500 13px/1 var(--f-body);letter-spacing:.06em;text-transform:uppercase;
+  position:relative;overflow:hidden;
+}
+.layout-placeholder::after{
+  content:'';position:absolute;inset:0;
+  background-image:radial-gradient(circle,rgba(20,93,208,.08) 1px,transparent 1px);
+  background-size:20px 20px;
+  mask-image:radial-gradient(ellipse at center,rgba(0,0,0,.5),transparent 80%);
+}
+.layout-placeholder.ph-tall{min-height:360px;}
+.layout-placeholder.ph-short{min-height:160px;}
+
+/* Dark placeholder variant */
+.layout-placeholder.ph-dark{
+  background:linear-gradient(135deg,var(--blue-deep),var(--blue));
+  color:rgba(255,255,255,.5);
+}
+
+/* Text content block inside layouts */
+.layout-text{padding:24px 0;}
+.layout-text .ep{margin-bottom:16px;}
+.layout-text h3{font:600 clamp(26px,3vw,36px)/1.1 var(--f-head);letter-spacing:-.025em;color:var(--ink);margin:0 0 16px;}
+.layout-text p{font:400 15px/1.7 var(--f-body);color:var(--slate);margin:0 0 24px;max-width:480px;}
+.layout-text .btn{margin-top:8px;}
+
+/* ===== STANDALONE STAGE LIST ===== */
+.stage-list-wrap{background:#fff;border:none;border-radius:var(--r-2xl);overflow:hidden;max-width:560px;box-shadow:0 1px 3px rgba(0,0,0,.04);}
+.fd-stage{display:grid;grid-template-columns:auto 1fr;gap:4px 16px;align-items:start;padding:16px 0;border-bottom:1px solid var(--border);}
+.fd-stage:last-child{border-bottom:none;}
+.fd-stage-icon{width:36px;height:36px;border-radius:2px;display:flex;align-items:center;justify-content:center;font-size:16px;grid-row:span 2;}
+.fd-stage-name{align-self:end;}
+.fd-stage-desc{grid-column:2;}
+.stage-list-wrap .fd-stage{padding:20px 28px;}
+.stage-list-wrap .fd-stage-icon{width:40px;height:40px;border-radius:2px;font-size:16px;}
+.stage-list-wrap .fd-stage-icon.si-blue{background:linear-gradient(135deg,var(--blue-tint),var(--blue-pale));color:var(--blue);box-shadow:0 2px 8px rgba(20,93,208,.1);}
+.stage-list-wrap .fd-stage-icon.si-green{background:linear-gradient(135deg,#DFF4EA,#C8F0DA);color:#167A43;box-shadow:0 2px 8px rgba(22,122,67,.1);}
+.stage-list-wrap .fd-stage-icon.si-slate{background:linear-gradient(135deg,var(--gray),#E2E4EF);color:var(--slate);box-shadow:0 2px 8px rgba(0,0,0,.06);}
+.stage-list-wrap .fd-stage-name{font:600 15px/1.2 var(--f-body);color:var(--ink);}
+.stage-list-wrap .fd-stage-desc{font:400 13px/1.4 var(--f-body);color:var(--slate-lt);}
+
+/* ===== STANDALONE BENEFIT CHIPS ===== */
+.benefit-chips-wrap{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;max-width:720px;}
+.benefit-chip{background:#fff;border:1px solid var(--border);border-radius:var(--r-lg);padding:22px 24px;font:400 14px/1.55 var(--f-body);color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.04);transition:all 200ms var(--ease);}
+.benefit-chip:hover{border-color:rgba(20,93,208,.2);box-shadow:0 4px 16px rgba(20,93,208,.06);transform:translateY(-1px);}
+.benefit-chip-icon{width:36px;height:36px;border-radius:2px;background:var(--blue-tint);display:flex;align-items:center;justify-content:center;margin-bottom:14px;font-size:16px;}
+.benefit-chip-label{font:700 13px/1 var(--f-body);color:var(--ink);margin-bottom:8px;}
+
+/* ===== STANDALONE MINI CARDS GRID ===== */
+.mini-cards-wrap{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--gray);border-radius:var(--r-lg);overflow:hidden;max-width:680px;}
+.mini-card{background:#fff;padding:28px 28px 24px;}
+.mini-card-icon{width:44px;height:44px;border-radius:var(--r-sm);display:flex;align-items:center;justify-content:center;margin-bottom:16px;}
+.mini-card-icon.mci-green{background:linear-gradient(135deg,#22C55E,#16A34A);box-shadow:0 4px 14px rgba(34,197,94,.3);}
+.mini-card-icon.mci-blue{background:linear-gradient(135deg,var(--blue),var(--blue-deep));box-shadow:0 4px 14px rgba(20,93,208,.3);}
+.mini-card-icon.mci-amber{background:linear-gradient(135deg,#F5A623,#D97706);box-shadow:0 4px 14px rgba(245,166,35,.3);}
+.mini-card-icon.mci-slate{background:linear-gradient(135deg,var(--slate),#48536A);box-shadow:0 4px 14px rgba(92,102,128,.25);}
+.mini-card h4{font:600 15px/1.3 var(--f-body);color:var(--ink);margin:0 0 6px;}
+.mini-card p{font:400 13px/1.55 var(--f-body);color:var(--slate);margin:0 0 10px;}
+.mini-card em{font:italic 400 12px/1.5 var(--f-body);color:var(--slate-lt);display:block;}
+.mini-card a{font:500 13px/1 var(--f-body);color:var(--blue);text-decoration:none;}
+.mini-card a:hover{text-decoration:underline;}
+
+/* Composition caption */
+.composed-caption{display:inline-flex;align-items:center;gap:7px;font-size:11px;font-weight:600;color:var(--slate);background:var(--blue-tint);border:1px solid rgba(20,93,208,.12);border-radius:var(--r-pill);padding:5px 12px;margin-top:16px;}
+.composed-caption::before{content:'↗';font-size:10px;color:var(--blue);}
+
+@media(max-width:900px){
+  .fd-chips{grid-template-columns:1fr;}
+  .benefit-chips-wrap{grid-template-columns:1fr;}
+  .mini-cards-wrap{grid-template-columns:1fr;}
+}
+
+@media(max-width:900px){
+  .layout-2,.layout-2-narrow,.layout-2-wide,.layout-3,.layout-sidebar,.layout-sidebar-r{grid-template-columns:1fr;}
+  .layout-4{grid-template-columns:1fr 1fr;}
+}
+@media(max-width:600px){
+  .layout-4{grid-template-columns:1fr;}
+}
+
+/* ===== 38–39. CONTACT FORMS ===== */
+.contact-card{background:#fff;border:none;border-radius:2px;padding:48px 52px;max-width:520px;box-shadow:0 1px 3px rgba(0,0,0,.04);}
+.contact-card-h{font-family:var(--f-head);font-size:24px;font-weight:600;color:var(--ink);letter-spacing:-.02em;margin-bottom:6px;}
+.contact-card-sub{font-size:14px;color:var(--slate);margin-bottom:32px;line-height:1.6;}
+.contact-fields{display:flex;flex-direction:column;gap:18px;}
+.contact-field{display:flex;flex-direction:column;gap:6px;}
+.contact-label{font-size:12px;font-weight:700;color:var(--ink);letter-spacing:.01em;}
+.contact-input{width:100%;padding:13px 17px;font-family:var(--f-body);font-size:14px;color:var(--ink);background:var(--off);border:1.5px solid var(--border);border-radius:2px;outline:none;transition:all 180ms var(--ease);}
+.contact-input::placeholder{color:var(--slate-lt);}
+.contact-input:focus{border-color:var(--blue);background:#fff;box-shadow:0 0 0 4px rgba(20,93,208,.08);}
+textarea.contact-input{resize:vertical;min-height:120px;line-height:1.6;}
+.contact-note{font-size:12px;color:var(--slate-lt);margin-top:4px;display:flex;align-items:center;gap:6px;}
+.contact-note-dot{width:6px;height:6px;background:#22C55E;border-radius:2px;flex-shrink:0;}
+
+/* Horizontal contact form */
+.contact-horiz{background:#fff;border:none;border-radius:2px;padding:0;box-shadow:0 1px 3px rgba(0,0,0,.04);display:grid;grid-template-columns:1fr 1fr;overflow:hidden;}
+.contact-horiz-left{padding:52px 44px;background:linear-gradient(145deg,var(--blue-tint),var(--blue-pale));display:flex;flex-direction:column;justify-content:center;position:relative;overflow:hidden;}
+.contact-horiz-left::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 80% 20%,rgba(20,93,208,.06) 0%,transparent 60%);pointer-events:none;}
+.contact-horiz-left h3{font-family:var(--f-head);font-size:28px;font-weight:600;color:var(--ink);letter-spacing:-.025em;margin-bottom:14px;position:relative;z-index:1;}
+.contact-horiz-left p{font-size:14px;color:var(--slate);line-height:1.7;max-width:28ch;position:relative;z-index:1;}
+.contact-horiz-right{padding:48px 44px;display:flex;flex-direction:column;gap:16px;}
+
+/* ===== 40. FEATURE GRID ===== */
+.feature-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0;background:#fff;border:none;border-radius:2px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.04);}
+.fg-item{padding:36px 32px;border-right:1px solid rgba(0,0,0,.05);border-bottom:1px solid rgba(0,0,0,.05);transition:background 220ms;}
+.fg-item:hover{background:var(--blue-tint);}
+.fg-item:nth-child(3n){border-right:none;}
+.fg-item:nth-child(4),.fg-item:nth-child(5),.fg-item:nth-child(6){border-bottom:none;}
+.fg-icon{width:48px;height:48px;border-radius:2px;background:var(--blue-tint);display:flex;align-items:center;justify-content:center;margin-bottom:18px;transition:background 220ms;}
+.fg-item:hover .fg-icon{background:var(--blue-pale);}
+.fg-title{font-size:16px;font-weight:600;color:var(--ink);margin-bottom:8px;}
+.fg-desc{font-size:14px;color:var(--slate);line-height:1.65;}
+
+/* ===== 41. TIMELINE ===== */
+.timeline{display:flex;flex-direction:column;gap:0;max-width:680px;position:relative;}
+.timeline-line{position:absolute;left:139px;top:24px;bottom:24px;width:2px;background:linear-gradient(180deg,var(--blue-pale),var(--blue-pale));z-index:0;}
+.tl-item{display:grid;grid-template-columns:100px 40px 1fr;gap:0 20px;align-items:flex-start;position:relative;z-index:1;padding:0 0 40px;}
+.tl-item:last-child{padding-bottom:0;}
+.tl-date{text-align:right;padding-top:3px;}
+.tl-date-year{font-size:13px;font-weight:700;color:var(--ink);}
+.tl-date-label{font-size:11px;color:var(--slate-lt);margin-top:2px;}
+.tl-dot-col{display:flex;flex-direction:column;align-items:center;position:relative;}
+.tl-dot{width:16px;height:16px;border-radius:2px;background:var(--blue);border:3px solid #fff;box-shadow:0 0 0 2px var(--blue);flex-shrink:0;margin-top:4px;transition:transform 200ms;}
+.tl-item:hover .tl-dot{transform:scale(1.25);}
+.tl-content{padding-top:2px;}
+.tl-event{font-size:15px;font-weight:700;color:var(--ink);margin-bottom:6px;}
+.tl-desc{font-size:13px;color:var(--slate);line-height:1.6;}
+
+/* ===== 42. VIDEO / MEDIA BLOCK ===== */
+.media-block{border-radius:2px;overflow:hidden;position:relative;background:linear-gradient(150deg,var(--blue-deep) 0%,var(--blue) 100%);min-height:400px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:64px 48px;cursor:pointer;}
+.media-block::before{content:'';position:absolute;inset:0;background:
+  radial-gradient(ellipse 70% 60% at 80% 20%,rgba(255,255,255,.12) 0%,transparent 55%),
+  radial-gradient(ellipse 50% 60% at 10% 80%,rgba(0,244,224,.08) 0%,transparent 50%),
+  radial-gradient(ellipse 55% 45% at 50% 100%,rgba(11,53,128,.5) 0%,transparent 55%);pointer-events:none;}
+.media-block-dots{position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.07) 1px,transparent 1px);background-size:28px 28px;mask-image:radial-gradient(ellipse 85% 85% at 50% 50%,black 20%,transparent 100%);pointer-events:none;}
+.media-heading{font-family:var(--f-head);font-size:clamp(28px,4vw,44px);font-weight:600;color:#fff;letter-spacing:-.03em;margin-bottom:16px;position:relative;z-index:2;}
+.media-sub{font-size:16px;color:rgba(255,255,255,.65);max-width:40ch;line-height:1.6;margin-bottom:40px;position:relative;z-index:2;}
+.play-btn{width:72px;height:72px;border-radius:2px;background:#fff;display:flex;align-items:center;justify-content:center;position:relative;z-index:2;box-shadow:0 16px 48px rgba(0,0,0,.2),0 4px 12px rgba(0,0,0,.15);transition:transform 250ms var(--ease),box-shadow 250ms;cursor:pointer;flex-shrink:0;}
+.media-block:hover .play-btn{transform:scale(1.1);box-shadow:0 24px 64px rgba(0,0,0,.25),0 8px 20px rgba(0,0,0,.2);}
+.play-triangle{width:0;height:0;border-style:solid;border-width:12px 0 12px 22px;border-color:transparent transparent transparent var(--blue);margin-left:4px;}
+.media-duration{position:absolute;bottom:28px;right:32px;font-size:12px;font-weight:700;color:rgba(255,255,255,.55);z-index:2;letter-spacing:.04em;}
+
+/* ===== 43. ANNOUNCEMENT BAR ===== */
+.announcement-bar{display:flex;align-items:center;gap:12px;padding:0 20px;height:44px;background:var(--blue);position:relative;overflow:hidden;}
+.announcement-bar::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 200% at 50% 50%,rgba(255,255,255,.06) 0%,transparent 60%);pointer-events:none;}
+.ann-inner{flex:1;display:flex;align-items:center;justify-content:center;gap:0;font-size:13px;font-weight:500;color:#fff;position:relative;z-index:1;}
+.ann-badge{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;background:rgba(255,255,255,.2);color:#fff;padding:3px 10px;border-radius:2px;margin-right:12px;flex-shrink:0;}
+.ann-link{font-weight:700;color:#fff;text-decoration:underline;text-underline-offset:2px;margin-left:8px;opacity:.9;transition:opacity 150ms;}
+.ann-link:hover{opacity:1;}
+.ann-arrow{margin-left:4px;font-size:12px;}
+.ann-close{background:none;border:none;color:rgba(255,255,255,.55);font-size:20px;line-height:1;cursor:pointer;padding:4px 8px;border-radius:2px;transition:all 150ms;position:relative;z-index:1;flex-shrink:0;}
+.ann-close:hover{color:#fff;background:rgba(255,255,255,.1);}
+
+/* ===== 44. QUOTE CALLOUT ===== */
+.quote-callout{background:var(--blue-tint);border-radius:2px;padding:36px 40px;border-left:3px solid var(--blue);max-width:640px;position:relative;}
+.quote-callout blockquote{font-family:var(--f-head);font-size:clamp(17px,2vw,22px);font-style:italic;font-weight:500;color:var(--ink);line-height:1.55;margin:0 0 20px;}
+.quote-callout blockquote::before{content:'\201C';font-size:2.5em;line-height:.5;vertical-align:-.35em;color:var(--blue);font-family:var(--f-head);margin-right:4px;opacity:.6;}
+.qc-attribution{display:flex;align-items:center;gap:12px;}
+.qc-avatar{width:36px;height:36px;border-radius:2px;background:linear-gradient(135deg,var(--blue),var(--blue-lt));display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;flex-shrink:0;}
+.qc-name{font-size:13px;font-weight:700;color:var(--ink);}
+.qc-role{font-size:11px;color:var(--slate-lt);margin-top:2px;}
+
+/* ===== 45. RESOURCE CARDS ===== */
+.resource-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+.resource-card{background:#fff;border:none;border-radius:2px;overflow:hidden;transition:all 300ms var(--ease);box-shadow:0 1px 3px rgba(0,0,0,.04);}
+.resource-card:hover{transform:translateY(-4px);box-shadow:0 20px 60px rgba(20,93,208,.08),0 4px 12px rgba(20,93,208,.04);}
+.resource-thumb{height:140px;background:linear-gradient(150deg,var(--blue-deep) 0%,var(--blue) 100%);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;}
+.resource-thumb::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 70% 60% at 80% 20%,rgba(255,255,255,.1) 0%,transparent 55%);}
+.resource-thumb-icon{position:relative;z-index:1;}
+.resource-body{padding:24px;}
+.resource-badge{display:inline-flex;align-items:center;gap:5px;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--blue);background:var(--blue-tint);padding:4px 10px;border-radius:2px;margin-bottom:12px;}
+.resource-title{font-family:var(--f-head);font-size:16px;font-weight:600;color:var(--ink);letter-spacing:-.015em;margin-bottom:8px;line-height:1.3;}
+.resource-desc{font-size:13px;color:var(--slate);line-height:1.6;margin-bottom:20px;}
+.resource-footer{display:flex;align-items:center;justify-content:space-between;padding-top:16px;border-top:1px solid var(--border);}
+.resource-type{font-size:11px;font-weight:600;color:var(--slate-lt);}
+
+/* ===== 46. 404 ERROR STATE ===== */
+.error-state{padding:96px 48px;text-align:center;background:#fff;border-radius:2px;box-shadow:0 1px 3px rgba(0,0,0,.04);}
+.error-404{font-family:var(--f-head);font-size:clamp(96px,14vw,180px);font-weight:600;letter-spacing:-.06em;line-height:.85;color:rgba(20,93,208,.1);margin-bottom:32px;display:block;}
+.error-heading{font-family:var(--f-head);font-size:clamp(24px,3vw,36px);font-weight:600;color:var(--ink);letter-spacing:-.025em;margin-bottom:14px;}
+.error-sub{font-size:16px;color:var(--slate);line-height:1.65;max-width:44ch;margin:0 auto 40px;}
+
+/* External links in sidebar */
+.sb-link-ext{background:var(--off);border-left:2px solid var(--blue);padding-left:14px;margin:4px 8px;border-radius:2px;font-weight:600;color:var(--blue);}
+.sb-link-ext:hover{background:var(--blue-tint);}
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<nav class="sidebar">
+  <div class="sidebar-logo">
+    <div class="sidebar-mark">BF</div>
+    <div><div class="sidebar-name">Design System</div></div>
+  </div>
+  <div class="sb-section">Foundations</div>
+  <a class="sb-link" href="#typography"><span class="sb-num">01</span>Typography</a>
+  <a class="sb-link" href="#colors"><span class="sb-num">02</span>Color Palette</a>
+  <a class="sb-link sb-link-ext" href="icons.html" target="_blank"><span class="sb-num">→</span>Icon Library</a>
+  <a class="sb-link sb-link-ext" href="app-screens.html" target="_blank"><span class="sb-num">→</span>App Screens</a>
+  <a class="sb-link sb-link-ext" href="images.html" target="_blank"><span class="sb-num">→</span>Image Library</a>
+  <div class="sb-section">Actions</div>
+  <a class="sb-link" href="#buttons"><span class="sb-num">03</span>Buttons</a>
+  <a class="sb-link" href="#badges"><span class="sb-num">04</span>Badges &amp; Status</a>
+  <div class="sb-section">Navigation</div>
+  <a class="sb-link" href="#navigation"><span class="sb-num">05</span>Navigation</a>
+  <a class="sb-link" href="#alert-banner"><span class="sb-num">06</span>Alert Banner</a>
+  <a class="sb-link" href="#pagination"><span class="sb-num">07</span>Pagination</a>
+  <a class="sb-link" href="#cat-filter"><span class="sb-num">08</span>Category Filter</a>
+  <div class="sb-section">Heroes</div>
+  <a class="sb-link" href="#hero-blue"><span class="sb-num">09</span>Hero Cinema Blue</a>
+  <a class="sb-link" href="#hero-editorial"><span class="sb-num">10</span>Hero Editorial</a>
+  <a class="sb-link" href="#hero-gradient"><span class="sb-num">11</span>Hero Gradient</a>
+  <div class="sb-section">Trust &amp; Social</div>
+  <a class="sb-link" href="#logo-marquee"><span class="sb-num">12</span>Logo Marquee</a>
+  <a class="sb-link" href="#logo-strip"><span class="sb-num">13</span>Logo Strip</a>
+  <a class="sb-link" href="#stats-strip"><span class="sb-num">14</span>Stats Strip</a>
+  <a class="sb-link" href="#stat-row"><span class="sb-num">15</span>Stat Row</a>
+  <div class="sb-section">Features</div>
+  <a class="sb-link" href="#bento"><span class="sb-num">16</span>Bento Grid</a>
+  <a class="sb-link" href="#process"><span class="sb-num">17</span>Process Grid</a>
+  <a class="sb-link" href="#step-flow"><span class="sb-num">18</span>Step Flow</a>
+  <a class="sb-link" href="#problem"><span class="sb-num">19</span>Problem Statement</a>
+  <a class="sb-link" href="#comparison"><span class="sb-num">20</span>Comparison Table</a>
+  <a class="sb-link" href="#chart"><span class="sb-num">21</span>Chart Display</a>
+  <a class="sb-link" href="#mini-cards"><span class="sb-num">22</span>Mini Cards Grid</a>
+  <a class="sb-link" href="#stage-list"><span class="sb-num">23</span>Stage List</a>
+  <a class="sb-link" href="#benefit-chips"><span class="sb-num">24</span>Benefit Chips</a>
+  <div class="sb-section">Social Proof</div>
+  <a class="sb-link" href="#testimonials"><span class="sb-num">25</span>Testimonials</a>
+  <a class="sb-link" href="#persona"><span class="sb-num">26</span>Persona Cards</a>
+  <a class="sb-link" href="#team"><span class="sb-num">27</span>Team Cards</a>
+  <div class="sb-section">Content</div>
+  <a class="sb-link" href="#blog"><span class="sb-num">28</span>Blog Cards</a>
+  <a class="sb-link" href="#checklist"><span class="sb-num">29</span>Checklist Card</a>
+  <a class="sb-link" href="#jobs"><span class="sb-num">30</span>Job Cards</a>
+  <div class="sb-section">Marketing</div>
+  <a class="sb-link" href="#contact-vertical"><span class="sb-num">31</span>Contact Form — Vertical</a>
+  <a class="sb-link" href="#contact-horizontal"><span class="sb-num">32</span>Contact Form — Horizontal</a>
+  <a class="sb-link" href="#feature-grid"><span class="sb-num">33</span>Feature Grid</a>
+  <a class="sb-link" href="#timeline"><span class="sb-num">34</span>Timeline</a>
+  <a class="sb-link" href="#media-block"><span class="sb-num">35</span>Video / Media Block</a>
+  <a class="sb-link" href="#announcement-bar"><span class="sb-num">36</span>Announcement Bar</a>
+  <a class="sb-link" href="#quote-callout"><span class="sb-num">37</span>Quote Callout</a>
+  <a class="sb-link" href="#resource-cards"><span class="sb-num">38</span>Resource Cards</a>
+  <a class="sb-link" href="#error-state"><span class="sb-num">39</span>Error State</a>
+  <div class="sb-section">UI Patterns</div>
+  <a class="sb-link" href="#tabs"><span class="sb-num">40</span>Tabs</a>
+  <a class="sb-link" href="#accordion"><span class="sb-num">41</span>Accordion FAQ</a>
+  <a class="sb-link" href="#form-cta"><span class="sb-num">42</span>Form CTA</a>
+  <a class="sb-link" href="#forms"><span class="sb-num">43</span>Form Fields</a>
+  <a class="sb-link" href="#toasts"><span class="sb-num">44</span>Toasts</a>
+  <a class="sb-link" href="#cookie"><span class="sb-num">45</span>Cookie Consent</a>
+  <div class="sb-section">Layout</div>
+  <a class="sb-link" href="#layouts"><span class="sb-num">46</span>Layout Shells</a>
+  <a class="sb-link" href="#cta"><span class="sb-num">47</span>CTA Sections</a>
+  <a class="sb-link" href="#footer"><span class="sb-num">48</span>Footer</a>
+</nav>
+
+<!-- MAIN -->
+<main class="main">
+
+<div class="shell-header">
+  <div>
+    <div class="shell-title">Basefund — Design System</div>
+  </div>
+  <div class="shell-badge">2026 · Production Ready</div>
+</div>
+<!-- 01. TYPOGRAPHY -->
+<div id="typography" class="sec-label">01 · Foundations</div>
+<div class="sec-name">Typography Scale</div>
+<div class="pad col" style="gap:36px;max-width:960px;">
+  <div>
+    <div class="t-eyebrow" style="margin-bottom:10px;">Display — Lora 600 · clamp(56–120px) · −0.04em tracking</div>
+    <div class="t-display">Money in <em>Motion.</em></div>
+  </div>
+  <div>
+    <div class="t-caption" style="margin-bottom:8px;padding-left:2px;">Ghost/outline stroke variant (−webkit-text-stroke) + italic blue emphasis</div>
+    <div class="t-display" style="font-size:clamp(40px,6vw,80px);"><span class="ghost">Secure.</span> <em>Insured.</em></div>
+  </div>
+  <div>
+    <div class="t-caption" style="margin-bottom:6px;">H1 — Lora 600 · clamp(40–72px) · −0.03em</div>
+    <div class="t-h1">Every dollar <em style="font-style:italic;color:var(--blue);">protected.</em></div>
+  </div>
+  <div>
+    <div class="t-caption" style="margin-bottom:6px;">H2 — Lora 500 · clamp(30–52px) · −0.025em</div>
+    <div class="t-h2">Built for public finance</div>
+  </div>
+  <div>
+    <div class="t-caption" style="margin-bottom:6px;">H3 — Lora 500 · clamp(22–34px) · −0.02em</div>
+    <div class="t-h3">Identity-verified. Insured. Instant.</div>
+  </div>
+  <div>
+    <div class="t-eyebrow" style="margin-bottom:8px;">Eyebrow — Inter 700 · 10px · +0.18em uppercase</div>
+    <div class="t-caption">Used as section labels and pill badge text</div>
+  </div>
+  <div>
+    <div class="t-caption" style="margin-bottom:6px;">Lead — Inter 400 · 18px · 1.65 line-height</div>
+    <div class="t-lead">Securing money in motion for issuers, underwriters, and institutions across the country.</div>
+  </div>
+  <div>
+    <div class="t-caption" style="margin-bottom:6px;">Body — Inter 400 · 15px · 1.72 line-height</div>
+    <div class="t-body">Each transaction passes through multi-layer verification before funds are authorized to move.</div>
+  </div>
+  <div>
+    <div class="t-caption" style="margin-bottom:6px;">Caption — Inter 500 · 12px</div>
+    <div class="t-caption">Used for timestamps, labels, metadata</div>
+  </div>
+  <div class="t-caption" style="margin-bottom:8px;">Gradient text — white-to-white-75% (on blue backgrounds)</div>
+  <div style="background:var(--blue);border-radius:2px;padding:36px 40px;">
+    <div style="font-family:var(--f-head);font-size:clamp(32px,4vw,56px);font-weight:600;line-height:1;letter-spacing:-.04em;background:linear-gradient(135deg,#fff 0%,rgba(255,255,255,.72) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">$15 Billion Secured</div>
+  </div>
+</div>
+
+<!-- 02. COLORS -->
+<div id="colors" class="sec-label">02 · Foundations</div>
+<div class="sec-name">Color Palette</div>
+<div class="swatch-grid">
+  <div class="sw"><div class="sw-block" style="background:#145DD0;"></div><div class="sw-name">Blue</div><div class="sw-hex">#145DD0</div></div>
+  <div class="sw"><div class="sw-block" style="background:#28A4DD;"></div><div class="sw-name">Blue Light</div><div class="sw-hex">#28A4DD</div></div>
+  <div class="sw"><div class="sw-block" style="background:#0B3580;"></div><div class="sw-name">Blue Deep</div><div class="sw-hex">#0B3580</div></div>
+  <div class="sw"><div class="sw-block" style="background:#0E4399;"></div><div class="sw-name">Dark-2 (Blue)</div><div class="sw-hex">#0E4399</div></div>
+  <div class="sw"><div class="sw-block" style="background:#DDEEFF;border-color:rgba(0,0,0,.08);"></div><div class="sw-name">Blue Pale</div><div class="sw-hex">#DDEEFF</div></div>
+  <div class="sw"><div class="sw-block" style="background:#EEF5FF;border-color:rgba(0,0,0,.08);"></div><div class="sw-name">Blue Tint</div><div class="sw-hex">#EEF5FF</div></div>
+  <div class="sw"><div class="sw-block" style="background:#FFFFFF;border-color:rgba(0,0,0,.08);"></div><div class="sw-name">White</div><div class="sw-hex">#FFFFFF</div></div>
+  <div class="sw"><div class="sw-block" style="background:#F7F8FA;border-color:rgba(0,0,0,.08);"></div><div class="sw-name">Off-White</div><div class="sw-hex">#F7F8FA</div></div>
+  <div class="sw"><div class="sw-block" style="background:#ECEEF3;border-color:rgba(0,0,0,.08);"></div><div class="sw-name">Gray</div><div class="sw-hex">#ECEEF3</div></div>
+  <div class="sw"><div class="sw-block" style="background:#2B2B2B;"></div><div class="sw-name">Ink</div><div class="sw-hex">#2B2B2B</div></div>
+  <div class="sw"><div class="sw-block" style="background:#5C6680;"></div><div class="sw-name">Slate</div><div class="sw-hex">#5C6680</div></div>
+  <div class="sw"><div class="sw-block" style="background:#8B96AE;"></div><div class="sw-name">Slate Lt</div><div class="sw-hex">#8B96AE</div></div>
+  <div class="sw"><div class="sw-block" style="background:#167A43;"></div><div class="sw-name">Green</div><div class="sw-hex">#167A43</div></div>
+  <div class="sw"><div class="sw-block" style="background:#DFF4EA;border-color:rgba(0,0,0,.08);"></div><div class="sw-name">Green Pale</div><div class="sw-hex">#DFF4EA</div></div>
+  <div class="sw"><div class="sw-block" style="background:#9A6100;"></div><div class="sw-name">Amber</div><div class="sw-hex">#9A6100</div></div>
+  <div class="sw"><div class="sw-block" style="background:#00F4E0;"></div><div class="sw-name">Accent</div><div class="sw-hex">#00F4E0</div></div>
+  <div class="sw"><div class="sw-block" style="background:#00C4B4;"></div><div class="sw-name">Accent Deep</div><div class="sw-hex">#00C4B4</div></div>
+</div>
+<div style="padding:0 48px 12px;"><p class="t-caption" style="color:var(--slate);">Accent (#00F4E0) — use sparingly for highlights, data viz emphasis, gradient terminals, and premium feature markers. Not for primary CTAs or body text.</p></div>
+
+<!-- 03. BUTTONS -->
+<div id="buttons" class="sec-label">03 · Actions</div>
+<div class="sec-name">Buttons</div>
+<div class="pad col" style="gap:24px;">
+  <div>
+    <div class="t-caption" style="margin-bottom:12px;">Primary (blue shimmer on hover) — sizes: sm / default / lg / xl</div>
+    <div class="row center" style="gap:12px;">
+      <button class="btn btn-p btn-xl btn-arrow">Get Started Free <span class="arr">→</span></button>
+      <button class="btn btn-p btn-lg btn-arrow">Request Demo <span class="arr">→</span></button>
+      <button class="btn btn-p">Get Started</button>
+      <button class="btn btn-p btn-sm">Sign Up</button>
+    </div>
+  </div>
+  <div>
+    <div class="t-caption" style="margin-bottom:12px;">Deep Blue (replaces near-black "dark" variant), Ghost, Outline Blue</div>
+    <div class="row center" style="gap:12px;">
+      <button class="btn btn-d btn-lg">Contact Sales</button>
+      <button class="btn btn-d">Schedule Call</button>
+      <button class="btn btn-g btn-lg">Watch Demo</button>
+      <button class="btn btn-g">Learn More</button>
+      <button class="btn btn-ob">View Docs</button>
+      <button class="btn btn-ob btn-sm">API Docs</button>
+    </div>
+  </div>
+  <div class="t-caption" style="margin-bottom:8px;">Variants on blue backgrounds: White, Ghost White, Circle</div>
+  <div style="background:var(--blue);padding:28px 32px;border-radius:2px;">
+    <div class="row center" style="gap:12px;">
+      <button class="btn btn-w btn-lg btn-arrow">Get Started Free <span class="arr" style="background:rgba(0,0,0,.08);">→</span></button>
+      <button class="btn btn-gw btn-lg">Watch Demo</button>
+      <button class="btn btn-gw btn-sm">Learn More</button>
+      <button class="btn-circle">→</button>
+      <button class="btn-circle" style="background:rgba(255,255,255,.15);color:#fff;">↗</button>
+    </div>
+  </div>
+  <div class="t-caption" style="margin-bottom:8px;">On deep blue background</div>
+  <div style="background:var(--blue-deep);padding:28px 32px;border-radius:2px;">
+    <div class="row center" style="gap:12px;">
+      <button class="btn btn-w btn-arrow">Explore Platform <span class="arr" style="background:rgba(0,0,0,.08);">→</span></button>
+      <button class="btn btn-gw">View Security</button>
+    </div>
+  </div>
+</div>
+
+<!-- 04. BADGES -->
+<div id="badges" class="sec-label">04 · Actions</div>
+<div class="sec-name">Badges &amp; Status</div>
+<div class="pad col" style="gap:20px;">
+  <div>
+    <div class="t-caption" style="margin-bottom:12px;">Status badges</div>
+    <div class="row center" style="gap:10px;">
+      <span class="badge bd-blue">Verified</span>
+      <span class="badge bd-green">Insured</span>
+      <span class="badge bd-amber">Pending</span>
+      <span class="badge bd-slate">In Review</span>
+      <span class="badge bd-dark">Secured</span>
+      <span class="badge bd-glow">✦ SOC 2 Certified</span>
+      <span class="badge bd-accent">Accent</span>
+    </div>
+  </div>
+  <div>
+    <div class="t-caption" style="margin-bottom:12px;">Eyebrow Pills — section labels</div>
+    <div class="row center" style="gap:10px;">
+      <div class="ep"><span class="dot"></span>Trusted by 500+ Issuers</div>
+      <div class="ep"><span class="dot"></span>$15B+ Secured</div>
+      <div class="ep"><span class="dot"></span>SOC 2 Certified</div>
+      <div class="ep"><span class="dot"></span>Real-Time Verification</div>
+    </div>
+  </div>
+  <div>
+    <div class="t-caption" style="margin-bottom:12px;">Live Status indicator</div>
+    <div class="row center" style="gap:10px;">
+      <div class="status-live">All Systems Operational</div>
+      <div class="status-live">Live Monitoring Active</div>
+    </div>
+  </div>
+  <div class="t-caption" style="margin-bottom:8px;">Eyebrow pill + glow on blue background</div>
+  <div style="background:var(--blue);padding:20px 24px;border-radius:2px;">
+    <div class="row center" style="gap:10px;">
+      <div class="ep" style="background:rgba(255,255,255,.18);border-color:rgba(255,255,255,.3);color:rgba(255,255,255,.9);"><span class="dot" style="background:linear-gradient(135deg,#fff,rgba(255,255,255,.7));"></span>SOC 2 Certified · $15B+</div>
+      <span class="badge bd-glow">✦ Featured</span>
+    </div>
+  </div>
+</div>
+
+<!-- 05. NAVIGATION -->
+<div id="navigation" class="sec-label">05 · Navigation</div>
+<div class="sec-name">Navigation</div>
+<div class="pad col" style="gap:16px;padding-bottom:48px;">
+  <div class="t-caption" style="margin-bottom:4px;">NavLight — frosted glass on off-white background</div>
+  <nav class="nav" style="position:relative;border-radius:2px;border:1px solid var(--border);">
+    <div class="nav-logo"><div class="nav-mark"><span>BF</span></div>Basefund</div>
+    <ul class="nav-links">
+      <li><a href="#" class="active">Platform</a></li>
+      <li><a href="#">Solutions</a></li>
+      <li><a href="#">Security</a></li>
+      <li><a href="#">Pricing</a></li>
+      <li><a href="#">Resources</a></li>
+    </ul>
+    <div class="nav-right">
+      <button class="btn btn-g btn-sm">Sign In</button>
+      <button class="btn btn-p btn-sm btn-arrow">Get Started <span class="arr" style="width:16px;height:16px;font-size:10px;">→</span></button>
+    </div>
+  </nav>
+  <div class="t-caption" style="margin-top:8px;margin-bottom:4px;">NavBlue — frosted glass on blue background (replaces NavDark)</div>
+  <nav class="nav nav-blue" style="position:relative;border-radius:2px;">
+    <div class="nav-logo"><div class="nav-mark"><span>BF</span></div>Basefund</div>
+    <ul class="nav-links">
+      <li><a href="#" class="active">Platform</a></li>
+      <li><a href="#">Solutions</a></li>
+      <li><a href="#">Security</a></li>
+      <li><a href="#">Pricing</a></li>
+      <li><a href="#">Resources</a></li>
+    </ul>
+    <div class="nav-right">
+      <button class="btn btn-gw btn-sm">Sign In</button>
+      <button class="btn btn-w btn-sm">Get Started →</button>
+    </div>
+  </nav>
+</div>
+
+<!-- 26. ALERT BANNER -->
+<div id="alert-banner" class="sec-label">06 · Navigation</div>
+<div class="sec-name">Alert Banner</div>
+<div class="pad col" style="gap:10px;max-width:800px;">
+  <div class="t-caption" style="margin-bottom:4px;">Info variant</div>
+  <div class="alert-banner ab-info" style="border-radius:2px;">
+    <div class="ab-icon">ℹ</div>
+    <div class="ab-text"><strong>Scheduled Maintenance:</strong> Basefund will be in read-only mode on March 15, 2026 from 2–4 AM CT. <a class="ab-link" href="#">Learn more</a></div>
+    <button class="ab-close" data-banner="this">×</button>
+  </div>
+  <div class="t-caption" style="margin-bottom:4px;">Promo variant</div>
+  <div class="alert-banner ab-promo" style="border-radius:2px;">
+    <div class="ab-icon">✦</div>
+    <div class="ab-text"><strong>New:</strong> Transaction-specific insurance is now available on all Professional plans. <a class="ab-link" href="#">Upgrade today →</a></div>
+    <button class="ab-close" onclick="this.closest('.alert-banner').remove()">×</button>
+  </div>
+  <div class="t-caption" style="margin-bottom:4px;">Warning variant</div>
+  <div class="alert-banner ab-warn" style="border-radius:2px;">
+    <div class="ab-icon"><img src="icons/alert-triangle.svg" style="width:16px;height:16px;display:inline-block;vertical-align:middle;" alt=""></div>
+    <div class="ab-text"><strong>Action Required:</strong> Your identity verification expires on March 20. <a class="ab-link" href="#">Re-verify now</a></div>
+    <button class="ab-close" onclick="this.closest('.alert-banner').remove()">×</button>
+  </div>
+</div>
+
+<!-- 31. PAGINATION -->
+<div id="pagination" class="sec-label">07 · Navigation</div>
+<div class="sec-name">Pagination</div>
+<div class="pad col" style="gap:20px;">
+  <div class="pagination">
+    <button class="page-btn disabled">← Prev</button>
+    <button class="page-btn active">1</button>
+    <button class="page-btn">2</button>
+    <button class="page-btn">3</button>
+    <span class="page-ellipsis">…</span>
+    <button class="page-btn">8</button>
+    <button class="page-btn">9</button>
+    <button class="page-btn">Next →</button>
+  </div>
+  <div class="pagination">
+    <button class="page-btn">← Prev</button>
+    <button class="page-btn">1</button>
+    <span class="page-ellipsis">…</span>
+    <button class="page-btn">4</button>
+    <button class="page-btn active">5</button>
+    <button class="page-btn">6</button>
+    <span class="page-ellipsis">…</span>
+    <button class="page-btn">12</button>
+    <button class="page-btn">Next →</button>
+  </div>
+</div>
+
+<!-- 32. CATEGORY FILTER -->
+<div id="cat-filter" class="sec-label">08 · Navigation</div>
+<div class="sec-name">Category Filter</div>
+<div class="pad">
+  <div class="cat-filter">
+    <div class="cat-pill active">All <span class="cat-count">24</span></div>
+    <div class="cat-pill">Municipal Finance <span class="cat-count">9</span></div>
+    <div class="cat-pill">Security <span class="cat-count">6</span></div>
+    <div class="cat-pill">Compliance <span class="cat-count">5</span></div>
+    <div class="cat-pill">Platform Updates <span class="cat-count">3</span></div>
+    <div class="cat-pill">Case Studies <span class="cat-count">4</span></div>
+  </div>
+</div>
+
+<!-- 06a. HERO CINEMA BLUE -->
+<div id="hero-blue" class="sec-label">09 · Heroes</div>
+<div class="sec-name">Hero — Cinema Blue</div>
+<div style="padding:0 48px 16px;">
+  <div class="hero-cinema noise" style="border-radius:2px;overflow:hidden;">
+    <div class="hero-cinema-bg"></div>
+    <div class="hero-cinema-dots"></div>
+    <div class="hero-cinema-lines"></div>
+    <div class="hero-cinema-content">
+      <div class="ep" style="margin-bottom:32px;"><span class="dot"></span>SOC 2 Certified · $15B+ Secured</div>
+      <div class="hero-title">
+        Secure and insure<br>
+        your <span class="italic grad">money</span><br>
+        <span class="outline">in motion.</span>
+      </div>
+      <p class="hero-sub">Identity verification, bank validation, and transaction-specific insurance — unified in one platform.</p>
+      <div class="hero-ctas">
+        <button class="btn btn-w btn-lg btn-arrow">Get Started Free <span class="arr" style="background:rgba(0,0,0,.08);">→</span></button>
+        <button class="btn btn-gw btn-lg">Watch Demo</button>
+      </div>
+    </div>
+    <div class="hero-cinema-right">
+      <div class="glass-card" style="animation-delay:.3s">
+        <div class="gc-label">Total Secured</div>
+        <div class="gc-value">$15.4B</div>
+        <div class="gc-sub">Across 48 states</div>
+        <div class="gc-badge">↑ 34% YoY</div>
+        <div class="gc-spark">
+          <div class="gc-bar" style="height:35%;animation-delay:.4s"></div>
+          <div class="gc-bar" style="height:50%;animation-delay:.48s"></div>
+          <div class="gc-bar" style="height:42%;animation-delay:.56s"></div>
+          <div class="gc-bar" style="height:68%;animation-delay:.64s"></div>
+          <div class="gc-bar" style="height:58%;animation-delay:.72s"></div>
+          <div class="gc-bar" style="height:80%;animation-delay:.80s"></div>
+          <div class="gc-bar hi" style="height:100%;animation-delay:.88s"></div>
+        </div>
+      </div>
+      <div class="glass-card blue-tinted" style="animation-delay:.5s">
+        <div class="gc-label">Avg. Verification</div>
+        <div class="gc-value">0.8<span style="font-size:20px;font-weight:400;">s</span></div>
+        <div class="gc-sub">Real-time identity layer</div>
+        <div style="margin-top:14px;">
+          <div style="background:rgba(255,255,255,.15);border-radius:2px;height:4px;overflow:hidden;">
+            <div style="background:var(--blue-lt);width:92%;height:100%;border-radius:2px;animation:fillBar 1.5s var(--ease) .8s both;"></div>
+          </div>
+          <div style="font-size:11px;color:rgba(255,255,255,.7);margin-top:6px;">92% faster than industry avg.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 06b. HERO EDITORIAL -->
+<div id="hero-editorial" class="sec-label">10 · Heroes</div>
+<div class="sec-name">Hero — Editorial Light</div>
+<div style="padding:0 48px 16px;">
+  <div class="hero-editorial" style="border-radius:2px;border:1px solid var(--border);overflow:hidden;">
+    <div class="hero-editorial-inner">
+      <div>
+        <div class="ep" style="margin-bottom:24px;"><span class="dot"></span>Trusted Infrastructure</div>
+        <h1 class="t-h1" style="margin-bottom:24px;">Secure every<br><em style="font-style:italic;color:var(--blue);">transaction.</em></h1>
+        <p class="t-lead" style="margin-bottom:40px;">Identity-verified. Bank-validated. Transaction-insured. The secure layer every dollar in motion deserves.</p>
+        <div class="hero-ctas">
+          <button class="btn btn-p btn-lg btn-arrow">Get Started Free <span class="arr">→</span></button>
+          <button class="btn btn-g btn-lg">See How It Works</button>
+        </div>
+        <div style="display:flex;align-items:center;gap:16px;margin-top:44px;padding-top:32px;border-top:1px solid var(--border);">
+          <div style="display:flex;">
+            <div style="width:28px;height:28px;border-radius:2px;background:linear-gradient(135deg,#145DD0,#28A4DD);border:2px solid #fff;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:#fff;">SH</div>
+            <div style="width:28px;height:28px;border-radius:2px;background:linear-gradient(135deg,#0B3580,#145DD0);border:2px solid #fff;margin-left:-8px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:#fff;">MR</div>
+            <div style="width:28px;height:28px;border-radius:2px;background:linear-gradient(135deg,#28A4DD,#6BC5F5);border:2px solid #fff;margin-left:-8px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:#fff;">JC</div>
+          </div>
+          <div style="font-size:13px;color:var(--slate);"><strong style="color:var(--ink);">500+</strong> issuers trust Basefund</div>
+          <div style="font-size:13px;color:#F5A623;display:flex;gap:2px;align-items:center;"><img src="icons/star-01.svg" style="width:13px;height:13px;display:inline-block;vertical-align:middle;filter:invert(72%) sepia(90%) saturate(500%) hue-rotate(5deg) brightness(110%);" alt=""><img src="icons/star-01.svg" style="width:13px;height:13px;display:inline-block;vertical-align:middle;filter:invert(72%) sepia(90%) saturate(500%) hue-rotate(5deg) brightness(110%);" alt=""><img src="icons/star-01.svg" style="width:13px;height:13px;display:inline-block;vertical-align:middle;filter:invert(72%) sepia(90%) saturate(500%) hue-rotate(5deg) brightness(110%);" alt=""><img src="icons/star-01.svg" style="width:13px;height:13px;display:inline-block;vertical-align:middle;filter:invert(72%) sepia(90%) saturate(500%) hue-rotate(5deg) brightness(110%);" alt=""><img src="icons/star-01.svg" style="width:13px;height:13px;display:inline-block;vertical-align:middle;filter:invert(72%) sepia(90%) saturate(500%) hue-rotate(5deg) brightness(110%);" alt=""></div>
+        </div>
+      </div>
+      <div class="hero-bento">
+        <div class="bento-tile dark" style="grid-column:span 2;">
+          <div class="bento-label">Total Secured This Quarter</div>
+          <div class="bento-number">$4.8B</div>
+          <div style="display:flex;align-items:flex-end;gap:4px;height:48px;margin-top:16px;">
+            <div style="flex:1;border-radius:2px 2px 0 0;background:rgba(255,255,255,.15);height:40%;"></div>
+            <div style="flex:1;border-radius:2px 2px 0 0;background:rgba(255,255,255,.18);height:55%;"></div>
+            <div style="flex:1;border-radius:2px 2px 0 0;background:rgba(255,255,255,.22);height:45%;"></div>
+            <div style="flex:1;border-radius:2px 2px 0 0;background:rgba(255,255,255,.28);height:72%;"></div>
+            <div style="flex:1;border-radius:2px 2px 0 0;background:rgba(40,164,221,.5);height:60%;"></div>
+            <div style="flex:1;border-radius:2px 2px 0 0;background:rgba(40,164,221,.7);height:88%;"></div>
+            <div style="flex:1;border-radius:2px 2px 0 0;background:linear-gradient(180deg,var(--blue-lt),var(--blue));height:100%;"></div>
+          </div>
+        </div>
+        <div class="bento-tile"><div class="bento-label">Verification Time</div><div class="bento-number">0.8s</div><div class="bento-desc">Real-time KYB/KYC</div></div>
+        <div class="bento-tile blue noise-inner"><div class="bento-label">Transactions Today</div><div class="bento-number">342</div><div class="bento-desc">All verified &amp; insured</div></div>
+        <div class="bento-tile span2" style="padding:20px;">
+          <div class="bento-label" style="margin-bottom:12px;">Live Verification Status</div>
+          <div class="verify-steps">
+            <div class="verify-step"><div class="vs-icon vs-done"><img src="icons/check.svg" style="width:12px;height:12px;display:inline-block;vertical-align:middle;" alt=""></div><div class="vs-name">Identity Confirmed</div><div class="status-live" style="margin-left:auto;font-size:10px;padding:3px 10px;">Done</div></div>
+            <div class="verify-step"><div class="vs-icon vs-active"><img src="icons/refresh-cw-01.svg" style="width:12px;height:12px;display:inline-block;vertical-align:middle;" alt=""></div><div class="vs-name">Bank Account Validation</div><span class="badge bd-blue" style="margin-left:auto;font-size:9px;padding:3px 9px;">Running</span></div>
+            <div class="verify-step" style="opacity:.5;"><div class="vs-icon vs-wait"><img src="icons/clock.svg" style="width:12px;height:12px;display:inline-block;vertical-align:middle;" alt=""></div><div class="vs-name">Insurance Binding</div><span class="badge bd-slate" style="margin-left:auto;font-size:9px;padding:3px 9px;">Pending</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 06c. HERO GRADIENT -->
+<div id="hero-gradient" class="sec-label">11 · Heroes</div>
+<div class="sec-name">Hero — Gradient (Secondary Pages)</div>
+<div style="padding:0 48px 56px;">
+  <div class="hero-gradient noise" style="border-radius:2px;border:1px solid var(--border);overflow:hidden;">
+    <div class="hero-gradient-bg"></div>
+    <div class="hero-gradient-content">
+      <div class="ep" style="margin-bottom:24px;"><span class="dot"></span>Security &amp; Compliance</div>
+      <h1 class="t-h1" style="margin-bottom:24px;">Enterprise-grade<br><em style="font-style:italic;color:var(--blue);">protection.</em></h1>
+      <p class="t-lead" style="margin:0 auto 40px;text-align:center;">SOC 2 Type II certified, GLBA compliant, and built from the ground up for regulated financial transactions.</p>
+      <div class="hero-ctas" style="justify-content:center;">
+        <button class="btn btn-p btn-lg btn-arrow">View Security Overview <span class="arr">→</span></button>
+        <button class="btn btn-g btn-lg">Download Report</button>
+      </div>
+      <div style="display:flex;justify-content:center;gap:24px;margin-top:40px;padding-top:32px;border-top:1px solid var(--border);">
+        <div style="text-align:center;"><div style="font-family:var(--f-head);font-size:28px;font-weight:700;color:var(--ink);letter-spacing:-.03em;">99.9%</div><div style="font-size:12px;color:var(--slate);margin-top:2px;">Uptime SLA</div></div>
+        <div style="width:1px;background:var(--border);"></div>
+        <div style="text-align:center;"><div style="font-family:var(--f-head);font-size:28px;font-weight:700;color:var(--ink);letter-spacing:-.03em;">AES-256</div><div style="font-size:12px;color:var(--slate);margin-top:2px;">Encryption</div></div>
+        <div style="width:1px;background:var(--border);"></div>
+        <div style="text-align:center;"><div style="font-family:var(--f-head);font-size:28px;font-weight:700;color:var(--ink);letter-spacing:-.03em;">SOC 2</div><div style="font-size:12px;color:var(--slate);margin-top:2px;">Type II Certified</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 07. LOGO MARQUEE -->
+<div id="logo-marquee" class="sec-label">12 · Trust & Social</div>
+<div class="sec-name">Logo Marquee</div>
+<div style="padding-bottom:56px;">
+  <div class="marquee">
+    <div class="marquee-t">
+      <div class="marq-item"><div class="marq-item-i"><img src="icons/building-01.svg" style="width:16px;height:16px;display:inline-block;vertical-align:middle;" alt=""></div>State of Texas</div>
+      <div class="marq-item"><div class="marq-item-i"><img src="icons/bar-chart-01.svg" style="width:16px;height:16px;display:inline-block;vertical-align:middle;" alt=""></div>Raymond James</div>
+      <div class="marq-item"><div class="marq-item-i"><img src="icons/scales-01.svg" style="width:16px;height:16px;display:inline-block;vertical-align:middle;" alt=""></div>Vinson &amp; Elkins</div>
+      <div class="marq-item"><div class="marq-item-i"><img src="icons/building-04.svg" style="width:16px;height:16px;display:inline-block;vertical-align:middle;" alt=""></div>City of Dallas</div>
+      <div class="marq-item"><div class="marq-item-i"><img src="icons/graduation-hat-01.svg" style="width:16px;height:16px;display:inline-block;vertical-align:middle;" alt=""></div>Dallas ISD</div>
+      <div class="marq-item"><div class="marq-item-i"><img src="icons/bank.svg" style="width:16px;height:16px;display:inline-block;vertical-align:middle;" alt=""></div>Frost Bank</div>
+      <div class="marq-item"><div class="marq-item-i"><img src="icons/bar-chart-01.svg" style="width:16px;height:16px;display:inline-block;vertical-align:middle;" alt=""></div>Hilltop Securities</div>
+      <div class="marq-item"><div class="marq-item-i"><img src="icons/key-01.svg" style="width:16px;height:16px;display:inline-block;vertical-align:middle;" alt=""></div>Norton Rose Fulbright</div>
+      <div class="marq-item"><div class="marq-item-i"><img src="icons/building-01.svg" style="width:16px;height:16px;display:inline-block;vertical-align:middle;" alt=""></div>State of Texas</div>
+      <div class="marq-item"><div class="marq-item-i"><img src="icons/bar-chart-01.svg" style="width:16px;height:16px;display:inline-block;vertical-align:middle;" alt=""></div>Raymond James</div>
+      <div class="marq-item"><div class="marq-item-i"><img src="icons/scales-01.svg" style="width:16px;height:16px;display:inline-block;vertical-align:middle;" alt=""></div>Vinson &amp; Elkins</div>
+      <div class="marq-item"><div class="marq-item-i"><img src="icons/building-04.svg" style="width:16px;height:16px;display:inline-block;vertical-align:middle;" alt=""></div>City of Dallas</div>
+      <div class="marq-item"><div class="marq-item-i"><img src="icons/graduation-hat-01.svg" style="width:16px;height:16px;display:inline-block;vertical-align:middle;" alt=""></div>Dallas ISD</div>
+      <div class="marq-item"><div class="marq-item-i"><img src="icons/bank.svg" style="width:16px;height:16px;display:inline-block;vertical-align:middle;" alt=""></div>Frost Bank</div>
+      <div class="marq-item"><div class="marq-item-i"><img src="icons/bar-chart-01.svg" style="width:16px;height:16px;display:inline-block;vertical-align:middle;" alt=""></div>Hilltop Securities</div>
+      <div class="marq-item"><div class="marq-item-i"><img src="icons/key-01.svg" style="width:16px;height:16px;display:inline-block;vertical-align:middle;" alt=""></div>Norton Rose Fulbright</div>
+    </div>
+  </div>
+</div>
+
+<!-- 08. LOGO STRIP -->
+<div id="logo-strip" class="sec-label">13 · Trust & Social</div>
+<div class="sec-name">Logo Strip — Static, Grayscale → Color on Hover</div>
+<div class="pad">
+  <div class="logo-strip">
+    <div class="logo-strip-item"><div class="logo-strip-item-icon"><img src="icons/building-01.svg" style="width:16px;height:16px;display:inline-block;vertical-align:middle;" alt=""></div>State of Texas</div>
+    <div class="logo-strip-item"><div class="logo-strip-item-icon"><img src="icons/bar-chart-01.svg" style="width:16px;height:16px;display:inline-block;vertical-align:middle;" alt=""></div>Raymond James</div>
+    <div class="logo-strip-item"><div class="logo-strip-item-icon"><img src="icons/scales-01.svg" style="width:16px;height:16px;display:inline-block;vertical-align:middle;" alt=""></div>Vinson &amp; Elkins</div>
+    <div class="logo-strip-item"><div class="logo-strip-item-icon"><img src="icons/building-04.svg" style="width:16px;height:16px;display:inline-block;vertical-align:middle;" alt=""></div>City of Dallas</div>
+    <div class="logo-strip-item"><div class="logo-strip-item-icon"><img src="icons/graduation-hat-01.svg" style="width:16px;height:16px;display:inline-block;vertical-align:middle;" alt=""></div>Dallas ISD</div>
+    <div class="logo-strip-item"><div class="logo-strip-item-icon"><img src="icons/bank.svg" style="width:16px;height:16px;display:inline-block;vertical-align:middle;" alt=""></div>Frost Bank</div>
+    <div class="logo-strip-item"><div class="logo-strip-item-icon"><img src="icons/bar-chart-01.svg" style="width:16px;height:16px;display:inline-block;vertical-align:middle;" alt=""></div>Hilltop Securities</div>
+  </div>
+</div>
+
+<!-- 09. STATS STRIP -->
+<div id="stats-strip" class="sec-label">14 · Trust & Social</div>
+<div class="sec-name">Stats Strip</div>
+<div class="pad">
+  <div class="stats-strip">
+    <div class="stat-cell"><div class="stat-n">$15<sup>B+</sup></div><div class="stat-l">Transactions Secured</div><div class="stat-d">↑ 34% YoY</div></div>
+    <div class="stat-cell"><div class="stat-n">0.8<sup>s</sup></div><div class="stat-l">Avg. Verification Time</div><div class="stat-d">2× faster than 2023</div></div>
+    <div class="stat-cell"><div class="stat-n">500<sup>+</sup></div><div class="stat-l">Issuers &amp; Institutions</div><div class="stat-d">↑ 120 this year</div></div>
+    <div class="stat-cell"><div class="stat-n">99.9<sup>%</sup></div><div class="stat-l">Platform Uptime SLA</div><div class="stat-d">Enterprise reliability</div></div>
+  </div>
+</div>
+
+<!-- 29. STAT ROW -->
+<div id="stat-row" class="sec-label">15 · Trust & Social</div>
+<div class="sec-name">Stat Row</div>
+<div class="pad">
+  <div class="stat-row">
+    <div class="sr-metric">
+      <div class="sr-num">$15B<sup style="font-size:.5em;vertical-align:.3em;">+</sup></div>
+      <div class="sr-label">Transactions Secured</div>
+      <div class="sr-trend">↑ 34% YoY</div>
+    </div>
+    <div class="sr-divider"></div>
+    <div class="sr-metric">
+      <div class="sr-num">0.8s</div>
+      <div class="sr-label">Avg. Verification Time</div>
+      <div class="sr-trend">↑ 2× faster</div>
+    </div>
+    <div class="sr-divider"></div>
+    <div class="sr-metric">
+      <div class="sr-num">500<sup style="font-size:.5em;vertical-align:.3em;">+</sup></div>
+      <div class="sr-label">Institutions Served</div>
+      <div class="sr-trend">↑ 120 this year</div>
+    </div>
+  </div>
+</div>
+
+<!-- 10. BENTO GRID -->
+<div id="bento" class="sec-label">16 · Features</div>
+<div class="sec-name">Bento Grid — 12 Column</div>
+<div class="pad">
+  <div class="bento-grid">
+    <div class="bg-tile c8 dark" style="min-height:280px;">
+      <div class="tile-circle tc-white"></div>
+      <div class="tile-tag">Platform</div>
+      <div class="tile-h" style="font-size:clamp(24px,3vw,38px);max-width:14ch;">The secure layer every transaction needs.</div>
+      <p class="tile-p" style="margin-top:auto;">Four interlocking capabilities: identity, validation, insurance, coordination.</p>
+      <button class="btn btn-gw btn-sm" style="margin-top:20px;align-self:flex-start;">Explore the Platform →</button>
+    </div>
+    <div class="bg-tile c4 blue noise-inner">
+      <div class="tile-circle tc-white"></div>
+      <div class="tile-tag">Transactions Secured</div>
+      <div class="tile-bignum">$15<sup>B+</sup></div>
+      <div class="tile-p" style="margin-top:12px;">Across 48 states, since 2021</div>
+    </div>
+    <div class="bg-tile c4">
+      <div class="tile-circle tc-blue"></div>
+      <div class="tile-tag">01 — Identity</div>
+      <div class="tile-h">Real-time KYB / KYC</div>
+      <p class="tile-p">Sub-second identity verification against authoritative government and financial data sources.</p>
+      <a href="#" style="font-size:13px;font-weight:700;color:var(--blue);margin-top:20px;display:inline-flex;gap:6px;align-items:center;">Learn more →</a>
+    </div>
+    <div class="bg-tile c4 blue-lt">
+      <div class="tile-circle tc-lt"></div>
+      <div class="tile-tag">02 — Validation</div>
+      <div class="tile-h">Bank Account Validation</div>
+      <p class="tile-p">Instantly confirm ownership, routing accuracy, and active status before a single dollar moves.</p>
+      <a href="#" style="font-size:13px;font-weight:700;color:var(--blue);margin-top:20px;display:inline-flex;gap:6px;align-items:center;">Learn more →</a>
+    </div>
+    <div class="bg-tile c4">
+      <div class="tile-tag">Platform Reliability</div>
+      <div class="tile-bignum" style="color:var(--blue);">99.9<sup style="font-size:.3em;color:var(--slate-lt);">%</sup></div>
+      <p class="tile-p" style="margin-top:12px;">SLA uptime. Enterprise-grade infrastructure.</p>
+    </div>
+    <div class="bg-tile c7 dark" style="flex-direction:row;gap:32px;align-items:center;">
+      <div style="flex:1;">
+        <div class="tile-tag">03 — Insurance</div>
+        <div class="tile-h">Transaction-Specific Insurance</div>
+        <p class="tile-p">Each deal is individually underwritten at initiation — precisely bound to your transaction.</p>
+        <button class="btn btn-gw btn-sm" style="margin-top:20px;">View Coverage Details →</button>
+      </div>
+      <svg width="110" height="130" viewBox="0 0 120 140" fill="none" style="flex-shrink:0;">
+        <path d="M60 8L16 28V72C16 96 36 118 60 132C84 118 104 96 104 72V28L60 8Z" fill="rgba(40,164,221,.2)" stroke="rgba(40,164,221,.45)" stroke-width="2"/>
+        <path d="M60 20L26 36V72C26 92 42 110 60 122C78 110 94 92 94 72V36L60 20Z" fill="rgba(20,93,208,.15)" stroke="rgba(40,164,221,.3)" stroke-width="1.5"/>
+        <path d="M42 70L54 82L78 58" stroke="#22C55E" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="60" cy="70" r="20" fill="rgba(20,93,208,.2)" stroke="rgba(40,164,221,.4)" stroke-width="1.5"/>
+      </svg>
+    </div>
+    <div class="bg-tile c5">
+      <div class="tile-tag">04 — Audit Trail</div>
+      <div class="tile-h">Tamper-Evident Ledger</div>
+      <p class="tile-p">Every event, verification, and authorization is time-stamped and immutable.</p>
+      <div style="margin-top:16px;display:flex;flex-direction:column;gap:6px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;background:var(--off);border-radius:2px;padding:8px 12px;font-size:12px;"><span style="font-weight:600;color:var(--ink);">Identity verified</span><span class="badge bd-green" style="font-size:9px;padding:2px 8px;"><img src="icons/check.svg" style="width:10px;height:10px;display:inline-block;vertical-align:middle;filter:invert(36%) sepia(94%) saturate(426%) hue-rotate(105deg) brightness(88%);" alt=""> Done</span></div>
+        <div style="display:flex;justify-content:space-between;align-items:center;background:var(--off);border-radius:2px;padding:8px 12px;font-size:12px;"><span style="font-weight:600;color:var(--ink);">Bank validated</span><span class="badge bd-green" style="font-size:9px;padding:2px 8px;"><img src="icons/check.svg" style="width:10px;height:10px;display:inline-block;vertical-align:middle;filter:invert(36%) sepia(94%) saturate(426%) hue-rotate(105deg) brightness(88%);" alt=""> Done</span></div>
+        <div style="display:flex;justify-content:space-between;align-items:center;background:var(--off);border-radius:2px;padding:8px 12px;font-size:12px;"><span style="font-weight:600;color:var(--ink);">Insurance bound</span><span class="badge bd-blue" style="font-size:9px;padding:2px 8px;">Active</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 11. PROCESS GRID -->
+<div id="process" class="sec-label">17 · Features</div>
+<div class="sec-name">Process Grid — Editorial 2-Column</div>
+<div class="pad">
+  <div class="process-editorial">
+    <div class="pe-left">
+      <div class="t-eyebrow" style="margin-bottom:16px;">How It Works</div>
+      <div class="t-h2" style="margin-bottom:20px;">Up and running in <em style="font-style:italic;color:var(--blue);">four steps.</em></div>
+      <p class="t-body" style="margin-bottom:32px;">No lengthy onboarding. Basefund gets you to secured transactions in hours, not weeks.</p>
+      <button class="btn btn-p">Start Today →</button>
+    </div>
+    <div class="pe-right">
+      <div class="pe-step"><div class="pe-num">01</div><div class="pe-title">Connect Your Org</div><div class="pe-desc">Submit entity info and authorize Basefund to verify against authoritative data sources.</div></div>
+      <div class="pe-step"><div class="pe-num">02</div><div class="pe-title">Validate Accounts</div><div class="pe-desc">Link bank accounts for real-time ownership and routing verification.</div></div>
+      <div class="pe-step" style="border-bottom:none;"><div class="pe-num">03</div><div class="pe-title">Initiate a Deal</div><div class="pe-desc">Create a transaction, invite counterparties, define terms. We coordinate everything.</div></div>
+      <div class="pe-step" style="border-bottom:none;border-right:none;"><div class="pe-num">04</div><div class="pe-title">Move Money</div><div class="pe-desc">Funds release only after every verification checkpoint clears — insured from initiation.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- 12. STEP FLOW -->
+<div id="step-flow" class="sec-label">18 · Features</div>
+<div class="sec-name">Step Flow — Horizontal 5-Step</div>
+<div class="pad">
+  <div class="step-flow">
+    <div class="sf-step">
+      <div class="sf-num"><img src="icons/building-01.svg" style="width:18px;height:18px;filter:brightness(0) invert(1);" alt=""></div>
+      <div class="sf-title">Connect Entity</div>
+      <div class="sf-desc">Submit your organization details for initial verification.</div>
+    </div>
+    <div class="sf-step">
+      <div class="sf-num"><img src="icons/fingerprint-01.svg" style="width:18px;height:18px;filter:brightness(0) invert(1);" alt=""></div>
+      <div class="sf-title">Verify Identity</div>
+      <div class="sf-desc">Real-time KYB/KYC against authoritative sources in under 1 second.</div>
+    </div>
+    <div class="sf-step">
+      <div class="sf-num"><img src="icons/bank.svg" style="width:18px;height:18px;filter:brightness(0) invert(1);" alt=""></div>
+      <div class="sf-title">Validate Accounts</div>
+      <div class="sf-desc">Confirm bank ownership, routing, and active status instantly.</div>
+    </div>
+    <div class="sf-step">
+      <div class="sf-num"><img src="icons/shield-01.svg" style="width:18px;height:18px;filter:brightness(0) invert(1);" alt=""></div>
+      <div class="sf-title">Bind Insurance</div>
+      <div class="sf-desc">Transaction-specific coverage underwritten at initiation.</div>
+    </div>
+    <div class="sf-step">
+      <div class="sf-num"><img src="icons/check-circle.svg" style="width:18px;height:18px;filter:brightness(0) invert(1);" alt=""></div>
+      <div class="sf-title">Move Funds</div>
+      <div class="sf-desc">Authorized, insured funds transfer with full audit trail.</div>
+    </div>
+  </div>
+</div>
+
+
+<!-- 13. PROBLEM STATEMENT -->
+<div id="problem" class="sec-label">19 · Features</div>
+<div class="sec-name">Problem Statement</div>
+<div class="pad">
+  <div class="problem-cards">
+    <div class="prob-card problem">
+      <div class="prob-icon"><img src="icons/alert-triangle.svg" style="width:20px;height:20px;display:inline-block;vertical-align:middle;" alt=""></div>
+      <div>
+        <div class="prob-label">The Problem</div>
+        <div class="prob-h">Wire fraud costs institutions $2B+ annually</div>
+        <div class="prob-p">Traditional wire transfers rely on email confirmations and manual verification — creating critical gaps that fraudsters exploit. One wrong routing number can drain millions before anyone notices.</div>
+      </div>
+    </div>
+    <div class="prob-card solution">
+      <div class="prob-icon"><img src="icons/check-circle.svg" style="width:20px;height:20px;display:inline-block;vertical-align:middle;" alt=""></div>
+      <div>
+        <div class="prob-label">The Solution</div>
+        <div class="prob-h">Real-time verification closes every gap</div>
+        <div class="prob-p">Automated KYB/KYC, instant bank validation, and transaction-specific insurance create a secure, auditable corridor for every dollar in motion.</div>
+      </div>
+    </div>
+    <div class="prob-card approach">
+      <div class="prob-icon"><img src="icons/shield-01.svg" style="width:20px;height:20px;display:inline-block;vertical-align:middle;" alt=""></div>
+      <div>
+        <div class="prob-label">The Basefund Approach</div>
+        <div class="prob-h">Four-layer protection, unified in one platform</div>
+        <div class="prob-p">Identity verification, bank validation, transaction insurance, and coordination work together from initiation to settlement — with a tamper-evident audit trail at every step.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 21. COMPARISON TABLE -->
+<div id="comparison" class="sec-label">20 · Features</div>
+<div class="sec-name">Comparison Table — With vs Without Basefund</div>
+<div class="pad">
+  <div class="comp-table">
+    <table>
+      <thead>
+        <tr>
+          <th>Capability</th>
+          <th>Without Basefund</th>
+          <th>With Basefund</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Identity Verification</td><td>Manual email/phone — hours to days</td><td><span class="comp-check"><img src="icons/check.svg" style="width:14px;height:14px;display:inline-block;vertical-align:middle;filter:invert(36%) sepia(94%) saturate(426%) hue-rotate(105deg) brightness(88%);" alt=""></span> Real-time KYB/KYC in &lt;1 second</td></tr>
+        <tr><td>Bank Account Validation</td><td>Rely on emailed routing info (unverified)</td><td><span class="comp-check"><img src="icons/check.svg" style="width:14px;height:14px;display:inline-block;vertical-align:middle;filter:invert(36%) sepia(94%) saturate(426%) hue-rotate(105deg) brightness(88%);" alt=""></span> Instant ownership &amp; routing confirmation</td></tr>
+        <tr><td>Transaction Insurance</td><td>Blanket cyber policy (may not cover wire fraud)</td><td><span class="comp-check"><img src="icons/check.svg" style="width:14px;height:14px;display:inline-block;vertical-align:middle;filter:invert(36%) sepia(94%) saturate(426%) hue-rotate(105deg) brightness(88%);" alt=""></span> Per-transaction coverage, bound at initiation</td></tr>
+        <tr><td>Multi-Party Coordination</td><td>Email chains, spreadsheets, phone calls</td><td><span class="comp-check"><img src="icons/check.svg" style="width:14px;height:14px;display:inline-block;vertical-align:middle;filter:invert(36%) sepia(94%) saturate(426%) hue-rotate(105deg) brightness(88%);" alt=""></span> Unified workflow with role-based access</td></tr>
+        <tr><td>Fraud Detection</td><td>Discovered after the loss</td><td><span class="comp-check"><img src="icons/check.svg" style="width:14px;height:14px;display:inline-block;vertical-align:middle;filter:invert(36%) sepia(94%) saturate(426%) hue-rotate(105deg) brightness(88%);" alt=""></span> 24/7 anomaly detection, pre-authorization</td></tr>
+        <tr><td>Audit Trail</td><td>Manual logs assembled during compliance review</td><td><span class="comp-check"><img src="icons/check.svg" style="width:14px;height:14px;display:inline-block;vertical-align:middle;filter:invert(36%) sepia(94%) saturate(426%) hue-rotate(105deg) brightness(88%);" alt=""></span> Tamper-evident, auto-generated, searchable</td></tr>
+        <tr><td>Wire Instruction Verification</td><td>Call-back procedures (inconsistently followed)</td><td><span class="comp-check"><img src="icons/check.svg" style="width:14px;height:14px;display:inline-block;vertical-align:middle;filter:invert(36%) sepia(94%) saturate(426%) hue-rotate(105deg) brightness(88%);" alt=""></span> Cryptographic verification, every time</td></tr>
+        <tr><td>Closing Speed</td><td>3–5 business days for verification</td><td><span class="comp-check"><img src="icons/check.svg" style="width:14px;height:14px;display:inline-block;vertical-align:middle;filter:invert(36%) sepia(94%) saturate(426%) hue-rotate(105deg) brightness(88%);" alt=""></span> Same-day verified closing</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- 33. CHART DISPLAY -->
+<div id="chart" class="sec-label">21 · Features</div>
+<div class="sec-name">Chart Display — Pure CSS</div>
+<div class="pad row" style="gap:24px;flex-wrap:wrap;align-items:flex-start;">
+  <div class="chart-wrap" style="flex:1;min-width:400px;">
+    <div class="chart-title">Transactions Secured by Quarter</div>
+    <div class="chart-sub">FY 2025 · In billions USD</div>
+    <div class="bar-chart">
+      <div class="bar-col">
+        <div class="bar-val">$2.8B</div>
+        <div class="bar-fill" style="height:52%;"></div>
+      </div>
+      <div class="bar-col">
+        <div class="bar-val">$3.2B</div>
+        <div class="bar-fill" style="height:62%;"></div>
+      </div>
+      <div class="bar-col">
+        <div class="bar-val">$4.1B</div>
+        <div class="bar-fill" style="height:78%;background:linear-gradient(180deg,var(--blue-lt),var(--blue));"></div>
+      </div>
+      <div class="bar-col">
+        <div class="bar-val">$5.3B</div>
+        <div class="bar-fill" style="height:100%;background:linear-gradient(180deg,#28A4DD,#0E4399);"></div>
+      </div>
+    </div>
+    <div style="display:flex;gap:12px;margin-top:8px;">
+      <div class="bar-label" style="flex:1;text-align:center;">Q1</div>
+      <div class="bar-label" style="flex:1;text-align:center;">Q2</div>
+      <div class="bar-label" style="flex:1;text-align:center;">Q3</div>
+      <div class="bar-label" style="flex:1;text-align:center;">Q4</div>
+    </div>
+  </div>
+  <div class="chart-wrap" style="flex:1;min-width:400px;">
+    <div class="chart-title">Verification Time (ms) — 30-Day Trend</div>
+    <div class="chart-sub">Average response time across all verification requests</div>
+    <div class="line-chart">
+      <svg viewBox="0 0 400 140" preserveAspectRatio="none">
+        <defs>
+          <linearGradient id="lineGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="rgba(20,93,208,.18)"/>
+            <stop offset="100%" stop-color="rgba(20,93,208,0)"/>
+          </linearGradient>
+        </defs>
+        <path d="M0,110 C20,108 40,100 60,95 C80,90 100,88 120,82 C140,76 160,70 180,68 C200,66 220,62 240,58 C260,54 280,52 300,48 C320,44 340,42 360,38 C380,34 400,30 400,28" fill="none" stroke="var(--blue)" stroke-width="2.5" stroke-linecap="round"/>
+        <path d="M0,110 C20,108 40,100 60,95 C80,90 100,88 120,82 C140,76 160,70 180,68 C200,66 220,62 240,58 C260,54 280,52 300,48 C320,44 340,42 360,38 C380,34 400,30 400,28 L400,140 L0,140 Z" fill="url(#lineGrad)"/>
+        <circle cx="400" cy="28" r="4" fill="var(--accent)"/>
+        <circle cx="240" cy="58" r="3" fill="var(--blue-lt)"/>
+        <circle cx="120" cy="82" r="3" fill="var(--blue-lt)"/>
+        <circle cx="0" cy="110" r="3" fill="var(--blue-lt)"/>
+        <text x="396" y="22" font-size="10" fill="var(--blue)" font-family="Inter,sans-serif" font-weight="700" text-anchor="middle">0.8s</text>
+        <text x="0" y="130" font-size="9" fill="#8B96AE" font-family="Inter,sans-serif">Day 1</text>
+        <text x="380" y="130" font-size="9" fill="#8B96AE" font-family="Inter,sans-serif" text-anchor="end">Day 30</text>
+      </svg>
+    </div>
+    <div style="display:flex;gap:16px;margin-top:8px;">
+      <div style="display:flex;align-items:center;gap:6px;font-size:11px;color:var(--slate-lt);"><div style="width:12px;height:2px;background:var(--blue);border-radius:2px;"></div>Avg. Verification (ms)</div>
+    </div>
+  </div>
+</div>
+
+<!-- 47. MINI CARDS GRID -->
+<div id="mini-cards" class="sec-label">22 · Features</div>
+<div class="sec-name">Mini Cards Grid</div>
+<div class="pad col" style="gap:24px;">
+  <p class="t-body">A 2×2 grid of compact cards, each with a colored icon, title, description, and optional italic note or link. Used inside Feature Detail sections and anywhere a small feature matrix is needed.</p>
+  <div class="mini-cards-wrap">
+    <div class="mini-card">
+      <div class="mini-card-icon mci-green"><img src="icons/arrow-right.svg" style="width:20px;height:20px;display:inline-block;vertical-align:middle;filter:brightness(0) invert(1);" alt=""></div>
+      <h4>One-Time Transactions</h4>
+      <p>Single transactions with new participants</p>
+      <em>Framework establishes trust from the start</em>
+    </div>
+    <div class="mini-card">
+      <div class="mini-card-icon mci-blue"><img src="icons/refresh-cw-01.svg" style="width:20px;height:20px;display:inline-block;vertical-align:middle;filter:brightness(0) invert(1);" alt=""></div>
+      <h4>Ongoing Transactions</h4>
+      <p>Repeat business with established partners</p>
+      <em>Framework builds on verified relationships</em>
+    </div>
+    <div class="mini-card">
+      <div class="mini-card-icon mci-amber"><img src="icons/reverse-left.svg" style="width:20px;height:20px;display:inline-block;vertical-align:middle;filter:brightness(0) invert(1);" alt=""></div>
+      <h4>Transfers</h4>
+      <p>Transactions between accounts you control</p>
+      <em>Framework prevents social engineering</em>
+    </div>
+    <div class="mini-card">
+      <div class="mini-card-icon mci-slate"><img src="icons/arrow-block-right.svg" style="width:20px;height:20px;display:inline-block;vertical-align:middle;filter:brightness(0) invert(1);" alt=""></div>
+      <h4>Secure Closings</h4>
+      <p>Complex multi-party transactions</p>
+      <a href="#">Learn more about Secure Closings →</a>
+    </div>
+  </div>
+  <div class="t-caption" style="color:var(--slate-lt);">Classes: <code>.mini-cards-wrap</code> · <code>.mini-card</code> · <code>.mini-card-icon.mci-{green|blue|amber|slate}</code> — Icons use <code>filter:brightness(0) invert(1)</code> to render white on colored backgrounds.</div>
+</div>
+
+<!-- 48. STAGE LIST -->
+<div id="stage-list" class="sec-label">23 · Features</div>
+<div class="sec-name">Stage List</div>
+<div class="pad col" style="gap:24px;">
+  <p class="t-body">A vertical list of named stages with colored icon circles, a stage name, and a short description aligned to the right. Used to communicate workflow states such as Draft → Active → Closed → Archived.</p>
+  <div class="stage-list-wrap">
+    <div class="fd-stage">
+      <div class="fd-stage-icon si-slate"><img src="icons/pencil-01.svg" style="width:18px;height:18px;display:inline-block;vertical-align:middle;filter:brightness(0) saturate(0) opacity(0.6);" alt=""></div>
+      <div class="fd-stage-name">Draft</div>
+      <div class="fd-stage-desc">Work ahead and schedule transactions</div>
+    </div>
+    <div class="fd-stage">
+      <div class="fd-stage-icon si-blue"><img src="icons/zap.svg" style="width:18px;height:18px;display:inline-block;vertical-align:middle;filter:brightness(0) saturate(100%) invert(24%) sepia(98%) saturate(757%) hue-rotate(196deg) brightness(94%);" alt=""></div>
+      <div class="fd-stage-name">Active</div>
+      <div class="fd-stage-desc">Open transactions with invited participants</div>
+    </div>
+    <div class="fd-stage">
+      <div class="fd-stage-icon si-slate"><img src="icons/lock-01.svg" style="width:18px;height:18px;display:inline-block;vertical-align:middle;filter:brightness(0) saturate(0) opacity(0.6);" alt=""></div>
+      <div class="fd-stage-name">Closed</div>
+      <div class="fd-stage-desc">Transaction complete, no action needed</div>
+    </div>
+    <div class="fd-stage">
+      <div class="fd-stage-icon si-green"><img src="icons/package.svg" style="width:18px;height:18px;display:inline-block;vertical-align:middle;filter:brightness(0) saturate(100%) invert(30%) sepia(60%) saturate(600%) hue-rotate(113deg) brightness(88%);" alt=""></div>
+      <div class="fd-stage-name">Archived</div>
+      <div class="fd-stage-desc">Transaction foldered for future reference</div>
+    </div>
+  </div>
+  <div class="t-caption" style="color:var(--slate-lt);">Classes: <code>.stage-list-wrap</code> · <code>.fd-stage</code> · <code>.fd-stage-icon.si-{blue|green|slate}</code> · <code>.fd-stage-name</code> · <code>.fd-stage-desc</code> — Wrap in <code>.stage-list-wrap</code> for the polished card treatment.</div>
+</div>
+
+<!-- 49. BENEFIT CHIPS -->
+<div id="benefit-chips" class="sec-label">24 · Features</div>
+<div class="sec-name">Benefit Chips</div>
+<div class="pad col" style="gap:24px;">
+  <p class="t-body">A 1×3 row of light rounded chips, each stating a concise benefit. Optionally include an icon and label. Used inside Feature Detail sections to summarize key advantages before a stage list or visual.</p>
+  <div class="benefit-chips-wrap">
+    <div class="benefit-chip">
+      <div class="benefit-chip-icon"><img src="icons/check.svg" style="width:18px;height:18px;display:inline-block;vertical-align:middle;filter:brightness(0) saturate(100%) invert(24%) sepia(98%) saturate(757%) hue-rotate(196deg) brightness(94%);" alt=""></div>
+      <div class="benefit-chip-label">Shared Visibility</div>
+      Participants see the same statuses
+    </div>
+    <div class="benefit-chip">
+      <div class="benefit-chip-icon"><img src="icons/lock-01.svg" style="width:18px;height:18px;display:inline-block;vertical-align:middle;filter:brightness(0) saturate(100%) invert(24%) sepia(98%) saturate(757%) hue-rotate(196deg) brightness(94%);" alt=""></div>
+      <div class="benefit-chip-label">Security First</div>
+      Security completed before money moves
+    </div>
+    <div class="benefit-chip">
+      <div class="benefit-chip-icon"><img src="icons/zap.svg" style="width:18px;height:18px;display:inline-block;vertical-align:middle;filter:brightness(0) saturate(100%) invert(24%) sepia(98%) saturate(757%) hue-rotate(196deg) brightness(94%);" alt=""></div>
+      <div class="benefit-chip-label">No Surprises</div>
+      No last-minute scrambles or surprises
+    </div>
+  </div>
+  <div class="t-caption" style="color:var(--slate-lt);">Classes: <code>.benefit-chips-wrap</code> · <code>.benefit-chip</code> · <code>.benefit-chip-icon</code> · <code>.benefit-chip-label</code> — The minimal variant (text only, no icon/label) uses <code>.fd-chips</code> / <code>.fd-chip</code> inline within Feature Detail.</div>
+</div>
+
+<!-- 16. TESTIMONIALS -->
+<div id="testimonials" class="sec-label">25 · Social Proof</div>
+<div class="sec-name">Testimonials</div>
+<div class="pad row" style="gap:20px;flex-wrap:wrap;align-items:flex-start;">
+  <div class="testimonial-feature noise">
+    <div class="tf-bg"></div>
+    <span class="tf-quote-mark">"</span>
+    <div class="tf-quote">Basefund eliminated what used to be a 3-day verification process. Our bond proceeds moved the same afternoon.</div>
+    <div class="tf-author">
+      <div class="tf-avatar">SH</div>
+      <div><div class="tf-name">Sarah Hendricks</div><div class="tf-title">Finance Director, City of Plano</div></div>
+      <div style="margin-left:auto;color:#F5A623;display:flex;gap:2px;align-items:center;"><img src="icons/star-01.svg" style="width:16px;height:16px;display:inline-block;vertical-align:middle;filter:invert(72%) sepia(90%) saturate(500%) hue-rotate(5deg) brightness(110%);" alt=""><img src="icons/star-01.svg" style="width:16px;height:16px;display:inline-block;vertical-align:middle;filter:invert(72%) sepia(90%) saturate(500%) hue-rotate(5deg) brightness(110%);" alt=""><img src="icons/star-01.svg" style="width:16px;height:16px;display:inline-block;vertical-align:middle;filter:invert(72%) sepia(90%) saturate(500%) hue-rotate(5deg) brightness(110%);" alt=""><img src="icons/star-01.svg" style="width:16px;height:16px;display:inline-block;vertical-align:middle;filter:invert(72%) sepia(90%) saturate(500%) hue-rotate(5deg) brightness(110%);" alt=""><img src="icons/star-01.svg" style="width:16px;height:16px;display:inline-block;vertical-align:middle;filter:invert(72%) sepia(90%) saturate(500%) hue-rotate(5deg) brightness(110%);" alt=""></div>
+    </div>
+  </div>
+  <div class="col" style="gap:16px;">
+    <div class="testimonial-card-sm">
+      <div class="tc-stars" style="display:flex;gap:2px;"><img src="icons/star-01.svg" style="width:13px;height:13px;display:inline-block;vertical-align:middle;filter:invert(72%) sepia(90%) saturate(500%) hue-rotate(5deg) brightness(110%);" alt=""><img src="icons/star-01.svg" style="width:13px;height:13px;display:inline-block;vertical-align:middle;filter:invert(72%) sepia(90%) saturate(500%) hue-rotate(5deg) brightness(110%);" alt=""><img src="icons/star-01.svg" style="width:13px;height:13px;display:inline-block;vertical-align:middle;filter:invert(72%) sepia(90%) saturate(500%) hue-rotate(5deg) brightness(110%);" alt=""><img src="icons/star-01.svg" style="width:13px;height:13px;display:inline-block;vertical-align:middle;filter:invert(72%) sepia(90%) saturate(500%) hue-rotate(5deg) brightness(110%);" alt=""><img src="icons/star-01.svg" style="width:13px;height:13px;display:inline-block;vertical-align:middle;filter:invert(72%) sepia(90%) saturate(500%) hue-rotate(5deg) brightness(110%);" alt=""></div>
+      <div class="tc-quote">The audit trail alone saved us weeks during our annual compliance review.</div>
+      <div class="tc-author"><div class="tc-av" style="background:linear-gradient(135deg,var(--blue),var(--blue-lt));">MR</div><div><div class="tc-n">Marcus Reid</div><div class="tc-t">Bond Counsel, Vinson &amp; Elkins</div></div></div>
+    </div>
+    <div class="testimonial-card-sm">
+      <div class="tc-stars" style="display:flex;gap:2px;"><img src="icons/star-01.svg" style="width:13px;height:13px;display:inline-block;vertical-align:middle;filter:invert(72%) sepia(90%) saturate(500%) hue-rotate(5deg) brightness(110%);" alt=""><img src="icons/star-01.svg" style="width:13px;height:13px;display:inline-block;vertical-align:middle;filter:invert(72%) sepia(90%) saturate(500%) hue-rotate(5deg) brightness(110%);" alt=""><img src="icons/star-01.svg" style="width:13px;height:13px;display:inline-block;vertical-align:middle;filter:invert(72%) sepia(90%) saturate(500%) hue-rotate(5deg) brightness(110%);" alt=""><img src="icons/star-01.svg" style="width:13px;height:13px;display:inline-block;vertical-align:middle;filter:invert(72%) sepia(90%) saturate(500%) hue-rotate(5deg) brightness(110%);" alt=""><img src="icons/star-01.svg" style="width:13px;height:13px;display:inline-block;vertical-align:middle;filter:invert(72%) sepia(90%) saturate(500%) hue-rotate(5deg) brightness(110%);" alt=""></div>
+      <div class="tc-quote">The identity layer gave us confidence we'd never had in a wire transfer before.</div>
+      <div class="tc-author"><div class="tc-av" style="background:linear-gradient(135deg,#0B3580,var(--blue));">JC</div><div><div class="tc-n">Jennifer Calvert</div><div class="tc-t">MD, Raymond James Public Finance</div></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- 17. PERSONA CARDS -->
+<div id="persona" class="sec-label">26 · Social Proof</div>
+<div class="sec-name">Persona Cards</div>
+<div class="pad">
+  <div class="persona-grid">
+    <div class="persona-card">
+      <div class="persona-icon noise"><img src="icons/building-01.svg" style="width:24px;height:24px;display:inline-block;vertical-align:middle;filter:invert(1);" alt=""></div>
+      <div class="persona-title">Municipal Issuers</div>
+      <div class="persona-desc">Cities and counties managing bond proceeds need airtight verification before funds move. Basefund handles the identity layer automatically.</div>
+    </div>
+    <div class="persona-card">
+      <div class="persona-icon noise"><img src="icons/bar-chart-01.svg" style="width:24px;height:24px;display:inline-block;vertical-align:middle;filter:invert(1);" alt=""></div>
+      <div class="persona-title">Underwriters</div>
+      <div class="persona-desc">Investment banks coordinating multi-party bond closings rely on Basefund to verify every participant and authorize disbursements in real time.</div>
+    </div>
+    <div class="persona-card">
+      <div class="persona-icon noise"><img src="icons/scales-01.svg" style="width:24px;height:24px;display:inline-block;vertical-align:middle;filter:invert(1);" alt=""></div>
+      <div class="persona-title">Bond Counsel</div>
+      <div class="persona-desc">Legal teams need a tamper-evident record of every verification step. Basefund's audit trail satisfies compliance requirements automatically.</div>
+    </div>
+    <div class="persona-card">
+      <div class="persona-icon noise"><img src="icons/building-01.svg" style="width:24px;height:24px;display:inline-block;vertical-align:middle;filter:invert(1);" alt=""></div>
+      <div class="persona-title">Escrow Agents</div>
+      <div class="persona-desc">Escrow and trust companies coordinate fund releases for complex transactions. Basefund ensures every release condition is verified before authorization.</div>
+    </div>
+    <div class="persona-card">
+      <div class="persona-icon noise"><img src="icons/bank.svg" style="width:24px;height:24px;display:inline-block;vertical-align:middle;filter:invert(1);" alt=""></div>
+      <div class="persona-title">Financial Institutions</div>
+      <div class="persona-desc">Banks processing large institutional transfers use Basefund's validation layer to confirm counterparty identity and account ownership instantly.</div>
+    </div>
+    <div class="persona-card">
+      <div class="persona-icon noise"><img src="icons/shield-01.svg" style="width:24px;height:24px;display:inline-block;vertical-align:middle;filter:invert(1);" alt=""></div>
+      <div class="persona-title">Insurance Partners</div>
+      <div class="persona-desc">Underwriters providing transaction-specific coverage integrate with Basefund's real-time data feed to bind policies at deal initiation.</div>
+    </div>
+  </div>
+</div>
+
+<!-- 19. TEAM CARDS -->
+<div id="team" class="sec-label">27 · Social Proof</div>
+<div class="sec-name">Team Cards</div>
+<div class="pad">
+  <div class="team-grid">
+    <div class="team-card">
+      <div class="team-photo"><img src="icons/user-01.svg" style="width:30px;height:30px;display:inline-block;vertical-align:middle;opacity:0.5;" alt=""></div>
+      <div class="team-name">Daniel Greer</div>
+      <div class="team-role">CEO &amp; Co-Founder</div>
+      <div class="team-li">in</div>
+    </div>
+    <div class="team-card">
+      <div class="team-photo"><img src="icons/user-01.svg" style="width:30px;height:30px;display:inline-block;vertical-align:middle;opacity:0.5;" alt=""></div>
+      <div class="team-name">Sarah Chen</div>
+      <div class="team-role">CTO</div>
+      <div class="team-li">in</div>
+    </div>
+    <div class="team-card">
+      <div class="team-photo"><img src="icons/user-01.svg" style="width:30px;height:30px;display:inline-block;vertical-align:middle;opacity:0.5;" alt=""></div>
+      <div class="team-name">Marcus Reid</div>
+      <div class="team-role">Head of Compliance</div>
+      <div class="team-li">in</div>
+    </div>
+    <div class="team-card">
+      <div class="team-photo"><img src="icons/user-01.svg" style="width:30px;height:30px;display:inline-block;vertical-align:middle;opacity:0.5;" alt=""></div>
+      <div class="team-name">Jennifer Park</div>
+      <div class="team-role">VP of Partnerships</div>
+      <div class="team-li">in</div>
+    </div>
+  </div>
+</div>
+
+<!-- 18. BLOG CARDS -->
+<div id="blog" class="sec-label">28 · Content</div>
+<div class="sec-name">Blog Cards</div>
+<div class="pad col" style="gap:24px;">
+  <div class="t-caption" style="margin-bottom:4px;">Featured — horizontal layout</div>
+  <a href="#" class="blog-featured">
+    <div class="blog-thumb">
+      <div class="blog-thumb-bg"></div>
+      <div style="font-size:64px;position:relative;z-index:1;"><img src="icons/building-01.svg" style="width:48px;height:48px;display:inline-block;vertical-align:middle;opacity:0.4;" alt=""></div>
+      <div class="blog-thumb-label"><span class="badge bd-blue">Municipal Finance</span></div>
+    </div>
+    <div class="blog-body">
+      <div class="blog-title">How Texas Municipalities Are Closing Bond Deals 3× Faster</div>
+      <div class="blog-excerpt">A look at how 14 Texas cities reduced their bond proceed verification timeline from three days to same-afternoon by switching to automated identity verification.</div>
+      <div class="blog-meta">
+        <span>Mar 10, 2026</span>
+        <span>·</span>
+        <span>8 min read</span>
+      </div>
+    </div>
+  </a>
+  <div class="t-caption" style="margin-bottom:4px;">Standard cards</div>
+  <div class="row" style="gap:16px;align-items:flex-start;">
+    <a href="#" class="blog-card">
+      <div class="blog-card-thumb"><img src="icons/clipboard.svg" style="width:36px;height:36px;display:inline-block;vertical-align:middle;opacity:0.35;" alt=""></div>
+      <div class="blog-card-body">
+        <span class="blog-cat">Compliance</span>
+        <div class="blog-title" style="font-size:16px;">SOC 2 Type II: What It Means for Your Transaction Security</div>
+        <div class="blog-meta" style="margin-top:8px;"><span>Feb 28, 2026</span><span>·</span><span>5 min read</span></div>
+      </div>
+    </a>
+    <a href="#" class="blog-card">
+      <div class="blog-card-thumb"><img src="icons/lock-01.svg" style="width:36px;height:36px;display:inline-block;vertical-align:middle;opacity:0.35;" alt=""></div>
+      <div class="blog-card-body">
+        <span class="blog-cat">Security</span>
+        <div class="blog-title" style="font-size:16px;">Wire Fraud in Public Finance: The $2B Problem No One Talks About</div>
+        <div class="blog-meta" style="margin-top:8px;"><span>Feb 14, 2026</span><span>·</span><span>6 min read</span></div>
+      </div>
+    </a>
+    <a href="#" class="blog-card">
+      <div class="blog-card-thumb"><img src="icons/bar-chart-01.svg" style="width:36px;height:36px;display:inline-block;vertical-align:middle;opacity:0.35;" alt=""></div>
+      <div class="blog-card-body">
+        <span class="blog-cat">Platform</span>
+        <div class="blog-title" style="font-size:16px;">Transaction-Specific Insurance: A New Layer of Protection</div>
+        <div class="blog-meta" style="margin-top:8px;"><span>Jan 22, 2026</span><span>·</span><span>4 min read</span></div>
+      </div>
+    </a>
+  </div>
+  <div class="t-caption" style="margin-bottom:4px;">Minimal — text only</div>
+  <div class="col" style="gap:8px;max-width:480px;">
+    <a href="#" class="blog-minimal">
+      <span class="blog-cat" style="margin-bottom:10px;display:inline-block;">Security</span>
+      <div class="blog-minimal-title">Understanding Bank Account Validation in High-Stakes Transfers</div>
+      <div class="blog-minimal-meta"><span>Mar 5, 2026</span><span>·</span><span>4 min read</span></div>
+    </a>
+    <a href="#" class="blog-minimal">
+      <span class="blog-cat" style="margin-bottom:10px;display:inline-block;">Compliance</span>
+      <div class="blog-minimal-title">GLBA Compliance for Municipal Finance Officers: A Practical Guide</div>
+      <div class="blog-minimal-meta"><span>Feb 19, 2026</span><span>·</span><span>7 min read</span></div>
+    </a>
+  </div>
+</div>
+
+<!-- 20. CHECKLIST CARD -->
+<div id="checklist" class="sec-label">29 · Content</div>
+<div class="sec-name">Checklist Card</div>
+<div class="pad row" style="gap:24px;flex-wrap:wrap;">
+  <div class="checklist-card">
+    <div class="checklist-h">What's included in every Basefund transaction</div>
+    <div class="checklist-items">
+      <div class="cl-item"><div class="cl-check"><img src="icons/check.svg" style="width:12px;height:12px;display:inline-block;vertical-align:middle;filter:invert(1);" alt=""></div>Real-time KYB/KYC identity verification</div>
+      <div class="cl-item"><div class="cl-check"><img src="icons/check.svg" style="width:12px;height:12px;display:inline-block;vertical-align:middle;filter:invert(1);" alt=""></div>Bank account ownership &amp; routing confirmation</div>
+      <div class="cl-item"><div class="cl-check"><img src="icons/check.svg" style="width:12px;height:12px;display:inline-block;vertical-align:middle;filter:invert(1);" alt=""></div>Transaction-specific insurance, bound at initiation</div>
+      <div class="cl-item"><div class="cl-check"><img src="icons/check.svg" style="width:12px;height:12px;display:inline-block;vertical-align:middle;filter:invert(1);" alt=""></div>Multi-party coordination &amp; authorization workflow</div>
+      <div class="cl-item"><div class="cl-check"><img src="icons/check.svg" style="width:12px;height:12px;display:inline-block;vertical-align:middle;filter:invert(1);" alt=""></div>Tamper-evident audit trail for every event</div>
+      <div class="cl-item"><div class="cl-check"><img src="icons/check.svg" style="width:12px;height:12px;display:inline-block;vertical-align:middle;filter:invert(1);" alt=""></div>24/7 anomaly detection and fraud monitoring</div>
+    </div>
+    <button class="btn btn-p" style="width:100%;justify-content:center;">Get Started Free →</button>
+  </div>
+  <div class="checklist-card" style="background:var(--blue-tint);border-color:rgba(20,93,208,.12);">
+    <div class="checklist-h">Enterprise plan includes</div>
+    <div class="checklist-items">
+      <div class="cl-item"><div class="cl-check"><img src="icons/check.svg" style="width:12px;height:12px;display:inline-block;vertical-align:middle;filter:invert(1);" alt=""></div>Unlimited transactions &amp; users</div>
+      <div class="cl-item"><div class="cl-check"><img src="icons/check.svg" style="width:12px;height:12px;display:inline-block;vertical-align:middle;filter:invert(1);" alt=""></div>White-label options for your brand</div>
+      <div class="cl-item"><div class="cl-check"><img src="icons/check.svg" style="width:12px;height:12px;display:inline-block;vertical-align:middle;filter:invert(1);" alt=""></div>Custom insurance limits per deal</div>
+      <div class="cl-item"><div class="cl-check"><img src="icons/check.svg" style="width:12px;height:12px;display:inline-block;vertical-align:middle;filter:invert(1);" alt=""></div>Dedicated customer success manager</div>
+      <div class="cl-item"><div class="cl-check"><img src="icons/check.svg" style="width:12px;height:12px;display:inline-block;vertical-align:middle;filter:invert(1);" alt=""></div>SLA guarantees + 24/7 priority support</div>
+    </div>
+    <button class="btn btn-d" style="width:100%;justify-content:center;">Contact Sales →</button>
+  </div>
+</div>
+
+<!-- 28. JOB CARDS -->
+<div id="jobs" class="sec-label">30 · Content</div>
+<div class="sec-name">Job Cards</div>
+<div class="pad">
+  <div class="job-list">
+    <div class="job-card">
+      <div class="job-dept">Engineering</div>
+      <div class="job-info">
+        <div class="job-title">Senior Backend Engineer — Verification Systems</div>
+        <div class="job-meta"><span>Austin, TX / Remote</span><span>·</span><span>Full-time</span></div>
+      </div>
+      <div class="job-arrow">→</div>
+    </div>
+    <div class="job-card">
+      <div class="job-dept">Sales</div>
+      <div class="job-info">
+        <div class="job-title">Enterprise Account Executive — Public Finance</div>
+        <div class="job-meta"><span>New York, NY</span><span>·</span><span>Full-time</span></div>
+      </div>
+      <div class="job-arrow">→</div>
+    </div>
+    <div class="job-card">
+      <div class="job-dept">Compliance</div>
+      <div class="job-info">
+        <div class="job-title">Financial Compliance Manager (GLBA/SOC 2)</div>
+        <div class="job-meta"><span>Remote</span><span>·</span><span>Full-time</span></div>
+      </div>
+      <div class="job-arrow">→</div>
+    </div>
+    <div class="job-card">
+      <div class="job-dept">Design</div>
+      <div class="job-info">
+        <div class="job-title">Product Designer — Transaction Workflows</div>
+        <div class="job-meta"><span>Austin, TX / Hybrid</span><span>·</span><span>Full-time</span></div>
+      </div>
+      <div class="job-arrow">→</div>
+    </div>
+  </div>
+</div>
+
+<!-- 38. CONTACT FORM — VERTICAL -->
+<div id="contact-vertical" class="sec-label">31 · Marketing</div>
+<div class="sec-name">Contact Form — Vertical</div>
+<div class="pad">
+  <div class="contact-card">
+    <div class="contact-card-h">Get in touch</div>
+    <div class="contact-card-sub">Have a question about Basefund? Our team is here to help. Fill out the form below and we'll be in touch shortly.</div>
+    <div class="contact-fields">
+      <div class="contact-field">
+        <label class="contact-label">Full name</label>
+        <input class="contact-input" type="text" placeholder="Jane Smith">
+      </div>
+      <div class="contact-field">
+        <label class="contact-label">Work email</label>
+        <input class="contact-input" type="email" placeholder="jane@yourorg.gov">
+      </div>
+      <div class="contact-field">
+        <label class="contact-label">Message</label>
+        <textarea class="contact-input" placeholder="Tell us how we can help…"></textarea>
+      </div>
+      <button class="btn btn-p" style="width:100%;justify-content:center;">Send Message</button>
+      <div class="contact-note">
+        <span class="contact-note-dot"></span>
+        We'll respond within 24 hours on business days
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 39. CONTACT FORM — HORIZONTAL -->
+<div id="contact-horizontal" class="sec-label">32 · Marketing</div>
+<div class="sec-name">Contact Form — Horizontal</div>
+<div class="pad">
+  <div class="contact-horiz">
+    <div class="contact-horiz-left">
+      <div class="t-eyebrow" style="margin-bottom:16px;">Reach us directly</div>
+      <h3>Let's talk about your next transaction</h3>
+      <p style="margin-top:14px;">Our team of municipal finance specialists is ready to walk you through the platform. No pressure — just a conversation.</p>
+      <div style="display:flex;flex-direction:column;gap:12px;margin-top:36px;">
+        <div style="display:flex;align-items:center;gap:10px;font-size:13px;color:var(--slate);">
+          <img src="icons/mail-01.svg" style="width:16px;height:16px;opacity:.5;" alt=""> support@basefund.com
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;font-size:13px;color:var(--slate);">
+          <img src="icons/clock.svg" style="width:16px;height:16px;opacity:.5;" alt=""> Mon–Fri, 9am–5pm ET
+        </div>
+      </div>
+    </div>
+    <div class="contact-horiz-right">
+      <div class="contact-field">
+        <label class="contact-label">Full name</label>
+        <input class="contact-input" type="text" placeholder="Jane Smith">
+      </div>
+      <div class="contact-field">
+        <label class="contact-label">Work email</label>
+        <input class="contact-input" type="email" placeholder="jane@yourorg.gov">
+      </div>
+      <div class="contact-field">
+        <label class="contact-label">Message</label>
+        <textarea class="contact-input" placeholder="Tell us how we can help…" style="min-height:100px;"></textarea>
+      </div>
+      <button class="btn btn-p" style="width:100%;justify-content:center;">Send Message</button>
+      <div class="contact-note">
+        <span class="contact-note-dot"></span>
+        We'll respond within 24 hours
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 40. FEATURE GRID -->
+<div id="feature-grid" class="sec-label">33 · Marketing</div>
+<div class="sec-name">Feature Grid</div>
+<div class="pad">
+  <div class="feature-grid">
+    <div class="fg-item">
+      <div class="fg-icon">
+        <img src="icons/shield-01.svg" style="width:24px;height:24px;filter:brightness(0) saturate(100%) invert(24%) sepia(98%) saturate(757%) hue-rotate(196deg) brightness(94%);" alt="">
+      </div>
+      <div class="fg-title">Bank-level security</div>
+      <div class="fg-desc">Every transaction is encrypted end-to-end with multi-party verification at every stage of the process.</div>
+    </div>
+    <div class="fg-item">
+      <div class="fg-icon">
+        <img src="icons/zap.svg" style="width:24px;height:24px;filter:brightness(0) saturate(100%) invert(24%) sepia(98%) saturate(757%) hue-rotate(196deg) brightness(94%);" alt="">
+      </div>
+      <div class="fg-title">Instant settlement</div>
+      <div class="fg-desc">Real-time confirmation and same-day settlement for qualified transactions. No waiting, no uncertainty.</div>
+    </div>
+    <div class="fg-item">
+      <div class="fg-icon">
+        <img src="icons/check-verified-01.svg" style="width:24px;height:24px;filter:brightness(0) saturate(100%) invert(24%) sepia(98%) saturate(757%) hue-rotate(196deg) brightness(94%);" alt="">
+      </div>
+      <div class="fg-title">Verified participants</div>
+      <div class="fg-desc">Every party in a transaction is identity-verified and credentialed before funds are authorized to move.</div>
+    </div>
+    <div class="fg-item">
+      <div class="fg-icon">
+        <img src="icons/lock-01.svg" style="width:24px;height:24px;filter:brightness(0) saturate(100%) invert(24%) sepia(98%) saturate(757%) hue-rotate(196deg) brightness(94%);" alt="">
+      </div>
+      <div class="fg-title">Role-based access</div>
+      <div class="fg-desc">Granular permissions ensure each participant sees exactly what they need — nothing more, nothing less.</div>
+    </div>
+    <div class="fg-item">
+      <div class="fg-icon">
+        <img src="icons/bar-chart-01.svg" style="width:24px;height:24px;filter:brightness(0) saturate(100%) invert(24%) sepia(98%) saturate(757%) hue-rotate(196deg) brightness(94%);" alt="">
+      </div>
+      <div class="fg-title">Full audit trail</div>
+      <div class="fg-desc">Every action is logged with timestamps and participant attribution for complete regulatory accountability.</div>
+    </div>
+    <div class="fg-item">
+      <div class="fg-icon">
+        <img src="icons/globe-01.svg" style="width:24px;height:24px;filter:brightness(0) saturate(100%) invert(24%) sepia(98%) saturate(757%) hue-rotate(196deg) brightness(94%);" alt="">
+      </div>
+      <div class="fg-title">Multi-rail support</div>
+      <div class="fg-desc">ACH, Fedwire, and RTP support in a single platform. Choose the right rail for every transaction type.</div>
+    </div>
+  </div>
+</div>
+
+<!-- 41. TIMELINE -->
+<div id="timeline" class="sec-label">34 · Marketing</div>
+<div class="sec-name">Timeline</div>
+<div class="pad">
+  <div class="timeline">
+    <div class="timeline-line"></div>
+    <div class="tl-item">
+      <div class="tl-date">
+        <div class="tl-date-year">2019</div>
+        <div class="tl-date-label">Founded</div>
+      </div>
+      <div class="tl-dot-col">
+        <div class="tl-dot"></div>
+      </div>
+      <div class="tl-content">
+        <div class="tl-event">Basefund founded</div>
+        <div class="tl-desc">Launched in Austin, TX with a mission to modernize how public money moves between issuers, underwriters, and institutions.</div>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date">
+        <div class="tl-date-year">2021</div>
+        <div class="tl-date-label">Milestone</div>
+      </div>
+      <div class="tl-dot-col">
+        <div class="tl-dot"></div>
+      </div>
+      <div class="tl-content">
+        <div class="tl-event">SOC 2 Type II certified</div>
+        <div class="tl-desc">Achieved SOC 2 Type II certification, establishing the security and compliance foundation required by institutional partners.</div>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date">
+        <div class="tl-date-year">2022</div>
+        <div class="tl-date-label">Growth</div>
+      </div>
+      <div class="tl-dot-col">
+        <div class="tl-dot"></div>
+      </div>
+      <div class="tl-content">
+        <div class="tl-event">$1 billion secured</div>
+        <div class="tl-desc">Crossed the $1B milestone in total transaction volume — a proof point that the platform could handle institutional scale.</div>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date">
+        <div class="tl-date-year">2023</div>
+        <div class="tl-date-label">Scale</div>
+      </div>
+      <div class="tl-dot-col">
+        <div class="tl-dot"></div>
+      </div>
+      <div class="tl-content">
+        <div class="tl-event">500+ issuers onboarded</div>
+        <div class="tl-desc">Reached 500 active municipal issuers across 38 states, cementing Basefund as the leading platform in public finance.</div>
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-date">
+        <div class="tl-date-year">2025</div>
+        <div class="tl-date-label">Today</div>
+      </div>
+      <div class="tl-dot-col">
+        <div class="tl-dot" style="background:linear-gradient(135deg,var(--blue),var(--accent));box-shadow:0 0 0 4px rgba(0,244,224,.2);"></div>
+      </div>
+      <div class="tl-content">
+        <div class="tl-event">$15 billion milestone</div>
+        <div class="tl-desc">Over $15 billion in funds secured across more than 12,000 transactions — with zero losses due to platform error.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 42. VIDEO / MEDIA BLOCK -->
+<div id="media-block" class="sec-label">35 · Marketing</div>
+<div class="sec-name">Video / Media Block</div>
+<div class="pad">
+  <div class="media-block">
+    <div class="media-block-dots"></div>
+    <div class="media-heading">See Basefund in Action</div>
+    <div class="media-sub">Watch how municipal issuers and underwriters close transactions with confidence — from draft to settlement in minutes.</div>
+    <div class="play-btn" role="button" aria-label="Play video">
+      <div class="play-triangle"></div>
+    </div>
+    <div class="media-duration">3:42</div>
+  </div>
+</div>
+
+<!-- 43. ANNOUNCEMENT BAR -->
+<div id="announcement-bar" class="sec-label">36 · Marketing</div>
+<div class="sec-name">Announcement Bar</div>
+<div class="pad col" style="gap:12px;">
+  <div class="t-caption" style="margin-bottom:4px;">Blue (default) — dismissible, with badge and link</div>
+  <div class="announcement-bar" style="border-radius:2px;">
+    <div class="ann-inner">
+      <span class="ann-badge">New</span>
+      Transaction-specific insurance now available on all closing accounts
+      <a href="#" class="ann-link">Learn more <span class="ann-arrow">→</span></a>
+    </div>
+    <button class="ann-close" aria-label="Dismiss">
+      <img src="icons/x-close.svg" style="width:16px;height:16px;filter:brightness(0) invert(1);opacity:.55;" alt="">
+    </button>
+  </div>
+  <div class="t-caption" style="margin-bottom:4px;">Deep blue variant</div>
+  <div class="announcement-bar" style="background:var(--blue-deep);border-radius:2px;">
+    <div class="ann-inner">
+      <span class="ann-badge">Webinar</span>
+      Join us live — Securing Municipal Bonds in 2026 · Thursday, March 19 at 2pm ET
+      <a href="#" class="ann-link">Register free <span class="ann-arrow">→</span></a>
+    </div>
+    <button class="ann-close" aria-label="Dismiss">
+      <img src="icons/x-close.svg" style="width:16px;height:16px;filter:brightness(0) invert(1);opacity:.55;" alt="">
+    </button>
+  </div>
+</div>
+
+<!-- 44. QUOTE CALLOUT -->
+<div id="quote-callout" class="sec-label">37 · Marketing</div>
+<div class="sec-name">Quote Callout</div>
+<div class="pad col" style="gap:24px;">
+  <div class="t-caption">For embedding in blog posts or long-form content pages</div>
+  <div class="quote-callout">
+    <blockquote>
+      Basefund changed how we think about closing. What used to take three rounds of emails and two phone calls now happens in a single, auditable session — with everyone in the room at once.
+    </blockquote>
+    <div class="qc-attribution">
+      <div class="qc-avatar">TW</div>
+      <div>
+        <div class="qc-name">Thomas Walsh</div>
+        <div class="qc-role">Finance Director, City of Mesa, AZ</div>
+      </div>
+    </div>
+  </div>
+  <div class="quote-callout" style="border-left-color:var(--blue-lt);background:var(--off);">
+    <blockquote style="color:var(--slate);">
+      The audit trail alone was worth the switch. Every action, every approval, every timestamp — all in one place and ready for regulators on day one.
+    </blockquote>
+    <div class="qc-attribution">
+      <div class="qc-avatar" style="background:linear-gradient(135deg,var(--blue-lt),var(--blue));">SR</div>
+      <div>
+        <div class="qc-name">Sandra Rivera</div>
+        <div class="qc-role">Deputy Treasurer, Harris County, TX</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 45. RESOURCE CARDS -->
+<div id="resource-cards" class="sec-label">38 · Marketing</div>
+<div class="sec-name">Resource Cards</div>
+<div class="pad">
+  <div class="resource-grid">
+    <div class="resource-card">
+      <div class="resource-thumb">
+        <div class="resource-thumb-icon">
+          <img src="icons/file-01.svg" style="width:48px;height:48px;filter:brightness(0) invert(1);opacity:.85;" alt="">
+        </div>
+      </div>
+      <div class="resource-body">
+        <div class="resource-badge">
+          <img src="icons/download-01.svg" style="width:11px;height:11px;filter:brightness(0) saturate(100%) invert(24%) sepia(98%) saturate(757%) hue-rotate(196deg) brightness(94%);" alt="">
+          PDF · 2.4 MB
+        </div>
+        <div class="resource-title">The Issuer's Guide to Transaction Security</div>
+        <div class="resource-desc">A comprehensive look at how to protect public funds at every stage of the bond closing process.</div>
+        <div class="resource-footer">
+          <span class="resource-type">24 pages</span>
+          <button class="btn btn-p btn-sm">Download</button>
+        </div>
+      </div>
+    </div>
+    <div class="resource-card">
+      <div class="resource-thumb" style="background:linear-gradient(150deg,var(--blue) 0%,var(--blue-lt) 100%);">
+        <div class="resource-thumb-icon">
+          <img src="icons/book-open-01.svg" style="width:48px;height:48px;filter:brightness(0) invert(1);opacity:.85;" alt="">
+        </div>
+      </div>
+      <div class="resource-body">
+        <div class="resource-badge">
+          <img src="icons/download-01.svg" style="width:11px;height:11px;filter:brightness(0) saturate(100%) invert(24%) sepia(98%) saturate(757%) hue-rotate(196deg) brightness(94%);" alt="">
+          PDF · 1.1 MB
+        </div>
+        <div class="resource-title">Payment Rail Selection Whitepaper</div>
+        <div class="resource-desc">ACH vs. Fedwire vs. RTP — a decision framework for choosing the right rail for each transaction type.</div>
+        <div class="resource-footer">
+          <span class="resource-type">16 pages</span>
+          <button class="btn btn-p btn-sm">Download</button>
+        </div>
+      </div>
+    </div>
+    <div class="resource-card">
+      <div class="resource-thumb" style="background:linear-gradient(150deg,#0B3580 0%,#145DD0 100%);">
+        <div class="resource-thumb-icon">
+          <img src="icons/clipboard.svg" style="width:48px;height:48px;filter:brightness(0) invert(1);opacity:.85;" alt="">
+        </div>
+      </div>
+      <div class="resource-body">
+        <div class="resource-badge">
+          <img src="icons/download-01.svg" style="width:11px;height:11px;filter:brightness(0) saturate(100%) invert(24%) sepia(98%) saturate(757%) hue-rotate(196deg) brightness(94%);" alt="">
+          DOCX · 340 KB
+        </div>
+        <div class="resource-title">Closing Day Checklist Template</div>
+        <div class="resource-desc">A ready-to-use checklist for bond closing coordinators. Covers participants, documents, and timing.</div>
+        <div class="resource-footer">
+          <span class="resource-type">3 pages</span>
+          <button class="btn btn-p btn-sm">Download</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 46. 404 / ERROR STATE -->
+<div id="error-state" class="sec-label">39 · Marketing</div>
+<div class="sec-name">404 / Error State</div>
+<div class="pad">
+  <div class="error-state">
+    <span class="error-404">404</span>
+    <div class="error-heading">Page not found</div>
+    <p class="error-sub">The page you're looking for may have been moved, renamed, or doesn't exist. Let's get you back on track.</p>
+    <div style="display:flex;gap:12px;align-items:center;justify-content:center;">
+      <button class="btn btn-p btn-lg btn-arrow">Back to Home <span class="arr">→</span></button>
+      <button class="btn btn-g btn-lg">Contact Support</button>
+    </div>
+  </div>
+</div>
+
+<!-- 22. TABS -->
+<div id="tabs" class="sec-label">40 · UI Patterns</div>
+<div class="sec-name">Tab Navigation</div>
+<div class="pad col" style="gap:48px;max-width:800px;">
+  <div>
+    <div class="t-caption" style="margin-bottom:16px;">Underline variant — sliding indicator</div>
+    <div class="tabs-underline" id="tabs-ul">
+      <div class="tab-u active" data-tab="ul-1">Overview</div>
+      <div class="tab-u" data-tab="ul-2">Identity</div>
+      <div class="tab-u" data-tab="ul-3">Validation</div>
+      <div class="tab-u" data-tab="ul-4">Insurance</div>
+      <div class="tab-u" data-tab="ul-5">Audit Trail</div>
+    </div>
+    <div class="tab-panel active" id="ul-1" style="border-radius:var(--r-xl);padding:24px;background:var(--blue-tint);border:1px solid rgba(20,93,208,.1);">
+      <div style="font-family:var(--f-head);font-size:18px;font-weight:600;color:var(--ink);margin-bottom:8px;">Platform Overview</div>
+      <div style="font-size:14px;color:var(--slate);line-height:1.7;">Basefund unifies four critical capabilities — identity verification, bank validation, transaction insurance, and coordination — into a single secure workflow for every dollar in motion.</div>
+    </div>
+    <div class="tab-panel" id="ul-2" style="border-radius:var(--r-xl);padding:24px;background:var(--blue-tint);border:1px solid rgba(20,93,208,.1);">
+      <div style="font-family:var(--f-head);font-size:18px;font-weight:600;color:var(--ink);margin-bottom:8px;">Real-Time KYB / KYC</div>
+      <div style="font-size:14px;color:var(--slate);line-height:1.7;">Sub-second identity verification against authoritative government and financial data sources. Know exactly who you're transacting with before a single dollar moves.</div>
+    </div>
+    <div class="tab-panel" id="ul-3" style="border-radius:var(--r-xl);padding:24px;background:var(--blue-tint);border:1px solid rgba(20,93,208,.1);">
+      <div style="font-family:var(--f-head);font-size:18px;font-weight:600;color:var(--ink);margin-bottom:8px;">Bank Account Validation</div>
+      <div style="font-size:14px;color:var(--slate);line-height:1.7;">Instantly confirm ownership, routing accuracy, and active status. Eliminate the risk of misdirected wire transfers caused by fraudulent or outdated account information.</div>
+    </div>
+    <div class="tab-panel" id="ul-4" style="border-radius:var(--r-xl);padding:24px;background:var(--blue-tint);border:1px solid rgba(20,93,208,.1);">
+      <div style="font-family:var(--f-head);font-size:18px;font-weight:600;color:var(--ink);margin-bottom:8px;">Transaction-Specific Insurance</div>
+      <div style="font-size:14px;color:var(--slate);line-height:1.7;">Each transaction is individually underwritten at initiation. Coverage is precisely bound to your deal — not a blanket policy. Funds move with insurance already in place.</div>
+    </div>
+    <div class="tab-panel" id="ul-5" style="border-radius:var(--r-xl);padding:24px;background:var(--blue-tint);border:1px solid rgba(20,93,208,.1);">
+      <div style="font-family:var(--f-head);font-size:18px;font-weight:600;color:var(--ink);margin-bottom:8px;">Tamper-Evident Audit Trail</div>
+      <div style="font-size:14px;color:var(--slate);line-height:1.7;">Every event, verification step, and authorization is time-stamped and immutable. Your compliance team gets a complete, searchable record without lifting a finger.</div>
+    </div>
+  </div>
+
+  <div>
+    <div class="t-caption" style="margin-bottom:16px;">Pill variant</div>
+    <div class="tabs-pill" id="tabs-pill">
+      <div class="tab-pill active" data-tab="p-1">All Solutions</div>
+      <div class="tab-pill" data-tab="p-2">Municipal</div>
+      <div class="tab-pill" data-tab="p-3">Underwriters</div>
+      <div class="tab-pill" data-tab="p-4">Enterprise</div>
+    </div>
+    <div class="tab-panel active" id="p-1"><p style="font-size:14px;color:var(--slate);">View all Basefund solutions across municipal finance, underwriting, bond counsel, and enterprise use cases.</p></div>
+    <div class="tab-panel" id="p-2"><p style="font-size:14px;color:var(--slate);">Municipal issuers use Basefund to verify bond proceed recipients and coordinate multi-party closing workflows in real time.</p></div>
+    <div class="tab-panel" id="p-3"><p style="font-size:14px;color:var(--slate);">Underwriters rely on Basefund to verify all deal participants, authorize disbursements, and maintain a complete audit record for every transaction.</p></div>
+    <div class="tab-panel" id="p-4"><p style="font-size:14px;color:var(--slate);">Enterprise customers get white-label options, custom insurance limits, dedicated support, and SLA guarantees.</p></div>
+  </div>
+
+  <div>
+    <div class="t-caption" style="margin-bottom:16px;">Numbered variant</div>
+    <div class="tabs-numbered" id="tabs-num">
+      <div class="tab-num active" data-tab="n-1"><div class="tab-num-circle">1</div>Connect</div>
+      <div class="tab-num" data-tab="n-2"><div class="tab-num-circle">2</div>Verify</div>
+      <div class="tab-num" data-tab="n-3"><div class="tab-num-circle">3</div>Validate</div>
+      <div class="tab-num" data-tab="n-4"><div class="tab-num-circle">4</div>Insure</div>
+      <div class="tab-num" data-tab="n-5"><div class="tab-num-circle">5</div>Transact</div>
+    </div>
+    <div class="tab-panel active" id="n-1"><p style="font-size:14px;color:var(--slate);">Step 1: Connect your organization by submitting entity information. Basefund begins verification against authoritative data sources immediately.</p></div>
+    <div class="tab-panel" id="n-2"><p style="font-size:14px;color:var(--slate);">Step 2: Real-time KYB/KYC verification completes in under 1 second. All parties to the transaction are confirmed.</p></div>
+    <div class="tab-panel" id="n-3"><p style="font-size:14px;color:var(--slate);">Step 3: Bank account ownership, routing, and active status are validated instantly. No manual checks required.</p></div>
+    <div class="tab-panel" id="n-4"><p style="font-size:14px;color:var(--slate);">Step 4: Transaction-specific insurance is bound at initiation. Coverage is in place before funds are authorized to move.</p></div>
+    <div class="tab-panel" id="n-5"><p style="font-size:14px;color:var(--slate);">Step 5: Funds transfer with every verification checkpoint cleared. A complete, tamper-evident audit trail is generated automatically.</p></div>
+  </div>
+</div>
+
+<!-- 23. ACCORDION -->
+<div id="accordion" class="sec-label">41 · UI Patterns</div>
+<div class="sec-name">Accordion — FAQ</div>
+<div class="pad">
+  <div class="accordion" id="faq-accordion">
+    <div class="acc-item">
+      <div class="acc-trigger open" data-acc="a1">How quickly does identity verification complete? <div class="acc-chevron">▾</div></div>
+      <div class="acc-body" id="a1" style="max-height:200px;">
+        <div class="acc-body-inner">Basefund's real-time KYB/KYC layer verifies identity against authoritative government and financial data sources in under 1 second for most entities. Complex cases involving multiple jurisdictions may take up to 30 seconds. No manual review is required unless a match cannot be confirmed automatically.</div>
+      </div>
+    </div>
+    <div class="acc-item">
+      <div class="acc-trigger" data-acc="a2">What types of transactions does Basefund support? <div class="acc-chevron">▾</div></div>
+      <div class="acc-body" id="a2">
+        <div class="acc-body-inner">Basefund is purpose-built for high-value institutional transactions: municipal bond proceeds, refunding transactions, capital project disbursements, real estate closings, and interbank transfers. The platform is optimized for transactions where identity, routing accuracy, and insurance are critical requirements.</div>
+      </div>
+    </div>
+    <div class="acc-item">
+      <div class="acc-trigger" data-acc="a3">How is transaction-specific insurance different from a blanket policy? <div class="acc-chevron">▾</div></div>
+      <div class="acc-body" id="a3">
+        <div class="acc-body-inner">Traditional financial insurance is a blanket policy covering an institution's general operations. Basefund's transaction-specific insurance is underwritten individually at deal initiation — bound to the specific amount, parties, and terms of your transaction. Coverage is active from the moment you create a deal, not retroactively applied after a loss.</div>
+      </div>
+    </div>
+    <div class="acc-item">
+      <div class="acc-trigger" data-acc="a4">What compliance frameworks does Basefund satisfy? <div class="acc-chevron">▾</div></div>
+      <div class="acc-body" id="a4">
+        <div class="acc-body-inner">Basefund is SOC 2 Type II certified, GLBA compliant, and FINRA-aligned. The platform's tamper-evident audit trail satisfies the record-keeping requirements of most municipal bond regulations. Enterprise customers receive a dedicated compliance documentation package for regulatory review.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- 25. FORM CTA -->
+<div id="form-cta" class="sec-label">42 · UI Patterns</div>
+<div class="sec-name">Form CTA</div>
+<div class="pad col" style="gap:24px;max-width:800px;">
+  <div class="form-cta-white">
+    <div class="t-eyebrow" style="margin-bottom:12px;">Free Download</div>
+    <div class="t-h3" style="margin-bottom:12px;">The Municipal Finance Security Report 2026</div>
+    <div class="t-body" style="margin-bottom:0;max-width:44ch;margin-left:auto;margin-right:auto;">Download our annual analysis of wire fraud trends, verification benchmarks, and best practices for public finance teams.</div>
+    <div class="form-inline">
+      <input type="email" placeholder="your@email.gov">
+      <button class="btn btn-p">Download →</button>
+    </div>
+    <div class="t-caption" style="margin-top:12px;">No spam. Unsubscribe any time.</div>
+  </div>
+  <div class="form-cta-blue noise">
+    <div style="position:relative;z-index:1;">
+      <div style="font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.6);margin-bottom:12px;">Newsletter</div>
+      <div style="font-family:var(--f-head);font-size:clamp(22px,3vw,32px);font-weight:600;color:#fff;letter-spacing:-.02em;margin-bottom:12px;">Stay current on public finance security</div>
+      <div style="font-size:15px;color:rgba(255,255,255,.65);margin-bottom:0;max-width:44ch;margin-left:auto;margin-right:auto;">Monthly digest of regulatory updates, fraud alerts, and platform announcements.</div>
+      <div class="form-inline form-inline-blue">
+        <input type="email" placeholder="your@organization.gov">
+        <button class="btn btn-w">Subscribe →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FORMS -->
+<div id="forms" class="sec-label">43 · UI Patterns</div>
+<div class="sec-name">Form Fields</div>
+<div class="pad row" style="gap:24px;flex-wrap:wrap;align-items:flex-start;">
+  <div class="field"><label class="field-label">Organization Name</label><input class="field-input" type="text" placeholder="City of Dallas, TX"><span class="field-hint">As it appears on official documents</span></div>
+  <div class="field"><label class="field-label">EIN / Tax ID</label><input class="field-input" type="text" placeholder="XX-XXXXXXX"></div>
+  <div class="field field-error"><label class="field-label">Routing Number</label><input class="field-input" type="text" value="123456"><span class="field-hint">Invalid routing number format</span></div>
+  <div class="field" style="flex:1;min-width:280px;"><label class="field-label">Search Transactions</label><div class="search-pill"><svg width="15" height="15" viewBox="0 0 15 15" fill="none"><circle cx="6.5" cy="6.5" r="4.5" stroke="#8B96AE" stroke-width="1.4"/><path d="M10 10l3 3" stroke="#8B96AE" stroke-width="1.4" stroke-linecap="round"/></svg><input placeholder="Search by ID, party, or amount…"></div></div>
+</div>
+<!-- 35. TOASTS -->
+<div id="toasts" class="sec-label">44 · UI Patterns</div>
+<div class="sec-name">Toasts &amp; Notifications</div>
+<div class="pad row" style="gap:16px;flex-wrap:wrap;">
+  <div class="toast t-success"><div class="toast-icon"><img src="icons/check.svg" style="width:16px;height:16px;display:inline-block;vertical-align:middle;filter:invert(36%) sepia(94%) saturate(426%) hue-rotate(105deg) brightness(88%);" alt=""></div><div class="toast-body"><div class="toast-title">Transaction Verified</div><div class="toast-sub">TXN-84920 passed all checkpoints.</div></div><button class="toast-x">×</button></div>
+  <div class="toast t-info"><div class="toast-icon"><img src="icons/lock-01.svg" style="width:16px;height:16px;display:inline-block;vertical-align:middle;filter:invert(27%) sepia(98%) saturate(500%) hue-rotate(200deg) brightness(90%);" alt=""></div><div class="toast-body"><div class="toast-title">Insurance Bound</div><div class="toast-sub">$4.25M covered for City of Texarkana.</div></div><button class="toast-x">×</button></div>
+  <div class="toast t-warn"><div class="toast-icon"><img src="icons/alert-triangle.svg" style="width:16px;height:16px;display:inline-block;vertical-align:middle;filter:invert(60%) sepia(80%) saturate(500%) hue-rotate(5deg) brightness(100%);" alt=""></div><div class="toast-body"><div class="toast-title">Verification Pending</div><div class="toast-sub">Awaiting secondary ID from issuer.</div></div><button class="toast-x">×</button></div>
+</div>
+
+<!-- 30. COOKIE CONSENT -->
+<div id="cookie" class="sec-label">45 · UI Patterns</div>
+<div class="sec-name">Cookie Consent (shown inline, fixed in production)</div>
+<div class="pad row" style="gap:24px;">
+  <div class="cookie-consent" style="position:relative;bottom:auto;right:auto;animation:none;">
+    <div class="cookie-icon"><img src="icons/settings-01.svg" style="width:24px;height:24px;display:inline-block;vertical-align:middle;" alt=""></div>
+    <div class="cookie-title">Cookie Preferences</div>
+    <div class="cookie-desc">We use cookies to improve your experience and analyze platform performance. You can adjust your preferences at any time.</div>
+    <div class="cookie-actions">
+      <button class="btn btn-g btn-sm">Settings</button>
+      <button class="btn btn-p btn-sm">Accept All</button>
+    </div>
+  </div>
+</div>
+
+<!-- 36. LAYOUT SHELLS -->
+<div id="layouts" class="sec-label">46 · Layout</div>
+<div class="sec-name">Layout Shells</div>
+<div class="pad col" style="gap:48px;">
+  <p class="t-body">Reusable grid containers. Drop any component inside these shells to create page sections.</p>
+
+  <div class="col" style="gap:16px;">
+    <div class="t-caption">Two Column — Equal</div>
+    <div class="layout layout-2 layout-align-center">
+      <div class="layout-text">
+        <div class="ep"><span class="dot"></span>Feature</div>
+        <h3>Headline goes <em>here</em></h3>
+        <p>Supporting copy that describes the feature or product benefit. Keep it to two sentences max.</p>
+        <a class="btn btn-p btn-sm btn-arrow" href="#">Learn More <span class="arr">→</span></a>
+      </div>
+      <div class="layout-placeholder">App Visual</div>
+    </div>
+  </div>
+
+  <div class="col" style="gap:16px;">
+    <div class="t-caption">Two Column — Wide Left (7:5)</div>
+    <div class="layout layout-2-wide layout-align-center">
+      <div class="layout-placeholder ph-tall ph-dark">Dashboard Preview</div>
+      <div class="layout-text">
+        <div class="ep"><span class="dot"></span>Platform</div>
+        <h3>Reversed layout with <em>visual left</em></h3>
+        <p>Use the wide/narrow variants when one side needs more visual weight. Great for app screenshots or illustrations.</p>
+        <a class="btn btn-d btn-sm btn-arrow" href="#">Get Started <span class="arr">→</span></a>
+      </div>
+    </div>
+  </div>
+
+  <div class="col" style="gap:16px;">
+    <div class="t-caption">Two Column — Narrow Left (5:7)</div>
+    <div class="layout layout-2-narrow layout-align-center">
+      <div class="layout-text">
+        <div class="ep"><span class="dot"></span>Security</div>
+        <h3>Compact text, <em>expanded</em> visual</h3>
+        <p>The narrow-left variant gives more room to the visual side — ideal for detailed charts or data displays.</p>
+      </div>
+      <div class="layout-placeholder ph-tall">Data Visualization</div>
+    </div>
+  </div>
+
+  <div class="col" style="gap:16px;">
+    <div class="t-caption">Three Column</div>
+    <div class="layout layout-3">
+      <div class="layout-placeholder ph-short">Card A</div>
+      <div class="layout-placeholder ph-short">Card B</div>
+      <div class="layout-placeholder ph-short">Card C</div>
+    </div>
+  </div>
+
+  <div class="col" style="gap:16px;">
+    <div class="t-caption">Four Column</div>
+    <div class="layout layout-4">
+      <div class="layout-placeholder ph-short">1</div>
+      <div class="layout-placeholder ph-short">2</div>
+      <div class="layout-placeholder ph-short">3</div>
+      <div class="layout-placeholder ph-short">4</div>
+    </div>
+  </div>
+
+  <div class="col" style="gap:16px;">
+    <div class="t-caption">Sidebar Layout (Fixed + Fluid)</div>
+    <div class="layout layout-sidebar layout-align-stretch">
+      <div class="layout-placeholder">Sidebar · 320px</div>
+      <div class="layout-placeholder">Main Content · Fluid</div>
+    </div>
+  </div>
+
+  <div class="col" style="gap:16px;">
+    <div class="t-caption">Stacked Layouts</div>
+    <p class="t-body">Combine shells vertically — alternating text-left / text-right creates natural rhythm down a page.</p>
+    <div style="display:flex;flex-direction:column;gap:32px;">
+      <div class="layout layout-2-wide layout-align-center">
+        <div class="layout-text">
+          <div class="ep"><span class="dot"></span>Step 1</div>
+          <h3>First feature <em>block</em></h3>
+          <p>Text on the left, visual on the right. Standard reading flow.</p>
+        </div>
+        <div class="layout-placeholder">Visual</div>
+      </div>
+      <div class="layout layout-2-wide layout-align-center" style="direction:rtl;">
+        <div class="layout-text" style="direction:ltr;">
+          <div class="ep"><span class="dot"></span>Step 2</div>
+          <h3>Second feature <em>block</em></h3>
+          <p>Reversed — visual on the left, text on the right. Creates zigzag rhythm.</p>
+        </div>
+        <div class="layout-placeholder" style="direction:ltr;">Visual</div>
+      </div>
+      <div class="layout layout-2-wide layout-align-center">
+        <div class="layout-text">
+          <div class="ep"><span class="dot"></span>Step 3</div>
+          <h3>Third feature <em>block</em></h3>
+          <p>Back to standard. The alternating pattern guides the eye down the page.</p>
+        </div>
+        <div class="layout-placeholder">Visual</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 27. CTA SECTIONS -->
+<div id="cta" class="sec-label">47 · Layout</div>
+<div class="sec-name">CTA Sections</div>
+<div class="pad col" style="gap:20px;">
+  <div class="cta-full noise">
+    <div class="cta-full-bg"></div>
+    <div class="cta-full-grid"></div>
+    <h2>Ready to secure your<br><em>next transaction?</em></h2>
+    <p>Join hundreds of municipalities, underwriters, and bond counsel who trust Basefund with every dollar in motion.</p>
+    <div class="cta-full-actions">
+      <button class="btn btn-w btn-lg btn-arrow">Get Started Free <span class="arr" style="background:rgba(0,0,0,.1);">→</span></button>
+      <button class="btn btn-gw btn-lg">Schedule a Demo</button>
+    </div>
+  </div>
+  <div class="cta-banner">
+    <div><h3>Talk to a transaction specialist.</h3><p>We'll walk through your deal structure and show you exactly how Basefund fits.</p></div>
+    <div class="cta-banner-right">
+      <button class="btn btn-g btn-sm">Learn More</button>
+      <button class="btn btn-p btn-sm btn-arrow">Book a Call <span class="arr" style="width:16px;height:16px;font-size:10px;">→</span></button>
+    </div>
+  </div>
+</div>
+
+<!-- 37. FOOTER (was 34) -->
+<div id="footer" class="sec-label">48 · Layout</div>
+<div class="sec-name">Footer — Deep Blue Background</div>
+<footer class="footer noise" style="margin-top:8px;">
+  <div class="footer-top">
+    <div class="footer-brand">
+      <div class="footer-logo">
+        <div class="nav-mark"><span>BF</span></div>
+        Basefund
+      </div>
+      <div class="footer-copy">The secure transaction infrastructure for money in motion. Identity-verified. Insured. Coordinated.</div>
+      <div class="socials">
+        <button class="s-btn">in</button>
+        <button class="s-btn">𝕏</button>
+        <button class="s-btn">▶</button>
+      </div>
+    </div>
+    <div class="footer-cols">
+      <div>
+        <div class="fc-title">Platform</div>
+        <ul class="fc-links">
+          <li><a href="#">Identity Verification</a></li>
+          <li><a href="#">Bank Validation</a></li>
+          <li><a href="#">Transaction Insurance</a></li>
+          <li><a href="#">Coordination</a></li>
+          <li><a href="#">Audit Trail</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="fc-title">Solutions</div>
+        <ul class="fc-links">
+          <li><a href="#">Municipal Finance</a></li>
+          <li><a href="#">Underwriters</a></li>
+          <li><a href="#">Bond Counsel</a></li>
+          <li><a href="#">Real Estate</a></li>
+          <li><a href="#">Enterprise</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="fc-title">Company</div>
+        <ul class="fc-links">
+          <li><a href="#">About Basefund</a></li>
+          <li><a href="#">Security</a></li>
+          <li><a href="#">Compliance</a></li>
+          <li><a href="#">Blog</a></li>
+          <li><a href="#">Careers</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-cr">© 2026 Basefund, Inc. All rights reserved.</div>
+    <div class="footer-bl">
+      <a href="#">Privacy</a>
+      <a href="#">Terms</a>
+      <a href="#">Security</a>
+      <a href="#">Cookies</a>
+    </div>
+  </div>
+</footer>
+
+</main><!-- end .main -->
+
+</main><!-- end .main -->
+
+<script>
+// ---- BUTTON SHIMMER (primary buttons) ----
+document.querySelectorAll('.btn-p').forEach(btn => {
+  btn.addEventListener('mousemove', e => {
+    const r = btn.getBoundingClientRect();
+    const x = ((e.clientX - r.left) / r.width * 100).toFixed(1);
+    const y = ((e.clientY - r.top) / r.height * 100).toFixed(1);
+    btn.style.background = `radial-gradient(circle at ${x}% ${y}%, #1A6AEB, #145DD0)`;
+  });
+  btn.addEventListener('mouseleave', () => { btn.style.background = ''; });
+});
+
+// ---- TOAST CLOSE ----
+document.querySelectorAll('.toast-x').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const t = btn.closest('.toast');
+    t.style.transition = 'all 240ms';
+    t.style.opacity = '0';
+    t.style.transform = 'scale(.95) translateY(-6px)';
+    setTimeout(() => t.remove(), 250);
+  });
+});
+
+// ---- ACCORDION ----
+document.querySelectorAll('.acc-trigger').forEach(trigger => {
+  trigger.addEventListener('click', () => {
+    const id = trigger.dataset.acc;
+    const body = document.getElementById(id);
+    const isOpen = trigger.classList.contains('open');
+    // close all in same accordion
+    const accordion = trigger.closest('.accordion');
+    accordion.querySelectorAll('.acc-trigger.open').forEach(t => {
+      t.classList.remove('open');
+      const bid = t.dataset.acc;
+      const b = document.getElementById(bid);
+      if (b) b.style.maxHeight = '0';
+    });
+    if (!isOpen) {
+      trigger.classList.add('open');
+      body.style.maxHeight = body.scrollHeight + 'px';
+    }
+  });
+});
+
+// ---- TABS (underline) ----
+function setupTabGroup(containerSel) {
+  const container = document.querySelector(containerSel);
+  if (!container) return;
+  container.querySelectorAll('[data-tab]').forEach(tab => {
+    tab.addEventListener('click', () => {
+      const tabId = tab.dataset.tab;
+      // deactivate all tabs in group
+      container.querySelectorAll('[data-tab]').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      // deactivate all panels linked to this tab group
+      container.parentElement.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+      const panel = document.getElementById(tabId);
+      if (panel) panel.classList.add('active');
+    });
+  });
+}
+setupTabGroup('#tabs-ul');
+setupTabGroup('#tabs-pill');
+setupTabGroup('#tabs-num');
+
+// ---- CATEGORY FILTER ----
+document.querySelectorAll('.cat-filter').forEach(filter => {
+  filter.querySelectorAll('.cat-pill').forEach(pill => {
+    pill.addEventListener('click', () => {
+      filter.querySelectorAll('.cat-pill').forEach(p => p.classList.remove('active'));
+      pill.classList.add('active');
+    });
+  });
+});
+
+// ---- SCROLL-SPY SIDEBAR ----
+const sections = document.querySelectorAll('[id]');
+const sbLinks = document.querySelectorAll('.sb-link');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const id = entry.target.id;
+      sbLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === '#' + id) {
+          link.classList.add('active');
+        }
+      });
+    }
+  });
+}, { rootMargin: '-20% 0px -70% 0px' });
+sections.forEach(s => observer.observe(s));
+</script>
+</body>
+</html>

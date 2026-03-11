@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Basefund — Icon Library</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:wght@600&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --blue:#145DD0; --blue-lt:#28A4DD; --blue-deep:#0B3580;
+  --blue-pale:#DDEEFF; --blue-tint:#EEF5FF;
+  --white:#FFFFFF; --off:#F7F8FA;
+  --ink:#2B2B2B; --slate:#5C6680; --slate-lt:#8B96AE;
+  --border:rgba(0,0,0,.07);
+  --f-head:'Lora',Georgia,serif; --f-body:'Inter',-apple-system,sans-serif;
+  --ease:cubic-bezier(.16,1,.3,1);
+  --r-sm:6px; --r-md:12px; --r-lg:20px; --r-xl:24px; --r-pill:100px;
+  --s-sm:0 2px 8px rgba(20,93,208,.10);
+  --s-md:0 6px 20px rgba(20,93,208,.13);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{-webkit-font-smoothing:antialiased;font-size:16px;scroll-behavior:smooth;}
+body{font-family:var(--f-body);background:#F7F8FA;color:var(--ink);overflow-x:hidden;}
+a{text-decoration:none;color:inherit;}
+
+/* ── PAGE HEADER ── */
+.page-header {
+  background: #fff;
+  border-bottom: 1px solid var(--border);
+  padding: 0 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 64px;
+  position: sticky;
+  top: 0;
+  z-index: 200;
+}
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.header-mark {
+  width: 32px;
+  height: 32px;
+  border-radius: 9px;
+  background: linear-gradient(135deg, var(--blue-deep), var(--blue-lt));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: -.5px;
+  flex-shrink: 0;
+}
+.header-title {
+  font-family: var(--f-head);
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--ink);
+  letter-spacing: -.02em;
+}
+.header-divider {
+  width: 1px;
+  height: 18px;
+  background: var(--border);
+}
+.header-sub {
+  font-size: 12px;
+  color: var(--slate-lt);
+  font-weight: 500;
+}
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.back-link {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--slate);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: var(--r-pill);
+  border: 1px solid var(--border);
+  background: #fff;
+  transition: all 150ms;
+}
+.back-link:hover {
+  color: var(--blue);
+  border-color: rgba(20,93,208,.25);
+  background: var(--blue-tint);
+}
+.back-link svg {
+  width: 14px;
+  height: 14px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* ── SEARCH BAR ── */
+.search-bar {
+  position: sticky;
+  top: 64px;
+  z-index: 100;
+  background: #F7F8FA;
+  border-bottom: 1px solid var(--border);
+  padding: 14px 48px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.search-wrap {
+  position: relative;
+  flex: 1;
+  max-width: 520px;
+}
+.search-icon {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 16px;
+  height: 16px;
+  stroke: var(--slate-lt);
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  pointer-events: none;
+}
+.search-input {
+  width: 100%;
+  height: 42px;
+  border: 1.5px solid var(--border);
+  border-radius: var(--r-pill);
+  background: #fff;
+  padding: 0 16px 0 44px;
+  font-family: var(--f-body);
+  font-size: 14px;
+  color: var(--ink);
+  outline: none;
+  transition: border-color 180ms, box-shadow 180ms;
+}
+.search-input::placeholder { color: var(--slate-lt); }
+.search-input:focus {
+  border-color: var(--blue);
+  box-shadow: 0 0 0 3px rgba(20,93,208,.10), var(--s-sm);
+}
+.search-clear {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--slate-lt);
+  border: none;
+  cursor: pointer;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  transition: background 150ms;
+}
+.search-clear.visible { display: flex; }
+.search-clear:hover { background: var(--slate); }
+.search-clear svg {
+  width: 10px;
+  height: 10px;
+  stroke: #fff;
+  fill: none;
+  stroke-width: 2.5;
+  stroke-linecap: round;
+}
+.results-count {
+  font-size: 12px;
+  color: var(--slate-lt);
+  white-space: nowrap;
+  font-weight: 500;
+}
+.results-count strong {
+  color: var(--slate);
+  font-weight: 600;
+}
+
+/* ── MAIN CONTENT ── */
+.content {
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 40px 48px 80px;
+}
+
+/* ── CATEGORY SECTION ── */
+.cat-section {
+  margin-bottom: 52px;
+}
+.cat-header {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+.cat-name {
+  font-family: var(--f-head);
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--ink);
+  letter-spacing: -.02em;
+}
+.cat-count {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--blue);
+  background: var(--blue-tint);
+  padding: 2px 9px;
+  border-radius: var(--r-pill);
+  letter-spacing: .02em;
+}
+.cat-section.hidden { display: none; }
+
+/* ── ICON GRID ── */
+.icon-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: 8px;
+}
+
+/* ── ICON CARD ── */
+.icon-card {
+  background: #fff;
+  border-radius: var(--r-md);
+  box-shadow: 0 1px 3px rgba(0,0,0,.04);
+  padding: 16px 8px 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  transition: transform 200ms var(--ease), box-shadow 200ms var(--ease), background 150ms;
+  user-select: none;
+  -webkit-user-select: none;
+  position: relative;
+  overflow: hidden;
+}
+.icon-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(20,93,208,.13), 0 1px 4px rgba(20,93,208,.08);
+  background: var(--blue-tint);
+}
+.icon-card:active {
+  transform: translateY(0);
+  box-shadow: 0 1px 4px rgba(20,93,208,.08);
+}
+.icon-card.hidden { display: none; }
+.icon-img-wrap {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.icon-img-wrap img {
+  width: 24px;
+  height: 24px;
+  display: block;
+}
+.icon-label {
+  font-size: 10px;
+  color: var(--slate);
+  text-align: center;
+  line-height: 1.35;
+  word-break: break-word;
+  max-width: 100%;
+  font-weight: 500;
+  letter-spacing: -.01em;
+}
+
+/* ── EMPTY STATE ── */
+.empty-state {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 80px 0;
+  text-align: center;
+}
+.empty-state.visible { display: flex; }
+.empty-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--r-lg);
+  background: var(--blue-tint);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.empty-icon svg {
+  width: 22px;
+  height: 22px;
+  stroke: var(--blue);
+  fill: none;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+}
+.empty-title {
+  font-family: var(--f-head);
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--ink);
+}
+.empty-sub { font-size: 14px; color: var(--slate-lt); }
+
+/* ── TOAST ── */
+.toast {
+  position: fixed;
+  bottom: 32px;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: var(--ink);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 500;
+  padding: 10px 20px;
+  border-radius: var(--r-pill);
+  box-shadow: 0 8px 32px rgba(0,0,0,.18);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 200ms, transform 200ms var(--ease);
+  white-space: nowrap;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+.toast-check {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #22C55E;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.toast-check svg {
+  width: 9px;
+  height: 9px;
+  stroke: #fff;
+  fill: none;
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+</style>
+</head>
+<body>
+
+<!-- PAGE HEADER -->
+<header class="page-header">
+  <div class="header-left">
+    <div class="header-mark">BF</div>
+    <span class="header-title">Icon Library</span>
+    <div class="header-divider"></div>
+    <span class="header-sub">1,173 icons</span>
+  </div>
+  <div class="header-right">
+    <a href="index.html" class="back-link">
+      <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+      Design System
+    </a>
+  </div>
+</header>
+
+<!-- SEARCH BAR -->
+<div class="search-bar">
+  <div class="search-wrap">
+    <svg class="search-icon" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+    </svg>
+    <input
+      type="text"
+      class="search-input"
+      id="searchInput"
+      placeholder="Search icons…"
+      autocomplete="off"
+      spellcheck="false"
+    >
+    <button class="search-clear" id="searchClear" aria-label="Clear search">
+      <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+  </div>
+  <div class="results-count" id="resultsCount">
+    Showing <strong>1,173</strong> of 1,173 icons
+  </div>
+</div>
+
+<!-- MAIN CONTENT -->
+<main class="content" id="content">
+
+  <!-- EMPTY STATE -->
+  <div class="empty-state" id="emptyState">
+    <div class="empty-icon">
+      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    </div>
+    <p class="empty-title">No icons found</p>
+    <p class="empty-sub">Try a different search term</p>
+  </div>
+
+</main>
+
+<!-- TOAST -->
+<div class="toast" id="toast">
+  <div class="toast-check">
+    <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+  </div>
+  <span id="toastText">Copied!</span>
+</div>
+
+<script>
+(function () {
+  'use strict';
+
+  // ── ICON DATA ──────────────────────────────────────────────────────────────
+  const CATEGORIES = [
+    {
+      name: 'Arrows',
+      icons: ['arrow-block-down','arrow-block-left','arrow-block-right','arrow-block-up','arrow-circle-broken-down-left','arrow-circle-broken-down-right','arrow-circle-broken-down','arrow-circle-broken-left','arrow-circle-broken-right','arrow-circle-broken-up-left','arrow-circle-broken-up-right','arrow-circle-broken-up','arrow-circle-down-left','arrow-circle-down-right','arrow-circle-down','arrow-circle-left','arrow-circle-right','arrow-circle-up-left','arrow-circle-up-right','arrow-circle-up','arrow-down-left','arrow-down-right','arrow-down','arrow-left','arrow-narrow-down-left','arrow-narrow-down-right','arrow-narrow-down','arrow-narrow-left','arrow-narrow-right','arrow-narrow-up-left','arrow-narrow-up-right','arrow-narrow-up','arrow-right','arrow-square-down-left','arrow-square-down-right','arrow-square-down','arrow-square-left','arrow-square-right','arrow-square-up-left','arrow-square-up-right','arrow-square-up','arrow-up-left','arrow-up-right','arrow-up','arrows-down','arrows-left','arrows-right','arrows-triangle','arrows-up','chevron-down-double','chevron-down','chevron-left-double','chevron-left','chevron-right-double','chevron-right','chevron-selector-horizontal','chevron-selector-vertical','chevron-up-double','chevron-up','corner-down-left','corner-down-right','corner-left-down','corner-left-up','corner-right-down','corner-right-up','corner-up-left','corner-up-right']
+    },
+    {
+      name: 'Charts',
+      icons: ['bar-chart-01','bar-chart-02','bar-chart-03','bar-chart-04','bar-chart-05','bar-chart-06','bar-chart-07','bar-chart-08','bar-chart-09','bar-chart-10','bar-chart-11','bar-chart-12','bar-chart-circle-01','bar-chart-circle-02','bar-chart-circle-03','bar-chart-square-01','bar-chart-square-02','bar-chart-square-03','bar-chart-square-down','bar-chart-square-minus','bar-chart-square-plus','bar-chart-square-up','bar-line-chart','chart-breakout-circle','chart-breakout-square','horizontal-bar-chart-01','horizontal-bar-chart-02','horizontal-bar-chart-03','line-chart-down-01','line-chart-down-02','line-chart-down-03','line-chart-down-04','line-chart-down-05','line-chart-up-01','line-chart-up-02','line-chart-up-03','line-chart-up-04','line-chart-up-05','pie-chart-01','pie-chart-02','pie-chart-03','pie-chart-04','presentation-chart-01','presentation-chart-02','presentation-chart-03','trend-down-01','trend-down-02','trend-up-01','trend-up-02']
+    },
+    {
+      name: 'Communication',
+      icons: ['annotation-alert','annotation-check','annotation-dots','annotation-heart','annotation-info','annotation-plus','annotation-question','annotation-x','annotation','announcement-01','announcement-02','announcement-03','mail-01','mail-02','mail-03','mail-04','mail-05','message-alert-circle','message-alert-square','message-chat-circle','message-chat-square','message-check-circle','message-check-square','message-circle-01','message-circle-02','message-dots-circle','message-dots-square','message-heart-circle','message-heart-square','message-notification-circle','message-notification-square','message-plus-circle','message-plus-square','message-question-circle','message-question-square','message-smile-circle','message-smile-square','message-square-01','message-square-02','message-text-circle-01','message-text-circle-02','message-text-square-01','message-text-square-02','message-x-circle','message-x-square','phone-01','phone-02','phone-call-01','phone-call-02','phone-hang-up','phone-incoming-01','phone-incoming-02','phone-outgoing-01','phone-outgoing-02','phone-pause','phone-plus','phone-x','phone','send-01','send-02','send-03']
+    },
+    {
+      name: 'Development',
+      icons: ['brackets-check','brackets-ellipses','brackets-minus','brackets-plus','brackets-slash','brackets-x','brackets','code-01','code-02','code-browser','code-circle-01','code-circle-02','code-circle-03','code-snippet-01','code-snippet-02','code-square-01','code-square-02','codepen','data','database-01','database-02','database-03','dataflow-01','dataflow-02','dataflow-03','dataflow-04','git-branch-01','git-branch-02','git-commit','git-merge','git-pull-request','server-01','server-02','server-03','server-04','server-05','server-06','terminal-browser','terminal-circle','terminal-square','terminal']
+    },
+    {
+      name: 'Editor',
+      icons: ['align-bottom-01','align-bottom-02','align-center','align-horizontal-centre-01','align-horizontal-centre-02','align-justify','align-left-01','align-left-02','align-left','align-right-01','align-right-02','align-right','align-top-01','align-top-02','align-vertical-center-01','align-vertical-center-02','bold-01','bold-02','bold-square','dotpoints-01','dotpoints-02','heading-01','heading-02','heading-square','italic-01','italic-02','italic-square','left-indent-01','left-indent-02','letter-spacing-01','letter-spacing-02','line-height','list','paragraph-spacing','paragraph-wrap','pilcrow-01','pilcrow-02','pilcrow-square','right-indent-01','right-indent-02','strikethrough-01','strikethrough-02','strikethrough-square','subscript','text-input','type-01','type-02','type-square','type-strikethrough-01','type-strikethrough-02','underline-01','underline-02','underline-square']
+    },
+    {
+      name: 'Files',
+      icons: ['book-closed','book-open-01','book-open-02','clipboard-attachment','clipboard-check','clipboard-download','clipboard-minus','clipboard-plus','clipboard-x','clipboard','file-01','file-02','file-03','file-04','file-05','file-06','file-07','file-attachment-01','file-attachment-02','file-attachment-03','file-attachment-04','file-attachment-05','file-check-01','file-check-02','file-check-03','file-code-01','file-code-02','file-download-01','file-download-02','file-download-03','file-heart-01','file-heart-02','file-heart-03','file-lock-01','file-lock-02','file-lock-03','file-minus-01','file-minus-02','file-minus-03','file-plus-01','file-plus-02','file-plus-03','file-question-01','file-question-02','file-question-03','file-search-01','file-search-02','file-search-03','file-shield-01','file-shield-02','file-shield-03','file-x-01','file-x-02','file-x-03','folder-check','folder-closed','folder-code','folder-download','folder-lock','folder-minus','folder-plus','folder-question','folder-search','folder-shield','folder-x','folder']
+    },
+    {
+      name: 'Finance',
+      icons: ['bank-note-01','bank-note-02','bank-note-03','bank','coins-01','coins-02','coins-03','coins-04','coins-hand','coins-stacked-01','coins-stacked-02','coins-stacked-03','coins-stacked-04','coins-swap-01','coins-swap-02','credit-card-01','credit-card-02','credit-card-check','credit-card-down','credit-card-download','credit-card-edit','credit-card-lock','credit-card-minus','credit-card-plus','credit-card-refresh','credit-card-search','credit-card-shield','credit-card-up','credit-card-upload','credit-card-x','cryptocurrency-01','cryptocurrency-02','cryptocurrency-03','cryptocurrency-04','currency-bitcoin-circle','currency-bitcoin','currency-dollar-circle','currency-dollar','currency-ethereum-circle','currency-ethereum','currency-euro-circle','currency-euro','currency-pound-circle','currency-pound','currency-ruble-circle','currency-ruble','currency-rupee-circle','currency-rupee','currency-yen-circle','currency-yen','piggy-bank-01','piggy-bank-02','receipt-check','receipt','sale-01','sale-02','sale-03','sale-04','shopping-bag-01','shopping-bag-02','shopping-bag-03','shopping-cart-01','shopping-cart-02','shopping-cart-03','wallet-01','wallet-02','wallet-03','wallet-04','wallet-05']
+    },
+    {
+      name: 'Images',
+      icons: ['camera-01','camera-02','camera-03','camera-lens','camera-off','camera-plus','clapperboard','film-01','film-02','film-03','image-01','image-02','image-03','image-04','image-05','image-check','image-down','image-indent-left','image-indent-right','image-left','image-plus','image-right','image-up','image-user-check','image-user-down','image-user-left','image-user-plus','image-user-right','image-user-up','image-user-x','image-user','image-x']
+    },
+    {
+      name: 'Layout',
+      icons: ['columns-01','columns-02','columns-03','distribute-spacing-horizontal','distribute-spacing-vertical','flex-align-bottom','flex-align-left','flex-align-right','flex-align-top','grid-01','grid-02','grid-03','grid-dots-blank','grid-dots-bottom','grid-dots-horizontal-center','grid-dots-left','grid-dots-outer','grid-dots-right','grid-dots-top','grid-dots-vertical-center','layout-alt-01','layout-alt-02','layout-alt-03','layout-alt-04','layout-bottom','layout-grid-01','layout-grid-02','layout-left','layout-right','layout-top','rows-01','rows-02','rows-03','spacing-height-01','spacing-height-02','spacing-width-01','spacing-width-02']
+    },
+    {
+      name: 'Maps & Travel',
+      icons: ['bus','car-01','car-02','compass-01','compass-02','compass-03','compass','globe-01','globe-02','globe-03','globe-04','globe-05','globe-06','globe-slated-01','globe-slated-02','luggage-01','luggage-02','luggage-03','map-01','map-02','marker-pin-01','marker-pin-02','marker-pin-03','marker-pin-04','marker-pin-05','marker-pin-06','navigation-pointer-01','navigation-pointer-02','navigation-pointer-off-01','navigation-pointer-off-02','plane','route','train','tram','truck-01','truck-02']
+    },
+    {
+      name: 'Media',
+      icons: ['fast-backward','fast-forward','microphone-01','microphone-02','microphone-off-01','microphone-off-02','music-note-01','music-note-02','music-note-plus','pause-circle','pause-square','play-circle','play-square','play','podcast','recording-01','recording-02','recording-03','skip-back','skip-forward','speaker-01','speaker-02','speaker-03','stop-circle','stop-square','stop','video-recorder-off','video-recorder','voicemail','volume-max','volume-min','volume-minus','volume-plus','volume-x']
+    },
+    {
+      name: 'Security',
+      icons: ['face-id-square','face-id','fingerprint-01','fingerprint-02','fingerprint-03','fingerprint-04','key-01','key-02','lock-01','lock-02','lock-03','lock-04','lock-keyhole-circle','lock-keyhole-square','lock-unlocked-01','lock-unlocked-02','lock-unlocked-03','lock-unlocked-04','passcode-lock','passcode','safe','shield-01','shield-02','shield-03','shield-dollar','shield-off','shield-plus','shield-tick','shield-zap']
+    },
+    {
+      name: 'Time',
+      icons: ['alarm-clock-check','alarm-clock-minus','alarm-clock-off','alarm-clock-plus','alarm-clock','calendar-check-01','calendar-check-02','calendar-date','calendar-heart-01','calendar-heart-02','calendar-minus-01','calendar-minus-02','calendar-plus-01','calendar-plus-02','calendar','clock-check','clock-fast-forward','clock-plus','clock-refresh','clock-rewind','clock-snooze','clock-stopwatch','clock','hourglass-01','hourglass-02','hourglass-03','watch-circle','watch-square']
+    },
+    {
+      name: 'Users',
+      icons: ['user-01','user-02','user-03','user-check-01','user-check-02','user-circle','user-down-01','user-down-02','user-edit','user-left-01','user-left-02','user-minus-01','user-minus-02','user-plus-01','user-plus-02','user-right-01','user-right-02','user-square','user-up-01','user-up-02','user-x-01','user-x-02','users-01','users-02','users-03','users-check','users-down','users-edit','users-left','users-minus','users-plus','users-right','users-up','users-x']
+    },
+    {
+      name: 'Weather',
+      icons: ['cloud-01','cloud-02','cloud-03','cloud-blank-01','cloud-blank-02','cloud-lightning','cloud-moon','cloud-off','cloud-raining-01','cloud-raining-02','cloud-raining-03','cloud-raining-04','cloud-raining-05','cloud-raining-06','cloud-snowing-01','cloud-snowing-02','cloud-sun-01','cloud-sun-02','cloud-sun-03','drop','droplets-01','droplets-02','droplets-03','hurricane-01','hurricane-02','hurricane-03','moon-01','moon-02','moon-eclipse','moon-star','snowflake-01','snowflake-02','sun-setting-01','sun-setting-02','sun-setting-03','sun','sunrise','sunset','thermometer-01','thermometer-02','thermometer-03','thermometer-cold','thermometer-warm','umbrella-01','umbrella-02','umbrella-03','waves','wind-01','wind-02','wind-03']
+    },
+    {
+      name: 'Alerts',
+      icons: ['alert-circle','alert-hexagon','alert-octagon','alert-square','alert-triangle','bell-01','bell-02','bell-03','bell-04','bell-minus','bell-off-01','bell-off-02','bell-off-03','bell-plus','bell-ringing-01','bell-ringing-02','bell-ringing-03','bell-ringing-04','help-circle','help-hexagon','help-octagon','help-square','info-circle','info-hexagon','info-octagon','info-square','notification-box','notification-message','notification-text']
+    },
+    {
+      name: 'Shapes',
+      icons: ['circle-cut','circle','diamond-01','diamond-02','heart-circle','heart-hand','heart-hexagon','heart-octagon','heart-rounded','heart-square','heart','hearts','hexagon-01','hexagon-02','octagon','pentagon','square','star-01','star-02','star-03','star-04','star-05','star-06','star-07','triangle']
+    },
+    {
+      name: 'General',
+      icons: ['activity-heart','activity','airplay','airpods','anchor','archive','asterisk-01','asterisk-02','at-sign','atom-01','atom-02','attachment-01','attachment-02','award-01','award-02','award-03','award-04','award-05','backpack','battery-charging-01','battery-charging-02','battery-empty','battery-full','battery-low','battery-mid','beaker-01','beaker-02','bezier-curve-01','bezier-curve-02','bezier-curve-03','bluetooth-connect','bluetooth-off','bluetooth-on','bluetooth-signal','bookmark-add','bookmark-check','bookmark-minus','bookmark-x','bookmark','box','briefcase-01','briefcase-02','browser','brush-01','brush-02','brush-03','building-01','building-02','building-03','building-04','building-05','building-06','building-07','building-08','calculator','certificate-01','certificate-02','check-circle-broken','check-circle','check-done-01','check-done-02','check-heart','check-square-broken','check-square','check-verified-01','check-verified-02','check-verified-03','check','chrome-cast','colors-251-8919','colors','command','container','contrast-01','contrast-02','contrast-03','copy-01','copy-02','copy-03','copy-04','copy-05','copy-06','copy-07','cpu-chip-01','cpu-chip-02','crop-01','crop-02','cube-01','cube-02','cube-03','cube-04','cube-outline','cursor-01','cursor-02','cursor-03','cursor-04','cursor-box','cursor-click-01','cursor-click-02','delete','dice-1','dice-2','dice-3','dice-4','dice-5','dice-6','disc-01','disc-02','divide-01','divide-02','divide-03','divider','dots-grid','dots-horizontal','dots-vertical','download-01','download-02','download-03','download-04','download-cloud-01','download-cloud-02','dropper','edit-01','edit-02','edit-03','edit-04','edit-05','equal-not','equal','eraser','expand-01','expand-02','expand-03','expand-04','expand-05','expand-06','eye-off','eye','face-content','face-frown','face-happy','face-neutral','face-sad','face-smile','face-wink','feather','figma','filter-funnel-01','filter-funnel-02','filter-lines','flag-01','flag-02','flag-03','flag-04','flag-05','flag-06','flash-off','flash','flip-backward','flip-forward','framer','gaming-pad-01','gaming-pad-02','gift-01','gift-02','glasses-01','glasses-02','google-chrome','graduation-hat-01','graduation-hat-02','hand','hard-drive','hash-01','hash-02','headphones-01','headphones-02','home-01','home-02','home-03','home-04','home-05','home-line','home-smile','inbox-01','inbox-02','infinity','intersect-circle','intersect-square','keyboard-01','keyboard-02','laptop-01','laptop-02','layer-single','layers-three-01','layers-three-02','layers-two-01','layers-two-02','life-buoy-01','life-buoy-02','lightbulb-01','lightbulb-02','lightbulb-03','lightbulb-04','lightbulb-05','lightning-01','lightning-02','link-01','link-02','link-03','link-04','link-05','link-broken-01','link-broken-02','link-external-01','link-external-02','loading-01','loading-02','loading-03','log-in-01','log-in-02','log-in-03','log-in-04','log-out-01','log-out-02','log-out-03','log-out-04','magic-wand-01','magic-wand-02','mark','maximize-01','maximize-02','medical-circle','medical-cross','medical-square','menu-01','menu-02','menu-03','menu-04','menu-05','microscope','minimize-01','minimize-02','minus-circle','minus-square','minus','modem-01','modem-02','monitor-01','monitor-02','monitor-03','monitor-04','monitor-05','mouse','move','package-check','package-minus','package-plus','package-search','package-x','package','paint-pour','paint','palette','paperclip','passport','pen-tool-01','pen-tool-02','pen-tool-minus','pen-tool-plus','pencil-01','pencil-02','pencil-line','percent-01','percent-02','percent-03','perspective-01','perspective-02','pin-01','pin-02','placeholder','plus-circle','plus-square','plus','power-01','power-02','power-03','printer','puzzle-piece-01','puzzle-piece-02','qr-code-01','qr-code-02','reflect-01','reflect-02','refresh-ccw-01','refresh-ccw-02','refresh-ccw-03','refresh-ccw-04','refresh-ccw-05','refresh-cw-01','refresh-cw-02','refresh-cw-03','refresh-cw-04','refresh-cw-05','repeat-01','repeat-02','repeat-03','repeat-04','reverse-left','reverse-right','rocket-01','rocket-02','roller-brush','rss-01','rss-02','ruler','save-01','save-02','save-03','scale-01','scale-02','scale-03','scales-01','scales-02','scan','scissors-01','scissors-02','scissors-cut-01','scissors-cut-02','search-lg','search-md','search-refraction','search-sm','settings-01','settings-02','settings-03','settings-04','share-01','share-02','share-03','share-04','share-05','share-06','share-07','shuffle-01','shuffle-02','signal-01','signal-02','signal-03','simcard','skew','slash-circle-01','slash-circle-02','slash-divider','slash-octagon','sliders-01','sliders-02','sliders-03','sliders-04','speedometer-01','speedometer-02','speedometer-03','speedometer-04','stand','stars-01','stars-02','stars-03','sticker-circle','sticker-square','switch-horizontal-01','switch-horizontal-02','switch-vertical-01','switch-vertical-02','table','tablet-01','tablet-02','tag-01','tag-02','tag-03','target-01','target-02','target-03','target-04','target-05','telescope','thumbs-down','thumbs-up','ticket-01','ticket-02','toggle-01-left','toggle-01-right','toggle-02-left','toggle-02-right','toggle-03-left','toggle-03-right','tool-01','tool-02','transform','translate-01','translate-02','trash-01','trash-02','trash-03','trash-04','trophy-01','trophy-02','tv-01','tv-02','tv-03','upload-01','upload-02','upload-03','upload-04','upload-cloud-01','upload-cloud-02','usb-flash-drive','variable','virus','webcam-01','webcam-02','wifi-off','wifi','x-circle','x-close','x-square','x','youtube','zap-circle','zap-fast','zap-off','zap-square','zap','zoom-in','zoom-out']
+    }
+  ];
+
+  const TOTAL = 1173;
+
+  // ── BUILD DOM ──────────────────────────────────────────────────────────────
+  const content = document.getElementById('content');
+  const emptyState = document.getElementById('emptyState');
+
+  CATEGORIES.forEach(function (cat) {
+    var section = document.createElement('section');
+    section.className = 'cat-section';
+    section.dataset.cat = cat.name;
+
+    var header = document.createElement('div');
+    header.className = 'cat-header';
+    header.innerHTML =
+      '<span class="cat-name">' + cat.name + '</span>' +
+      '<span class="cat-count" data-count>' + cat.icons.length + '</span>';
+    section.appendChild(header);
+
+    var grid = document.createElement('div');
+    grid.className = 'icon-grid';
+
+    cat.icons.forEach(function (icon) {
+      var card = document.createElement('div');
+      card.className = 'icon-card';
+      card.dataset.name = icon;
+      card.setAttribute('title', icon);
+
+      var wrap = document.createElement('div');
+      wrap.className = 'icon-img-wrap';
+      var img = document.createElement('img');
+      img.src = 'icons/' + icon + '.svg';
+      img.alt = icon;
+      img.width = 24;
+      img.height = 24;
+      img.loading = 'lazy';
+      wrap.appendChild(img);
+
+      var label = document.createElement('span');
+      label.className = 'icon-label';
+      label.textContent = icon.replace(/-/g, ' ');
+
+      card.appendChild(wrap);
+      card.appendChild(label);
+      card.addEventListener('click', function () { copyIcon(icon); });
+      grid.appendChild(card);
+    });
+
+    section.appendChild(grid);
+    content.insertBefore(section, emptyState);
+  });
+
+  // ── SEARCH ──────────────────────────────────────────────────────────────────
+  var searchInput = document.getElementById('searchInput');
+  var searchClear = document.getElementById('searchClear');
+  var resultsCount = document.getElementById('resultsCount');
+  var allCards = document.querySelectorAll('.icon-card');
+  var allSections = document.querySelectorAll('.cat-section');
+
+  function updateSearch() {
+    var q = searchInput.value.trim().toLowerCase().replace(/\s+/g, '-');
+    var visible = 0;
+
+    searchClear.classList.toggle('visible', searchInput.value.length > 0);
+
+    allSections.forEach(function (section) {
+      var cards = section.querySelectorAll('.icon-card');
+      var sectionVisible = 0;
+
+      cards.forEach(function (card) {
+        var name = card.dataset.name;
+        var match = q === '' || name.includes(q) || name.replace(/-/g, ' ').includes(searchInput.value.trim().toLowerCase());
+        if (match) {
+          card.classList.remove('hidden');
+          sectionVisible++;
+          visible++;
+        } else {
+          card.classList.add('hidden');
+        }
+      });
+
+      var countEl = section.querySelector('[data-count]');
+      if (countEl) {
+        countEl.textContent = sectionVisible;
+      }
+
+      section.classList.toggle('hidden', sectionVisible === 0);
+    });
+
+    var countStr = visible.toLocaleString();
+    resultsCount.innerHTML = 'Showing <strong>' + countStr + '</strong> of ' + TOTAL.toLocaleString() + ' icons';
+    emptyState.classList.toggle('visible', visible === 0);
+  }
+
+  searchInput.addEventListener('input', updateSearch);
+  searchClear.addEventListener('click', function () {
+    searchInput.value = '';
+    searchInput.focus();
+    updateSearch();
+  });
+  searchInput.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') {
+      searchInput.value = '';
+      updateSearch();
+    }
+  });
+
+  // ── COPY & TOAST ──────────────────────────────────────────────────────────
+  var toast = document.getElementById('toast');
+  var toastText = document.getElementById('toastText');
+  var toastTimer = null;
+
+  function copyIcon(name) {
+    var filename = name + '.svg';
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(filename).then(function () {
+        showToast('Copied: ' + filename);
+      }).catch(function () {
+        fallbackCopy(filename);
+      });
+    } else {
+      fallbackCopy(filename);
+    }
+  }
+
+  function fallbackCopy(text) {
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    try { document.execCommand('copy'); } catch (e) {}
+    document.body.removeChild(ta);
+    showToast('Copied: ' + text);
+  }
+
+  function showToast(msg) {
+    toastText.textContent = msg;
+    toast.classList.add('show');
+    if (toastTimer) clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () {
+      toast.classList.remove('show');
+    }, 2200);
+  }
+
+  // ── KEYBOARD SHORTCUT: / to focus search ─────────────────────────────────
+  document.addEventListener('keydown', function (e) {
+    if (e.key === '/' && document.activeElement !== searchInput) {
+      e.preventDefault();
+      searchInput.focus();
+      searchInput.select();
+    }
+  });
+
+}());
+</script>
+
+</body>
+</html>
