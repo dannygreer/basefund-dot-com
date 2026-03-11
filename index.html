@@ -122,12 +122,12 @@ img{display:block;}
 .hero-ctas{display:flex;gap:12px;align-items:center;flex-wrap:wrap;}
 
 /* Hero right — app mockups */
-.hero-right{position:relative;width:420px;flex-shrink:0;}
-.mockup-stack{position:relative;height:340px;}
+.hero-right{position:relative;width:500px;flex-shrink:0;}
+.mockup-stack{position:relative;height:420px;}
 /* Back mockup */
-.mockup-back{position:absolute;top:0;left:0;width:320px;background:#fff;border-radius:2px;box-shadow:var(--s-lg);overflow:hidden;z-index:1;}
+.mockup-back{position:absolute;top:0;left:0;width:400px;background:#fff;border-radius:2px;box-shadow:var(--s-lg);overflow:hidden;z-index:1;}
 /* Front mockup */
-.mockup-front{position:absolute;top:60px;left:80px;width:340px;background:#fff;border-radius:2px;box-shadow:var(--s-xl);overflow:hidden;z-index:2;}
+.mockup-front{position:absolute;bottom:0;right:0;width:420px;background:#fff;border-radius:2px;box-shadow:var(--s-xl);overflow:hidden;z-index:2;}
 .mockup-titlebar{display:flex;align-items:center;gap:6px;padding:10px 14px;background:#F2F4F7;border-bottom:1px solid rgba(0,0,0,.07);}
 .mockup-dots{display:flex;gap:5px;}
 .mockup-dot{width:9px;height:9px;border-radius:50%;}
@@ -296,15 +296,17 @@ img{display:block;}
 .comp-header{text-align:center;margin-bottom:32px;}
 .comp-table{background:#fff;border-radius:2px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.04);}
 .comp-table table{width:100%;border-collapse:collapse;}
-.comp-table th{background:var(--blue);color:#fff;padding:16px 24px;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;text-align:center;}
+.comp-table th{background:var(--blue);color:#fff;padding:16px 24px;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;}
+.comp-table th:first-child{text-align:left;}
+.comp-table th:nth-child(2),.comp-table th:nth-child(3){text-align:left;}
 .comp-table th:first-child{text-align:left;background:var(--blue-deep);width:40%;}
 .comp-table th:last-child{background:linear-gradient(135deg,var(--blue),var(--blue-lt));position:relative;}
-.comp-table td{padding:14px 24px;font-size:13px;color:var(--slate);border-bottom:1px solid var(--border);text-align:center;}
+.comp-table td{padding:14px 24px;font-size:13px;color:var(--slate);border-bottom:1px solid var(--border);text-align:left;}
 .comp-table td:first-child{text-align:left;font-weight:600;color:var(--ink);}
 .comp-table tr:nth-child(even) td{background:var(--off);}
 .comp-table tr:last-child td{border-bottom:none;}
 .comp-check{color:#167A43;font-weight:700;font-size:16px;}
-.comp-x{color:#DC2626;font-weight:700;font-size:16px;}
+.comp-x{color:var(--slate-lt);font-weight:700;font-size:16px;}
 .comp-dash{color:var(--slate-lt);}
 .comp-table td:nth-child(2){color:var(--slate-lt);font-style:italic;}
 .comp-table td:last-child{background:rgba(20,93,208,.03);font-weight:500;color:var(--ink);}
@@ -335,6 +337,17 @@ img{display:block;}
 .bqb-qmark{font-family:var(--f-head);font-size:clamp(80px,12vw,110px);line-height:.6;color:var(--accent);display:block;margin-bottom:-8px;font-style:normal;}
 .bqb-quote{font-family:var(--f-head);font-size:clamp(22px,3vw,36px);font-style:italic;font-weight:500;color:#fff;line-height:1.45;letter-spacing:-.02em;}
 .bqb-quote em{font-style:normal;color:var(--accent);}
+
+/* ===== BLOG POSTS ===== */
+.blog-section{padding:96px 0 80px;background:#fff;}
+.blog-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:32px;}
+.blog-card{display:flex;flex-direction:column;}
+.blog-card-img{width:100%;height:220px;object-fit:cover;border-radius:2px;margin-bottom:20px;}
+.blog-card-tag{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--blue);margin-bottom:10px;}
+.blog-card-h{font-family:var(--f-head);font-size:20px;font-weight:600;color:var(--ink);letter-spacing:-.02em;line-height:1.3;margin-bottom:10px;}
+.blog-card-p{font-size:14px;line-height:1.65;color:var(--slate);flex:1;}
+.blog-card-link{font-size:13px;font-weight:600;color:var(--blue);margin-top:16px;display:inline-flex;align-items:center;gap:6px;}
+.blog-card-link:hover{color:var(--blue-deep);}
 
 /* ===== CTA SECTION ===== */
 .cta-section{padding:0 0 80px;}
@@ -405,6 +418,7 @@ img{display:block;}
   .breakout-card{max-width:320px;}
   .hero-right{display:none;}
   .hero-cinema-content{gap:0;}
+  .blog-grid{grid-template-columns:1fr 1fr;}
 }
 @media(max-width:768px){
   .container{padding:0 20px;}
@@ -431,6 +445,8 @@ img{display:block;}
   .breakout-section{padding:0 0 40px;}
   .breakout-img img{height:280px;}
   .breakout-card{position:relative;bottom:auto;right:auto;left:auto!important;margin:-40px 20px 0;}
+  .blog-section{padding:56px 0 40px;}
+  .blog-grid{grid-template-columns:1fr;}
   .bqb-section{padding:64px 32px;}
   .cta-section{padding:0 0 40px;}
   .cta-full{padding:48px 24px;}
@@ -878,7 +894,7 @@ img{display:block;}
       <div class="breakout-img">
         <img src="design-system/images/professional-woman-laptop.jpg" alt="Professional working">
       </div>
-      <div class="breakout-card" style="left:40px;right:auto;">
+      <div class="breakout-card">
         <div class="breakout-card-eyebrow">Built for Teams</div>
         <div class="breakout-card-h">Every stakeholder, one platform.</div>
         <div class="breakout-card-p">From municipal CFOs to bond counsel, underwriters to escrow agents — Basefund gives every party at the closing table real-time visibility and verified confidence.</div>
@@ -990,11 +1006,6 @@ img{display:block;}
             <td>Manual document assembly</td>
             <td><span class="comp-check">✓</span> Auto-generated, exportable</td>
           </tr>
-          <tr>
-            <td>OFAC / Watchlist Screening</td>
-            <td>Periodic manual checks</td>
-            <td><span class="comp-check">✓</span> Continuous, real-time screening</td>
-          </tr>
         </tbody>
       </table>
     </div>
@@ -1072,6 +1083,39 @@ img{display:block;}
     <span class="bqb-qmark">"</span>
     <div class="bqb-quote">
       Every dollar in motion deserves the same protection as the institution behind it. We built Basefund to make <em>secure, verified, insured transactions</em> the default — not the exception.
+    </div>
+  </div>
+</div>
+
+<!-- BLOG POSTS -->
+<div class="blog-section">
+  <div class="container">
+    <div class="section-header r">
+      <div class="eyebrow">From the Blog</div>
+      <h2>Master transactions, eliminate risk.</h2>
+    </div>
+    <div class="blog-grid">
+      <div class="blog-card r">
+        <img class="blog-card-img" src="design-system/images/professional-hands-keyboard.jpg" alt="Secure transactions">
+        <div class="blog-card-tag">Transactions</div>
+        <div class="blog-card-h">Secure Transactions Need a Framework, Not Just Better Tools</div>
+        <div class="blog-card-p">Four practical steps to secure your high-value transactions — from defining stages and formalizing authority to mapping participants and linking dependencies.</div>
+        <a href="#" class="blog-card-link">Read more →</a>
+      </div>
+      <div class="blog-card r sd1">
+        <img class="blog-card-img" src="design-system/images/professional-man-office.jpg" alt="Transaction types">
+        <div class="blog-card-tag">Framework</div>
+        <div class="blog-card-h">The Four Transaction Types That Define How Money Moves</div>
+        <div class="blog-card-p">Most financial controls fail because they're applied to the wrong kind of transaction. Here's a simple framework for getting classification right.</div>
+        <a href="#" class="blog-card-link">Read more →</a>
+      </div>
+      <div class="blog-card r sd2">
+        <img class="blog-card-img" src="design-system/images/professional-woman-typing.jpg" alt="Payments vs transactions">
+        <div class="blog-card-tag">Insurance</div>
+        <div class="blog-card-h">Payments vs. Transactions: What's the Difference and Why It Matters</div>
+        <div class="blog-card-p">You've built the pantry and the recipes — but not the kitchen. Learn why treating payments as transactions breaks money movement at scale.</div>
+        <a href="#" class="blog-card-link">Read more →</a>
+      </div>
     </div>
   </div>
 </div>
