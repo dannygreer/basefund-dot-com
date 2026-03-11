@@ -122,41 +122,53 @@ img{display:block;}
 .hero-sub{font-size:17px;line-height:1.65;color:rgba(255,255,255,.75);max-width:46ch;margin-bottom:44px;}
 .hero-ctas{display:flex;gap:12px;align-items:center;flex-wrap:wrap;}
 
-/* Hero right — app mockups */
-.hero-right{position:relative;width:500px;flex-shrink:0;}
-.mockup-stack{position:relative;height:420px;}
-/* Back mockup */
-.mockup-back{position:absolute;top:0;left:0;width:400px;background:#fff;border-radius:2px;box-shadow:var(--s-lg);overflow:hidden;z-index:1;}
-/* Front mockup */
-.mockup-front{position:absolute;bottom:0;right:0;width:420px;background:#fff;border-radius:2px;box-shadow:var(--s-xl);overflow:hidden;z-index:2;}
-.mockup-titlebar{display:flex;align-items:center;gap:6px;padding:10px 14px;background:#F2F4F7;border-bottom:1px solid rgba(0,0,0,.07);}
-.mockup-dots{display:flex;gap:5px;}
-.mockup-dot{width:9px;height:9px;border-radius:50%;}
+/* Hero right — 2x2 grid */
+.hero-right{position:relative;width:520px;flex-shrink:0;}
+.hero-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.hero-grid-cell{border-radius:2px;overflow:hidden;box-shadow:var(--s-lg);position:relative;}
+.hero-grid-cell.app-screen{background:#fff;}
+.hero-grid-cell.photo-cell{height:180px;}
+.hero-grid-cell.photo-cell img{width:100%;height:100%;object-fit:cover;display:block;}
+.hero-grid-cell.photo-cell .photo-overlay{position:absolute;bottom:10px;right:10px;background:#fff;border-radius:2px;padding:10px 14px;box-shadow:var(--s-md);max-width:170px;}
+.hero-grid-cell.photo-cell .photo-overlay-label{font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:var(--blue);margin-bottom:4px;}
+.hero-grid-cell.photo-cell .photo-overlay-val{font-size:13px;font-weight:700;color:var(--ink);letter-spacing:-.02em;}
+.hero-grid-cell.photo-cell .photo-overlay-sub{font-size:10px;color:var(--slate-lt);margin-top:2px;}
+/* Mockup chrome */
+.mockup-titlebar{display:flex;align-items:center;gap:6px;padding:8px 12px;background:#F2F4F7;border-bottom:1px solid rgba(0,0,0,.07);}
+.mockup-dots{display:flex;gap:4px;}
+.mockup-dot{width:7px;height:7px;border-radius:50%;}
 .mockup-dot.red{background:#FF5F57;}
 .mockup-dot.y{background:#FEBC2E;}
 .mockup-dot.g{background:#28C840;}
-.mockup-title-text{font-size:11px;font-weight:600;color:#5C6680;margin-left:8px;letter-spacing:-.01em;}
-.mockup-body{padding:14px 16px;}
-/* Deal Dashboard mockup content */
-.dash-deal-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
-.dash-deal-name{font-size:11px;font-weight:700;color:var(--ink);letter-spacing:-.01em;}
-.dash-badge{font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;background:#DFF4EA;color:#167A43;padding:3px 8px;border-radius:2px;}
-.dash-stats-row{display:flex;gap:0;border:1px solid rgba(0,0,0,.07);border-radius:2px;overflow:hidden;margin-bottom:12px;}
-.dash-stat{flex:1;padding:8px 10px;text-align:center;border-right:1px solid rgba(0,0,0,.07);}
+.mockup-title-text{font-size:10px;font-weight:600;color:#5C6680;margin-left:6px;letter-spacing:-.01em;}
+.mockup-body{padding:12px 14px;}
+/* Verification list */
+.verify-list{display:flex;flex-direction:column;gap:6px;margin-bottom:10px;}
+.verify-row{display:flex;align-items:center;gap:8px;padding:6px 8px;background:#F7F9FF;border-radius:2px;border:1px solid rgba(20,93,208,.06);}
+.verify-check{width:16px;height:16px;border-radius:50%;background:#DFF4EA;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:9px;color:#167A43;font-weight:700;}
+.verify-name{font-size:10px;font-weight:600;color:var(--ink);}
+.verify-status-row{display:flex;align-items:center;gap:5px;padding-top:5px;border-top:1px solid rgba(0,0,0,.06);}
+.verify-status-dot{width:5px;height:5px;border-radius:50%;background:#28C840;flex-shrink:0;}
+.verify-status-text{font-size:9px;font-weight:600;color:#167A43;}
+/* Deal Dashboard */
+.dash-deal-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
+.dash-deal-name{font-size:10px;font-weight:700;color:var(--ink);letter-spacing:-.01em;}
+.dash-badge{font-size:8px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;background:#DFF4EA;color:#167A43;padding:2px 7px;border-radius:2px;}
+.dash-stats-row{display:flex;gap:0;border:1px solid rgba(0,0,0,.07);border-radius:2px;overflow:hidden;margin-bottom:10px;}
+.dash-stat{flex:1;padding:6px 8px;text-align:center;border-right:1px solid rgba(0,0,0,.07);}
 .dash-stat:last-child{border-right:none;}
-.dash-stat-v{font-size:12px;font-weight:700;color:var(--ink);letter-spacing:-.02em;}
-.dash-stat-l{font-size:9px;color:var(--slate-lt);margin-top:2px;}
-.dash-progress-label{display:flex;justify-content:space-between;font-size:10px;color:var(--slate);margin-bottom:5px;}
-.dash-progress-track{height:5px;background:rgba(20,93,208,.1);border-radius:2px;overflow:hidden;}
+.dash-stat-v{font-size:11px;font-weight:700;color:var(--ink);letter-spacing:-.02em;}
+.dash-stat-l{font-size:8px;color:var(--slate-lt);margin-top:1px;}
+.dash-progress-label{display:flex;justify-content:space-between;font-size:9px;color:var(--slate);margin-bottom:4px;}
+.dash-progress-track{height:4px;background:rgba(20,93,208,.1);border-radius:2px;overflow:hidden;}
 .dash-progress-fill{height:100%;width:94%;background:linear-gradient(90deg,var(--blue),var(--blue-lt));border-radius:2px;}
-/* Verification mockup content */
-.verify-list{display:flex;flex-direction:column;gap:8px;margin-bottom:12px;}
-.verify-row{display:flex;align-items:center;gap:10px;padding:8px 10px;background:#F7F9FF;border-radius:2px;border:1px solid rgba(20,93,208,.06);}
-.verify-check{width:18px;height:18px;border-radius:50%;background:#DFF4EA;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:10px;color:#167A43;font-weight:700;}
-.verify-name{font-size:11px;font-weight:600;color:var(--ink);}
-.verify-status-row{display:flex;align-items:center;gap:6px;padding-top:6px;border-top:1px solid rgba(0,0,0,.06);}
-.verify-status-dot{width:6px;height:6px;border-radius:50%;background:#28C840;flex-shrink:0;}
-.verify-status-text{font-size:10px;font-weight:600;color:#167A43;}
+/* Security score widget */
+.score-widget{text-align:center;}
+.score-label{font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:var(--slate);margin-bottom:8px;}
+.score-ring{width:64px;height:34px;margin:0 auto 6px;position:relative;overflow:hidden;}
+.score-ring-svg{width:64px;height:64px;position:absolute;top:0;left:0;}
+.score-val{font-family:var(--f-head);font-size:20px;font-weight:700;color:var(--blue);letter-spacing:-.03em;}
+.score-sub{font-size:9px;color:var(--slate-lt);margin-top:2px;}
 
 /* ===== MARQUEE ===== */
 .marquee-section{background:#fff;border-top:1px solid var(--border);border-bottom:1px solid var(--border);overflow:hidden;padding:0;}
@@ -245,7 +257,11 @@ img{display:block;}
 
 /* ===== PROBLEM STATEMENT ===== */
 .problem-section{padding:0 0 80px;}
-.problem-inner{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;}
+.problem-inner{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.problem-solution-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px;}
+.problem-solution-row .prob-card{margin:0;}
+.problem-solution-row .breakout-wrap{border-radius:2px;overflow:hidden;height:100%;min-height:280px;}
+.problem-solution-row .breakout-wrap img{width:100%;height:100%;object-fit:cover;}
 .prob-card{border-radius:2px;padding:36px 32px;display:flex;flex-direction:column;gap:0;box-shadow:0 1px 3px rgba(0,0,0,.04);}
 .prob-card.problem{background:#FFF5F5;}
 .prob-card.cost{background:#FFFBF0;}
@@ -406,6 +422,7 @@ img{display:block;}
 @media(max-width:900px){
   .persona-grid{grid-template-columns:1fr 1fr;}
   .problem-inner{grid-template-columns:1fr;}
+  .problem-solution-row{grid-template-columns:1fr;}
   .testimonial-inner{grid-template-columns:1fr;}
   .footer-top{grid-template-columns:1fr;gap:40px;}
   .footer-cols{grid-template-columns:1fr 1fr;gap:24px;}
@@ -541,77 +558,63 @@ img{display:block;}
       </div>
     </div>
 
-    <!-- App mockups -->
+    <!-- 2x2 Hero Grid -->
     <div class="hero-right">
-      <div class="mockup-stack">
-        <!-- Back mockup: Identity Verification -->
-        <div class="mockup-back">
+      <div class="hero-grid">
+        <!-- Top-left: App screen (Verification) -->
+        <div class="hero-grid-cell app-screen">
           <div class="mockup-titlebar">
-            <div class="mockup-dots">
-              <div class="mockup-dot red"></div>
-              <div class="mockup-dot y"></div>
-              <div class="mockup-dot g"></div>
-            </div>
+            <div class="mockup-dots"><div class="mockup-dot red"></div><div class="mockup-dot y"></div><div class="mockup-dot g"></div></div>
             <div class="mockup-title-text">Identity Verification</div>
           </div>
           <div class="mockup-body">
             <div class="verify-list">
-              <div class="verify-row">
-                <div class="verify-check">✓</div>
-                <div class="verify-name">Metro Water District</div>
-              </div>
-              <div class="verify-row">
-                <div class="verify-check">✓</div>
-                <div class="verify-name">Apex Bond Counsel</div>
-              </div>
-              <div class="verify-row">
-                <div class="verify-check">✓</div>
-                <div class="verify-name">Pacific Trust &amp; Escrow</div>
-              </div>
+              <div class="verify-row"><div class="verify-check">✓</div><div class="verify-name">Metro Water District</div></div>
+              <div class="verify-row"><div class="verify-check">✓</div><div class="verify-name">Apex Bond Counsel</div></div>
+              <div class="verify-row"><div class="verify-check">✓</div><div class="verify-name">Pacific Trust &amp; Escrow</div></div>
             </div>
-            <div class="verify-status-row">
-              <div class="verify-status-dot"></div>
-              <div class="verify-status-text">All parties verified</div>
-            </div>
+            <div class="verify-status-row"><div class="verify-status-dot"></div><div class="verify-status-text">All parties verified</div></div>
           </div>
         </div>
 
-        <!-- Front mockup: Deal Dashboard -->
-        <div class="mockup-front">
+        <!-- Top-right: Photo + overlay -->
+        <div class="hero-grid-cell photo-cell">
+          <img src="design-system/images/professional-man-office.jpg" alt="Professional at work">
+          <div class="photo-overlay">
+            <div class="photo-overlay-label">Security Score</div>
+            <div class="photo-overlay-val">98%</div>
+            <div class="photo-overlay-sub">All checks passed</div>
+          </div>
+        </div>
+
+        <!-- Bottom-left: Photo + overlay -->
+        <div class="hero-grid-cell photo-cell">
+          <img src="design-system/images/professional-woman-laptop.jpg" alt="Professional working">
+          <div class="photo-overlay">
+            <div class="photo-overlay-label">Coverage</div>
+            <div class="photo-overlay-val">$250K</div>
+            <div class="photo-overlay-sub">Bound &amp; active</div>
+          </div>
+        </div>
+
+        <!-- Bottom-right: App screen (Dashboard) -->
+        <div class="hero-grid-cell app-screen">
           <div class="mockup-titlebar">
-            <div class="mockup-dots">
-              <div class="mockup-dot red"></div>
-              <div class="mockup-dot y"></div>
-              <div class="mockup-dot g"></div>
-            </div>
+            <div class="mockup-dots"><div class="mockup-dot red"></div><div class="mockup-dot y"></div><div class="mockup-dot g"></div></div>
             <div class="mockup-title-text">Deal Dashboard</div>
           </div>
           <div class="mockup-body">
             <div class="dash-deal-row">
-              <div class="dash-deal-name">Metro Water District · Series 2026A</div>
+              <div class="dash-deal-name">Metro Water · 2026A</div>
               <div class="dash-badge">Active</div>
             </div>
             <div class="dash-stats-row">
-              <div class="dash-stat">
-                <div class="dash-stat-v">$42.5M</div>
-                <div class="dash-stat-l">Deal Size</div>
-              </div>
-              <div class="dash-stat">
-                <div class="dash-stat-v">7</div>
-                <div class="dash-stat-l">Parties</div>
-              </div>
-              <div class="dash-stat">
-                <div class="dash-stat-v">94%</div>
-                <div class="dash-stat-l">Complete</div>
-              </div>
+              <div class="dash-stat"><div class="dash-stat-v">$42.5M</div><div class="dash-stat-l">Deal Size</div></div>
+              <div class="dash-stat"><div class="dash-stat-v">7</div><div class="dash-stat-l">Parties</div></div>
+              <div class="dash-stat"><div class="dash-stat-v">94%</div><div class="dash-stat-l">Complete</div></div>
             </div>
-            <div class="dash-progress-label">
-              <span>Settlement Progress</span>
-              <span style="font-weight:700;color:var(--blue);">94%</span>
-            </div>
-            <div class="dash-progress-track">
-              <div class="dash-progress-fill"></div>
-            </div>
+            <div class="dash-progress-label"><span>Settlement Progress</span><span style="font-weight:700;color:var(--blue);">94%</span></div>
+            <div class="dash-progress-track"><div class="dash-progress-fill"></div></div>
           </div>
         </div>
       </div>
@@ -859,6 +862,7 @@ img{display:block;}
       <h2>The infrastructure gap in institutional finance.</h2>
       <p>High-value transactions move through a patchwork of phone calls, email threads, and manual wire instructions — with no systematic protection layer.</p>
     </div>
+    <!-- Row 1: Problem + Cost -->
     <div class="problem-inner">
       <div class="prob-card problem r">
         <div class="prob-icon-wrap">
@@ -876,6 +880,10 @@ img{display:block;}
         <div class="prob-h">$15B lost to wire fraud annually.</div>
         <div class="prob-p">The FBI estimates $15B in annual losses from Business Email Compromise targeting financial transactions. Municipal issuers and institutional counterparties are prime targets — and most have no transaction-level protection in place.</div>
       </div>
+    </div>
+
+    <!-- Row 2: Basefund Approach + Photo -->
+    <div class="problem-solution-row">
       <div class="prob-card approach r sd2">
         <div class="prob-icon-wrap">
           <img src="design-system/icons/shield-tick.svg" alt="Approach">
@@ -884,21 +892,8 @@ img{display:block;}
         <div class="prob-h">Infrastructure that moves with the money.</div>
         <div class="prob-p">Basefund wraps every transaction in a verified, insured, and coordinated layer — so that by the time a wire leaves, every account has been validated, every party has been identified, and every condition has been met.</div>
       </div>
-    </div>
-  </div>
-</div>
-
-<!-- BREAKOUT IMAGE B: after Problem, before Testimonial -->
-<div class="breakout-section">
-  <div class="container">
-    <div class="breakout-wrap">
-      <div class="breakout-img">
+      <div class="breakout-wrap r sd3">
         <img src="design-system/images/professional-woman-laptop.jpg" alt="Professional working">
-      </div>
-      <div class="breakout-card">
-        <div class="breakout-card-eyebrow">Built for Teams</div>
-        <div class="breakout-card-h">Every stakeholder, one platform.</div>
-        <div class="breakout-card-p">From municipal CFOs to bond counsel, underwriters to escrow agents — Basefund gives every party at the closing table real-time visibility and verified confidence.</div>
       </div>
     </div>
   </div>
