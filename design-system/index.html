@@ -35,9 +35,39 @@ button{cursor:pointer;font-family:var(--f-body);}
 .noise-inner::before{content:'';position:absolute;inset:0;z-index:2;pointer-events:none;opacity:.04;mix-blend-mode:overlay;border-radius:inherit;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-repeat:repeat;background-size:256px 256px;}
 
 /* LAYOUT */
-.sidebar{width:240px;flex-shrink:0;position:sticky;top:0;height:100vh;overflow-y:auto;background:#fff;border-right:1px solid var(--border);padding:20px 0;z-index:100;}
+.sidebar{width:240px;flex-shrink:0;position:sticky;top:0;height:100vh;overflow-y:auto;background:#fff;border-right:1px solid var(--border);padding:20px 0;z-index:100;transition:transform .3s var(--ease);}
+.sb-hamburger{display:none;position:fixed;top:12px;left:12px;z-index:200;width:40px;height:40px;border-radius:2px;border:1px solid var(--border);background:#fff;box-shadow:var(--s-sm);cursor:pointer;align-items:center;justify-content:center;flex-direction:column;gap:5px;padding:0;}
+.sb-hamburger span{display:block;width:18px;height:2px;background:var(--ink);border-radius:1px;transition:all .25s var(--ease);}
+.sb-backdrop{display:none;position:fixed;inset:0;background:rgba(0,0,0,.3);z-index:99;opacity:0;transition:opacity .3s var(--ease);}
+.sb-backdrop.open{opacity:1;}
+@media(max-width:768px){
+  .sb-hamburger{display:flex;}
+  .sidebar{position:fixed;top:0;left:0;height:100%;transform:translateX(-100%);z-index:150;box-shadow:var(--s-lg);}
+  .sidebar.open{transform:translateX(0);}
+  .sb-backdrop.open{display:block;opacity:1;}
+  .sec-label{padding:48px 20px 8px;}
+  .sec-name{padding:0 20px 20px;}
+  .pad{padding:0 20px 48px;}
+  .shell-header{padding:16px 20px;}
+  .hero-cinema{padding:60px 24px;min-height:auto;}
+  .hero-cinema-right{display:none;}
+  .hero-title{font-size:clamp(36px,10vw,56px);}
+  .hero-editorial{padding:48px 24px 0;}
+  .hero-editorial-inner{grid-template-columns:1fr;gap:32px;}
+  .hero-bento{display:none;}
+  .hero-gradient{padding:60px 24px;}
+  .cta-full{padding:48px 24px;}
+  .process-grid,.bento{grid-template-columns:1fr;}
+  .step-flow{flex-direction:column;}
+  .stats-strip{grid-template-columns:1fr 1fr;}
+  .comp-table{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+  .footer-top{grid-template-columns:1fr;gap:32px;}
+  .footer-cols{grid-template-columns:1fr 1fr;gap:24px;}
+  .footer-bottom{flex-direction:column;text-align:center;}
+  .footer{padding:48px 24px 32px;}
+}
 .sidebar-logo{display:flex;align-items:center;gap:8px;padding:0 20px 20px;border-bottom:1px solid var(--border);margin-bottom:12px;}
-.sidebar-mark{width:28px;height:28px;border-radius:2px;background:linear-gradient(135deg,var(--blue),var(--blue-lt));display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#fff;}
+.sidebar-mark{width:28px;height:28px;flex-shrink:0;}
 .sidebar-name{font-family:var(--f-head);font-size:14px;font-weight:600;color:var(--ink);}
 .sb-section{padding:4px 12px;font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--slate-lt);margin-top:12px;margin-bottom:2px;}
 .sb-link{display:flex;align-items:center;gap:8px;padding:7px 20px;font-size:12px;color:var(--slate);cursor:pointer;transition:all 120ms;border-left:2px solid transparent;line-height:1.3;}
@@ -123,9 +153,8 @@ button{cursor:pointer;font-family:var(--f-body);}
 /* NAVIGATION */
 .nav{display:flex;align-items:center;height:68px;padding:0 40px;background:rgba(247,248,250,.88);backdrop-filter:blur(24px) saturate(1.3);-webkit-backdrop-filter:blur(24px) saturate(1.3);border-bottom:1px solid rgba(0,0,0,.05);position:relative;}
 .nav-logo{display:flex;align-items:center;gap:10px;margin-right:44px;font-family:var(--f-head);font-size:18px;font-weight:600;color:var(--dark);letter-spacing:-.025em;}
-.nav-mark{width:36px;height:36px;border-radius:2px;background:var(--blue-deep);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;}
-.nav-mark::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,var(--blue) 0%,var(--blue-lt) 100%);opacity:.85;}
-.nav-mark span{font-size:14px;font-weight:800;color:#fff;position:relative;z-index:1;letter-spacing:-.5px;}
+.nav-mark{width:36px;height:36px;flex-shrink:0;}
+.nav-mark img{width:100%;height:100%;}
 .nav-links{display:flex;align-items:center;flex:1;list-style:none;}
 .nav-links a{font-size:14px;font-weight:500;color:var(--slate);padding:8px 16px;border-radius:2px;transition:all 150ms;}
 .nav-links a:hover{color:var(--ink);background:rgba(0,0,0,.04);}
@@ -907,13 +936,20 @@ textarea.contact-input{resize:vertical;min-height:120px;line-height:1.6;}
 </head>
 <body>
 
+<!-- MOBILE NAV -->
+<button class="sb-hamburger" id="sb-toggle" aria-label="Toggle menu">
+  <span></span><span></span><span></span>
+</button>
+<div class="sb-backdrop" id="sb-backdrop"></div>
+
 <!-- SIDEBAR -->
-<nav class="sidebar">
+<nav class="sidebar" id="sidebar">
   <div class="sidebar-logo">
-    <div class="sidebar-mark">BF</div>
+    <img class="sidebar-mark" src="logos/basefund-b-gradient.svg" alt="Basefund">
     <div><div class="sidebar-name">Design System</div></div>
   </div>
   <div class="sb-section">Foundations</div>
+  <a class="sb-link" href="#logos"><span class="sb-num">00</span>Logos</a>
   <a class="sb-link" href="#typography"><span class="sb-num">01</span>Typography</a>
   <a class="sb-link" href="#colors"><span class="sb-num">02</span>Color Palette</a>
   <a class="sb-link sb-link-ext" href="icons.html" target="_blank"><span class="sb-num">→</span>Icon Library</a>
@@ -990,10 +1026,44 @@ textarea.contact-input{resize:vertical;min-height:120px;line-height:1.6;}
 
 <div class="shell-header">
   <div>
-    <div class="shell-title">Basefund — Design System</div>
+    <div class="shell-title" style="display:flex;align-items:center;gap:12px;"><img src="logos/basefund-b-solid.svg" alt="" style="height:24px;">Basefund — Design System</div>
   </div>
   <div class="shell-badge">2026 · Production Ready</div>
 </div>
+<!-- 00. LOGOS -->
+<div id="logos" class="sec-label">00 · Foundations</div>
+<div class="sec-name">Logos</div>
+<div class="pad col" style="gap:24px;">
+  <div class="t-eyebrow" style="margin-bottom:4px;">Primary Wordmark — Use on light backgrounds</div>
+  <div style="background:#fff;border:1px solid var(--border);border-radius:2px;padding:48px 56px;display:flex;align-items:center;justify-content:center;">
+    <img src="logos/basefund.svg" alt="Basefund" style="height:35px;">
+  </div>
+  <div class="t-eyebrow" style="margin-bottom:4px;">Reversed Wordmark — Use on dark / blue backgrounds</div>
+  <div style="background:var(--blue-deep);border-radius:2px;padding:48px 56px;display:flex;align-items:center;justify-content:center;">
+    <img src="logos/basefund-white.svg" alt="Basefund" style="height:26px;">
+  </div>
+  <div class="logo-icons-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;">
+    <div>
+      <div class="t-eyebrow" style="margin-bottom:8px;">Icon — Gradient</div>
+      <div style="background:#fff;border:1px solid var(--border);border-radius:2px;padding:40px;display:flex;align-items:center;justify-content:center;">
+        <img src="logos/basefund-b-gradient.svg" alt="B" style="height:50px;">
+      </div>
+    </div>
+    <div>
+      <div class="t-eyebrow" style="margin-bottom:8px;">Icon — White (on blue)</div>
+      <div style="background:var(--blue);border-radius:2px;padding:40px;display:flex;align-items:center;justify-content:center;">
+        <img src="logos/basefund-b-white.svg" alt="B" style="height:50px;">
+      </div>
+    </div>
+    <div>
+      <div class="t-eyebrow" style="margin-bottom:8px;">Icon — White (on dark)</div>
+      <div style="background:var(--blue-deep);border-radius:2px;padding:40px;display:flex;align-items:center;justify-content:center;">
+        <img src="logos/basefund-b-solid.svg" alt="B" style="height:50px;">
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- 01. TYPOGRAPHY -->
 <div id="typography" class="sec-label">01 · Foundations</div>
 <div class="sec-name">Typography Scale</div>
@@ -1179,7 +1249,7 @@ textarea.contact-input{resize:vertical;min-height:120px;line-height:1.6;}
 <div class="pad col" style="gap:16px;padding-bottom:48px;">
   <div class="t-caption" style="margin-bottom:4px;">NavLight — frosted glass on off-white background</div>
   <nav class="nav" style="position:relative;border-radius:2px;border:1px solid var(--border);">
-    <div class="nav-logo"><div class="nav-mark"><span>BF</span></div>Basefund</div>
+    <div class="nav-logo"><div class="nav-mark"><img src="logos/basefund-b-gradient.svg" alt="Basefund"></div>Basefund</div>
     <ul class="nav-links">
       <li><a href="#" class="active">Platform</a></li>
       <li><a href="#">Solutions</a></li>
@@ -1194,7 +1264,7 @@ textarea.contact-input{resize:vertical;min-height:120px;line-height:1.6;}
   </nav>
   <div class="t-caption" style="margin-top:8px;margin-bottom:4px;">NavBlue — frosted glass on blue background (replaces NavDark)</div>
   <nav class="nav nav-blue" style="position:relative;border-radius:2px;">
-    <div class="nav-logo"><div class="nav-mark"><span>BF</span></div>Basefund</div>
+    <div class="nav-logo"><div class="nav-mark"><img src="logos/basefund-b-solid.svg" alt="Basefund"></div>Basefund</div>
     <ul class="nav-links">
       <li><a href="#" class="active">Platform</a></li>
       <li><a href="#">Solutions</a></li>
@@ -2890,8 +2960,7 @@ textarea.contact-input{resize:vertical;min-height:120px;line-height:1.6;}
   <div class="footer-top">
     <div class="footer-brand">
       <div class="footer-logo">
-        <div class="nav-mark"><span>BF</span></div>
-        Basefund
+        <img src="logos/basefund-white.svg" alt="Basefund" style="height:22px;">
       </div>
       <div class="footer-copy">The secure transaction infrastructure for money in motion. Identity-verified. Insured. Coordinated.</div>
       <div class="socials">
@@ -3041,6 +3110,16 @@ const observer = new IntersectionObserver(entries => {
   });
 }, { rootMargin: '-20% 0px -70% 0px' });
 sections.forEach(s => observer.observe(s));
+
+// ---- MOBILE SIDEBAR TOGGLE ----
+const sbToggle = document.getElementById('sb-toggle');
+const sidebar = document.getElementById('sidebar');
+const sbBackdrop = document.getElementById('sb-backdrop');
+function openSidebar() { sidebar.classList.add('open'); sbBackdrop.classList.add('open'); sbBackdrop.style.display = 'block'; }
+function closeSidebar() { sidebar.classList.remove('open'); sbBackdrop.classList.remove('open'); setTimeout(() => { if (!sbBackdrop.classList.contains('open')) sbBackdrop.style.display = 'none'; }, 300); }
+sbToggle.addEventListener('click', () => sidebar.classList.contains('open') ? closeSidebar() : openSidebar());
+sbBackdrop.addEventListener('click', closeSidebar);
+sidebar.querySelectorAll('.sb-link[href^="#"]').forEach(link => link.addEventListener('click', closeSidebar));
 </script>
 </body>
 </html>
