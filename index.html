@@ -3,7 +3,1036 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Basefund</title>
+<title>Basefund — Secure Infrastructure for Money in Motion</title>
+<meta name="description" content="Basefund provides identity verification, bank validation, transaction-specific insurance, and coordination — unified in one platform for high-value institutional transactions.">
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --blue:#145DD0; --blue-lt:#28A4DD; --blue-deep:#0B3580;
+  --blue-pale:#DDEEFF; --blue-tint:#EEF5FF;
+  --accent:#00F4E0; --accent-tint:rgba(0,244,224,.10); --accent-deep:#00C4B4;
+  --white:#FFFFFF; --off:#F7F8FA; --gray:#ECEEF3;
+  --dark:#0B3580; --dark-2:#0E4399;
+  --ink:#2B2B2B; --slate:#5C6680; --slate-lt:#8B96AE;
+  --border:rgba(0,0,0,.07); --border-lt:rgba(255,255,255,.12);
+  --f-head:'Lora',Georgia,serif; --f-body:'Inter',-apple-system,sans-serif;
+  --ease:cubic-bezier(.16,1,.3,1); --ease-back:cubic-bezier(.34,1.56,.64,1);
+  --r-sm:2px; --r-md:2px; --r-lg:2px; --r-xl:2px; --r-2xl:2px; --r-pill:2px;
+  --s-sm:0 2px 8px rgba(20,93,208,.10);
+  --s-md:0 6px 20px rgba(20,93,208,.13);
+  --s-lg:0 16px 48px rgba(20,93,208,.18);
+  --s-xl:0 32px 80px rgba(20,93,208,.22);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{-webkit-font-smoothing:antialiased;font-size:16px;scroll-behavior:smooth;}
+body{font-family:var(--f-body);background:#F7F8FA;color:var(--ink);overflow-x:hidden;}
+a{text-decoration:none;color:inherit;}
+button{cursor:pointer;font-family:var(--f-body);}
+img{display:block;}
+
+/* ===== NOISE TEXTURE ===== */
+.noise{position:relative;isolation:isolate;}
+.noise::after{content:'';position:absolute;inset:0;z-index:1;pointer-events:none;opacity:.04;mix-blend-mode:overlay;border-radius:inherit;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-repeat:repeat;background-size:256px 256px;}
+
+/* ===== SCROLL REVEAL ===== */
+.r{opacity:0;transform:translateY(24px);transition:opacity .7s var(--ease),transform .7s var(--ease);}
+.r.slow{transition-duration:1.1s;}
+.r.v{opacity:1;transform:none;}
+.sd1{transition-delay:.1s;}.sd2{transition-delay:.2s;}.sd3{transition-delay:.3s;}.sd4{transition-delay:.4s;}.sd5{transition-delay:.5s;}
+
+/* ===== ANNOUNCEMENT BAR ===== */
+.announcement-bar{display:flex;align-items:center;gap:12px;padding:0 20px;height:40px;background:var(--blue-deep);position:relative;overflow:hidden;}
+.announcement-bar::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 200% at 50% 50%,rgba(255,255,255,.06) 0%,transparent 60%);pointer-events:none;}
+.ann-inner{flex:1;display:flex;align-items:center;justify-content:center;gap:0;font-size:12px;font-weight:500;color:rgba(255,255,255,.85);position:relative;z-index:1;}
+.ann-badge{font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.9);padding:3px 10px;border-radius:2px;margin-right:12px;flex-shrink:0;}
+.ann-sep{margin:0 10px;opacity:.3;}
+.ann-link{font-weight:700;color:var(--accent);margin-left:10px;opacity:.95;transition:opacity 150ms;font-size:12px;}
+.ann-link:hover{opacity:1;text-decoration:underline;}
+.ann-close{background:none;border:none;color:rgba(255,255,255,.4);font-size:18px;line-height:1;cursor:pointer;padding:4px 8px;border-radius:2px;transition:all 150ms;position:relative;z-index:1;flex-shrink:0;}
+.ann-close:hover{color:#fff;}
+
+/* ===== NAV ===== */
+.nav-wrap{position:sticky;top:0;z-index:500;}
+.nav{display:flex;align-items:center;height:64px;padding:0 40px;background:rgba(247,248,250,.92);backdrop-filter:blur(24px) saturate(1.4);-webkit-backdrop-filter:blur(24px) saturate(1.4);border-bottom:1px solid rgba(0,0,0,.06);position:relative;}
+.nav::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent 10%,rgba(20,93,208,.12),rgba(40,164,221,.08),transparent 90%);}
+.nav.scrolled{background:rgba(255,255,255,.95);box-shadow:0 4px 24px rgba(20,93,208,.07);}
+.nav-logo{display:flex;align-items:center;gap:10px;margin-right:48px;font-family:var(--f-head);font-size:19px;font-weight:600;color:var(--dark);letter-spacing:-.025em;}
+.nav-mark{width:34px;height:34px;flex-shrink:0;}
+.nav-mark img{width:100%;height:100%;}
+.nav-links{display:flex;align-items:center;flex:1;list-style:none;gap:2px;}
+.nav-links a{font-size:14px;font-weight:500;color:var(--slate);padding:8px 14px;border-radius:2px;transition:all 150ms;}
+.nav-links a:hover{color:var(--ink);background:rgba(0,0,0,.04);}
+.nav-right{display:flex;align-items:center;gap:10px;}
+.btn-nav-ghost{background:transparent;color:var(--slate);border:none;font-size:14px;font-weight:600;padding:9px 18px;border-radius:2px;transition:all 150ms;}
+.btn-nav-ghost:hover{color:var(--ink);background:rgba(0,0,0,.04);}
+.btn-nav-primary{background:var(--blue);color:#fff;border:none;font-size:14px;font-weight:600;padding:9px 20px;border-radius:2px;transition:all 220ms var(--ease);display:flex;align-items:center;gap:7px;}
+.btn-nav-primary:hover{background:#1A6AEB;box-shadow:0 6px 20px rgba(20,93,208,.35);transform:translateY(-1px);}
+
+/* Mobile hamburger */
+.nav-hamburger{display:none;flex-direction:column;gap:5px;background:none;border:none;padding:8px;cursor:pointer;}
+.nav-hamburger span{display:block;width:20px;height:2px;background:var(--ink);border-radius:1px;transition:all .25s var(--ease);}
+.nav-hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+.nav-hamburger.open span:nth-child(2){opacity:0;transform:scaleX(0);}
+.nav-hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+.nav-mobile-menu{display:none;position:absolute;top:100%;left:0;right:0;background:#fff;border-bottom:1px solid var(--border);box-shadow:0 12px 40px rgba(0,0,0,.1);padding:16px 24px;flex-direction:column;gap:4px;z-index:499;}
+.nav-mobile-menu.open{display:flex;}
+.nav-mobile-menu a{font-size:15px;font-weight:500;color:var(--slate);padding:12px 16px;border-radius:2px;transition:all 150ms;}
+.nav-mobile-menu a:hover{color:var(--blue);background:var(--blue-tint);}
+.nav-mobile-divider{height:1px;background:var(--border);margin:8px 0;}
+.nav-mobile-actions{display:flex;flex-direction:column;gap:8px;padding-top:4px;}
+
+/* ===== BUTTONS ===== */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;padding:13px 26px;font-family:var(--f-body);font-size:14px;font-weight:600;letter-spacing:-.01em;border:none;border-radius:var(--r-pill);transition:all 220ms var(--ease);cursor:pointer;white-space:nowrap;position:relative;overflow:hidden;}
+.btn:active{transform:scale(.972);}
+.btn-p{background:var(--blue);color:#fff;}
+.btn-p::before{content:'';position:absolute;inset:0;background:linear-gradient(105deg,transparent 40%,rgba(255,255,255,.18) 50%,transparent 60%);transform:translateX(-100%);transition:transform 500ms var(--ease);}
+.btn-p:hover{background:#1A6AEB;box-shadow:0 8px 32px rgba(20,93,208,.4);transform:translateY(-1px);}
+.btn-p:hover::before{transform:translateX(100%);}
+.btn-w{background:#fff;color:var(--dark);box-shadow:0 4px 16px rgba(0,0,0,.1);}
+.btn-w:hover{background:var(--off);transform:translateY(-1px);}
+.btn-gw{background:transparent;color:rgba(255,255,255,.85);border:1.5px solid rgba(255,255,255,.28);}
+.btn-gw:hover{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.5);}
+.btn-ob{background:var(--blue-tint);color:var(--blue);border:1.5px solid rgba(20,93,208,.2);}
+.btn-ob:hover{background:var(--blue-pale);border-color:var(--blue);}
+.btn-lg{padding:16px 36px;font-size:16px;}
+.btn-xl{padding:18px 44px;font-size:16px;letter-spacing:-.02em;}
+.arr{width:18px;height:18px;border-radius:2px;background:rgba(255,255,255,.22);display:flex;align-items:center;justify-content:center;font-size:11px;transition:transform 200ms var(--ease);}
+.btn:hover .arr{transform:translateX(3px);}
+
+/* ===== HERO CINEMA ===== */
+.hero-cinema{background:var(--blue);min-height:620px;position:relative;overflow:hidden;display:flex;align-items:center;padding:120px 72px 100px;}
+.hero-cinema-bg{position:absolute;inset:0;background:
+  radial-gradient(ellipse 80% 70% at 0% 100%, rgba(0,244,224,.15) 0%, transparent 55%),
+  radial-gradient(ellipse 60% 90% at 80% 60%, rgba(255,255,255,.18) 0%, transparent 55%),
+  radial-gradient(ellipse 45% 60% at 10% 80%, rgba(11,53,128,.55) 0%, transparent 60%),
+  radial-gradient(ellipse 70% 50% at 50% -5%, rgba(40,164,221,.4) 0%, transparent 55%),
+  radial-gradient(ellipse 50% 50% at 30% 20%, rgba(20,93,208,.35) 0%, transparent 45%);}
+.hero-cinema-dots{position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.10) 1px,transparent 1px);background-size:32px 32px;mask-image:radial-gradient(ellipse 90% 90% at 50% 50%,black 30%,transparent 100%);}
+.hero-cinema::after{content:'';position:absolute;inset:0;pointer-events:none;opacity:.04;mix-blend-mode:overlay;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-repeat:repeat;background-size:256px 256px;z-index:1;}
+.hero-cinema-content{position:relative;z-index:2;max-width:580px;}
+.hero-ep{display:inline-flex;align-items:center;gap:8px;font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.9);background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.28);padding:8px 18px;border-radius:2px;margin-bottom:36px;}
+.hero-ep-dot{width:6px;height:6px;border-radius:2px;background:var(--accent);flex-shrink:0;}
+.hero-title{font-family:var(--f-head);font-size:clamp(52px,7vw,88px);font-weight:600;line-height:.96;letter-spacing:-.045em;color:#fff;margin-bottom:28px;}
+.hero-title .italic{font-style:italic;color:rgba(255,255,255,.85);}
+.hero-sub{font-size:18px;line-height:1.65;color:rgba(255,255,255,.75);max-width:46ch;margin-bottom:44px;}
+.hero-ctas{display:flex;gap:12px;align-items:center;flex-wrap:wrap;}
+
+/* Hero right stats */
+.hero-right{position:absolute;right:72px;top:50%;transform:translateY(-50%);z-index:2;display:flex;flex-direction:column;gap:14px;width:260px;}
+.glass-card{background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.20);border-radius:2px;padding:22px 24px;backdrop-filter:blur(24px) saturate(1.4);-webkit-backdrop-filter:blur(24px) saturate(1.4);box-shadow:0 8px 32px rgba(0,0,0,.08),inset 0 1px 0 rgba(255,255,255,.12);}
+.glass-card.blue-tinted{background:rgba(11,53,128,.35);border-color:rgba(255,255,255,.15);}
+.gc-label{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.55);margin-bottom:8px;}
+.gc-value{font-family:var(--f-head);font-size:36px;font-weight:700;color:#fff;letter-spacing:-.04em;line-height:1;}
+.gc-sub{font-size:12px;color:rgba(255,255,255,.55);margin-top:5px;}
+.gc-badge{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:700;color:var(--accent);background:rgba(0,244,224,.12);border:1px solid rgba(0,244,224,.2);border-radius:2px;padding:3px 9px;margin-top:8px;}
+
+/* ===== MARQUEE ===== */
+.marquee-section{background:#fff;border-top:1px solid var(--border);border-bottom:1px solid var(--border);overflow:hidden;padding:0;}
+.marquee-inner{display:flex;gap:0;width:max-content;animation:marq 30s linear infinite;}
+.marquee-inner:hover{animation-play-state:paused;}
+@keyframes marq{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+.marquee-track{padding:22px 0;}
+.marq-item{display:flex;align-items:center;gap:9px;font-size:13px;font-weight:700;letter-spacing:-.015em;color:#C0C8D8;white-space:nowrap;transition:color 200ms;padding:0 40px;}
+.marq-item:hover{color:var(--slate);}
+.marq-icon{width:26px;height:26px;border-radius:2px;background:linear-gradient(135deg,var(--blue-tint),var(--blue-pale));display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.marq-icon img{width:14px;height:14px;opacity:.5;}
+.marq-sep{width:1px;height:20px;background:var(--border);flex-shrink:0;}
+
+/* ===== STATS STRIP ===== */
+.stats-section{padding:40px 40px;}
+.stats-strip{display:grid;grid-template-columns:repeat(4,1fr);background:#fff;border:none;border-radius:2px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.04);}
+.stat-cell{padding:40px 44px;border-right:1px solid rgba(0,0,0,.05);position:relative;}
+.stat-cell:last-child{border-right:none;}
+.stat-cell::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--blue),var(--blue-lt),var(--accent));background-size:200% 100%;transform:scaleX(0);transform-origin:left;transition:transform .5s var(--ease);}
+.stat-cell:hover::before{transform:scaleX(1);}
+.stat-n{font-family:var(--f-head);font-size:clamp(40px,5vw,62px);font-weight:700;letter-spacing:-.05em;line-height:.9;background:linear-gradient(135deg,var(--blue) 0%,var(--accent) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:10px;}
+.stat-n sup{font-size:.45em;vertical-align:.4em;}
+.stat-l{font-size:14px;color:var(--slate);}
+
+/* ===== BENTO GRID ===== */
+.bento-section{padding:0 40px 40px;}
+.bento-grid{display:grid;grid-template-columns:repeat(12,1fr);grid-auto-rows:minmax(220px,auto);gap:14px;}
+.bg-tile{background:#fff;border:none;border-radius:2px;padding:40px 36px;overflow:hidden;position:relative;display:flex;flex-direction:column;transition:transform 350ms var(--ease),box-shadow 350ms;box-shadow:0 1px 3px rgba(0,0,0,.04);}
+.bg-tile:hover{transform:translateY(-4px);box-shadow:0 20px 64px rgba(20,93,208,.09),0 4px 14px rgba(20,93,208,.04);}
+.bg-tile.c5{grid-column:span 5;}.bg-tile.c7{grid-column:span 7;}
+.bg-tile.dark{background:linear-gradient(150deg,var(--dark) 0%,var(--blue-deep) 100%);}
+.bg-tile.blue{background:linear-gradient(150deg,var(--blue) 0%,var(--blue-deep) 100%);position:relative;}
+.bg-tile.blue::after{content:'';position:absolute;inset:0;border-radius:inherit;background:
+  radial-gradient(ellipse 60% 60% at 80% 20%, rgba(255,255,255,.1) 0%, transparent 55%),
+  radial-gradient(ellipse 50% 50% at 20% 80%, rgba(0,244,224,.06) 0%, transparent 50%);pointer-events:none;}
+.bg-tile.blue-lt{background:var(--blue-tint);border:1.5px solid rgba(20,93,208,.08);}
+.tile-tag{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--blue);margin-bottom:16px;}
+.bg-tile.dark .tile-tag{color:rgba(255,255,255,.45);}.bg-tile.blue .tile-tag{color:rgba(255,255,255,.6);}
+.tile-h{font-family:var(--f-head);font-size:22px;font-weight:600;color:var(--ink);letter-spacing:-.02em;line-height:1.2;margin-bottom:10px;}
+.bg-tile.dark .tile-h,.bg-tile.blue .tile-h{color:#fff;}
+.tile-p{font-size:14px;line-height:1.7;color:var(--slate);flex:1;}
+.bg-tile.dark .tile-p,.bg-tile.blue .tile-p{color:rgba(255,255,255,.6);}
+.tile-icon{width:48px;height:48px;border-radius:2px;display:flex;align-items:center;justify-content:center;margin-bottom:24px;flex-shrink:0;}
+.tile-icon.blue-bg{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.2);}
+.tile-icon.dark-bg{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.12);}
+.tile-icon.light-bg{background:var(--blue-pale);border:1px solid rgba(20,93,208,.1);}
+.tile-icon.accent-bg{background:rgba(0,244,224,.12);border:1px solid rgba(0,244,224,.2);}
+.tile-icon img{width:24px;height:24px;}
+.tile-icon.blue-bg img,.tile-icon.dark-bg img{filter:brightness(0) invert(1);}
+.tile-icon.light-bg img{filter:brightness(0) saturate(100%) invert(28%) sepia(98%) saturate(952%) hue-rotate(196deg) brightness(96%) contrast(101%);}
+.tile-icon.accent-bg img{filter:brightness(0) saturate(100%) invert(87%) sepia(25%) saturate(830%) hue-rotate(130deg) brightness(107%) contrast(101%);}
+.tile-circle{position:absolute;right:-40px;bottom:-40px;width:180px;height:180px;border-radius:50%;border:40px solid;pointer-events:none;}
+.tc-white{border-color:rgba(255,255,255,.06);}
+.tc-blue{border-color:rgba(20,93,208,.08);}
+.tc-accent{border-color:rgba(0,244,224,.08);}
+.tile-stat{font-family:var(--f-head);font-size:clamp(44px,5vw,72px);font-weight:700;letter-spacing:-.05em;line-height:.9;color:var(--ink);margin-top:auto;}
+.bg-tile.blue .tile-stat{color:#fff;}
+.tile-list{display:flex;flex-direction:column;gap:10px;margin-top:16px;}
+.tile-list-item{display:flex;align-items:center;gap:10px;font-size:13px;color:rgba(255,255,255,.7);}
+.tile-list-dot{width:6px;height:6px;border-radius:2px;background:var(--accent);flex-shrink:0;}
+
+/* ===== PROCESS EDITORIAL ===== */
+.process-section{padding:0 40px 40px;}
+.process-editorial{display:grid;grid-template-columns:1fr 1fr;background:#fff;border:none;border-radius:2px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.04);}
+.pe-left{padding:56px 52px;border-right:1px solid rgba(0,0,0,.05);display:flex;flex-direction:column;justify-content:center;}
+.pe-eyebrow{font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--blue);margin-bottom:14px;}
+.pe-h{font-family:var(--f-head);font-size:clamp(28px,3.5vw,42px);font-weight:600;color:var(--ink);letter-spacing:-.03em;line-height:1.1;margin-bottom:20px;}
+.pe-p{font-size:15px;line-height:1.7;color:var(--slate);max-width:38ch;margin-bottom:36px;}
+.pe-right{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;}
+.pe-step{padding:36px 32px;border-bottom:1px solid rgba(0,0,0,.05);border-right:1px solid rgba(0,0,0,.05);position:relative;transition:background 200ms;}
+.pe-step:nth-child(2n){border-right:none;}
+.pe-step:nth-child(3),.pe-step:nth-child(4){border-bottom:none;}
+.pe-step:hover{background:var(--blue-tint);}
+.pe-num{font-family:var(--f-head);font-size:52px;font-weight:700;letter-spacing:-.05em;background:linear-gradient(135deg,rgba(20,93,208,.18) 0%,rgba(40,164,221,.1) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1;margin-bottom:14px;}
+.pe-title{font-family:var(--f-head);font-size:16px;font-weight:600;color:var(--ink);margin-bottom:7px;}
+.pe-desc{font-size:13px;line-height:1.65;color:var(--slate);}
+
+/* ===== PROBLEM STATEMENT ===== */
+.problem-section{padding:0 40px 40px;}
+.problem-inner{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;}
+.prob-card{border-radius:2px;padding:36px 32px;display:flex;flex-direction:column;gap:0;box-shadow:0 1px 3px rgba(0,0,0,.04);}
+.prob-card.problem{background:#FFF5F5;}
+.prob-card.cost{background:#FFFBF0;}
+.prob-card.approach{background:linear-gradient(150deg,var(--blue),var(--blue-deep));position:relative;overflow:hidden;}
+.prob-card.approach::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 70% 60% at 80% 10%,rgba(255,255,255,.1) 0%,transparent 55%);pointer-events:none;}
+.prob-icon-wrap{width:48px;height:48px;border-radius:2px;display:flex;align-items:center;justify-content:center;margin-bottom:20px;flex-shrink:0;}
+.prob-card.problem .prob-icon-wrap{background:#FFE4E4;}
+.prob-card.cost .prob-icon-wrap{background:#FFF0C2;}
+.prob-card.approach .prob-icon-wrap{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.2);}
+.prob-icon-wrap img{width:22px;height:22px;}
+.prob-card.problem .prob-icon-wrap img,.prob-card.cost .prob-icon-wrap img{filter:none;}
+.prob-card.approach .prob-icon-wrap img{filter:brightness(0) invert(1);}
+.prob-label{font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;margin-bottom:10px;}
+.prob-card.problem .prob-label{color:#DC2626;}
+.prob-card.cost .prob-label{color:#B45309;}
+.prob-card.approach .prob-label{color:rgba(255,255,255,.6);position:relative;z-index:1;}
+.prob-h{font-family:var(--f-head);font-size:20px;font-weight:600;letter-spacing:-.02em;margin-bottom:10px;line-height:1.25;}
+.prob-card.problem .prob-h,.prob-card.cost .prob-h{color:var(--ink);}
+.prob-card.approach .prob-h{color:#fff;position:relative;z-index:1;}
+.prob-p{font-size:14px;line-height:1.68;color:var(--slate);}
+.prob-card.approach .prob-p{color:rgba(255,255,255,.65);position:relative;z-index:1;}
+
+/* ===== TESTIMONIAL ===== */
+.testimonial-section{padding:0 40px 40px;}
+.testimonial-inner{display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:start;}
+.testimonial-feature{background:var(--blue);border-radius:2px;padding:56px 52px;position:relative;overflow:hidden;}
+.tf-bg{position:absolute;inset:0;background:
+  radial-gradient(ellipse 70% 70% at 80% 20%, rgba(255,255,255,.12) 0%, transparent 60%),
+  radial-gradient(ellipse 50% 50% at 10% 90%, rgba(0,244,224,.08) 0%, transparent 50%);pointer-events:none;}
+.testimonial-feature::after{content:'';position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.06) 1px,transparent 1px);background-size:28px 28px;pointer-events:none;mask-image:radial-gradient(ellipse 70% 70% at 80% 20%,black 20%,transparent 100%);}
+.tf-quote-mark{font-family:var(--f-head);font-size:120px;line-height:.65;background:linear-gradient(180deg,rgba(255,255,255,.3) 0%,rgba(255,255,255,.06) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:-16px;display:block;position:relative;z-index:1;}
+.tf-quote{font-family:var(--f-head);font-size:clamp(18px,2.2vw,26px);font-style:italic;font-weight:500;line-height:1.48;color:#fff;position:relative;z-index:1;margin-bottom:36px;}
+.tf-author{display:flex;align-items:center;gap:16px;position:relative;z-index:1;}
+.tf-avatar{width:48px;height:48px;border-radius:2px;background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.25);display:flex;align-items:center;justify-content:center;font-family:var(--f-head);font-weight:700;font-size:16px;color:#fff;flex-shrink:0;}
+.tf-name{font-size:15px;font-weight:700;color:#fff;}
+.tf-title{font-size:12px;color:rgba(255,255,255,.55);margin-top:3px;}
+.testi-aside{display:flex;flex-direction:column;gap:14px;}
+.testi-sm{background:#fff;border-radius:2px;padding:28px 30px;box-shadow:0 1px 3px rgba(0,0,0,.04);transition:all 280ms var(--ease);}
+.testi-sm:hover{transform:translateY(-3px);box-shadow:0 16px 48px rgba(20,93,208,.08);}
+.testi-stars{font-size:12px;color:#F5A623;letter-spacing:1px;margin-bottom:10px;}
+.testi-q{font-family:var(--f-head);font-size:14px;font-style:italic;line-height:1.6;color:var(--ink);margin-bottom:14px;}
+.testi-author{display:flex;align-items:center;gap:10px;}
+.testi-av{width:32px;height:32px;border-radius:2px;background:linear-gradient(135deg,var(--blue),var(--blue-deep));display:flex;align-items:center;justify-content:center;font-weight:700;font-size:11px;color:#fff;flex-shrink:0;}
+.testi-name{font-size:13px;font-weight:700;color:var(--ink);}
+.testi-role{font-size:11px;color:var(--slate-lt);}
+
+/* ===== COMPARISON TABLE ===== */
+.comp-section{padding:0 40px 40px;}
+.comp-header{text-align:center;margin-bottom:32px;}
+.comp-table{background:#fff;border-radius:2px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.04);}
+.comp-table table{width:100%;border-collapse:collapse;}
+.comp-table th{background:var(--blue);color:#fff;padding:16px 24px;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;text-align:center;}
+.comp-table th:first-child{text-align:left;background:var(--blue-deep);width:40%;}
+.comp-table th:last-child{background:linear-gradient(135deg,var(--blue),var(--blue-lt));position:relative;}
+.comp-table td{padding:14px 24px;font-size:13px;color:var(--slate);border-bottom:1px solid var(--border);text-align:center;}
+.comp-table td:first-child{text-align:left;font-weight:600;color:var(--ink);}
+.comp-table tr:nth-child(even) td{background:var(--off);}
+.comp-table tr:last-child td{border-bottom:none;}
+.comp-check{color:#167A43;font-weight:700;font-size:16px;}
+.comp-x{color:#DC2626;font-weight:700;font-size:16px;}
+.comp-dash{color:var(--slate-lt);}
+.comp-table td:nth-child(2){color:var(--slate-lt);font-style:italic;}
+.comp-table td:last-child{background:rgba(20,93,208,.03);font-weight:500;color:var(--ink);}
+.comp-table tr:nth-child(even) td:last-child{background:rgba(20,93,208,.06);}
+
+/* ===== PERSONA GRID ===== */
+.persona-section{padding:0 40px 40px;}
+.persona-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+.persona-card{background:#fff;border:none;border-radius:2px;padding:36px 32px;position:relative;overflow:hidden;transition:all 350ms var(--ease);box-shadow:0 1px 3px rgba(0,0,0,.04);}
+.persona-card:hover{transform:translateY(-4px);box-shadow:0 20px 60px rgba(20,93,208,.09),0 4px 12px rgba(20,93,208,.04);}
+.persona-icon{width:52px;height:52px;border-radius:2px;background:linear-gradient(145deg,var(--blue) 0%,var(--blue-deep) 100%);display:flex;align-items:center;justify-content:center;margin-bottom:18px;box-shadow:0 8px 24px rgba(20,93,208,.22),inset 0 1px 0 rgba(255,255,255,.2);}
+.persona-icon img{width:24px;height:24px;filter:brightness(0) invert(1);}
+.persona-title{font-family:var(--f-head);font-size:18px;font-weight:600;color:var(--ink);margin-bottom:8px;letter-spacing:-.02em;}
+.persona-desc{font-size:13px;line-height:1.68;color:var(--slate);}
+
+/* ===== BIG QUOTE ON BLUE ===== */
+.bqb-section{background:var(--blue);border-radius:2px;margin:0 40px 40px;padding:96px 72px;text-align:center;position:relative;overflow:hidden;}
+.bqb-circles{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;z-index:0;}
+.bqb-circle{position:absolute;border-radius:50%;border:1px solid rgba(255,255,255,.06);transform:translate(-50%,-50%);}
+.bqb-circle:nth-child(1){width:300px;height:300px;}
+.bqb-circle:nth-child(2){width:520px;height:520px;border-color:rgba(255,255,255,.04);}
+.bqb-circle:nth-child(3){width:740px;height:740px;border-color:rgba(255,255,255,.025);}
+.bqb-circle:nth-child(4){width:960px;height:960px;border-color:rgba(255,255,255,.015);}
+.bqb-section::after{content:'';position:absolute;inset:0;pointer-events:none;opacity:.04;mix-blend-mode:overlay;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-repeat:repeat;background-size:256px 256px;}
+.bqb-content{position:relative;z-index:1;max-width:720px;margin:0 auto;}
+.bqb-pill{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:2px;padding:8px 18px;font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.85);margin-bottom:36px;}
+.bqb-pill-dot{width:6px;height:6px;border-radius:2px;background:var(--accent);}
+.bqb-qmark{font-family:var(--f-head);font-size:clamp(80px,12vw,110px);line-height:.6;color:var(--accent);display:block;margin-bottom:-8px;font-style:normal;}
+.bqb-quote{font-family:var(--f-head);font-size:clamp(22px,3vw,36px);font-style:italic;font-weight:500;color:#fff;line-height:1.45;letter-spacing:-.02em;}
+.bqb-quote em{font-style:normal;color:var(--accent);}
+
+/* ===== CTA SECTION ===== */
+.cta-section{padding:0 40px 56px;}
+.cta-full{background:var(--blue);border-radius:2px;padding:80px 72px;position:relative;overflow:hidden;text-align:center;}
+.cta-full-bg{position:absolute;inset:0;background:
+  radial-gradient(ellipse 80% 60% at 0% 100%, rgba(0,244,224,.12) 0%, transparent 50%),
+  radial-gradient(ellipse 60% 80% at 50% 0%, rgba(255,255,255,.12) 0%, transparent 60%),
+  radial-gradient(ellipse 40% 50% at 100% 80%, rgba(40,164,221,.2) 0%, transparent 55%),
+  radial-gradient(ellipse 40% 50% at 0% 100%, rgba(11,53,128,.4) 0%, transparent 55%);}
+.cta-full::after{content:'';position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.05) 1px,transparent 1px);background-size:28px 28px;pointer-events:none;mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black 30%,transparent 100%);z-index:0;}
+.cta-full h2{font-family:var(--f-head);font-size:clamp(32px,4.5vw,58px);font-weight:600;letter-spacing:-.035em;line-height:1.05;color:#fff;margin-bottom:18px;position:relative;z-index:1;}
+.cta-full h2 em{font-style:italic;color:rgba(255,255,255,.75);}
+.cta-full p{font-size:17px;color:rgba(255,255,255,.65);max-width:44ch;margin:0 auto 44px;position:relative;z-index:1;line-height:1.65;}
+.cta-full-actions{display:flex;align-items:center;justify-content:center;gap:12px;position:relative;z-index:1;flex-wrap:wrap;}
+
+/* ===== FOOTER ===== */
+.footer{background:var(--blue-deep);padding:72px 56px 40px;color:#fff;position:relative;overflow:hidden;}
+.footer::before{content:'';position:absolute;inset:0;background:
+  radial-gradient(ellipse 60% 50% at 90% 20%, rgba(40,164,221,.12) 0%, transparent 50%),
+  radial-gradient(ellipse 50% 60% at 10% 80%, rgba(0,244,224,.06) 0%, transparent 50%);pointer-events:none;}
+.footer::after{content:'';position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.03) 1px,transparent 1px);background-size:28px 28px;pointer-events:none;mask-image:linear-gradient(180deg,black 0%,transparent 70%);}
+.footer-top{display:grid;grid-template-columns:300px 1fr;gap:72px;padding-bottom:52px;border-bottom:1px solid rgba(255,255,255,.08);position:relative;z-index:1;}
+.footer-bottom{display:flex;align-items:center;justify-content:space-between;padding-top:32px;gap:24px;position:relative;z-index:1;}
+.footer-brand{display:flex;flex-direction:column;gap:18px;}
+.footer-logo{display:flex;align-items:center;gap:10px;font-family:var(--f-head);font-size:19px;font-weight:600;color:#fff;}
+.footer-logo img{width:32px;height:32px;}
+.footer-copy{font-size:13px;color:rgba(255,255,255,.4);line-height:1.65;max-width:28ch;}
+.footer-cols{display:grid;grid-template-columns:repeat(3,1fr);gap:48px;}
+.fc-title{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.28);margin-bottom:18px;}
+.fc-links{display:flex;flex-direction:column;gap:11px;list-style:none;}
+.fc-links a{font-size:14px;color:rgba(255,255,255,.5);transition:color 150ms;}
+.fc-links a:hover{color:#fff;}
+.footer-cr{font-size:12px;color:rgba(255,255,255,.28);}
+.footer-bl{display:flex;gap:24px;}
+.footer-bl a{font-size:12px;color:rgba(255,255,255,.28);transition:color 150ms;}
+.footer-bl a:hover{color:rgba(255,255,255,.7);}
+.socials{display:flex;gap:8px;}
+.s-btn{width:34px;height:34px;border-radius:2px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;font-size:13px;color:rgba(255,255,255,.45);cursor:pointer;transition:all 150ms;}
+.s-btn:hover{background:var(--blue);color:#fff;border-color:var(--blue);}
+
+/* ===== SECTION WRAPPERS ===== */
+.section-header{text-align:center;max-width:640px;margin:0 auto 48px;}
+.section-header .eyebrow{font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--blue);margin-bottom:12px;}
+.section-header h2{font-family:var(--f-head);font-size:clamp(28px,4vw,48px);font-weight:600;color:var(--ink);letter-spacing:-.03em;line-height:1.1;margin-bottom:14px;}
+.section-header p{font-size:16px;line-height:1.7;color:var(--slate);}
+.section-wrap{padding:72px 40px 0;}
+
+/* ===== BADGES ===== */
+.badge{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:5px 11px;border-radius:2px;}
+.bd-blue{background:var(--blue-pale);color:var(--blue);}
+.bd-green{background:#DFF4EA;color:#167A43;}
+.bd-amber{background:#FFF2DC;color:#9A6100;}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:900px){
+  .persona-grid{grid-template-columns:1fr 1fr;}
+  .problem-inner{grid-template-columns:1fr;}
+  .testimonial-inner{grid-template-columns:1fr;}
+  .footer-top{grid-template-columns:1fr;gap:40px;}
+  .footer-cols{grid-template-columns:1fr 1fr;gap:24px;}
+  .process-editorial{grid-template-columns:1fr;}
+  .pe-left{border-right:none;border-bottom:1px solid rgba(0,0,0,.05);padding:40px 36px;}
+  .pe-right{grid-template-columns:1fr 1fr;}
+  .stats-strip{grid-template-columns:1fr 1fr;}
+  .stat-cell{border-bottom:1px solid rgba(0,0,0,.05);}
+  .bento-grid{grid-template-columns:1fr;}
+  .bg-tile.c5,.bg-tile.c7{grid-column:span 1;}
+}
+@media(max-width:768px){
+  .announcement-bar .ann-sep,.announcement-bar .ann-sep + span{display:none;}
+  .nav{padding:0 20px;height:56px;}
+  .nav-links{display:none;}
+  .nav-right{display:none;}
+  .nav-hamburger{display:flex;}
+  .hero-cinema{padding:80px 24px 60px;min-height:auto;}
+  .hero-right{display:none;}
+  .hero-title{font-size:clamp(40px,11vw,62px);}
+  .hero-ctas{flex-wrap:wrap;}
+  .stats-section{padding:24px 20px;}
+  .stats-strip{grid-template-columns:1fr 1fr;}
+  .stat-cell{padding:24px 20px;}
+  .bento-section{padding:0 20px 24px;}
+  .process-section{padding:0 20px 24px;}
+  .problem-section{padding:0 20px 24px;}
+  .testimonial-section{padding:0 20px 24px;}
+  .comp-section{padding:0 20px 24px;}
+  .persona-section{padding:0 20px 24px;}
+  .persona-grid{grid-template-columns:1fr;}
+  .bqb-section{margin:0 20px 24px;padding:64px 32px;}
+  .cta-section{padding:0 20px 40px;}
+  .cta-full{padding:48px 24px;}
+  .cta-full-actions{flex-direction:column;align-items:stretch;}
+  .cta-full-actions .btn{text-align:center;justify-content:center;}
+  .footer{padding:48px 24px 32px;}
+  .footer-top{grid-template-columns:1fr;gap:32px;}
+  .footer-cols{grid-template-columns:1fr 1fr;gap:20px;}
+  .footer-bottom{flex-direction:column;text-align:center;}
+  .section-wrap{padding:56px 20px 0;}
+  .section-header{margin-bottom:36px;}
+  .testimonial-feature{padding:36px 28px;}
+  .tf-quote-mark{font-size:80px;}
+  .pe-step{padding:28px 24px;}
+  .problem-inner{gap:10px;}
+  .bqb-section .bqb-quote{font-size:clamp(18px,4vw,26px);}
+}
+</style>
 </head>
-<body></body>
+<body>
+
+<!-- ANNOUNCEMENT BAR -->
+<div class="announcement-bar" id="ann-bar">
+  <div class="ann-inner">
+    <span class="ann-badge">Certified</span>
+    SOC 2 Type II Certified
+    <span class="ann-sep">·</span>
+    <span>GLBA Compliant</span>
+    <span class="ann-sep">·</span>
+    <span>FINRA-Aligned</span>
+    <a href="#" class="ann-link">Learn about our security →</a>
+  </div>
+  <button class="ann-close" onclick="document.getElementById('ann-bar').style.display='none'" aria-label="Close">×</button>
+</div>
+
+<!-- NAV -->
+<div class="nav-wrap">
+  <nav class="nav" id="main-nav">
+    <a href="/" class="nav-logo">
+      <div class="nav-mark"><img src="design-system/logos/basefund-b-gradient.svg" alt="Basefund"></div>
+      Basefund
+    </a>
+    <ul class="nav-links">
+      <li><a href="#">Platform</a></li>
+      <li><a href="#">Solutions</a></li>
+      <li><a href="#">Security</a></li>
+      <li><a href="#">Pricing</a></li>
+      <li><a href="#">Resources</a></li>
+    </ul>
+    <div class="nav-right">
+      <button class="btn-nav-ghost">Sign In</button>
+      <button class="btn-nav-primary">Get Started <span style="font-size:13px;">→</span></button>
+    </div>
+    <button class="nav-hamburger" id="nav-hamburger" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+  <!-- Mobile menu -->
+  <div class="nav-mobile-menu" id="nav-mobile-menu">
+    <a href="#">Platform</a>
+    <a href="#">Solutions</a>
+    <a href="#">Security</a>
+    <a href="#">Pricing</a>
+    <a href="#">Resources</a>
+    <div class="nav-mobile-divider"></div>
+    <div class="nav-mobile-actions">
+      <button class="btn-nav-ghost" style="text-align:left;padding:10px 16px;">Sign In</button>
+      <button class="btn-nav-primary" style="justify-content:center;">Get Started →</button>
+    </div>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero-cinema noise">
+  <div class="hero-cinema-bg"></div>
+  <div class="hero-cinema-dots"></div>
+  <div class="hero-cinema-content">
+    <div class="hero-ep r">
+      <span class="hero-ep-dot"></span>
+      SOC 2 Certified &nbsp;·&nbsp; $15B+ Secured
+    </div>
+    <h1 class="hero-title r sd1">
+      Secure and insure<br>
+      <span class="italic">your money</span><br>
+      in motion.
+    </h1>
+    <p class="hero-sub r sd2">Basefund unifies identity verification, bank validation, transaction-specific insurance, and deal coordination in one platform — built for the institutions that move capital.</p>
+    <div class="hero-ctas r sd3">
+      <button class="btn btn-w btn-lg">Get Started Free <span class="arr" style="background:rgba(20,93,208,.12);color:var(--blue);">→</span></button>
+      <button class="btn btn-gw btn-lg">Watch Demo</button>
+    </div>
+  </div>
+
+  <!-- Right stats -->
+  <div class="hero-right">
+    <div class="glass-card" style="animation-delay:.2s">
+      <div class="gc-label">Transaction Volume</div>
+      <div class="gc-value">$2.4B</div>
+      <div class="gc-sub">Secured this quarter</div>
+      <div class="gc-badge">↑ 34% vs prior quarter</div>
+    </div>
+    <div class="glass-card blue-tinted" style="animation-delay:.35s">
+      <div class="gc-label">Verification Speed</div>
+      <div class="gc-value">&lt;1s</div>
+      <div class="gc-sub">Avg. identity check time</div>
+    </div>
+    <div class="glass-card" style="animation-delay:.5s">
+      <div class="gc-label">Coverage Bound</div>
+      <div class="gc-value">$250K</div>
+      <div class="gc-sub">Default transaction limit</div>
+      <div class="gc-badge">Custom limits available</div>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-section">
+  <div class="marquee-track">
+    <div class="marquee-inner">
+      <!-- First set -->
+      <div class="marq-item">
+        <div class="marq-icon"><img src="design-system/icons/bank.svg" alt=""></div>
+        First National Bank
+      </div>
+      <div class="marq-item">
+        <div class="marq-icon"><img src="design-system/icons/building-02.svg" alt=""></div>
+        Metro Municipal Authority
+      </div>
+      <div class="marq-item">
+        <div class="marq-icon"><img src="design-system/icons/scales-02.svg" alt=""></div>
+        Apex Bond Counsel LLP
+      </div>
+      <div class="marq-item">
+        <div class="marq-icon"><img src="design-system/icons/shield-dollar.svg" alt=""></div>
+        Pacific Trust &amp; Escrow
+      </div>
+      <div class="marq-item">
+        <div class="marq-icon"><img src="design-system/icons/globe-02.svg" alt=""></div>
+        Regional Finance Authority
+      </div>
+      <div class="marq-item">
+        <div class="marq-icon"><img src="design-system/icons/credit-card-shield.svg" alt=""></div>
+        Summit Underwriters Group
+      </div>
+      <div class="marq-item">
+        <div class="marq-icon"><img src="design-system/icons/bank.svg" alt=""></div>
+        Civic Capital Partners
+      </div>
+      <div class="marq-item">
+        <div class="marq-icon"><img src="design-system/icons/building-02.svg" alt=""></div>
+        Harbor Infrastructure Board
+      </div>
+      <div class="marq-item">
+        <div class="marq-icon"><img src="design-system/icons/coins-hand.svg" alt=""></div>
+        Keystone Bond Advisors
+      </div>
+      <div class="marq-item">
+        <div class="marq-icon"><img src="design-system/icons/shield-tick.svg" alt=""></div>
+        Meridian Assurance Co.
+      </div>
+      <!-- Duplicate for seamless loop -->
+      <div class="marq-item">
+        <div class="marq-icon"><img src="design-system/icons/bank.svg" alt=""></div>
+        First National Bank
+      </div>
+      <div class="marq-item">
+        <div class="marq-icon"><img src="design-system/icons/building-02.svg" alt=""></div>
+        Metro Municipal Authority
+      </div>
+      <div class="marq-item">
+        <div class="marq-icon"><img src="design-system/icons/scales-02.svg" alt=""></div>
+        Apex Bond Counsel LLP
+      </div>
+      <div class="marq-item">
+        <div class="marq-icon"><img src="design-system/icons/shield-dollar.svg" alt=""></div>
+        Pacific Trust &amp; Escrow
+      </div>
+      <div class="marq-item">
+        <div class="marq-icon"><img src="design-system/icons/globe-02.svg" alt=""></div>
+        Regional Finance Authority
+      </div>
+      <div class="marq-item">
+        <div class="marq-icon"><img src="design-system/icons/credit-card-shield.svg" alt=""></div>
+        Summit Underwriters Group
+      </div>
+      <div class="marq-item">
+        <div class="marq-icon"><img src="design-system/icons/bank.svg" alt=""></div>
+        Civic Capital Partners
+      </div>
+      <div class="marq-item">
+        <div class="marq-icon"><img src="design-system/icons/building-02.svg" alt=""></div>
+        Harbor Infrastructure Board
+      </div>
+      <div class="marq-item">
+        <div class="marq-icon"><img src="design-system/icons/coins-hand.svg" alt=""></div>
+        Keystone Bond Advisors
+      </div>
+      <div class="marq-item">
+        <div class="marq-icon"><img src="design-system/icons/shield-tick.svg" alt=""></div>
+        Meridian Assurance Co.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- STATS STRIP -->
+<div class="stats-section">
+  <div class="stats-strip">
+    <div class="stat-cell r">
+      <div class="stat-n">500<sup>+</sup></div>
+      <div class="stat-l">Municipal Issuers</div>
+    </div>
+    <div class="stat-cell r sd1">
+      <div class="stat-n">$15B<sup>+</sup></div>
+      <div class="stat-l">Total Capital Secured</div>
+    </div>
+    <div class="stat-cell r sd2">
+      <div class="stat-n">&lt;1s</div>
+      <div class="stat-l">Identity Verification</div>
+    </div>
+    <div class="stat-cell r sd3">
+      <div class="stat-n">99.99%</div>
+      <div class="stat-l">Platform Uptime</div>
+    </div>
+  </div>
+</div>
+
+<!-- BENTO FEATURES -->
+<div class="bento-section">
+  <div class="section-header r" style="text-align:left;margin:0 0 32px;">
+    <div class="eyebrow">Platform Pillars</div>
+    <h2 style="font-family:var(--f-head);font-size:clamp(28px,4vw,44px);font-weight:600;color:var(--ink);letter-spacing:-.03em;line-height:1.1;margin-bottom:0;">Four layers of protection,<br><em style="font-style:italic;color:var(--blue);">one unified platform.</em></h2>
+  </div>
+  <div class="bento-grid">
+
+    <!-- Identity Verification — blue, c7 -->
+    <div class="bg-tile blue c7 r">
+      <div class="tile-icon blue-bg">
+        <img src="design-system/icons/fingerprint-02.svg" alt="Identity">
+      </div>
+      <div class="tile-tag">01 · Identity Verification</div>
+      <div class="tile-h">Know who you're transacting with — before the wire leaves.</div>
+      <div class="tile-p">Real-time identity checks against authoritative government databases, OFAC, and beneficial ownership registries. Every counterparty verified before a deal can proceed.</div>
+      <div class="tile-list">
+        <div class="tile-list-item"><span class="tile-list-dot"></span> KYC / KYB checks in under 1 second</div>
+        <div class="tile-list-item"><span class="tile-list-dot"></span> OFAC &amp; watchlist screening</div>
+        <div class="tile-list-item"><span class="tile-list-dot"></span> Beneficial ownership mapping</div>
+      </div>
+      <div class="tile-circle tc-white"></div>
+    </div>
+
+    <!-- Bank Validation — white, c5 -->
+    <div class="bg-tile c5 r sd1">
+      <div class="tile-icon light-bg">
+        <img src="design-system/icons/bank.svg" alt="Bank">
+      </div>
+      <div class="tile-tag">02 · Bank Validation</div>
+      <div class="tile-h">Verify every account before funds are released.</div>
+      <div class="tile-p">Instant micro-deposit validation and ACH prenote checks confirm that destination accounts are real, open, and owned by who you think — eliminating misdirected wire risk.</div>
+      <div class="tile-circle tc-blue"></div>
+    </div>
+
+    <!-- Transaction Insurance — dark, c5 -->
+    <div class="bg-tile dark c5 r sd2">
+      <div class="tile-icon dark-bg">
+        <img src="design-system/icons/shield-dollar.svg" alt="Insurance">
+      </div>
+      <div class="tile-tag">03 · Transaction Insurance</div>
+      <div class="tile-h">Coverage bound at the deal level. Not the portfolio.</div>
+      <div class="tile-p">First-of-its-kind transaction-specific insurance that binds to individual deals, providing coverage from signing through settlement — regardless of deal size or complexity.</div>
+      <div class="tile-circle tc-white"></div>
+    </div>
+
+    <!-- Coordination — blue-lt, c7 -->
+    <div class="bg-tile blue-lt c7 r sd3">
+      <div class="tile-icon accent-bg">
+        <img src="design-system/icons/users-check.svg" alt="Coordination">
+      </div>
+      <div class="tile-tag" style="color:var(--blue);">04 · Deal Coordination</div>
+      <div class="tile-h" style="color:var(--ink);">Every stakeholder. Every document. One deal room.</div>
+      <div class="tile-p" style="color:var(--slate);">Municipal issuers, bond counsel, underwriters, escrow agents, and banks — all coordinating in a single secure workspace with audit trails and milestone tracking built in.</div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:20px;">
+        <span class="badge bd-blue">Role-Based Access</span>
+        <span class="badge bd-green">Full Audit Trail</span>
+        <span class="badge bd-amber">Real-Time Alerts</span>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- PROCESS EDITORIAL -->
+<div class="process-section">
+  <div class="process-editorial">
+    <div class="pe-left r">
+      <div class="pe-eyebrow">How It Works</div>
+      <h2 class="pe-h">From first connection to final close — in four steps.</h2>
+      <p class="pe-p">Basefund was purpose-built for the operational complexity of institutional transactions. Get from term sheet to settlement without the spreadsheets, fax machines, and overnight couriers.</p>
+      <button class="btn btn-p" style="width:fit-content;">See Full Walkthrough →</button>
+    </div>
+    <div class="pe-right">
+      <div class="pe-step">
+        <div class="pe-num">01</div>
+        <div class="pe-title">Connect Your Org</div>
+        <div class="pe-desc">Onboard your entity in minutes. Connect your banking relationships, invite counterparties, and configure your deal templates once.</div>
+      </div>
+      <div class="pe-step">
+        <div class="pe-num">02</div>
+        <div class="pe-title">Create a Deal</div>
+        <div class="pe-desc">Structure the transaction — parties, amounts, milestones, and disbursement conditions. Basefund generates the coordination layer automatically.</div>
+      </div>
+      <div class="pe-step">
+        <div class="pe-num">03</div>
+        <div class="pe-title">Verify &amp; Insure</div>
+        <div class="pe-desc">Run identity checks on all counterparties, validate bank accounts, and bind transaction-specific insurance before any funds move.</div>
+      </div>
+      <div class="pe-step">
+        <div class="pe-num">04</div>
+        <div class="pe-title">Close &amp; Settle</div>
+        <div class="pe-desc">Release funds against verified conditions with a complete audit trail, executed documents, and confirmation pushed to all parties instantly.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PROBLEM STATEMENT -->
+<div class="problem-section">
+  <div class="section-header r">
+    <div class="eyebrow">Why Basefund</div>
+    <h2>The infrastructure gap in institutional finance.</h2>
+    <p>High-value transactions move through a patchwork of phone calls, email threads, and manual wire instructions — with no systematic protection layer.</p>
+  </div>
+  <div class="problem-inner">
+    <div class="prob-card problem r">
+      <div class="prob-icon-wrap">
+        <img src="design-system/icons/alert-triangle.svg" alt="Problem" style="filter:brightness(0) saturate(100%) invert(22%) sepia(82%) saturate(1200%) hue-rotate(340deg) brightness(95%) contrast(98%);">
+      </div>
+      <div class="prob-label">The Problem</div>
+      <div class="prob-h">Fragmented, manual, and uninsured.</div>
+      <div class="prob-p">Municipal bond proceeds and capital project disbursements flow through disconnected systems with no unified verification, no real-time visibility, and no protection against wire fraud, misdirection, or counterparty failure.</div>
+    </div>
+    <div class="prob-card cost r sd1">
+      <div class="prob-icon-wrap">
+        <img src="design-system/icons/line-chart-up-03.svg" alt="Cost" style="filter:brightness(0) saturate(100%) invert(35%) sepia(70%) saturate(900%) hue-rotate(10deg) brightness(92%) contrast(99%);">
+      </div>
+      <div class="prob-label">The Cost</div>
+      <div class="prob-h">$15B lost to wire fraud annually.</div>
+      <div class="prob-p">The FBI estimates $15B in annual losses from Business Email Compromise targeting financial transactions. Municipal issuers and institutional counterparties are prime targets — and most have no transaction-level protection in place.</div>
+    </div>
+    <div class="prob-card approach r sd2">
+      <div class="prob-icon-wrap">
+        <img src="design-system/icons/shield-tick.svg" alt="Approach">
+      </div>
+      <div class="prob-label">The Basefund Approach</div>
+      <div class="prob-h">Infrastructure that moves with the money.</div>
+      <div class="prob-p">Basefund wraps every transaction in a verified, insured, and coordinated layer — so that by the time a wire leaves, every account has been validated, every party has been identified, and every condition has been met.</div>
+    </div>
+  </div>
+</div>
+
+<!-- TESTIMONIAL -->
+<div class="testimonial-section">
+  <div class="testimonial-inner">
+    <div class="testimonial-feature r">
+      <div class="tf-bg"></div>
+      <span class="tf-quote-mark">"</span>
+      <div class="tf-quote">Basefund gave us something we didn't know was possible — the ability to wire $40 million in bond proceeds and know with certainty that every account had been verified, every party identified, and every condition met. It changed how we think about closing.</div>
+      <div class="tf-author">
+        <div class="tf-avatar">SC</div>
+        <div>
+          <div class="tf-name">Sarah Chen</div>
+          <div class="tf-title">Chief Financial Officer, Metro Water District</div>
+        </div>
+      </div>
+    </div>
+    <div class="testi-aside">
+      <div class="testi-sm r sd1">
+        <div class="testi-stars">★★★★★</div>
+        <div class="testi-q">"The identity verification alone saved us two weeks of back-and-forth. We verified 14 counterparties across 3 deals before lunch."</div>
+        <div class="testi-author">
+          <div class="testi-av">MR</div>
+          <div>
+            <div class="testi-name">Marcus Rodriguez</div>
+            <div class="testi-role">Managing Director, Apex Underwriters</div>
+          </div>
+        </div>
+      </div>
+      <div class="testi-sm r sd2">
+        <div class="testi-stars">★★★★★</div>
+        <div class="testi-q">"As bond counsel, we've historically relied on client representations for account verification. Basefund turns that into a documented, auditable fact."</div>
+        <div class="testi-author">
+          <div class="testi-av">JW</div>
+          <div>
+            <div class="testi-name">Jennifer Walsh</div>
+            <div class="testi-role">Partner, Walsh &amp; Thornton LLP</div>
+          </div>
+        </div>
+      </div>
+      <div class="testi-sm r sd3">
+        <div class="testi-stars">★★★★★</div>
+        <div class="testi-q">"The deal room eliminated the 47-email closing threads we used to manage. Everything is tracked, timestamped, and retrievable for audit."</div>
+        <div class="testi-author">
+          <div class="testi-av">DK</div>
+          <div>
+            <div class="testi-name">David Kim</div>
+            <div class="testi-role">SVP Trust Operations, Pacific Escrow Co.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- COMPARISON TABLE -->
+<div class="comp-section">
+  <div class="section-header r">
+    <div class="eyebrow">Comparison</div>
+    <h2>With Basefund vs. without.</h2>
+    <p>See how Basefund changes the risk and operational profile of institutional transactions.</p>
+  </div>
+  <div class="comp-table r">
+    <table>
+      <thead>
+        <tr>
+          <th>Capability</th>
+          <th>Traditional Process</th>
+          <th>With Basefund</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Identity Verification</td>
+          <td>Manual document review, days to complete</td>
+          <td><span class="comp-check">✓</span> Real-time, &lt;1 second</td>
+        </tr>
+        <tr>
+          <td>Bank Account Validation</td>
+          <td>Voided check or bank letter</td>
+          <td><span class="comp-check">✓</span> Instant micro-deposit verification</td>
+        </tr>
+        <tr>
+          <td>Transaction-Level Insurance</td>
+          <td><span class="comp-x">✗</span> Not available</td>
+          <td><span class="comp-check">✓</span> Bound at deal level, pre-close</td>
+        </tr>
+        <tr>
+          <td>Wire Fraud Protection</td>
+          <td>Email disclaimers, hope</td>
+          <td><span class="comp-check">✓</span> Verified accounts + insurance layer</td>
+        </tr>
+        <tr>
+          <td>Multi-Party Coordination</td>
+          <td>Email threads, spreadsheets, fax</td>
+          <td><span class="comp-check">✓</span> Unified deal room with audit trail</td>
+        </tr>
+        <tr>
+          <td>Regulatory Audit Trail</td>
+          <td>Manual document assembly</td>
+          <td><span class="comp-check">✓</span> Auto-generated, exportable</td>
+        </tr>
+        <tr>
+          <td>OFAC / Watchlist Screening</td>
+          <td>Periodic manual checks</td>
+          <td><span class="comp-check">✓</span> Continuous, real-time screening</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- PERSONA CARDS -->
+<div class="persona-section">
+  <div class="section-header r">
+    <div class="eyebrow">Who It's For</div>
+    <h2>Built for every seat at the closing table.</h2>
+    <p>Basefund is designed for the full ecosystem of institutional transactions — not just one side of the deal.</p>
+  </div>
+  <div class="persona-grid">
+    <div class="persona-card r">
+      <div class="persona-icon">
+        <img src="design-system/icons/building-02.svg" alt="Municipal">
+      </div>
+      <div class="persona-title">Municipal Issuers</div>
+      <div class="persona-desc">Protect bond proceeds and capital project disbursements with verified accounts, insured wires, and a clear audit trail for bond counsel and trustees.</div>
+    </div>
+    <div class="persona-card r sd1">
+      <div class="persona-icon">
+        <img src="design-system/icons/line-chart-up-03.svg" alt="Underwriters">
+      </div>
+      <div class="persona-title">Underwriters</div>
+      <div class="persona-desc">Know that every counterparty in the syndicate has been verified before the pricing date. Reduce underwriting risk with documented, repeatable due diligence.</div>
+    </div>
+    <div class="persona-card r sd2">
+      <div class="persona-icon">
+        <img src="design-system/icons/scales-02.svg" alt="Bond Counsel">
+      </div>
+      <div class="persona-title">Bond Counsel</div>
+      <div class="persona-desc">Replace client representations with auditable, third-party verified facts. Close with confidence knowing every account and party is verified.</div>
+    </div>
+    <div class="persona-card r sd1">
+      <div class="persona-icon">
+        <img src="design-system/icons/lock-01.svg" alt="Escrow">
+      </div>
+      <div class="persona-title">Escrow &amp; Trust Companies</div>
+      <div class="persona-desc">Manage disbursement conditions, verify accounts at scale, and provide clients with a documented release process that satisfies regulatory requirements.</div>
+    </div>
+    <div class="persona-card r sd2">
+      <div class="persona-icon">
+        <img src="design-system/icons/bank.svg" alt="Banks">
+      </div>
+      <div class="persona-title">Banks &amp; Financial Institutions</div>
+      <div class="persona-desc">Extend verified, insured closing infrastructure to your institutional clients as a value-add service — reducing your own exposure to wire fraud liability.</div>
+    </div>
+    <div class="persona-card r sd3">
+      <div class="persona-icon">
+        <img src="design-system/icons/credit-card-shield.svg" alt="Insurance">
+      </div>
+      <div class="persona-title">Insurance Underwriters</div>
+      <div class="persona-desc">Access transaction-level data to underwrite coverage with precision. Basefund's verification layer reduces loss ratios on institutional transaction policies.</div>
+    </div>
+  </div>
+</div>
+
+<!-- BIG QUOTE ON BLUE -->
+<div class="bqb-section r">
+  <div class="bqb-circles">
+    <div class="bqb-circle"></div>
+    <div class="bqb-circle"></div>
+    <div class="bqb-circle"></div>
+    <div class="bqb-circle"></div>
+  </div>
+  <div class="bqb-content">
+    <div class="bqb-pill">
+      <span class="bqb-pill-dot"></span>
+      Our Mission
+    </div>
+    <span class="bqb-qmark">"</span>
+    <div class="bqb-quote">
+      Every dollar in motion deserves the same protection as the institution behind it. We built Basefund to make <em>secure, verified, insured transactions</em> the default — not the exception.
+    </div>
+  </div>
+</div>
+
+<!-- CTA -->
+<div class="cta-section">
+  <div class="cta-full r">
+    <div class="cta-full-bg"></div>
+    <h2>Ready to secure your<br><em>next transaction?</em></h2>
+    <p>Join the institutions that have already moved over $15 billion through Basefund's verified, insured infrastructure.</p>
+    <div class="cta-full-actions">
+      <button class="btn btn-w btn-xl">Get Started Free <span class="arr" style="background:rgba(20,93,208,.12);color:var(--blue);">→</span></button>
+      <button class="btn btn-gw btn-lg">Talk to Sales</button>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-top">
+    <div class="footer-brand">
+      <div class="footer-logo">
+        <img src="design-system/logos/basefund-b-white.svg" alt="Basefund">
+        Basefund
+      </div>
+      <div class="footer-copy">Secure transaction infrastructure for when money moves. Verified, insured, and coordinated — end to end.</div>
+      <div class="socials">
+        <a class="s-btn" href="#" aria-label="LinkedIn">in</a>
+        <a class="s-btn" href="#" aria-label="Twitter">𝕏</a>
+        <a class="s-btn" href="#" aria-label="GitHub">⌥</a>
+      </div>
+    </div>
+    <div class="footer-cols">
+      <div>
+        <div class="fc-title">Platform</div>
+        <ul class="fc-links">
+          <li><a href="#">Identity Verification</a></li>
+          <li><a href="#">Bank Validation</a></li>
+          <li><a href="#">Transaction Insurance</a></li>
+          <li><a href="#">Deal Coordination</a></li>
+          <li><a href="#">API &amp; Integrations</a></li>
+          <li><a href="#">Pricing</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="fc-title">Company</div>
+        <ul class="fc-links">
+          <li><a href="#">About Basefund</a></li>
+          <li><a href="#">Security &amp; Compliance</a></li>
+          <li><a href="#">Careers</a></li>
+          <li><a href="#">Press</a></li>
+          <li><a href="#">Partners</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="fc-title">Resources</div>
+        <ul class="fc-links">
+          <li><a href="#">Documentation</a></li>
+          <li><a href="#">Blog</a></li>
+          <li><a href="#">Case Studies</a></li>
+          <li><a href="#">Webinars</a></li>
+          <li><a href="#">Trust Center</a></li>
+          <li><a href="#">Status</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-cr">© 2026 Basefund, Inc. All rights reserved.</div>
+    <div class="footer-bl">
+      <a href="#">Privacy Policy</a>
+      <a href="#">Terms of Service</a>
+      <a href="#">Cookie Policy</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+// ---- NAV SCROLL ----
+const nav = document.getElementById('main-nav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 20);
+}, { passive: true });
+
+// ---- MOBILE NAV ----
+const hamburger = document.getElementById('nav-hamburger');
+const mobileMenu = document.getElementById('nav-mobile-menu');
+hamburger.addEventListener('click', () => {
+  const open = mobileMenu.classList.toggle('open');
+  hamburger.classList.toggle('open', open);
+});
+// Close on outside click
+document.addEventListener('click', e => {
+  if (!hamburger.contains(e.target) && !mobileMenu.contains(e.target)) {
+    mobileMenu.classList.remove('open');
+    hamburger.classList.remove('open');
+  }
+});
+
+// ---- SCROLL REVEAL ----
+const revealEls = document.querySelectorAll('.r');
+const revealObserver = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('v');
+      revealObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+revealEls.forEach(el => revealObserver.observe(el));
+</script>
+</body>
 </html>
