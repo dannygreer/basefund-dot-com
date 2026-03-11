@@ -222,9 +222,10 @@ img{display:block;}
 .tile-icon.blue-bg img,.tile-icon.dark-bg img{filter:brightness(0) invert(1);}
 .tile-icon.light-bg img{filter:brightness(0) saturate(100%) invert(28%) sepia(98%) saturate(952%) hue-rotate(196deg) brightness(96%) contrast(101%);}
 .tile-icon.accent-bg img{filter:brightness(0) saturate(100%) invert(30%) sepia(93%) saturate(1352%) hue-rotate(213deg) brightness(97%) contrast(93%);}
-.tile-circle{position:absolute;right:-40px;bottom:-40px;width:180px;height:180px;border-radius:50%;border:40px solid;pointer-events:none;}
-.tc-white{border-color:rgba(255,255,255,.06);}
-.tc-blue{border-color:rgba(20,93,208,.08);}
+.tile-deco{position:absolute;right:-30px;bottom:-30px;width:160px;height:160px;pointer-events:none;opacity:.07;}
+.tile-deco img{width:100%;height:100%;}
+.bg-tile.blue .tile-deco img,.bg-tile.dark .tile-deco img{filter:brightness(0) invert(1);}
+.bg-tile.blue-lt .tile-deco img,.bg-tile:not(.blue):not(.dark):not(.blue-lt) .tile-deco img{filter:brightness(0) saturate(100%) invert(28%) sepia(98%) saturate(952%) hue-rotate(196deg) brightness(96%) contrast(101%);}
 .tc-accent{border-color:rgba(0,244,224,.08);}
 .tile-stat{font-family:var(--f-head);font-size:clamp(44px,5vw,72px);font-weight:700;letter-spacing:-.05em;line-height:.9;color:var(--ink);margin-top:auto;}
 .bg-tile.blue .tile-stat{color:#fff;}
@@ -746,14 +747,14 @@ img{display:block;}
           <img src="design-system/icons/fingerprint-02.svg" alt="Identity">
         </div>
         <div class="tile-tag">01 · Identity Verification</div>
-        <div class="tile-h">Know who you're transacting with — before the wire leaves.</div>
+        <div class="tile-h">Know who you're transacting with — <br>before money moves.</div>
         <div class="tile-p">Real-time identity checks against authoritative government databases, OFAC, and beneficial ownership registries. Every counterparty verified before a deal can proceed.</div>
         <div class="tile-list">
           <div class="tile-list-item"><span class="tile-list-dot"></span> KYC / KYB checks in under 1 second</div>
           <div class="tile-list-item"><span class="tile-list-dot"></span> OFAC &amp; watchlist screening</div>
           <div class="tile-list-item"><span class="tile-list-dot"></span> Beneficial ownership mapping</div>
         </div>
-        <div class="tile-circle tc-white"></div>
+        <div class="tile-deco"><img src="design-system/icons/fingerprint-02.svg" alt=""></div>
       </div>
 
       <!-- Bank Validation — white, c5 -->
@@ -764,7 +765,7 @@ img{display:block;}
         <div class="tile-tag">02 · Bank Validation</div>
         <div class="tile-h">Verify every account before funds are released.</div>
         <div class="tile-p">Instant micro-deposit validation and ACH prenote checks confirm that destination accounts are real, open, and owned by who you think — eliminating misdirected wire risk.</div>
-        <div class="tile-circle tc-blue"></div>
+        <div class="tile-deco"><img src="design-system/icons/bank.svg" alt=""></div>
       </div>
 
       <!-- Transaction Insurance — dark, c5 -->
@@ -773,9 +774,9 @@ img{display:block;}
           <img src="design-system/icons/shield-dollar.svg" alt="Insurance">
         </div>
         <div class="tile-tag">03 · Transaction Insurance</div>
-        <div class="tile-h">Coverage bound at the deal level. Not the portfolio.</div>
+        <div class="tile-h">Coverage bound at the deal level. <br>Not the portfolio.</div>
         <div class="tile-p">First-of-its-kind transaction-specific insurance that binds to individual deals, providing coverage from signing through settlement — regardless of deal size or complexity.</div>
-        <div class="tile-circle tc-white"></div>
+        <div class="tile-deco"><img src="design-system/icons/shield-dollar.svg" alt=""></div>
       </div>
 
       <!-- Coordination — blue-lt, c7 -->
@@ -806,8 +807,8 @@ img{display:block;}
       </div>
       <div class="breakout-card">
         <div class="breakout-card-eyebrow">Real-Time Dashboard</div>
-        <div class="breakout-card-h">Monitor every transaction as it moves.</div>
-        <div class="breakout-card-p">Track verification status, insurance binding, and settlement progress across all active deals from a single pane of glass.</div>
+        <div class="breakout-card-h">Manage and monitor every transaction.</div>
+        <div class="breakout-card-p">Track participant validation, bank account verification, and settlement progress across all active deals from a single view.</div>
       </div>
     </div>
   </div>
@@ -906,7 +907,7 @@ img{display:block;}
   <div class="container">
     <div class="section-header r">
       <div class="eyebrow">Comparison</div>
-      <h2>With Basefund vs. without.</h2>
+      <h2>A better way to move money.</h2>
       <p>See how Basefund changes the risk and operational profile of institutional transactions.</p>
     </div>
     <div class="comp-table r">
