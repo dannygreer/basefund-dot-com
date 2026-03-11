@@ -41,6 +41,7 @@ button{cursor:pointer;font-family:var(--f-body);}
 .sb-backdrop{display:none;position:fixed;inset:0;background:rgba(0,0,0,.3);z-index:99;opacity:0;transition:opacity .3s var(--ease);}
 .sb-backdrop.open{opacity:1;}
 @media(max-width:768px){
+  /* ---- Sidebar & Layout ---- */
   .sb-hamburger{display:flex;}
   .sidebar{position:fixed;top:0;left:0;height:100%;transform:translateX(-100%);z-index:150;box-shadow:var(--s-lg);}
   .sidebar.open{transform:translateX(0);}
@@ -48,7 +49,16 @@ button{cursor:pointer;font-family:var(--f-body);}
   .sec-label{padding:48px 20px 8px;}
   .sec-name{padding:0 20px 20px;}
   .pad{padding:0 20px 48px;}
+  .pad-hero{padding:0 20px 16px;}
   .shell-header{padding:16px 20px;}
+  .shell-badge{display:none;}
+
+  /* ---- Navigation ---- */
+  .nav{padding:0 16px;height:56px;}
+  .nav-links{display:none;}
+  .nav-right{display:none;}
+
+  /* ---- Heroes ---- */
   .hero-cinema{padding:60px 24px;min-height:auto;}
   .hero-cinema-right{display:none;}
   .hero-title{font-size:clamp(36px,10vw,56px);}
@@ -56,11 +66,116 @@ button{cursor:pointer;font-family:var(--f-body);}
   .hero-editorial-inner{grid-template-columns:1fr;gap:32px;}
   .hero-bento{display:none;}
   .hero-gradient{padding:60px 24px;}
-  .cta-full{padding:48px 24px;}
-  .process-grid,.bento{grid-template-columns:1fr;}
-  .step-flow{flex-direction:column;}
+  .hero-ctas{flex-wrap:wrap;}
+
+  /* ---- Trust & Social ---- */
+  .swatch-grid{padding:0;}
+  .logo-strip{padding:24px 20px;gap:20px;}
   .stats-strip{grid-template-columns:1fr 1fr;}
-  .comp-table{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+  .stat-cell{padding:24px 20px;}
+  .stat-row{flex-direction:column;gap:24px;padding:28px 24px;}
+  .sr-divider{width:100%;height:1px;align-self:auto;}
+
+  /* ---- Bento Grid ---- */
+  .bento-grid{grid-template-columns:1fr;}
+  .bg-tile.c3,.bg-tile.c4,.bg-tile.c5,.bg-tile.c6,.bg-tile.c7,.bg-tile.c8,.bg-tile.c12{grid-column:span 1;}
+
+  /* ---- Process & Step Flow ---- */
+  .process-grid,.bento{grid-template-columns:1fr;}
+  .process-editorial{grid-template-columns:1fr;}
+  .pe-left{border-right:none;border-bottom:1px solid rgba(0,0,0,.05);}
+  .pe-right{grid-template-columns:1fr;}
+  .pe-step:nth-child(2n){border-right:none;}
+  .pe-step:nth-child(3){border-bottom:1px solid rgba(0,0,0,.05);}
+  .step-flow{flex-direction:column;}
+  .sf-step{border-right:none;border-bottom:1px solid rgba(0,0,0,.05);}
+  .sf-step:last-child{border-bottom:none;}
+
+  /* ---- Testimonials ---- */
+  .testimonial-feature{padding:36px 24px;}
+
+  /* ---- Persona Grid ---- */
+  .persona-grid{grid-template-columns:1fr;}
+
+  /* ---- Blog Cards ---- */
+  .blog-featured{grid-template-columns:1fr;}
+  .blog-thumb{min-height:180px;}
+
+  /* ---- Team Cards ---- */
+  .team-card{width:auto;flex:1;min-width:140px;}
+
+  /* ---- Contact Forms ---- */
+  .contact-card{padding:32px 24px;}
+  .contact-horiz{grid-template-columns:1fr;}
+  .contact-horiz-left{padding:36px 24px;}
+  .contact-horiz-right{padding:32px 24px;}
+
+  /* ---- Feature Grid ---- */
+  .feature-grid{grid-template-columns:1fr;}
+  .fg-item{border-right:none;}
+  .fg-item:nth-child(3n){border-right:none;}
+  .fg-item:nth-child(4),.fg-item:nth-child(5),.fg-item:nth-child(6){border-bottom:1px solid rgba(0,0,0,.05);}
+  .fg-item:last-child{border-bottom:none;}
+
+  /* ---- Timeline ---- */
+  .timeline-line{display:none;}
+  .tl-item{grid-template-columns:32px 1fr;gap:0 12px;}
+  .tl-date{display:none;}
+
+  /* ---- Media Block ---- */
+  .media-block{padding:48px 24px;min-height:280px;}
+
+  /* ---- Resource & Pillar Grids ---- */
+  .resource-grid{grid-template-columns:1fr;}
+  .pillar-grid{grid-template-columns:1fr;}
+
+  /* ---- Two-Tone Split ---- */
+  .two-tone-wrap{flex-direction:column;min-height:auto;padding:0;}
+  .tt-card{width:100%;}
+  .tt-card-2{margin-left:0;margin-top:12px;}
+
+  /* ---- Icon Card Grid (on Blue) ---- */
+  .icg-section{padding:40px 24px;}
+  .icg-card.wide{flex-direction:column;align-items:flex-start;}
+  .icg-cta-arr{margin-top:8px;}
+
+  /* ---- Evolution Path ---- */
+  .evo-wrap{padding:40px 24px;}
+
+  /* ---- Bordered Bullet Grid ---- */
+  .bbg-grid{grid-template-columns:1fr;}
+
+  /* ---- Photo Mosaic ---- */
+  .mosaic-grid{grid-template-columns:1fr 1fr;}
+  .mosaic-img.tall,.mosaic-img.med,.mosaic-img.short{height:auto;}
+  .mosaic-img.mt1,.mosaic-img.mt2,.mosaic-img.mt3{margin-top:0;}
+
+  /* ---- Big Quote on Blue ---- */
+  .bqb-section{padding:56px 24px;}
+
+  /* ---- CTA Sections ---- */
+  .cta-full{padding:48px 24px;}
+  .cta-full-actions{flex-wrap:wrap;justify-content:center;}
+  .cta-banner{flex-direction:column;padding:28px 24px;}
+  .cta-banner-right{flex-shrink:1;}
+
+  /* ---- Job Cards ---- */
+  .job-card{flex-wrap:wrap;gap:12px;}
+  .job-info{width:100%;}
+
+  /* ---- Form CTA ---- */
+  .form-cta-white{padding:36px 24px;}
+  .form-cta-blue{padding:36px 24px;}
+  .form-inline{flex-direction:column;}
+  .form-inline input{min-width:0;}
+
+  /* ---- Chart ---- */
+  .chart-wrap{padding:24px 20px;}
+
+  /* ---- Cookie Consent ---- */
+  .cookie-consent{max-width:100%;width:calc(100% - 32px);left:16px;right:16px;bottom:16px;}
+
+  /* ---- Footer ---- */
   .footer-top{grid-template-columns:1fr;gap:32px;}
   .footer-cols{grid-template-columns:1fr 1fr;gap:24px;}
   .footer-bottom{flex-direction:column;text-align:center;}
@@ -87,6 +202,7 @@ button{cursor:pointer;font-family:var(--f-body);}
 .sec-label:first-of-type{border-top:none;}
 .sec-name{font-family:var(--f-head);font-size:22px;font-weight:600;color:var(--ink);padding:0 48px 28px;letter-spacing:-.02em;}
 .pad{padding:0 48px 72px;}
+.pad-hero{padding:0 48px 16px;}
 .row{display:flex;flex-wrap:wrap;gap:16px;align-items:flex-start;}
 .row.center{align-items:center;}
 .col{display:flex;flex-direction:column;gap:12px;}
@@ -719,11 +835,24 @@ button{cursor:pointer;font-family:var(--f-body);}
   .fd-chips{grid-template-columns:1fr;}
   .benefit-chips-wrap{grid-template-columns:1fr;}
   .mini-cards-wrap{grid-template-columns:1fr;}
-}
-
-@media(max-width:900px){
   .layout-2,.layout-2-narrow,.layout-2-wide,.layout-3,.layout-sidebar,.layout-sidebar-r{grid-template-columns:1fr;}
   .layout-4{grid-template-columns:1fr 1fr;}
+  /* 3-column grids collapse to 2 at 900px */
+  .persona-grid{grid-template-columns:1fr 1fr;}
+  .resource-grid{grid-template-columns:1fr 1fr;}
+  .pillar-grid{grid-template-columns:1fr 1fr;}
+  .footer-cols{grid-template-columns:1fr 1fr;}
+  /* Process editorial stacks at 900px */
+  .process-editorial{grid-template-columns:1fr;}
+  .pe-left{border-right:none;border-bottom:1px solid rgba(0,0,0,.05);}
+  .pe-right{grid-template-columns:1fr 1fr;}
+  /* Contact horizontal stacks at 900px */
+  .contact-horiz{grid-template-columns:1fr;}
+  .contact-horiz-left{padding:36px 32px;}
+  .contact-horiz-right{padding:32px 32px;}
+  /* Blog featured stacks at 900px */
+  .blog-featured{grid-template-columns:1fr;}
+  .blog-thumb{min-height:200px;}
 }
 @media(max-width:600px){
   .layout-4{grid-template-columns:1fr;}
@@ -1347,7 +1476,7 @@ textarea.contact-input{resize:vertical;min-height:120px;line-height:1.6;}
 <!-- 06a. HERO CINEMA BLUE -->
 <div id="hero-blue" class="sec-label">09 · Heroes</div>
 <div class="sec-name">Hero — Cinema Blue</div>
-<div style="padding:0 48px 16px;">
+<div class="pad-hero">
   <div class="hero-cinema noise" style="border-radius:2px;overflow:hidden;">
     <div class="hero-cinema-bg"></div>
     <div class="hero-cinema-dots"></div>
@@ -1371,7 +1500,7 @@ textarea.contact-input{resize:vertical;min-height:120px;line-height:1.6;}
 <!-- 06b. HERO EDITORIAL -->
 <div id="hero-editorial" class="sec-label">10 · Heroes</div>
 <div class="sec-name">Hero — Editorial Light</div>
-<div style="padding:0 48px 16px;">
+<div class="pad-hero">
   <div class="hero-editorial" style="border-radius:2px;border:1px solid var(--border);overflow:hidden;">
     <div class="hero-editorial-inner">
       <div>
@@ -1424,7 +1553,7 @@ textarea.contact-input{resize:vertical;min-height:120px;line-height:1.6;}
 <!-- 06c. HERO GRADIENT -->
 <div id="hero-gradient" class="sec-label">11 · Heroes</div>
 <div class="sec-name">Hero — Gradient (Secondary Pages)</div>
-<div style="padding:0 48px 56px;">
+<div class="pad-hero" style="padding-bottom:56px;">
   <div class="hero-gradient noise" style="border-radius:2px;border:1px solid var(--border);overflow:hidden;">
     <div class="hero-gradient-bg"></div>
     <div class="hero-gradient-content">
