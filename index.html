@@ -592,7 +592,7 @@ img{display:block;}
 
         <!-- Bottom-left: Photo + overlay -->
         <div class="hero-grid-cell photo-cell">
-          <img src="design-system/images/professional-woman-laptop.jpg" alt="Professional working">
+          <img src="design-system/images/woman-computer.jpg" alt="Professional working">
           <div class="photo-overlay">
             <div class="photo-overlay-label">Coverage</div>
             <div class="photo-overlay-val">$250K</div>
@@ -1212,6 +1212,7 @@ img{display:block;}
   const LINE_COUNT = 4;
   const lineYs = [];
   const beams = [];
+  let vertX = 0;
 
   function resize() {
     dpr = window.devicePixelRatio || 1;
@@ -1226,6 +1227,7 @@ img{display:block;}
     for (let i = 0; i < LINE_COUNT; i++) {
       lineYs.push((i + 1) / (LINE_COUNT + 1) * h);
     }
+    vertX = w * 0.55;
   }
 
   function spawnBeam() {
@@ -1235,7 +1237,7 @@ img{display:block;}
       x: -200,
       len: 120 + Math.random() * 200,
       speed: 0.845 + Math.random() * 2.028,
-      alpha: 0.18 + Math.random() * 0.24
+      alpha: 0.126 + Math.random() * 0.168
     });
   }
 
@@ -1243,7 +1245,7 @@ img{display:block;}
     resize();
     beams.length = 0;
     for (let i = 0; i < 4; i++) {
-      const b = { y: lineYs[Math.floor(Math.random() * LINE_COUNT)], x: Math.random() * w, len: 120 + Math.random() * 200, speed: 0.845 + Math.random() * 2.028, alpha: 0.18 + Math.random() * 0.24 };
+      const b = { y: lineYs[Math.floor(Math.random() * LINE_COUNT)], x: Math.random() * w, len: 120 + Math.random() * 200, speed: 0.845 + Math.random() * 2.028, alpha: 0.126 + Math.random() * 0.168 };
       beams.push(b);
     }
   }
@@ -1260,6 +1262,11 @@ img{display:block;}
       ctx.lineTo(w, y);
       ctx.stroke();
     }
+    // Draw vertical line
+    ctx.beginPath();
+    ctx.moveTo(vertX, 0);
+    ctx.lineTo(vertX, h);
+    ctx.stroke();
     // Draw beams
     for (let i = beams.length - 1; i >= 0; i--) {
       const b = beams[i];
