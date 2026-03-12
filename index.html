@@ -165,7 +165,7 @@ img{display:block;}
 .dash-progress-label{display:flex;justify-content:space-between;font-size:9px;color:var(--slate);margin-bottom:4px;}
 .dash-progress-track{height:4px;background:rgba(20,93,208,.1);border-radius:2px;overflow:hidden;}
 .dash-progress-fill{height:100%;width:94%;background:linear-gradient(90deg,var(--blue),var(--blue-lt));border-radius:2px;animation:prog-fill 10s ease-in-out infinite;}
-@keyframes prog-fill{0%{width:0%;}20%{width:94%;}85%{width:94%;}100%{width:0%;}}
+@keyframes prog-fill{0%{width:0%;opacity:1;}20%{width:94%;opacity:1;}75%{width:94%;opacity:1;}90%{width:94%;opacity:0;}91%{width:0%;opacity:0;}100%{width:0%;opacity:1;}}
 .verify-row{animation:vrow-in 10s ease-in-out infinite;opacity:0;}
 .verify-row:nth-child(1){animation-delay:0s;}
 .verify-row:nth-child(2){animation-delay:1s;}
@@ -182,7 +182,7 @@ img{display:block;}
 
 /* ===== MARQUEE ===== */
 .marquee-section{background:#fff;border-top:1px solid var(--border);border-bottom:1px solid var(--border);overflow:hidden;padding:0;}
-.marquee-inner{display:flex;gap:0;width:max-content;animation:marq 30s linear infinite;}
+.marquee-inner{display:flex;gap:0;width:max-content;animation:marq 39s linear infinite;}
 .marquee-inner:hover{animation-play-state:paused;}
 @keyframes marq{from{transform:translateX(0);}to{transform:translateX(-50%);}}
 .marquee-track{padding:22px 0;}
@@ -355,12 +355,12 @@ img{display:block;}
 /* ===== BIG QUOTE ON BLUE ===== */
 .bqb-section{background:var(--blue);margin:0 0 0;padding:96px 72px;text-align:center;position:relative;overflow:hidden;}
 .bqb-circles{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;z-index:0;}
-.bqb-circle{position:absolute;border-radius:50%;border:1px solid rgba(255,255,255,.12);transform:translate(-50%,-50%);animation:bqb-pulse 6s ease-in-out infinite;}
+.bqb-circle{position:absolute;border-radius:50%;border:1px solid rgba(255,255,255,.12);transform:translate(-50%,-50%) scale(.6);animation:bqb-sonar 6s ease-out infinite;}
 .bqb-circle:nth-child(1){width:300px;height:300px;}
-.bqb-circle:nth-child(2){width:520px;height:520px;border-color:rgba(255,255,255,.08);animation-delay:-.5s;}
-.bqb-circle:nth-child(3){width:740px;height:740px;border-color:rgba(255,255,255,.05);animation-delay:-1s;}
-.bqb-circle:nth-child(4){width:960px;height:960px;border-color:rgba(255,255,255,.03);animation-delay:-1.5s;}
-@keyframes bqb-pulse{0%,100%{transform:translate(-50%,-50%) scale(1);opacity:1;}50%{transform:translate(-50%,-50%) scale(1.06);opacity:.6;}}
+.bqb-circle:nth-child(2){width:520px;height:520px;animation-delay:1.5s;}
+.bqb-circle:nth-child(3){width:740px;height:740px;animation-delay:3s;}
+.bqb-circle:nth-child(4){width:960px;height:960px;animation-delay:4.5s;}
+@keyframes bqb-sonar{0%{transform:translate(-50%,-50%) scale(.6);opacity:0;}10%{opacity:.15;}80%{opacity:.04;}100%{transform:translate(-50%,-50%) scale(1);opacity:0;}}
 .bqb-section::after{content:'';position:absolute;inset:0;pointer-events:none;opacity:.04;mix-blend-mode:overlay;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-repeat:repeat;background-size:256px 256px;}
 .bqb-content{position:relative;z-index:1;max-width:720px;margin:0 auto;}
 .bqb-pill{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:2px;padding:8px 18px;font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.85);margin-bottom:36px;}
@@ -607,9 +607,9 @@ img{display:block;}
         <div class="hero-grid-cell photo-cell">
           <img src="design-system/images/woman-computer.jpg" alt="Professional working">
           <div class="photo-overlay">
-            <div class="photo-overlay-label">Coverage</div>
+            <div class="photo-overlay-label">Insurance</div>
             <div class="photo-overlay-val">$15M</div>
-            <div class="photo-overlay-sub">Bound &amp; active</div>
+            <div class="photo-overlay-sub">Coverage</div>
           </div>
         </div>
 
@@ -738,7 +738,7 @@ img{display:block;}
       </div>
       <div class="stat-text-cell r sd1">
         <div class="tile-h" style="margin-bottom:8px;">Trusted by thousands of financial leaders and the world's leading banks.</div>
-        <p>Finance professionals rely on Basefund to manage and secure billions in transactions each month.</p>
+        <p>Finance professionals rely on Basefund to secure billions in transactions each month.</p>
       </div>
     </div>
   </div>
@@ -944,7 +944,7 @@ img{display:block;}
           </tr>
           <tr>
             <td>Transaction-Level Insurance</td>
-            <td><span class="comp-x">✗</span> Not available</td>
+            <td>Not available</td>
             <td><span class="comp-check">✓</span> Bound at deal level, pre-close</td>
           </tr>
           <tr>
@@ -1136,7 +1136,7 @@ img{display:block;}
   <div class="container">
     <div class="cta-full r">
       <h2>Ready to secure your<br><em>next transaction?</em></h2>
-      <p>Join the institutions that have already moved over $15 billion through Basefund's verified, insured infrastructure.</p>
+      <p>Join the institutions that have already moved billions through Basefund's verified, insured infrastructure.</p>
       <div class="cta-full-actions">
         <button class="btn btn-w btn-xl">Get Started Free <span class="arr" style="background:rgba(20,93,208,.12);color:var(--blue);">→</span></button>
         <button class="btn btn-gw btn-lg">Talk to Sales</button>
@@ -1248,7 +1248,7 @@ img{display:block;}
   function init() {
     resize();
     beams.length = 0;
-    for (let i = 0; i < 4; i++) {
+    for (let i = 0; i < 2; i++) {
       const b = { y: lineYs[Math.floor(Math.random() * LINE_COUNT)], x: Math.random() * w, len: 120 + Math.random() * 200, speed: 0.845 + Math.random() * 2.028, alpha: 0.126 + Math.random() * 0.168 };
       beams.push(b);
     }
@@ -1283,8 +1283,8 @@ img{display:block;}
       b.x += b.speed;
       if (b.x > w + b.len) beams.splice(i, 1);
     }
-    // Spawn new beams at random intervals
-    if (t - lastSpawn > 1500 + Math.random() * 2500) {
+    // Spawn new beams at random intervals (max 3 active)
+    if (beams.length < 3 && t - lastSpawn > 3000 + Math.random() * 4000) {
       spawnBeam();
       lastSpawn = t;
     }
