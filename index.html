@@ -124,6 +124,9 @@ img{display:block;}
 
 /* Hero right — 2x2 grid */
 .hero-right{position:relative;width:520px;flex-shrink:0;}
+.hero-right::before{content:'';position:absolute;inset:-40px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.12) 0%,rgba(20,93,208,.08) 50%,transparent 70%);z-index:0;pointer-events:none;}
+.hero-right::after{content:'';position:absolute;inset:-40px;border-radius:50%;background:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.06'/%3E%3C/svg%3E");z-index:0;pointer-events:none;}
+.hero-grid{position:relative;z-index:1;}
 .hero-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
 .hero-grid-cell{border-radius:2px;overflow:hidden;box-shadow:var(--s-lg);position:relative;}
 .hero-grid-cell.app-screen{background:#fff;}
@@ -161,7 +164,14 @@ img{display:block;}
 .dash-stat-l{font-size:8px;color:var(--slate-lt);margin-top:1px;}
 .dash-progress-label{display:flex;justify-content:space-between;font-size:9px;color:var(--slate);margin-bottom:4px;}
 .dash-progress-track{height:4px;background:rgba(20,93,208,.1);border-radius:2px;overflow:hidden;}
-.dash-progress-fill{height:100%;width:94%;background:linear-gradient(90deg,var(--blue),var(--blue-lt));border-radius:2px;}
+.dash-progress-fill{height:100%;width:94%;background:linear-gradient(90deg,var(--blue),var(--blue-lt));border-radius:2px;animation:prog-fill 4s ease-in-out infinite;}
+@keyframes prog-fill{0%{width:0%;}30%{width:94%;}85%{width:94%;}100%{width:0%;}}
+.verify-row{animation:vrow-in 4s ease-in-out infinite;opacity:0;}
+.verify-row:nth-child(1){animation-delay:0s;}
+.verify-row:nth-child(2){animation-delay:.4s;}
+.verify-row:nth-child(3){animation-delay:.8s;}
+.verify-status-row{animation:vrow-in 4s ease-in-out infinite;opacity:0;animation-delay:1.2s;}
+@keyframes vrow-in{0%{opacity:0;transform:translateY(6px);}15%{opacity:1;transform:translateY(0);}75%{opacity:1;transform:translateY(0);}90%{opacity:0;transform:translateY(-4px);}100%{opacity:0;}}
 /* Security score widget */
 .score-widget{text-align:center;}
 .score-label{font-size:9px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;color:var(--slate);margin-bottom:8px;}
@@ -345,11 +355,12 @@ img{display:block;}
 /* ===== BIG QUOTE ON BLUE ===== */
 .bqb-section{background:var(--blue);margin:0 0 0;padding:96px 72px;text-align:center;position:relative;overflow:hidden;}
 .bqb-circles{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;z-index:0;}
-.bqb-circle{position:absolute;border-radius:50%;border:1px solid rgba(255,255,255,.12);transform:translate(-50%,-50%);}
+.bqb-circle{position:absolute;border-radius:50%;border:1px solid rgba(255,255,255,.12);transform:translate(-50%,-50%);animation:bqb-pulse 6s ease-in-out infinite;}
 .bqb-circle:nth-child(1){width:300px;height:300px;}
-.bqb-circle:nth-child(2){width:520px;height:520px;border-color:rgba(255,255,255,.08);}
-.bqb-circle:nth-child(3){width:740px;height:740px;border-color:rgba(255,255,255,.05);}
-.bqb-circle:nth-child(4){width:960px;height:960px;border-color:rgba(255,255,255,.03);}
+.bqb-circle:nth-child(2){width:520px;height:520px;border-color:rgba(255,255,255,.08);animation-delay:-.5s;}
+.bqb-circle:nth-child(3){width:740px;height:740px;border-color:rgba(255,255,255,.05);animation-delay:-1s;}
+.bqb-circle:nth-child(4){width:960px;height:960px;border-color:rgba(255,255,255,.03);animation-delay:-1.5s;}
+@keyframes bqb-pulse{0%,100%{transform:translate(-50%,-50%) scale(1);opacity:1;}50%{transform:translate(-50%,-50%) scale(1.06);opacity:.6;}}
 .bqb-section::after{content:'';position:absolute;inset:0;pointer-events:none;opacity:.04;mix-blend-mode:overlay;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-repeat:repeat;background-size:256px 256px;}
 .bqb-content{position:relative;z-index:1;max-width:720px;margin:0 auto;}
 .bqb-pill{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:2px;padding:8px 18px;font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.85);margin-bottom:36px;}
@@ -552,8 +563,8 @@ img{display:block;}
       </div>
       <h1 class="hero-title r sd1">
         Secure and insure<br>
-        <span class="italic">your money</span><br>
-        in motion.
+        your money<br>
+        <em style="color:#00F4E0;">in motion</em><span>.</span>
       </h1>
       <p class="hero-sub r sd2">Basefund unifies identity verification, bank validation, transaction-specific insurance, and deal coordination in one platform — built for the institutions that move capital.</p>
       <div class="hero-ctas r sd3">
@@ -885,7 +896,7 @@ img{display:block;}
           <img src="design-system/icons/shield-tick.svg" alt="Approach">
         </div>
         <div class="prob-label">The Basefund Approach</div>
-        <div class="prob-h">Infrastructure that moves with the money.</div>
+        <div class="prob-h">Security infrastructure that moves with the money.</div>
         <div class="prob-p">Basefund wraps every transaction in a verified, insured, and coordinated layer — so that by the time a wire leaves, every account has been validated, every party has been identified, and every condition has been met.</div>
       </div>
       <div class="breakout-wrap r sd3" style="position:relative;">
@@ -907,7 +918,7 @@ img{display:block;}
   <div class="container">
     <div class="section-header r">
       <div class="eyebrow">Comparison</div>
-      <h2>A better way to move money.</h2>
+      <h2>A better way to transact.</h2>
       <p>See how Basefund changes the risk and operational profile of institutional transactions.</p>
     </div>
     <div class="comp-table r">
@@ -937,7 +948,7 @@ img{display:block;}
           </tr>
           <tr>
             <td>Wire Fraud Protection</td>
-            <td>Email disclaimers, hope</td>
+            <td>Email disclaimers, call-backs, hope</td>
             <td><span class="comp-check">✓</span> Verified accounts + insurance layer</td>
           </tr>
           <tr>
