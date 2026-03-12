@@ -51,6 +51,7 @@ img{display:block;}
 .ann-sep{margin:0 10px;opacity:.3;}
 .ann-link{font-weight:700;color:var(--accent);margin-left:10px;opacity:.95;transition:opacity 150ms;font-size:12px;}
 .ann-link:hover{opacity:1;text-decoration:underline;}
+.ann-mobile-link{display:none;}
 .ann-close{background:none;border:none;color:rgba(255,255,255,.4);font-size:18px;line-height:1;cursor:pointer;padding:4px 8px;border-radius:2px;transition:all 150ms;position:relative;z-index:1;flex-shrink:0;}
 .ann-close:hover{color:#fff;}
 
@@ -456,6 +457,9 @@ img{display:block;}
 @media(max-width:768px){
   .container{padding:0 20px;}
   .announcement-bar .ann-sep,.announcement-bar .ann-sep + span{display:none;}
+  .ann-detail{display:none;}
+  .ann-desktop-link{display:none!important;}
+  .ann-mobile-link{display:inline!important;font-size:16px;}
   .nav{padding:0 20px;height:56px;}
   .nav-links{display:none;}
   .nav-right{display:none;}
@@ -479,8 +483,8 @@ img{display:block;}
   .persona-grid{grid-template-columns:1fr;}
   .breakout-section{padding:0 0 40px;}
   .breakout-img img{height:280px;}
-  .breakout-card{position:relative;bottom:auto;right:auto;left:auto!important;margin:-40px 20px 0;padding-bottom:40px;}
-  .breakout-section .container{padding-bottom:20px;}
+  .breakout-card{position:relative;bottom:auto;right:auto;left:auto!important;margin:-40px 20px 0;}
+  .breakout-wrap{padding-bottom:24px;background:var(--off);}
   .blog-section{padding:56px 0 40px;}
   .blog-grid{grid-template-columns:1fr;}
   .bqb-section{padding:64px 32px;}
@@ -510,8 +514,9 @@ img{display:block;}
 <div class="announcement-bar" id="ann-bar">
   <div class="ann-inner">
     <span class="ann-badge">New</span>
-    Introducing Secure Transactions — for single and multi-party payments.
-    <a href="#" class="ann-link">Learn More →</a>
+    Introducing Secure Transactions<span class="ann-detail"> — for single and multi-party payments.</span>
+    <a href="#" class="ann-link ann-mobile-link">→</a>
+    <a href="#" class="ann-link ann-desktop-link">Learn More →</a>
   </div>
   <button class="ann-close" onclick="document.getElementById('ann-bar').style.display='none'" aria-label="Close">×</button>
 </div>
