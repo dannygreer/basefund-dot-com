@@ -1,5 +1,10 @@
 {
   "buildCommand": null,
   "outputDirectory": ".",
-  "cleanUrls": true
+  "cleanUrls": true,
+  "rewrites": [
+    { "source": "/design-system/icons", "destination": "/design-system/icons.html" },
+    { "source": "/design-system/images", "destination": "/design-system/images.html" },
+    { "source": "/design-system/app-screens", "destination": "/design-system/app-screens.html" }
+  ]
 }
