@@ -459,14 +459,14 @@ img{display:block;}
   .nav{padding:0 20px;height:56px;}
   .nav-links{display:none;}
   .nav-right{display:none;}
-  .nav-hamburger{display:flex;}
+  .nav-hamburger{display:flex;margin-left:auto;}
   .hero-cinema{padding:80px 0 60px;min-height:auto;}
   .hero-cinema-content{flex-direction:column;padding:0 20px;}
   .hero-right{display:none;}
   .hero-title{font-size:clamp(40px,11vw,62px);}
   .hero-ctas{flex-wrap:wrap;}
   .stats-section{padding:40px 0;}
-  .stats-strip{grid-template-columns:1fr 1fr;}
+  .stats-strip{grid-template-columns:1fr;}
   .stat-cell{padding:24px 20px;}
   .bento-section{padding:0 0 40px;}
   .process-section{padding:0 0 40px;}
@@ -477,7 +477,8 @@ img{display:block;}
   .persona-grid{grid-template-columns:1fr;}
   .breakout-section{padding:0 0 40px;}
   .breakout-img img{height:280px;}
-  .breakout-card{position:relative;bottom:auto;right:auto;left:auto!important;margin:-40px 20px 0;}
+  .breakout-card{position:relative;bottom:auto;right:auto;left:auto!important;margin:-40px 20px 0;padding-bottom:40px;}
+  .breakout-section .container{padding-bottom:20px;}
   .blog-section{padding:56px 0 40px;}
   .blog-grid{grid-template-columns:1fr;}
   .bqb-section{padding:64px 32px;}
@@ -496,6 +497,8 @@ img{display:block;}
   .pe-step{padding:28px 24px;}
   .problem-inner{gap:10px;}
   .bqb-section .bqb-quote{font-size:clamp(18px,4vw,26px);}
+  .comp-table{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+  .comp-table table{min-width:600px;}
 }
 </style>
 </head>
@@ -566,7 +569,7 @@ img{display:block;}
         <span class="italic">your money</span><br>
         in motion<span style="color:#00F4E0;">.</span>
       </h1>
-      <p class="hero-sub r sd2">Basefund unifies identity verification, bank validation, transaction-specific insurance, and deal coordination in one platform — built for the institutions that move capital.</p>
+      <p class="hero-sub r sd2">Unify identity verification, bank validation, transaction-specific insurance, and deal coordination in one platform — built for high-stakes capital movement.</p>
       <div class="hero-ctas r sd3">
         <button class="btn btn-w btn-lg">Get Started Free <span class="arr" style="background:rgba(20,93,208,.12);color:var(--blue);">→</span></button>
         <button class="btn btn-gw btn-lg">Watch Demo</button>
@@ -796,7 +799,7 @@ img{display:block;}
           <img src="design-system/icons/users-check.svg" alt="Coordination">
         </div>
         <div class="tile-tag" style="color:var(--blue);">04 · Deal Coordination</div>
-        <div class="tile-h" style="color:var(--ink);">Every stakeholder. Every document. One deal room.</div>
+        <div class="tile-h" style="color:var(--ink);">Every stakeholder. Every disbursement. One platform.</div>
         <div class="tile-p" style="color:var(--slate);">Municipal issuers, bond counsel, underwriters, escrow agents, and banks — all coordinating in a single secure workspace with audit trails and milestone tracking built in.</div>
         <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:20px;">
           <span class="badge bd-blue">Role-Based Access</span>
